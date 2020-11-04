@@ -1,16 +1,16 @@
 ![Use Package logo](UseLogo)
 
-# Strings Extension Introduction (`stringsext`)
+# Strings Extension Introduction (`strhelper`)
 
 Go Strings library additional methods, simplification of string modification and verificiation.
 
 ## Git Clone
 
-`git clone https://gitlab.com/evatix-go/stringsext.git`
+`git clone https://gitlab.com/evatix-go/strhelper.git`
 
 ### 2FA enabled, for linux
 
-`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/stringsext.git`
+`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
 
 ### Prerequisites
 
@@ -21,7 +21,7 @@ Go Strings library additional methods, simplification of string modification and
 
 ## Installation
 
-`go get gitlab.com/evatix-go/stringsext`
+`go get gitlab.com/evatix-go/strhelper`
 
 ### Go get issue for private package
 
@@ -37,7 +37,7 @@ To set for Unix:
 
 `expoort GOPRIVATE=[AddExistingOnes;]gitlab.com/evatix-go`
 
-## Why `YourModuleName?`
+## Why `strhelper?`
 
 ## Examples
 
@@ -51,7 +51,7 @@ Any other packages used
 
 ## Issues
 
-- [Create your issues](https://gitlab.com/evatix-go/stringsext/-/issues)
+- [Create your issues](https://gitlab.com/evatix-go/strhelper/-/issues)
 
 ## Notes
 
