@@ -2,9 +2,7 @@ package concat
 
 import (
 	"fmt"
-	"strings"
 
-	"gitlab.com/evatix-go/strhelper"
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
@@ -13,7 +11,7 @@ func AnyValues(
 	isSkipEmptyOrNil bool,
 	contents ...interface{},
 ) string {
-	return anys(
+	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
 		constants.SprintValueFormat,
@@ -21,25 +19,27 @@ func AnyValues(
 		&contents)
 }
 
+// Concat any object to string, sprintf format given constants.SprintPropertyNameValueFormat
 func AnyNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
 	contents ...interface{},
 ) string {
-	return anys(
+	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintFullPropertyNameValueFormat,
+		constants.SprintPropertyNameValueFormat,
 		nil,
 		&contents)
 }
 
+// Concat any object to string, sprintf format given constants.SprintFullPropertyNameValueFormat
 func AnyFullNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
 	contents ...interface{},
 ) string {
-	return anys(
+	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
 		constants.SprintFullPropertyNameValueFormat,
@@ -47,13 +47,14 @@ func AnyFullNameValues(
 		&contents)
 }
 
+// Concat any object to string using it's sprintf format given
 func Anys(
 	separator string,
 	isSkipEmptyOrNil bool,
 	contentPrintFormat string,
 	contents ...interface{},
 ) string {
-	return anys(
+	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
 		contentPrintFormat,
@@ -61,7 +62,8 @@ func Anys(
 		&contents)
 }
 
-func anys(
+// Concat any object to string using it's sprintf format given
+func AnyArrayOfInterfaces(
 	separator *string,
 	isSkipEmptyOrNil bool,
 	contentPrintFormat string,
@@ -90,68 +92,4 @@ func anys(
 	}
 
 	return StringsArrayWithSeparator(nil, separator, isSkipEmptyOrNil, &newLines)
-}
-
-// Empty separator, empty string will be ignored
-func Strings(contents ...string) string {
-	return strhelper.JoinPtrExceptEmpty(&contents, constants.EmptyStringPtr)
-}
-
-// empty string will be ignored
-func StringUsingPipe(contents ...string) string {
-	return strhelper.JoinPtrExceptEmpty(&contents, constants.PipePtr)
-}
-
-// empty string will be ignored
-func StringsUsingComma(contents ...string) string {
-	return strhelper.JoinPtrExceptEmpty(&contents, constants.CommaPtr)
-}
-
-func StringsUsingSpace(contents ...string) string {
-	return strhelper.JoinPtrExceptEmpty(&contents, constants.SpacePtr)
-}
-
-func StringsUsingHyphen(contents ...string) string {
-	return strhelper.JoinPtrExceptEmpty(&contents, constants.HyphenPtr)
-}
-
-func StringsWithSeparator(
-	currentStr,
-	separator string,
-	isSkipEmptyOrNil bool,
-	contents ...string,
-) string {
-	return StringsArrayWithSeparator(
-		&currentStr,
-		&separator,
-		isSkipEmptyOrNil,
-		&contents)
-}
-
-func StringsArrayWithSeparator(
-	currentStr,
-	separator *string,
-	isSkipEmptyOrNil bool,
-	contents *[]string,
-) string {
-	var combinedContents string
-
-	if isSkipEmptyOrNil {
-		combinedContents = strhelper.JoinPtrExceptEmpty(contents, separator)
-	} else {
-		combinedContents = strhelper.JoinPtr(contents, separator)
-	}
-
-	if currentStr == nil || *currentStr == constants.EmptyString || len(*currentStr) == 0 {
-		return combinedContents
-	}
-
-	// TODO this requires optimization
-	if combinedContents != constants.EmptyString && len(strings.TrimSpace(combinedContents)) > 0 {
-		combinedContents = *separator + combinedContents
-	}
-
-	final := *currentStr + combinedContents
-
-	return final
 }
