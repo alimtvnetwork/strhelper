@@ -8,6 +8,8 @@ var (
 	pipe           = Pipe
 	newLineUnix    = NewLineUnix
 	newLine        = NewLine
+	tab            = Tab
+	TabPtr         = &tab
 	NewLinePtr     = &newLine
 	EmptyStringPtr = &emptyString
 	SpacePtr       = &space
@@ -29,6 +31,8 @@ const (
 	NewLineMac                        = "\n"
 	NewLineUnix                       = "\n"
 	NewLineWindows                    = "\r\n"
+	Tab                               = "\t"
+	TabV                              = "\v"
 	EmptyString                       = ""
 	Space                             = " "
 	Hyphen                            = "-"
