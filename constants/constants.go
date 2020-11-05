@@ -39,6 +39,8 @@ const (
 	Semicolon                         = ";"
 	Colon                             = ":"
 	Comma                             = ","
+	CommaSpace                        = ", "
+	SpaceColonSpace                   = " : "
 	Pipe                              = "|"
 	QuestionMarkSymbol                = "?"
 	NilString                         = "nil"

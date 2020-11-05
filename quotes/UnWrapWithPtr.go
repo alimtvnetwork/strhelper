@@ -7,7 +7,6 @@ func UnWrapWithPtr(str *string, quote Quote) string {
 	}
 
 	if HasBothWrappedWithPtr(str, quote) {
-		// no need to modify
 		return unWrapBoth(str)
 	}
 
