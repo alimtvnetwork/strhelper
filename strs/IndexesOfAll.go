@@ -18,9 +18,7 @@ func IndexesOfAll(
 	length := len(*lines)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		message := "startsAtIndex cannot be negative or more than length. startsAtIndex:" + string(startsAtIndex)
-
-		panic(message)
+		startAtIndexFailed(startsAtIndex)
 	}
 
 	indexes := make([]int, 0, length)

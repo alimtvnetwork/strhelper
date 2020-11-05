@@ -253,10 +253,9 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	// TODO : Move to pointer implementation later
-	return strhelper.IsStartsWith(
-		stringWrapper.Value(),
-		search,
+	return strhelper.IsStartsWithPtr(
+		stringWrapper.ValuePtr(),
+		&search,
 		startsAt,
 		isCaseSensitive)
 }

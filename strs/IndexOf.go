@@ -16,14 +16,12 @@ func IndexOf(
 	length := len(*lines)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		message := "startsAtIndex cannot be negative or more than length. startsAtIndex:" + string(startsAtIndex)
-
-		panic(message)
+		startAtIndexFailed(startsAtIndex)
 	}
 
 	if !isCaseSensitive {
 		// insensitive
-		return indexOfForCaseInsensitive(lines, findingString, startsAtIndex)
+		return indexOfForCaseInsensitiveInternal(lines, findingString, startsAtIndex)
 	}
 
 	for i := startsAtIndex; i < length; i++ {
