@@ -1,29 +1,29 @@
-package strs
+package strhelper
 
 import "gitlab.com/evatix-go/strhelper/constants"
 
-// Returns all indexes where the string is found
-// if empty lines given then returns nil
-// Invalid result can be nil
-func IndexesOfAll(
-	lines *[]string,
+// Returns all indexes where findingString is found.
+// if empty content given then returns nil
+// Invalid result can be nil if any (content == nil || findingString == nil) then returns nil
+func IndexesOfAllPtr(
+	content *string,
 	findingString *string,
 	startsAtIndex int,
 	isCaseSensitive bool,
 ) []int {
-	if IsEmpty(lines) || findingString == nil {
+	if content == nil || findingString == nil {
 		return nil
 	}
 
-	length := len(*lines)
+	length := len(*content)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		startAtIndexFailed(startsAtIndex)
 	}
 
 	indexes := make([]int, constants.Zero, length)
-	foundIndex := IndexOf(
-		lines,
+	foundIndex := IndexOfPtr(
+		content,
 		findingString,
 		startsAtIndex,
 		isCaseSensitive)
@@ -33,9 +33,8 @@ func IndexesOfAll(
 	}
 
 	for foundIndex > constants.InvalidNotFoundCase {
-		indexes = append(indexes, foundIndex)
-		foundIndex = IndexOf(
-			lines,
+		foundIndex = IndexOfPtr(
+			content,
 			findingString,
 			foundIndex+1,
 			isCaseSensitive)

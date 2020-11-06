@@ -6,5 +6,9 @@ func IsExists(
 	s, findingString string,
 	isCaseSensitive bool,
 ) bool {
-	return IndexOf(s, findingString, 0, isCaseSensitive) > constants.InvalidNotFoundCase
+	return IndexOf(
+		s,
+		findingString,
+		constants.Zero,
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }
