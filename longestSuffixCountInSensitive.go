@@ -1,5 +1,9 @@
 package strhelper
 
+import "strings"
+
+// Assumptions here are a,b are not nil, at least empty string.
+//
 // Results count of suffix character matches. Where a, b can be at different lengths, it will find the longest common suffix.
 //
 // Returns
@@ -9,23 +13,31 @@ package strhelper
 //
 // Conditions (Panic):
 //  - if any (a,b) nil then panics
-//  - bothLastIndexReduceBy cannot be negative
 //
 // bothLastIndexReduceBy:
 //  - `2` meaning both a,b length consider len(a)-2, len(b)-2
-//  - bothLastIndexReduceBy cannot be negative
 //
 // Code Copied from Reference: https://bit.ly/35ZGJHc
-//
-// Recommendation : For performance use the [`...Ptr`] version of the method.
-func LongestCommonSuffixCount(
-	a, b string,
+func longestSuffixCountInsensitive(
+	a *string,
+	b *string,
 	bothLastIndexReduceBy int,
-	isCaseSensitive bool,
 ) int {
-	return LongestCommonSuffixCountPtr(
-		&a,
-		&b,
-		bothLastIndexReduceBy,
-		isCaseSensitive)
+	lenA := len(*a)
+	lenB := len(*b)
+
+	al := strings.ToLower(*a)
+	bl := strings.ToLower(*b)
+
+	incrementing := 0
+
+	for ; bothLastIndexReduceBy < lenA && bothLastIndexReduceBy < lenB; bothLastIndexReduceBy++ {
+		if al[lenA-1-bothLastIndexReduceBy] != bl[lenB-1-bothLastIndexReduceBy] {
+			return incrementing
+		}
+
+		incrementing++
+	}
+
+	return incrementing
 }
