@@ -1,10 +1,16 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/constants"
+)
 
 // returns -1 on non found case
 // panics if any is nil
 func IndexOfCaseSensitive(s, findingString *string, startAt int) int {
+	if s == nil || findingString == nil {
+		panic(searchNullPanicMessage)
+	}
+
 	length := len(*s)
 	wordLength := len(*findingString)
 
@@ -19,7 +25,7 @@ func IndexOfCaseSensitive(s, findingString *string, startAt int) int {
 			break
 		}
 
-		if IsStartsWithPtr(s, findingString, startAt, false) {
+		if IsStartsWithPtr(s, findingString, i, true) {
 			return i
 		}
 	}

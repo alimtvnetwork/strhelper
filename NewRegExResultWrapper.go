@@ -7,7 +7,7 @@ import (
 )
 
 // Gets regex wrapper for all the regex given
-func GetParsedLinesFrom(content *string, regexps ...*regexp.Regexp) []*strhelpercore.RegExResultWrapper {
+func NewRegExResultWrapper(content *string, regexps ...*regexp.Regexp) []*strhelpercore.RegExResultWrapper {
 	results := make([]*strhelpercore.RegExResultWrapper, 0, len(regexps))
 
 	for index, regex := range regexps {

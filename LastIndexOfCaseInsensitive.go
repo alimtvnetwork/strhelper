@@ -8,7 +8,7 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func IndexOfCaseInsensitive(s, findingString *string, startAt int) int {
+func LastIndexOfCaseInsensitive(s, findingString *string, startAt int) int {
 	if s == nil || findingString == nil {
 		panic(searchNullPanicMessage)
 	}
@@ -20,18 +20,20 @@ func IndexOfCaseInsensitive(s, findingString *string, startAt int) int {
 		return constants.InvalidNotFoundCase
 	}
 
-	strLower := strings.ToLower(*s)
+	wholeTextLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
-	for i := startAt; i < length; i++ {
-		if length-i < wordLength {
+	textLength := length - startAt
+
+	for newStartIndex := startAt; newStartIndex < textLength; newStartIndex++ {
+		if textLength-newStartIndex < wordLength {
 			// there is no need to check anymore
 			// exceeded word length and not found case
 			break
 		}
 
-		if IsStartsWithPtr(&strLower, &wordLower, i, true) {
-			return i
+		if IsEndsWithPtr(&wholeTextLower, &wordLower, newStartIndex, true) {
+			return length - newStartIndex - wordLength
 		}
 	}
 
