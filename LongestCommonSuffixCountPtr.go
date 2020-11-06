@@ -44,7 +44,7 @@ func LongestCommonSuffixCountPtr(
 
 	if !isCaseSensitive {
 		// both needs to be in same case
-		return longestSuffixCountInsensitive(
+		return longestCommonSuffixCountInsensitive(
 			a,
 			b,
 			bothLastIndexReduceBy)
@@ -61,3 +61,4 @@ func LongestCommonSuffixCountPtr(
 
 	return incrementing
 }
+
