@@ -11,8 +11,8 @@ type BracketStatus struct {
 func EmptyBracketStatus() BracketStatus {
 	return BracketStatus{
 		IsBracketFound: false,
-		Category:       nil,
-		FoundBracket:   nil,
-		OtherBracket:   nil,
+		Category:       UnknownCategory,
+		FoundBracket:   UnknownBracket,
+		OtherBracket:   UnknownBracket,
 	}
 }

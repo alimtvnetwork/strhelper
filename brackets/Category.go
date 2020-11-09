@@ -3,7 +3,8 @@ package brackets
 type Category byte
 
 const (
-	Parenthesis Category = iota
+	UnknownCategory Category = iota
+	Parenthesis     Category = iota
 	Curly
 	Square
 )

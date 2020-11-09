@@ -25,7 +25,7 @@ func IndexOfCaseSensitive(s, findingString *string, startAt int) int {
 			break
 		}
 
-		if IsStartsWithPtr(s, findingString, i, true) {
+		if isStartsWithInternal(s, findingString, i) {
 			return i
 		}
 	}

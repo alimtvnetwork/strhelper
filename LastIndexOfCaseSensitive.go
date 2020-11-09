@@ -21,7 +21,7 @@ func LastIndexOfCaseSensitive(s, findingString *string, startAt int) int {
 			break
 		}
 
-		if IsEndsWithPtr(s, findingString, newStartIndex, true) {
+		if isEndsWithInternal(s, findingString, newStartIndex) {
 			return length - newStartIndex - wordLength
 		}
 	}

@@ -3,6 +3,7 @@ package brackets
 type Bracket uint8
 
 const (
+	UnknownBracket   Bracket = iota
 	ParenthesisStart Bracket = '('
 	ParenthesisEnd   Bracket = ')'
 	CurlyStart       Bracket = '{'

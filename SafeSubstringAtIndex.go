@@ -1,6 +1,8 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/constants"
+)
 
 // language integrated ones will be faster str[startAtIndex:endsAtIndex]
 // Under the hood this method usages that functionality from language
@@ -12,7 +14,7 @@ func SafeSubstringAtIndex(
 	startsAtIndex, endsAtIndex int,
 ) string {
 	if startsAtIndex < 0 {
-		message := "Substring Index cannot have negative startsAtIndex : " + string(startsAtIndex)
+		message := "Substring Index cannot have negative startsAtIndex : " + IntToString(startsAtIndex)
 
 		panic(message)
 	}

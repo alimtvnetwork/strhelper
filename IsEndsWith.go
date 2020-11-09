@@ -1,8 +1,19 @@
 package strhelper
 
-// startsAtLastIndex = 0 meaning starts from last position, giving 2 meaning len(wholeText)-2
-// If EmptyString(constants.EmptyString) is given for search and if the startsAt less than the length of the wholeText then it returns true.
-// For performance use Ptr version
+// Results true for ends with search text.
+//
+// Returns true
+//
+//  - if wholeText starts from the last with search text comparison.
+//  - if lastIndexIncreasedBy mentioned then last len(wholeText)-lastIndexIncreasedBy
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - lastIndexIncreasedBy cannot be negative
+//
+// lastIndexIncreasedBy:
+//  - `2` represents len(wholeText)-2
+//  - `0` represents start comparison from the end for both of the text.
 func IsEndsWith(
 	wholeText, endsWithSearch string,
 	startsAtLastIndex int,
