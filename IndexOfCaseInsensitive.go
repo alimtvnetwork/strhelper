@@ -30,7 +30,7 @@ func IndexOfCaseInsensitive(s, findingString *string, startAt int) int {
 			break
 		}
 
-		if IsStartsWithPtr(&strLower, &wordLower, i, true) {
+		if isStartsWithInternal(&strLower, &wordLower, i) {
 			return i
 		}
 	}

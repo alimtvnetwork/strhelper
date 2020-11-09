@@ -1,8 +1,16 @@
 package strhelper
 
-// startsAt = 0 meaning starts from last position, giving 2 meaning start index += 2
-// If EmptyString(constants.EmptyString) is given for search and if the startsAt less than the length of the wholeText then it returns true.
-// For performance use Ptr version
+// Results true for starts with.
+//
+// Returns true
+//
+//  - if wholeText starts with search text from the index mentioned at startsAt.
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - startsAt cannot be negative
+//
+// For better performance use `...Ptr` version of the method.
 func IsStartsWith(
 	wholeText, startsWith string,
 	startsAt int,

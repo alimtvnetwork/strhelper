@@ -8,7 +8,7 @@ func SubstringAtIndex(
 	startsAtIndex, endsAtIndex int,
 ) string {
 	if startsAtIndex < 0 {
-		message := "Substring Index cannot have negative startsAtIndex : " + string(startsAtIndex)
+		message := "Substring Index cannot have negative startsAtIndex : " + IntToString(startsAtIndex)
 
 		panic(message)
 	}

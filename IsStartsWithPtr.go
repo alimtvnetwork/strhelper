@@ -1,14 +1,18 @@
 package strhelper
 
 import (
-	"strings"
-
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
-// startsAt = 0 meaning starts from last position, giving 2 meaning start index += 2
-// If EmptyString(constants.EmptyString) is given for search and if the startsAt less than the length of the wholeText then it returns true.
-// Warning : If any of the searching strings are given nil then it will panic
+// Results true for starts with.
+//
+// Returns true
+//
+//  - if wholeText starts with search text from the index mentioned at startsAt.
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - startsAt cannot be negative
 func IsStartsWithPtr(
 	wholeText, startsWith *string,
 	startsAt int,
@@ -35,16 +39,16 @@ func IsStartsWithPtr(
 		return false
 	}
 
-	endingLength := startsAt + searchLength
-	substringFromText := (*wholeText)[startsAt:endingLength]
-
 	if isCaseSensitive {
-		return substringFromText == *startsWith
+		return isStartsWithInternal(
+			wholeText,
+			startsWith,
+			startsAt)
 	}
 
-	lowerCaseSubstring := strings.ToLower(substringFromText)
-	lowerCaseSearchText := strings.ToLower(*startsWith)
-
 	// insensitive
-	return lowerCaseSubstring == lowerCaseSearchText
+	return isStartsWithInsensitiveInternal(
+		wholeText,
+		startsWith,
+		startsAt)
 }

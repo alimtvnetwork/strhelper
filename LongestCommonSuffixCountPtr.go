@@ -50,15 +50,9 @@ func LongestCommonSuffixCountPtr(
 			bothLastIndexReduceBy)
 	}
 
-	incrementing := 0
-	for ; bothLastIndexReduceBy < lenA && bothLastIndexReduceBy < lenB; bothLastIndexReduceBy++ {
-		if (*a)[lenA-1-bothLastIndexReduceBy] != (*b)[lenB-1-bothLastIndexReduceBy] {
-			return incrementing
-		}
-
-		incrementing++
-	}
-
-	return incrementing
+	return longestCommonSuffixCount(
+		a,
+		b,
+		bothLastIndexReduceBy)
 }
 
