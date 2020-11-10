@@ -2,9 +2,11 @@ package strs
 
 import "gitlab.com/evatix-go/strhelper/constants"
 
-// Returns all indexes where the string is found
-// if empty lines given then returns nil
-// Invalid result can be nil
+// Returns all indexes where findingString is found.
+//
+// Results:
+//  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
+//  - If no indexes found returns nil.
 func IndexesOfAll(
 	lines *[]string,
 	findingString *string,

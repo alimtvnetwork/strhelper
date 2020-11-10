@@ -9,6 +9,7 @@ var (
 	newLineUnix    = NewLineUnix
 	newLine        = NewLine
 	tab            = Tab
+	commaSpace     = CommaSpace
 	TabPtr         = &tab
 	NewLinePtr     = &newLine
 	EmptyStringPtr = &emptyString
@@ -16,6 +17,7 @@ var (
 	HyphenPtr      = &hyphen
 	CommaPtr       = &comma
 	NewLineUnixPtr = &newLineUnix
+	CommaSpacePtr  = &commaSpace
 
 	// "|"
 	PipePtr = &pipe
