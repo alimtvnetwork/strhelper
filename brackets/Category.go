@@ -4,7 +4,7 @@ type Category byte
 
 const (
 	UnknownCategory Category = iota
-	Parenthesis     Category = iota
+	Parenthesis
 	Curly
 	Square
 )

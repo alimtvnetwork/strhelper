@@ -1,9 +1,8 @@
-package panichelper
+package strhelper
 
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper"
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
@@ -13,7 +12,7 @@ func Pad(
 	isLeft,
 	isRight bool,
 ) string {
-	if strhelper.IsBlankPtr(padding) {
+	if IsEmptyPtr(padding) {
 		// nothing to pad for
 		return *str
 	}
@@ -33,7 +32,7 @@ func Pad(
 }
 
 func PadLeft(str, padding *string, width int) string {
-	if strhelper.IsBlankPtr(padding) {
+	if IsEmptyPtr(padding) {
 		// nothing to pad for
 		return *str
 	}
@@ -44,7 +43,7 @@ func PadLeft(str, padding *string, width int) string {
 }
 
 func PadRight(str, padding *string, width int) string {
-	if strhelper.IsBlankPtr(padding) {
+	if IsEmptyPtr(padding) {
 		// nothing to pad for
 		return *str
 	}

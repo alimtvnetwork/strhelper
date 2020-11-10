@@ -1,10 +1,14 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/constants"
+)
 
 // Returns all indexes where findingString is found.
-// if empty content given then returns nil
-// Invalid result can be nil if any (content == nil || findingString == nil) then returns nil
+//
+// Results:
+//  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
+//  - If no indexes found returns nil.
 func IndexesOfAllPtr(
 	content *string,
 	findingString *string,
@@ -18,10 +22,16 @@ func IndexesOfAllPtr(
 	length := len(*content)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		startAtIndexFailed(startsAtIndex)
+		startAtIndexFailed(startsAtIndex, length)
+	}
+
+	if length > 0 && *findingString == "" {
+		return getAllIndexesFromTheStartIndexGiven(length, startsAtIndex)
 	}
 
 	indexes := make([]int, constants.Zero, length)
+
+	lastIndex := length - 1
 	foundIndex := IndexOfPtr(
 		content,
 		findingString,
@@ -33,6 +43,11 @@ func IndexesOfAllPtr(
 	}
 
 	for foundIndex > constants.InvalidNotFoundCase {
+		nextIndex := foundIndex + 1
+		if nextIndex > lastIndex {
+			break
+		}
+
 		foundIndex = IndexOfPtr(
 			content,
 			findingString,
@@ -42,6 +57,7 @@ func IndexesOfAllPtr(
 		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)
 		} else {
+			// not found at any, will not continue
 			break
 		}
 	}
@@ -51,4 +67,24 @@ func IndexesOfAllPtr(
 	}
 
 	return indexes
+}
+
+func getAllIndexesFromTheStartIndexGiven(
+	length int,
+	startsAtIndex int,
+) []int {
+	newArrayLength := length - startsAtIndex
+
+	if newArrayLength <= 0 {
+		return nil
+	}
+
+	finalIndexes := make([]int, newArrayLength)
+	index := 0
+	for ; startsAtIndex < newArrayLength; startsAtIndex++ {
+		finalIndexes[index] = startsAtIndex
+		index++
+	}
+
+	return finalIndexes
 }

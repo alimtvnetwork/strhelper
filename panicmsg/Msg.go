@@ -6,8 +6,7 @@ import (
 
 // Returns "Error : message reference ( variableName constants.SpaceColonSpace variableValue )"
 func Msg(message, variableName, variableValue string) string {
-	return errorStart +
-		message +
+	return message +
 		referenceStart +
 		variableName +
 		constants.SpaceColonSpace +

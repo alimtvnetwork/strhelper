@@ -20,8 +20,7 @@ func TSimpleValMsg(msg, variableName string, value interface{}) string {
 
 	typedVariableReference := TVar(typeName, variableName, printVal)
 
-	return errorStart +
-		msg +
+	return msg +
 		referenceStart +
 		typedVariableReference +
 		spaceParenthesisEnd
