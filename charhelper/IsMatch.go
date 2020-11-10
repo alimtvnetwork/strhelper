@@ -6,5 +6,5 @@ func IsMatch(char1 uint8, char2 uint8, isCaseSensitive bool) bool {
 	}
 
 	// Insensitive case
-	return IsMatchCaseInsensitive(char1, char2)
+	return ToLower(char1) == ToLower(char2)
 }

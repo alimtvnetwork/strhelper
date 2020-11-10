@@ -44,12 +44,8 @@ func IsEmpty(s string) bool {
 	return s == constants.EmptyString || len(s) == 0
 }
 
-func IsNullOrAscIIWhiteSpace(char *uint8) bool {
-	return char == nil || asciiSpace[*char] == 1
-}
-
-func IsUnicodeCharPtr(char *uint8) bool {
-	return char != nil && rune(*char) >= utf8.RuneSelf
+func IsAscIIWhiteSpace(char uint8) bool {
+	return asciiSpace[char] == 1
 }
 
 func IsUnicodeChar(char uint8) bool {
@@ -60,23 +56,24 @@ func IsUnicodeRune(char rune) bool {
 	return char >= utf8.RuneSelf
 }
 
-func IsCharNotWhitespace(char *uint8) bool {
-	return !IsNullOrAscIIWhiteSpace(char) && !unicode.IsSpace(rune(*char))
+func IsCharNotWhitespace(char uint8) bool {
+	return !(asciiSpace[char] == 1 || unicode.IsSpace(rune(char)))
 }
 
 // Warning : Panic if nil, expected to be check with nil for `s`
 func IsWhitespaceOnly(s *string) bool {
 	length := len(*s)
-
+	isEven := length % 2 == 0
 	mid := length / 2 // 5/2 should return 2
+	midLessThanOne := mid-1
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
 		char := (*s)[i]
-		if !IsNullOrAscIIWhiteSpace(&char) && !unicode.IsSpace(rune(char)) {
+		if !(asciiSpace[char] == 1 || unicode.IsSpace(rune(char))) {
 			return false
 		}
 
-		if i == mid {
+		if i == mid || (isEven && midLessThanOne == i) {
 			// already tested above and reached the end
 			break
 		}
@@ -84,7 +81,7 @@ func IsWhitespaceOnly(s *string) bool {
 		lastIndex = lastIndex - i
 		char = (*s)[lastIndex]
 
-		if !IsNullOrAscIIWhiteSpace(&char) && !unicode.IsSpace(rune(char)) {
+		if !(asciiSpace[char] == 1 || unicode.IsSpace(rune(char))) {
 			return false
 		}
 	}
