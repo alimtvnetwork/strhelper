@@ -6,10 +6,12 @@ import (
 
 type IndexesResultSet struct {
 	StringKeyAsIndexesMap *map[string][]int
-	indexAsKeysMap        *map[int]string
-	hasResult             bool
-	isEmptySet            bool
-	totalFound            *int
+	// represents the last index where search key is possible
+	LastIndexFound  int
+	indexAsKeysMap  *map[int]string
+	hasResult       bool
+	isEmptySet      bool
+	totalFound      *int
 	indexesKeyMutex sync.Mutex
 	sync.Mutex
 }
@@ -91,16 +93,21 @@ func (indexesResultSet IndexesResultSet) IsEmpty() bool {
 	return indexesResultSet.isEmptySet
 }
 
-func NewIndexesResultSet(indexesMap *map[string][]int, hasFoundAny bool) IndexesResultSet {
-	return IndexesResultSet{
+func NewIndexesResultSet(
+	indexesMap *map[string][]int,
+	hasFoundAny bool,
+	maxIndexWhereFound int,
+) *IndexesResultSet {
+	return &IndexesResultSet{
 		StringKeyAsIndexesMap: indexesMap,
+		LastIndexFound:        maxIndexWhereFound,
 		hasResult:             hasFoundAny,
 		isEmptySet:            !hasFoundAny,
 	}
 }
 
-func NewEmptyIndexesResultSet() IndexesResultSet {
-	return IndexesResultSet{
+func NewEmptyIndexesResultSet() *IndexesResultSet {
+	return &IndexesResultSet{
 		hasResult:  false,
 		isEmptySet: true,
 	}

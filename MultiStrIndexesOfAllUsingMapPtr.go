@@ -4,10 +4,58 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
+// Find all the indexes for all the finding strings given.
+//
+// limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+func MultiStrIndexesOfAllUsingSimpleArrayPtr(
+	content *string,
+	searchItems *[]string,
+	startsAt int,
+	limits int,
+	isCaseSensitive bool,
+) *strhelpercore.IndexesResultSet {
+	searchRequestsMap := createDefaultSearchRequestsMap(
+		searchItems,
+		startsAt,
+		limits,
+		isCaseSensitive)
+
+	return MultiStrIndexesOfAllUsingMapPtr(
+		content,
+		searchRequestsMap)
+}
+
+// Find all the indexes for all the finding strings given.
+//
+// searchMap:
+//   - Key : What to search for
+//   - Value : Where starts at, usually 0 for default start.
+// limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+func MultiStrIndexesOfAllUsingSimpleMapPtr(
+	content *string,
+	searchMap *map[string]int,
+	limits int,
+	isCaseSensitive bool,
+) *strhelpercore.IndexesResultSet {
+	searchRequestsMap := createSearchRequestsMap(
+		searchMap,
+		limits,
+		isCaseSensitive)
+
+	return MultiStrIndexesOfAllUsingMapPtr(
+		content,
+		searchRequestsMap)
+}
+
+// Find all the indexes for all the finding strings given.
 func MultiStrIndexesOfAllUsingMapPtr(
 	content *string,
 	searchRequestsMap *map[string]strhelpercore.SearchRequest,
-) strhelpercore.IndexesResultSet {
+) *strhelpercore.IndexesResultSet {
 	if content == nil || searchRequestsMap == nil {
 		return strhelpercore.NewEmptyIndexesResultSet()
 	}
@@ -19,24 +67,32 @@ func MultiStrIndexesOfAllUsingMapPtr(
 	}
 
 	indexesMap := make(map[string][]int, searchingItemsLength)
-	hasFoundAny := false
+	var hasFoundAny, isFound bool
+	var totalLength, maxIndexFound int
+	maxIndexFound = -1
 
 	for key, searchRequest := range *searchRequestsMap {
-		indexes := IndexesOfAllPtr(
+		indexes := IndexesOfAllUsingRequestPtr(
 			content,
-			&key,
-			searchRequest.StartsAt,
-			searchRequest.IsCaseSensitive)
+			&searchRequest)
 
-		if indexes != nil && len(indexes) > 0 {
+		totalLength = len(indexes)
+		isFound = indexes != nil && totalLength > 0
+
+		if isFound {
 			indexesMap[key] = indexes
 			hasFoundAny = true
 		} else {
 			indexesMap[key] = nil
 		}
+
+		if isFound && maxIndexFound < indexes[totalLength-1] {
+			maxIndexFound = indexes[totalLength-1]
+		}
 	}
 
 	return strhelpercore.NewIndexesResultSet(
 		&indexesMap,
-		hasFoundAny)
+		hasFoundAny,
+		maxIndexFound)
 }
