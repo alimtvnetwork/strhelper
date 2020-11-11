@@ -62,7 +62,7 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 
 // IsNullOrEmpty(s) || len(strings.TrimSpace(s)) == 0
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
-	return (*stringWrapper).IsNullOrEmpty() || len(strings.TrimSpace((*stringWrapper).Value())) == 0
+	return (*stringWrapper).IsNullOrEmpty() || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
 }
 
 func (stringWrapper *StringWrapper) TrimSpace() string {

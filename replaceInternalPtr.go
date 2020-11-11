@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-func replaceInternalPtr(request *strhelpercore.ReplaceRequest) string {
+func ReplaceUsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
 	if request.StartsAt == 0 && IsEmptyPtr(request.Text) && IsEmptyPtr(&request.Search) {
 		return request.ReplaceWith
 	}
@@ -34,7 +34,7 @@ func replaceInternalPtr(request *strhelpercore.ReplaceRequest) string {
 	replaceCount := len(foundIndexes)
 	isHowManyReplaceSet := (*request).HowManyReplace > -1
 
-	if !isHowManyReplaceSet || isHowManyReplaceSet && replaceCount > (*request).HowManyReplace {
+	if isHowManyReplaceSet && replaceCount > (*request).HowManyReplace {
 		replaceCount = request.HowManyReplace
 	}
 

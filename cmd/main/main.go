@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"unicode"
 
 	"gitlab.com/evatix-go/strhelper"
+	"gitlab.com/evatix-go/strhelper/charhelper"
+	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
 func main() {
@@ -30,13 +33,30 @@ func main() {
 	// fmt.Println(strhelper.ReplacePtr(&a2, &b, &replacedWith, 2,2, false)) // expects "x-REPLACED ALIM-hellophwihwcab"
 	fmt.Println(strhelper.ReplacePtr(&a2, &b, &replacedWith, 2,2, true)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
 
-	replaceMap := map[string]string{
-		"cab" : "-cabReplacer       V1-",
-		"wih" : "-wihReplacer       V1-",
-		"hello" : "-helloReplacer       V1-",
-	}
-
-	fmt.Println(strhelper.ReplaceMultiple(a2, replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
-	replaceMap[""] = "Hello"
-	fmt.Println(strhelper.ReplaceMultiple("", replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
+	// replaceMap := map[string]string{
+	// 	"cab" : "-cabReplacer       V1-",
+	// 	"wih" : "-wihReplacer       V1-",
+	// 	"hello" : "-helloReplacer       V1-",
+	// }
+	//
+	// fmt.Println(strhelper.ReplaceMultiple(a2, replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
+	// replaceMap[""] = "Hello"
+	// fmt.Println(strhelper.ReplaceMultiple("", replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
+	asciiWhitespacesArray := whitespace.GetAscIISpaceArray()
+	asciiWhitespacesArray['p'] = 1
+	asciiWhitespacesArray2 := whitespace.GetAscIISpaceArray()
+	fmt.Println((asciiWhitespacesArray2))
+	fmt.Println(charhelper.AscIIArrayToString(&asciiWhitespacesArray))
+	fmt.Println(strhelper.RemoveWhitespaces("                                                   Hello No Sapce               Alim                                  ", 0)) // expects "HelloNoSapceAlim"
+	fmt.Println(strhelper.RemoveWhitespaces("                                                   Hello No Sapce               Alim                                  ", 5)) // expects "     HelloNoSapceAlim"
+	fmt.Println(strhelper.RemoveNewLines("\r\n\f\n\r\f Hello\fNo\fSapce\fAlim\f", 0)) // expects " HelloNoSapceAlim"
+	fmt.Println(strhelper.RemoveNewLines("\r\n\f\n\r\f Hello\fNo\fSapce\fAlim\f", 2)) // expects "\r\n HelloNoSapceAlim"
+	fmt.Println(strhelper.Reverse("Hello World"))
+	fmt.Println(strhelper.Reverse("Hello Worldx"))
+	fmt.Println(strhelper.Reverse(""))
+	fmt.Println(charhelper.CountAscIIChars("   Hellop", &asciiWhitespacesArray,0, true ))
+	fmt.Println(unicode.MaxLatin1) // 255
+	fmt.Println(rune(("世界")[0])) // 228
+	fmt.Println([]rune("世界")[0]) // 19990
+	fmt.Println(0x85)
 }

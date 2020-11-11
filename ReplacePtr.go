@@ -1,6 +1,8 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import (
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
+)
 
 func ReplacePtr(
 	text, search,
@@ -20,5 +22,5 @@ func ReplacePtr(
 		},
 	}
 
-	return replaceInternalPtr(&request)
+	return ReplaceUsingReplaceRequest(&request)
 }

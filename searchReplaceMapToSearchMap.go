@@ -1,6 +1,8 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import (
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
+)
 
 func convertSearchReplaceMapToSearchMap(
 	searchReplaceMap *map[string]strhelpercore.ReplaceIndividualRequest,
