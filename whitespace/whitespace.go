@@ -166,7 +166,7 @@ func AllWhitespaceCount(s *string, startsAt int) int {
 	length := len(*s)
 
 	if startsAt < 0 || length-1 < startsAt {
-		panic("startsAt could be larger than length or less then 0.")
+		panic("startsAt cannot be larger than length or less then 0.")
 	}
 
 	spacesFound := 0
@@ -186,7 +186,7 @@ func AllWhitespaceCount(s *string, startsAt int) int {
 }
 
 // Returns the whitespace (excluding unicode whitespaces) counts
-func AllASCIIWhitespaceOnlyCount(s *string, startsAt int) int {
+func AllASCIIWhitespaceCount(s *string, startsAt int) int {
 	if s == nil || len(*s) == 0 {
 		return 0
 	}
@@ -194,7 +194,7 @@ func AllASCIIWhitespaceOnlyCount(s *string, startsAt int) int {
 	length := len(*s)
 
 	if startsAt < 0 || length-1 < startsAt {
-		panic("startsAt could be larger than length or less then 0.")
+		panic("startsAt cannot be larger than length or less then 0.")
 	}
 
 	spacesFound := 0
@@ -209,6 +209,75 @@ func AllASCIIWhitespaceOnlyCount(s *string, startsAt int) int {
 	return spacesFound
 }
 
+// Returns the whitespace (including unicode whitespaces) indexes
+//
+// Note: Since unicode is in the calculation, it requires str to be in ([]rune) format which requires more memory and cost.
+//
+// Returns nil if s is nil or empty
+func GetWhitespaceIndexes(s *string, startsAt int) *[]int {
+	if s == nil || len(*s) == 0 {
+		return nil
+	}
+
+	allRunes := []rune(*s)
+	length := len(allRunes)
+
+	if startsAt < 0 || length-1 < startsAt {
+		panic("startsA cannot be larger than length or less then 0.")
+	}
+
+	indexes := make([]int, 0, length/2)
+	hasFoundAny := false
+
+	var rune rune
+	for ; startsAt < length; startsAt++ {
+		rune = allRunes[startsAt]
+		if (rune <= MaxUnit8 && asciiSpace[rune] == 1) || (rune > MaxUnit8 && unicode.IsSpace(rune)) {
+			indexes = append(indexes, startsAt)
+			hasFoundAny = true
+		}
+	}
+
+	if !hasFoundAny {
+		return nil
+	}
+
+	return &indexes
+}
+
+// Returns the whitespace (excluding unicode whitespaces) indexes
+//
+// Returns nil if s is nil or empty
+func GetASCIIWhitespaceIndexes(s *string, startsAt int) *[]int {
+	if s == nil || len(*s) == 0 {
+		return nil
+	}
+
+	length := len(*s)
+
+	if startsAt < 0 || length-1 < startsAt {
+		panic("startsAt cannot be larger than length or less then 0.")
+	}
+
+	indexes := make([]int, 0, length/2)
+	hasFoundAny := false
+
+	var uin8 uint8
+	for ; startsAt < length; startsAt++ {
+		uin8 = (*s)[startsAt]
+		if asciiSpace[uin8] == 1 {
+			indexes = append(indexes, startsAt)
+			hasFoundAny = true
+		}
+	}
+
+	if !hasFoundAny {
+		return nil
+	}
+
+	return &indexes
+}
+
 func AllNewLinesCount(s *string, startsAt int) int {
 	if s == nil || len(*s) == 0 {
 		return 0
@@ -217,7 +286,7 @@ func AllNewLinesCount(s *string, startsAt int) int {
 	length := len(*s)
 
 	if startsAt < 0 || length-1 < startsAt {
-		panic("startsAt could be larger than length or less then 0.")
+		panic("startsAt cannot be larger than length or less then 0.")
 	}
 
 	newLineFound := 0
@@ -288,7 +357,7 @@ func IsBlankPtr(s *string) bool {
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaceOnly(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankASCII(s string) bool {
-	return  s == constants.EmptyString || len(s) == 0 || IsASCIIWhitespaceOnly(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsASCIIWhitespaceOnly(&s)
 }
 
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaceOnly(s)
