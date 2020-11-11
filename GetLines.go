@@ -1,0 +1,12 @@
+package strhelper
+
+import (
+	"strings"
+
+	"gitlab.com/evatix-go/strhelper/constants"
+)
+
+// Gets new line by os specific new line (For windows it is \r\n and for unix it is \n)
+func GetLines(content string) []string {
+	return strings.Split(content, constants.NewLine)
+}
