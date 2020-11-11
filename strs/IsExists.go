@@ -1,0 +1,8 @@
+package strs
+
+import "gitlab.com/evatix-go/strhelper/constants"
+
+// Returns true if the findingString present in the array, if array is empty or nil then returns false.
+func IsExists(lines *[]string, findingString *string, isCaseSensitive bool) bool {
+	return IndexOf(lines, findingString, 0, isCaseSensitive) > constants.InvalidNotFoundCase
+}
