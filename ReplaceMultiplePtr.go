@@ -1,6 +1,8 @@
 package strhelper
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import (
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
+)
 
 func ReplaceMultiple(
 	text string,

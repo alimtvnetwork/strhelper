@@ -52,3 +52,39 @@ func ToRuneArrayPtr(string *string) *[]rune {
 	return &val
 }
 
+// Creates new rune array of lowercase runes
+// if inputs == nil then returns nil
+func ToLowerRunes(inputs *[]rune) *[]rune {
+	if inputs == nil {
+		return nil
+	}
+
+	newRunes := make([]rune, len(*inputs))
+
+	for index, rune := range *inputs {
+		if rune >= constants.UpperCaseA && rune <= constants.UpperCaseZ {
+			// in upper, make lower
+			rune = rune + constants.LowerCase
+		}
+
+		newRunes[index] = rune
+	}
+
+	return &newRunes
+}
+
+// runes nil results false regardless
+// Or else returns true if searchingFor contains in runes
+func IsRunesContains(runes *[]rune, searchingFor rune) bool {
+	if runes == nil || len(*runes) == 0 {
+		return false
+	}
+
+	for _, currentRune := range *runes {
+		if currentRune == searchingFor {
+			return true
+		}
+	}
+
+	return false
+}
