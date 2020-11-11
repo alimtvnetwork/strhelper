@@ -6,6 +6,10 @@ import (
 
 // Returns all indexes where findingString is found.
 //
+// @limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+//
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
@@ -13,6 +17,7 @@ func IndexesOfAllPtr(
 	content *string,
 	findingString *string,
 	startsAtIndex int,
+	limits int,
 	isCaseSensitive bool,
 ) []int {
 	if content == nil || findingString == nil {
@@ -42,16 +47,18 @@ func IndexesOfAllPtr(
 		indexes = append(indexes, foundIndex)
 	}
 
+	var nextIndex int
+
 	for foundIndex > constants.InvalidNotFoundCase {
-		nextIndex := foundIndex + 1
-		if nextIndex > lastIndex {
+		nextIndex = foundIndex + 1
+		if nextIndex > lastIndex || (limits > -1 && len(indexes) >= limits) {
 			break
 		}
 
 		foundIndex = IndexOfPtr(
 			content,
 			findingString,
-			foundIndex+1,
+			nextIndex,
 			isCaseSensitive)
 
 		if foundIndex > constants.InvalidNotFoundCase {

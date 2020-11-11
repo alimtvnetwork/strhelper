@@ -51,7 +51,7 @@ func ReplaceMultipleUsingRequestPtr(
 	text *string,
 	searchReplaceMap *map[string]strhelpercore.ReplaceIndividualRequest,
 ) string {
-	request := replaceRequestMultiple{
+	request := strhelpercore.ReplaceRequestMultiple{
 		Text:             text,
 		SearchReplaceMap: searchReplaceMap,
 	}

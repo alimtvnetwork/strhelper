@@ -23,6 +23,7 @@ func ReplaceUsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
 		request.Text,
 		&request.Search,
 		request.StartsAt,
+		request.HowManyReplace,
 		(*request).IsCaseSensitive)
 
 	if foundIndexes == nil {

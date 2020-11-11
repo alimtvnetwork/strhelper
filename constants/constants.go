@@ -62,4 +62,7 @@ const (
 	CurlyEndSymbol                    = '}'
 	SquareStartSymbol                 = '['
 	SquareEndSymbol                   = ']'
+	ArbitraryCapacity5                 = 5
+	ArbitraryCapacity2                 = 2
+	ArbitraryCapacity1                 = 1
 )

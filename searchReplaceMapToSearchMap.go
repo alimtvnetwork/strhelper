@@ -13,7 +13,7 @@ func convertSearchReplaceMapToSearchMap(
 		newMap[key] = strhelpercore.SearchRequest{
 			Search:          replaceRequest.Search,
 			StartsAt:        replaceRequest.StartsAt,
-			HowManyReplace:  replaceRequest.HowManyReplace,
+			Limits:          replaceRequest.HowManyReplace,
 			IsCaseSensitive: replaceRequest.IsCaseSensitive,
 		}
 	}

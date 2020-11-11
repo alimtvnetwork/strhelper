@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-func replaceMultipleInternalPtr(request *replaceRequestMultiple) string {
+func replaceMultipleInternalPtr(request *strhelpercore.ReplaceRequestMultiple) string {
 	if len(*request.SearchReplaceMap) == 0 {
 		return *request.Text
 	}
@@ -46,7 +46,7 @@ func replaceMultipleInternalPtr(request *replaceRequestMultiple) string {
 }
 
 func getCompiledReplaceMultiple(
-	request *replaceRequestMultiple,
+	request *strhelpercore.ReplaceRequestMultiple,
 	textLength int,
 	changeInLengthNewString int,
 	indexesAsKeyMap *map[int]string,
@@ -79,9 +79,12 @@ func getCompiledReplaceMultiple(
 	return string(chars)
 }
 
+// Updates replace count on indexesResultSet,
+//
+// and returns the final length for the new replaced text.
 func getChangeInNewLengthAndReplaceCountUpdate(
-	request *replaceRequestMultiple,
-	indexesResultSet strhelpercore.IndexesResultSet,
+	request *strhelpercore.ReplaceRequestMultiple,
+	indexesResultSet *strhelpercore.IndexesResultSet,
 ) int {
 	changeInLengthNewString := 0
 
@@ -97,7 +100,7 @@ func getChangeInNewLengthAndReplaceCountUpdate(
 	return changeInLengthNewString
 }
 
-func emptyReplaceResultUsingRequestMultiple(request *replaceRequestMultiple) string {
+func emptyReplaceResultUsingRequestMultiple(request *strhelpercore.ReplaceRequestMultiple) string {
 	result, hasAny := (*request.SearchReplaceMap)[*request.Text]
 
 	if hasAny {
