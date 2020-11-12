@@ -17,7 +17,7 @@ func ReversePtr(chars *[]uint8) *[]uint8 {
 		newChars[i], newChars[lastIndex-i] = (*chars)[lastIndex-i], (*chars)[i]
 	}
 
-	if length % 2 == 0 {
+	if length%2 == 0 {
 		newChars[mid] = (*chars)[mid]
 	}
 

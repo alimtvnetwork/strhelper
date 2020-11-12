@@ -9,4 +9,3 @@ func ToCharsPtr(str *string) *[]uint8 {
 
 	return &newChars
 }
-

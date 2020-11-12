@@ -55,4 +55,3 @@ func LongestCommonSuffixCountPtr(
 		b,
 		bothLastIndexReduceBy)
 }
-

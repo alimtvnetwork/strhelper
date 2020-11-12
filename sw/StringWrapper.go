@@ -10,7 +10,6 @@ import (
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/3
 type StringWrapper string
 
 func (stringWrapper *StringWrapper) Value() string {
@@ -18,7 +17,7 @@ func (stringWrapper *StringWrapper) Value() string {
 }
 
 func (stringWrapper *StringWrapper) ValuePtr() *string {
-	value := stringWrapper.Value()
+	value := string(*stringWrapper)
 
 	return &value
 }
@@ -27,6 +26,7 @@ func (stringWrapper *StringWrapper) Length() int {
 	return len(stringWrapper.Value())
 }
 
+// Too slow, if you want IsEmptySpace use isEmptyOrWhitespace.
 func (stringWrapper *StringWrapper) LengthWithoutWhitespaces() int {
 	return len(strings.TrimSpace(stringWrapper.Value()))
 }
@@ -42,7 +42,8 @@ func (stringWrapper *StringWrapper) IsEquals(s string, isCaseSensitive bool) boo
 	return lower == stringWrapper.ToLower()
 }
 
-func (stringWrapper *StringWrapper) IsEqualsPtr(s *string) bool {
+// Returns true based on text compare case sensitive.
+func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 	if s == nil {
 		return false
 	}
@@ -60,7 +61,7 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 	return (*stringWrapper).IsEmpty()
 }
 
-// IsNullOrEmpty(s) || len(strings.TrimSpace(s)) == 0
+// IsNullOrEmpty(s) || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
 	return (*stringWrapper).IsNullOrEmpty() || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
 }
@@ -86,14 +87,49 @@ func (stringWrapper *StringWrapper) ToUInt8s() []uint8 {
 	return []uint8(stringWrapper.Value())
 }
 
+// get uint8 array ptr
+func (stringWrapper *StringWrapper) ToUInt8sPtr() *[]uint8 {
+	values := []uint8(stringWrapper.Value())
+
+	return &values
+}
+
 // get bytes array
 func (stringWrapper *StringWrapper) ToBytes() []byte {
 	return []byte(stringWrapper.Value())
 }
 
+// get bytes array ptr
+func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
+	values := []byte(stringWrapper.Value())
+
+	return &values
+}
+
 // get rune array
 func (stringWrapper *StringWrapper) ToRunes() []rune {
 	return []rune(stringWrapper.Value())
+}
+
+// get rune array ptr
+func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
+	runes := []rune(stringWrapper.Value())
+
+	return &runes
+}
+
+// get lowercase rune array ptr
+func (stringWrapper *StringWrapper) ToLowerRunesPtr() *[]rune {
+	runes := []rune(stringWrapper.ToLower())
+
+	return &runes
+}
+
+// get uppercase rune array ptr
+func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
+	runes := []rune(stringWrapper.ToUpper())
+
+	return &runes
 }
 
 // returns true if IsNullOrWhitespace(s)
@@ -144,8 +180,9 @@ func (stringWrapper *StringWrapper) String() string {
 	return string(*stringWrapper)
 }
 
-// returns -1 if the index is not present in strings length.
+// returns -1 if the index is not present in strings lengthInBytes.
 // or else returns the character value from that index
+// performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 	if !stringWrapper.HasIndex(index) {
 		return constants.InvalidNotFoundCase
@@ -172,18 +209,47 @@ func (stringWrapper *StringWrapper) HasIndex(index int) bool {
 	return (*stringWrapper).Length()-1 >= index
 }
 
+// Returns a new string builder contains text of stringWrapper and has a
+// growth = stringWrapper.lengthInBytes + additionalGrowLength
 func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Builder {
 	builder := strings.Builder{}
-	length := stringWrapper.Length() + additionalGrowLength
+	currentString := stringWrapper.Value()
+	length := len(currentString) + additionalGrowLength
 	builder.Grow(length)
+	builder.WriteString(currentString)
+	return builder
+}
+
+// returns -1 if the index is not present in strings lengthInBytes.
+// or else returns the character value from that index
+// performance should be very slow, use direct access of str.
+func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
+	if !stringWrapper.HasIndex(index) {
+		return constants.InvalidNotFoundCase
+	}
+
+	return stringWrapper.ToRunes()[index]
+}
+
+// Returns a new string builder contains text of stringWrapper + str and has a
+// growth = stringWrapper.lengthInBytes + additionalGrowLength + len(str)
+func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLength int) strings.Builder {
+	builder := strings.Builder{}
+	currentString := stringWrapper.Value()
+	length := len(currentString) + len(*str) + additionalGrowLength
+	builder.Grow(length)
+	builder.WriteString(currentString)
+	builder.WriteString(*str)
 
 	return builder
 }
 
+// Better to use slice or builder for appending lines in a loop.
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) StringWrapper {
 	return stringWrapper.concat(constants.NewLine, isSkipOnEmpty, &contents)
 }
 
+// Better to use slice or builder for appending or concatenating lines in a loop.
 func (stringWrapper *StringWrapper) Concat(contents ...string) StringWrapper {
 	return stringWrapper.concat(
 		constants.EmptyString,
@@ -191,8 +257,29 @@ func (stringWrapper *StringWrapper) Concat(contents ...string) StringWrapper {
 		&contents)
 }
 
+// Better to use slice or builder for appending lines.
+func (stringWrapper *StringWrapper) ConcatWrappers(
+	separator string,
+	isSkipOnEmpty bool,
+	stringWrappers ...StringWrapper,
+) StringWrapper {
+	strArray := make([]string, len(stringWrappers))
+
+	for i, wrapper := range stringWrappers {
+		strArray[i] = wrapper.Value()
+	}
+
+	return stringWrapper.concat(
+		separator,
+		isSkipOnEmpty,
+		&strArray)
+}
+
+// Better to use slice or builder for appending lines.
 func (stringWrapper *StringWrapper) ConcatWithSeparator(
-	separator string, isSkipOnEmpty bool, contents ...string,
+	separator string,
+	isSkipOnEmpty bool,
+	contents ...string,
 ) StringWrapper {
 	return stringWrapper.concat(
 		separator,
@@ -201,7 +288,11 @@ func (stringWrapper *StringWrapper) ConcatWithSeparator(
 }
 
 // combine current wrapper strings + all given ones with given separator and returns as wrapper
-func (stringWrapper *StringWrapper) concat(separator string, isSkipOnEmpty bool, contents *[]string) StringWrapper {
+func (stringWrapper *StringWrapper) concat(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]string,
+) StringWrapper {
 	combinedResult := concat.StringsArrayWithSeparator(
 		stringWrapper.ValuePtr(),
 		&separator,
@@ -218,36 +309,94 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) StringWrapper {
-	panic("Not Implemented")
+	replacedText := strhelper.ReplacePtr(
+		stringWrapper.ValuePtr(),
+		searchingWrapper.ValuePtr(),
+		replacingWrapper.ValuePtr(),
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
+
+	return StringWrapper(replacedText)
 }
 
+// For better performance use Ptr version.
 func (stringWrapper *StringWrapper) Replace(
 	search,
-	newText string,
+	replaceText string,
 	isCaseSensitive bool,
 	startsAt int,
 	replaceCount int,
 ) string {
-	panic("Not Implemented")
+	return strhelper.ReplacePtr(
+		stringWrapper.ValuePtr(),
+		&search,
+		&replaceText,
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) ReplacePtr(
+	search,
+	replaceText *string,
+	startsAt int,
+	replaceCount int,
+	isCaseSensitive bool,
+) string {
+	return strhelper.ReplacePtr(
+		stringWrapper.ValuePtr(),
+		search,
+		replaceText,
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
 }
 
 func (stringWrapper *StringWrapper) ReplaceAll(
 	search,
-	newText string,
+	replaceText string,
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	panic("Not Implemented")
+	return strhelper.ReplacePtr(
+		stringWrapper.ValuePtr(),
+		&search,
+		&replaceText,
+		startsAt,
+		-1,
+		isCaseSensitive,
+	)
 }
 
 func (stringWrapper *StringWrapper) LastIndexOf(
 	search string,
+	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
-	startsLastIndexAt int,
 ) int {
-	panic("Not Implemented")
+	return strhelper.LastIndexOfPtr(
+		stringWrapper.ValuePtr(),
+		&search,
+		lastStartIndexReducedBy,
+		isCaseSensitive)
 }
 
+func (stringWrapper *StringWrapper) LastIndexOfPtr(
+	search *string,
+	lastStartIndexReducedBy int,
+	isCaseSensitive bool,
+) int {
+	return strhelper.LastIndexOfPtr(
+		stringWrapper.ValuePtr(),
+		search,
+		lastStartIndexReducedBy,
+		isCaseSensitive)
+}
+
+// For better performance use strhelper.IsStartsWithPtr
 func (stringWrapper *StringWrapper) IsStartsWith(
 	search string,
 	isCaseSensitive bool,
@@ -260,68 +409,48 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 		isCaseSensitive)
 }
 
+// Use direct strhelper.IsEndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	// TODO : Move to pointer implementation later
-	return strhelper.IsEndsWith(
-		stringWrapper.Value(),
+	return strhelper.IsEndsWithPtr(
+		stringWrapper.ValuePtr(),
+		&endsWith,
+		startsAt,
+		isCaseSensitive)
+}
+
+// Use direct strhelper.IsEndsWithPtr will be faster
+func (stringWrapper *StringWrapper) IsEndsWithPtr(
+	endsWith *string,
+	isCaseSensitive bool,
+	startsAt int,
+) bool {
+	return strhelper.IsEndsWithPtr(
+		stringWrapper.ValuePtr(),
 		endsWith,
 		startsAt,
 		isCaseSensitive)
 }
 
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/5
 func (stringWrapper *StringWrapper) PadLeftWithSpace(width int) string {
-	panic("Not Implemented : https://gitlab.com/evatix-go/strhelper/-/issues/5")
+	return strhelper.PadSpaceLeft(stringWrapper.ValuePtr(), width)
 }
 
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/5
 func (stringWrapper *StringWrapper) PadRightWithSpace(width int) string {
-	panic("Not Implemented : https://gitlab.com/evatix-go/strhelper/-/issues/5")
+	return strhelper.PadSpaceRight(stringWrapper.ValuePtr(), width)
 }
 
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/5
-func (stringWrapper *StringWrapper) PadLeft(width int, char uint8) string {
-	panic("Not Implemented : https://gitlab.com/evatix-go/strhelper/-/issues/5")
+func (stringWrapper *StringWrapper) PadLeft(width int, padding string) string {
+	return strhelper.PadLeft(stringWrapper.ValuePtr(), &padding, width)
 }
 
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/5
-func (stringWrapper *StringWrapper) PadRight(width int, char uint8) string {
-	panic("Not Implemented : https://gitlab.com/evatix-go/strhelper/-/issues/5")
+func (stringWrapper *StringWrapper) PadRight(width int, padding string) string {
+	return strhelper.PadRight(stringWrapper.ValuePtr(), &padding, width)
 }
 
-// Code Copied from Reference: https://bit.ly/35ZGJHc
-// Has Longest common suffix, returns -1 if doesn't found.
-// If any is nil or has "" empty string then it return -1
-// TODO : https://gitlab.com/evatix-go/strhelper/-/issues/2
-func (stringWrapper *StringWrapper) IndexOfLongestCommonSuffix(
-	b string,
-	startsAt int,
-	isCaseSensitive bool,
-) int {
-	panic("Not implemented : https://gitlab.com/evatix-go/strhelper/-/issues/2")
-
-	bWrapper := StringWrapper(b)
-	if stringWrapper.IsNullOrEmpty() || bWrapper.IsNullOrEmpty() {
-		return constants.InvalidNotFoundCase
-	}
-
-	lenA := stringWrapper.Length()
-	lenB := bWrapper.Length()
-
-	if !isCaseSensitive {
-		// both needs to be in same case
-	}
-
-	i := startsAt
-	for ; i < lenA && i < lenB; i++ {
-		if stringWrapper.At(lenA-1-i) != b[lenB-1-i] {
-			return i
-		}
-	}
-
-	return i
+func (stringWrapper *StringWrapper) Pad(width int, padding string, isLeft, isRight bool) string {
+	return strhelper.Pad(stringWrapper.ValuePtr(), &padding, width, isLeft, isRight)
 }

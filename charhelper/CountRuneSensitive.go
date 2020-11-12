@@ -13,7 +13,7 @@ func CountRuneSensitive(
 	}
 
 	runes := []rune(*str)
-	length= len(runes)
+	length = len(runes)
 
 	for ; at < length; at++ {
 		if runes[at] == r {

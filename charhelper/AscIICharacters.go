@@ -45,7 +45,7 @@ func (ascIICharacters *AscIICharacters) IsAnyExists(chars ...uint8) bool {
 	return false
 }
 
-func (ascIICharacters *AscIICharacters) IsAllCharsExistInStrings(strings ... *string) bool {
+func (ascIICharacters *AscIICharacters) IsAllCharsExistInStrings(strings ...*string) bool {
 	for _, str := range strings {
 		for i, _ := range *str {
 			char := (*str)[i]

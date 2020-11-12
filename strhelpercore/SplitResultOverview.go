@@ -8,7 +8,7 @@ type SplitResultOverview struct {
 	IsEmptyResult        bool
 }
 
-func (splitResultOverview *SplitResultOverview) ToSimpleArray(ptrStrArray *[]*string) *[]string{
+func (splitResultOverview *SplitResultOverview) ToSimpleArray(ptrStrArray *[]*string) *[]string {
 	return convertPtrStringArrayToStringArray(ptrStrArray)
 }
 

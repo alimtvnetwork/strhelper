@@ -41,4 +41,3 @@ func ReverseRuneInPlacePtr(runesIn *[]rune) *[]rune {
 
 	return runesIn
 }
-

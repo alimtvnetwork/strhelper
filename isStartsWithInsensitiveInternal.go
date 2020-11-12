@@ -18,7 +18,8 @@ import "strings"
 func isStartsWithInsensitiveInternal(
 	wholeText *string,
 	startsWith *string,
-	startsAt int) bool {
+	startsAt int,
+) bool {
 	lenA := len(*wholeText)
 	lenB := len(*startsWith)
 

@@ -88,3 +88,11 @@ func IsRunesContains(runes *[]rune, searchingFor rune) bool {
 
 	return false
 }
+
+func GetSafeRunesIndexAtBy(runes *[]rune, index int) rune {
+	if !(len(*runes)-1 >= index) {
+		return constants.InvalidNotFoundCase
+	}
+
+	return (*runes)[index]
+}

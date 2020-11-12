@@ -49,7 +49,7 @@ func IndexesOfAllUsingRequestPtr(
 
 	request2 := strhelpercore.SearchRequest{
 		Search:          request.Search,
-		StartsAt:        foundIndex+1,
+		StartsAt:        foundIndex + 1,
 		Limits:          request.Limits,
 		IsCaseSensitive: request.IsCaseSensitive,
 	}

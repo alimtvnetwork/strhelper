@@ -8,4 +8,3 @@ import (
 func Var(variableName, value string) string {
 	return variableName + constants.SpaceColonSpace + value
 }
-
