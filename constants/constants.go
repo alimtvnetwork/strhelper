@@ -65,4 +65,36 @@ const (
 	ArbitraryCapacity5                = 5
 	ArbitraryCapacity2                = 2
 	ArbitraryCapacity1                = 1
+	LineFeedUnix                      = '\n'
+	CarriageReturn                    = '\r'
+	FormFeed                          = '\f'
+	One                               = 1
+	SpaceByte                         = ' '
+	TabByte                           = '\t'
+	LineFeedUnixByte                  = '\n'
+	CarriageReturnByte                = '\r'
+	FormFeedByte                      = '\f'
+	TabVByte                          = '\v'
+	MaxUnit8                          = 255
+)
+
+var (
+	// Copied from golang strings
+	ASCIISpace = [256]uint8{
+		TabByte:            One,
+		LineFeedUnixByte:   One,
+		TabVByte:           One,
+		FormFeedByte:       One,
+		CarriageReturnByte: One,
+		SpaceByte:          One,
+		0x85:               One, // reference : https://bit.ly/2JWdIoj
+		0xA0:               One, // reference : https://bit.ly/2JWdIoj
+	}
+
+	// FormFeed \f is also marked as newline here.
+	ASCIINewLinesCharArray = [256]uint8{
+		LineFeedUnix:   One,
+		FormFeed:       One,
+		CarriageReturn: One,
+	}
 )

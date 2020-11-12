@@ -1,9 +1,11 @@
 package strs
 
 import (
+	"encoding/json"
 	"fmt"
 
 	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
 func IntToString(number int) string {
@@ -54,4 +56,25 @@ func AnyToString(any interface{}) string {
 	}
 
 	return fmt.Sprintf(constants.SprintValueFormat, any)
+}
+
+func AnyToJsonStrWithErrorPtr(any *interface{}) *strhelpercore.StringWithError {
+	jsonBytes, error := json.Marshal(any)
+
+	if error != nil {
+		return strhelpercore.NewStringWithErrorOnlyError(&error)
+	}
+
+	jsonStr := string(jsonBytes)
+
+	return strhelpercore.NewStringWithNoError(&jsonStr)
+}
+
+// if nil then empty string.
+func AnyToJson(any interface{}) string {
+	jsonResult := AnyToJsonStrWithErrorPtr(&any)
+
+	jsonResult.HasError()
+
+	return *jsonResult.Value()
 }

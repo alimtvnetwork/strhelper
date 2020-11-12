@@ -13,41 +13,14 @@ import (
 // - https://en.wikipedia.org/wiki/Regular_expression#Character_classes
 
 const (
-	Space             = ' '
-	Tab               = '\t'
-	LineFeedUnix      = '\n'
-	CarriageReturn    = '\r'
-	FormFeed          = '\f'
-	TabV              = '\v'
-	LineFeedStr       = constants.NewLine
-	LineFeedUnixStr   = string(LineFeedUnix)
-	SpaceStr          = string(Space)
-	TabStr            = string(Tab)
-	CarriageReturnStr = string(CarriageReturn)
-	FormFeedStr       = string(FormFeed)
-	TabVStr           = string(TabV)
-	MaxUnit8          = 255
-	one               = 1
+	MaxUnit8 = 255
 )
 
 // Copied from golang strings
-var asciiSpace = [256]uint8{
-	Tab:            one,
-	LineFeedUnix:   one,
-	TabV:           one,
-	FormFeed:       one,
-	CarriageReturn: one,
-	Space:          one,
-	0x85:           one, // reference : https://bit.ly/2JWdIoj
-	0xA0:           one, // reference : https://bit.ly/2JWdIoj
-}
+var asciiSpace = constants.ASCIISpace
 
 // FormFeed \f is also marked as newline here.
-var asciiNewLinesCharArray = [256]uint8{
-	LineFeedUnix:   one,
-	FormFeed:       one,
-	CarriageReturn: one,
-}
+var asciiNewLinesCharArray = constants.ASCIINewLinesCharArray
 
 func GetAscIISpaceArray() [256]uint8 {
 	return asciiSpace
@@ -75,6 +48,15 @@ func IsCharNotWhitespace(char uint8) bool {
 	return !(asciiSpace[char] == 1 || unicode.IsSpace(rune(char)))
 }
 
+
+const (
+	maxUnit8                          = 255
+)
+
+var (
+	asciiSpaces = constants.ASCIISpace
+)
+
 // Returns true for ASCII spaces only. Returns false for unicode whitespaces.
 //
 // If there is any unicode space it will count as character and return false.
@@ -86,7 +68,7 @@ func IsCharNotWhitespace(char uint8) bool {
 //
 // References:
 //  - https://stackoverflow.com/a/15020162
-func IsASCIIWhitespaceOnly(s *string) bool {
+func IsASCIIWhitespaces(s *string) bool {
 	length := len(*s)
 	isEven := length%2 == 0
 	mid := length / 2 // 5/2 should return 2
@@ -94,7 +76,7 @@ func IsASCIIWhitespaceOnly(s *string) bool {
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
 		char := (*s)[i]
-		if !(asciiSpace[char] == 1) {
+		if !(asciiSpaces[char] == 1) {
 			return false
 		}
 
@@ -106,7 +88,7 @@ func IsASCIIWhitespaceOnly(s *string) bool {
 		lastIndex = lastIndex - i
 		char = (*s)[lastIndex]
 
-		if !(asciiSpace[char] == 1) {
+		if !(asciiSpaces[char] == 1) {
 			return false
 		}
 	}
@@ -125,7 +107,7 @@ func IsASCIIWhitespaceOnly(s *string) bool {
 //
 // References:
 //  - https://stackoverflow.com/a/15020162
-func IsWhitespaceOnly(s *string) bool {
+func IsWhitespaces(s *string) bool {
 	runes := []rune(*s)
 	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)
 	length := len(runes)
@@ -135,7 +117,7 @@ func IsWhitespaceOnly(s *string) bool {
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
 		rune := runes[i]
-		if !((rune <= MaxUnit8 && asciiSpace[rune] == 1) || (rune > MaxUnit8 && unicode.IsSpace(rune))) {
+		if !((rune <= maxUnit8 && asciiSpaces[rune] == 1) || (rune > maxUnit8 && unicode.IsSpace(rune))) {
 			return false
 		}
 
@@ -147,7 +129,7 @@ func IsWhitespaceOnly(s *string) bool {
 		lastIndex = lastIndex - i
 		rune = runes[lastIndex]
 
-		if !((rune <= MaxUnit8 && asciiSpace[rune] == 1) || (rune > MaxUnit8 && unicode.IsSpace(rune))) {
+		if !((rune <= maxUnit8 && asciiSpaces[rune] == 1) || (rune > maxUnit8 && unicode.IsSpace(rune))) {
 			return false
 		}
 	}
@@ -304,9 +286,9 @@ func AllNewLinesCount(s *string, startsAt int) int {
 	return newLineFound
 }
 
-// IsEmpty(s) || IsWhitespaceOnly(&s)
+// IsEmpty(s) || IsWhitespaces(&s)
 func IsNullOrWhitespace(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsWhitespaceOnly(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(&s)
 }
 
 // Has at least one character any, returns true even if a whitespace
@@ -339,31 +321,31 @@ func IsDefinedWithCharsWithoutWhitespacesPtr(s *string) bool {
 	return !(s == nil || *s == constants.EmptyString || len(*s) == 0 || IsNullOrWhitespacePtr(s))
 }
 
-// s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaceOnly(s)
+// s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsNullOrWhitespacePtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaceOnly(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 }
 
 // returns true if IsNullOrWhitespace(s)
 func IsBlank(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsWhitespaceOnly(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(&s)
 }
 
-// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaceOnly(s)
+// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsBlankPtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaceOnly(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 }
 
-// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaceOnly(s)
+// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankASCII(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsASCIIWhitespaceOnly(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsASCIIWhitespaces(&s)
 }
 
-// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaceOnly(s)
+// returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankASCIIPtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaceOnly(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsASCIIWhitespaces(s)
 }
 
 // returns true if Any of the strings is blanks thus empty or whitespace or nil

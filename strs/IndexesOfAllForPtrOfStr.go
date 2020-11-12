@@ -15,14 +15,14 @@ import (
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
-func IndexesOfAll(
-	lines *[]string,
+func IndexesOfAllForPtrOfStr(
+	lines *[]*string,
 	findingString *string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
 ) []int {
-	if IsEmpty(lines) || findingString == nil {
+	if IsEmptyPtrStr(lines) || findingString == nil {
 		return nil
 	}
 
@@ -32,19 +32,20 @@ func IndexesOfAll(
 		startAtIndexFailed(startsAtIndex, length)
 	}
 
-	// https://play.golang.org/p/DQ9GpqrfDRl
+	// https://play.golang.org/p/LjzQDne39kA
+	// https://play.golang.org/p/5-CdPj_uwkD
 	sendingLines := lines
 	sendingSearchTerm := findingString
 
 	if isCaseSensitive == false {
 		// insensitive
-		sendingLines = ToLowerStrings(lines)
+		sendingLines = ToLowerPtrStrings(lines)
 		searchTermLowerCase := strings.ToLower(*findingString)
 		sendingSearchTerm = &searchTermLowerCase
 	}
 
 	indexes := make([]int, constants.Zero, length)
-	foundIndex := IndexOf(
+	foundIndex := IndexOfPtrStr(
 		sendingLines,
 		sendingSearchTerm,
 		startsAtIndex,
@@ -64,7 +65,7 @@ func IndexesOfAll(
 		}
 
 		indexes = append(indexes, foundIndex)
-		foundIndex = IndexOf(
+		foundIndex = IndexOfPtrStr(
 			sendingLines,
 			sendingSearchTerm,
 			nextIndex,
@@ -83,3 +84,4 @@ func IndexesOfAll(
 
 	return indexes
 }
+
