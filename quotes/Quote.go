@@ -3,7 +3,7 @@ package quotes
 type Quote uint8
 
 const (
-	UnknownQuote       = iota
+	UnknownQuote Quote = iota
 	Double       Quote = '"'
 	Single       Quote = '\''
 )
