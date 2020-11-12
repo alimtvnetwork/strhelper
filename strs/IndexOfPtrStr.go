@@ -3,13 +3,13 @@ package strs
 import "gitlab.com/evatix-go/strhelper/constants"
 
 // Returns the index where the string first found, rest don't care
-func IndexOf(
-	lines *[]string,
+func IndexOfPtrStr(
+	lines *[]*string,
 	findingString *string,
 	startsAtIndex int,
 	isCaseSensitive bool,
 ) int {
-	if IsEmpty(lines) || findingString == nil {
+	if IsEmptyPtrStr(lines) || findingString == nil {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -21,12 +21,15 @@ func IndexOf(
 
 	if !isCaseSensitive {
 		// insensitive
-		return indexOfForCaseInsensitiveInternal(lines, findingString, startsAtIndex)
+		return indexOfPtrStrForCaseInsensitiveInternal(
+			lines,
+			findingString,
+			startsAtIndex)
 	}
 
-	for i := startsAtIndex; i < length; i++ {
-		if (*lines)[i] == *findingString {
-			return i
+	for ; startsAtIndex < length; startsAtIndex++ {
+		if *(*lines)[startsAtIndex] == *findingString {
+			return startsAtIndex
 		}
 	}
 

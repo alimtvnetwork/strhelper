@@ -187,7 +187,7 @@ func (stringWrapperPtr *StringWrapperPtr) IsNullOrEmpty() bool {
 		value := stringWrapperPtr.content
 		isEmptyOrNull := value == nil || *value == constants.EmptyString || (*stringWrapperPtr).lengthInBytes == 0
 		stringWrapperPtr.isNullOrEmpty = &isEmptyOrNull
-		isEmptyOrWhitespace := isEmptyOrNull || whitespace.IsWhitespaceOnly(value)
+		isEmptyOrWhitespace := isEmptyOrNull || whitespace.IsWhitespaces(value)
 		(*stringWrapperPtr).isEmptyOrWhitespace = &isEmptyOrWhitespace
 	}
 

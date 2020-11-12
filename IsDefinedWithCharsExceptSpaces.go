@@ -7,5 +7,5 @@ import (
 
 // Has at least one character other than space or whitespace
 func IsDefinedWithCharsExceptSpaces(s string) bool {
-	return !(s == constants.EmptyString || len(s) == 0 || whitespace.IsWhitespaceOnly(&s))
+	return !(s == constants.EmptyString || len(s) == 0 || whitespace.IsWhitespaces(&s))
 }

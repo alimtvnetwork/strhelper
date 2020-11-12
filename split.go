@@ -126,7 +126,7 @@ func MultipleSplitsPtr(
 		isIndexExist = isIndexExist && lastIndexOfSplit <= splitStartsAt
 		if isIndexExist {
 			word := (*str)[lastIndexOfSplit:splitStartsAt]
-			isEmptyWord = word == "" || whitespace.IsASCIIWhitespaceOnly(&word)
+			isEmptyWord = word == "" || whitespace.IsASCIIWhitespaces(&word)
 
 			splitResult := strhelpercore.SplitResult{
 				SplitPrev: &word,

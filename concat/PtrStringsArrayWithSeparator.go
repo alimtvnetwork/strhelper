@@ -23,7 +23,7 @@ func PtrStringsArrayWithSeparator(
 		return combinedContents
 	}
 
-	if combinedContents != constants.EmptyString && !whitespace.IsWhitespaceOnly(&combinedContents) {
+	if combinedContents != constants.EmptyString && !whitespace.IsWhitespaces(&combinedContents) {
 		combinedContents = *separator + combinedContents
 	}
 
