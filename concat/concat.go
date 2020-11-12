@@ -79,7 +79,7 @@ func AnyArrayOfInterfaces(
 
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
-	} else {
+	} else if isSkipEmptyOrNil == false {
 		newLines = append(newLines, constants.NilString)
 	}
 
@@ -111,7 +111,7 @@ func AnyArrayOfInterfacesUsingFunc(
 
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
-	} else {
+	} else if isSkipEmptyOrNil == false {
 		newLines = append(newLines, constants.NilString)
 	}
 

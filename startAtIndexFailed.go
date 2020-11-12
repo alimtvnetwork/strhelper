@@ -15,7 +15,7 @@ func startAtIndexFailed(startsAtIndex, contentLength int) {
 		},
 		panicmsg.ReferenceValue{
 			VariableName: "contentLastIndex",
-			Value:        contentLength-1,
+			Value:        contentLength - 1,
 		})
 
 	panic(message)

@@ -5,4 +5,3 @@ package panicmsg
 func TShouldBeLess(variableName string, numberValue interface{}) string {
 	return TSimpleValMsg(ShouldBeLessThanMessage, variableName, numberValue)
 }
-

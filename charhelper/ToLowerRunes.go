@@ -2,8 +2,10 @@ package charhelper
 
 import "gitlab.com/evatix-go/strhelper/constants"
 
-// Creates new rune array of lowercase runes
-// if inputs == nil then returns nil
+// Returns lower case runes by creating new runes. (Don't modify in place, thus requires more memory consumption)
+//
+// Invalid case (returns nil)
+//  - if inputs == nil
 func ToLowerRunes(inputs *[]rune) *[]rune {
 	if inputs == nil {
 		return nil
