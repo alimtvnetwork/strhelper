@@ -1,0 +1,989 @@
+// Refers to StringWrapperPointer Async alias as `swasync`
+//
+// Thread safety ensured.
+//
+// This for async transaction purpose.
+package swasync
+
+import (
+	"regexp"
+	"strings"
+	"sync"
+
+	"gitlab.com/evatix-go/strhelper"
+	"gitlab.com/evatix-go/strhelper/charhelper"
+	"gitlab.com/evatix-go/strhelper/concat"
+	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/whitespace"
+)
+
+// Refers to StringWrapperPointer Async alias as `swasync`
+//
+// Thread safety ensured.
+//
+// This for async transaction purpose.
+type StringWrapper struct {
+	content             *string
+	lowerContent        *string
+	upperContent        *string
+	trimmedSpaceContent *string
+	isNullOrEmpty       *bool
+	isEmptyOrWhitespace *bool
+	uint8s              *[]uint8
+	bytes               *[]byte
+	runes               *[]rune
+	lines               *[]string
+	linesUnix           *[]string
+	lowerRunes          *[]rune
+	upperRunes          *[]rune
+	sync.Mutex
+
+	// This represents actual characters length
+	runesLength *int
+	// len(string) not the actual character size
+	lengthInBytes int
+}
+
+func New(stringInput *string) *StringWrapper {
+	return &StringWrapper{
+		content:             stringInput,
+		trimmedSpaceContent: nil,
+		lengthInBytes:       len(*stringInput),
+		isNullOrEmpty:       nil,
+		isEmptyOrWhitespace: nil,
+		uint8s:              nil,
+		bytes:               nil,
+		runes:               nil,
+		runesLength:         nil,
+		lowerRunes:          nil,
+		upperRunes:          nil,
+		Mutex:               sync.Mutex{},
+	}
+}
+
+func (stringWrapper *StringWrapper) Lock() {
+	stringWrapper.Mutex.Lock()
+}
+
+func (stringWrapper *StringWrapper) Unlock() {
+	stringWrapper.Mutex.Unlock()
+}
+
+func (stringWrapper *StringWrapper) Value() *string {
+	return stringWrapper.content
+}
+
+func (stringWrapper *StringWrapper) ValueWithoutPtr() string {
+	return *stringWrapper.content
+}
+
+// As there is a difference between len(str) and utf8.RuneCountInString(str)
+//
+// It returns the len(str) cached version.
+func (stringWrapper *StringWrapper) LengthInBytes() int {
+	return stringWrapper.lengthInBytes
+}
+
+// As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
+//
+// It returns the len([]rune(str)) or len([]runeCached) cached version.
+func (stringWrapper *StringWrapper) Length() int {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.runesLength == nil {
+		runesLength := len(stringWrapper.ToRunes())
+		(*stringWrapper).runesLength = &runesLength
+	}
+
+	return *stringWrapper.runesLength
+}
+
+func (stringWrapper *StringWrapper) IsEquals(s string, isCaseSensitive bool) bool {
+	if isCaseSensitive {
+		return s == *stringWrapper.content
+	}
+
+	// insensitive
+	lower := strings.ToLower(s)
+
+	return lower == stringWrapper.ToLower()
+}
+
+func (stringWrapper *StringWrapper) IsAnyEquals(
+	isCaseSensitive bool,
+	contents ...*string,
+) bool {
+	for _, content := range contents {
+		if (*stringWrapper).IsEquals(*content, isCaseSensitive) {
+			return true
+		}
+	}
+
+	return false
+}
+
+func (stringWrapper *StringWrapper) IsAllEquals(
+	isCaseSensitive bool,
+	contents ...*string,
+) bool {
+	for _, content := range contents {
+		if !(*stringWrapper).IsEquals(*content, isCaseSensitive) {
+			return false
+		}
+	}
+
+	return true
+}
+
+// Returns all indexes where findingString is found.
+//
+// @limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+//
+// Results:
+//  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
+//  - If no indexes found returns nil
+func (stringWrapper *StringWrapper) IndexesOfAll(
+	findingString *string,
+	startsAtIndex int,
+	limits int,
+	isCaseSensitive bool,
+) []int {
+	return strhelper.IndexesOfAllPtr(
+		stringWrapper.content,
+		findingString,
+		startsAtIndex,
+		limits,
+		isCaseSensitive)
+}
+
+// Find all the indexes for all the finding strings given.
+//
+// limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+func (stringWrapper *StringWrapper) MultipleStringIndexesOfAll(
+	findingStrings *[]string,
+	startsAtIndex int,
+	limits int,
+	isCaseSensitive bool,
+) *strhelpercore.IndexesResultSet {
+	return strhelper.MultiStrIndexesOfAllUsingSimpleArrayPtr(
+		stringWrapper.content,
+		findingStrings,
+		startsAtIndex,
+		limits,
+		isCaseSensitive)
+}
+
+// Returns true based on text compare case sensitive.
+func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
+	if s == nil {
+		return false
+	}
+
+	return *s == stringWrapper.ValueWithoutPtr()
+}
+
+// returns s == nil || len(s) == 0 || s == ""
+func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.isEmptyOrWhitespace == nil {
+		value := stringWrapper.content
+		isEmptyOrNull := value == nil || *value == constants.EmptyString || (*stringWrapper).lengthInBytes == 0
+		stringWrapper.isNullOrEmpty = &isEmptyOrNull
+		isEmptyOrWhitespace := isEmptyOrNull || whitespace.IsWhitespaces(value)
+		(*stringWrapper).isEmptyOrWhitespace = &isEmptyOrWhitespace
+	}
+
+	return *(*stringWrapper).isNullOrEmpty
+}
+
+// IsNull(s) || IsNullOrEmpty(s)
+func (stringWrapper *StringWrapper) IsNull() bool {
+	return (*stringWrapper).content == nil
+}
+
+// IsNullOrEmpty(s) || strhelper.IsBlankPtr(stringWrapper.content)
+func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
+	return (*stringWrapper).IsNullOrEmpty() || *(*stringWrapper).isEmptyOrWhitespace
+}
+
+func (stringWrapper *StringWrapper) TrimSpace() *string {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.trimmedSpaceContent == nil && !(*stringWrapper).IsNull() {
+		content := stringWrapper.ValueWithoutPtr()
+		trimmed := strings.TrimSpace(content)
+		stringWrapper.trimmedSpaceContent = &trimmed
+	}
+
+	return stringWrapper.trimmedSpaceContent
+}
+
+func (stringWrapper *StringWrapper) Trim(cutSet string) *string {
+	trimmed := strings.Trim((*stringWrapper).ValueWithoutPtr(), cutSet)
+
+	return &trimmed
+}
+
+func (stringWrapper *StringWrapper) TrimLeft(cutSet string) *string {
+	trimmed := strings.TrimLeft((*stringWrapper).ValueWithoutPtr(), cutSet)
+
+	return &trimmed
+}
+
+func (stringWrapper *StringWrapper) TrimRight(cutSet string) *string {
+	trimmed := strings.TrimRight((*stringWrapper).ValueWithoutPtr(), cutSet)
+
+	return &trimmed
+}
+
+// GetLines splitted by newline of os
+//
+// Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
+func (stringWrapper *StringWrapper) GetLines() *[]string {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.lines == nil && !(*stringWrapper).IsNull() {
+		lines := strhelper.GetLines(stringWrapper.content)
+		(*stringWrapper).lines = &lines
+	}
+
+	return stringWrapper.lines
+}
+
+// GetLines splitted by newline using unix Split `\n`
+func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	isRequiresSetting := stringWrapper.linesUnix == nil &&
+		!(*stringWrapper).IsNull()
+	isNewLineSameAsUnix := constants.NewLine == constants.NewLineUnix
+
+	if isRequiresSetting && isNewLineSameAsUnix {
+		// same no need to process
+		stringWrapper.linesUnix = stringWrapper.lines
+	}
+
+	if isRequiresSetting && !isNewLineSameAsUnix {
+		// requires processing
+		linesUnix := strhelper.GetLinesUnix(stringWrapper.content)
+		(*stringWrapper).linesUnix = &linesUnix
+	}
+
+	return stringWrapper.linesUnix
+}
+
+// get uint8 array
+func (stringWrapper *StringWrapper) ToUInt8s() []uint8 {
+	return *stringWrapper.ToUInt8sPtr()
+}
+
+// get uint8 array ptr
+func (stringWrapper *StringWrapper) ToUInt8sPtr() *[]uint8 {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if (stringWrapper.uint8s == nil || *stringWrapper.uint8s == nil) && !(*stringWrapper).IsNull() {
+		*stringWrapper.uint8s = []uint8(*stringWrapper.content)
+	}
+
+	return stringWrapper.uint8s
+}
+
+// get bytes array
+func (stringWrapper *StringWrapper) ToBytes() []byte {
+	return *stringWrapper.ToBytesPtr()
+}
+
+// get bytes array ptr
+func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.bytes == nil || *stringWrapper.bytes == nil {
+		*stringWrapper.bytes = []byte(*stringWrapper.content)
+	}
+
+	return stringWrapper.bytes
+}
+
+// get rune array
+func (stringWrapper *StringWrapper) ToRunes() []rune {
+	return *stringWrapper.ToRunesPtr()
+}
+
+// get rune array ptr
+func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if (stringWrapper.runes == nil || *stringWrapper.runes == nil) && !(*stringWrapper).IsNull() {
+		*stringWrapper.runes = []rune(*stringWrapper.content)
+	}
+
+	return stringWrapper.runes
+}
+
+// get lowercase rune array ptr
+func (stringWrapper *StringWrapper) ToLowerRunesPtr() *[]rune {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if (stringWrapper.lowerRunes == nil || *stringWrapper.lowerRunes == nil) && !(*stringWrapper).IsNull() {
+		lowerRunes := charhelper.ToLowerRunes(stringWrapper.ToRunesPtr())
+		stringWrapper.lowerRunes = lowerRunes
+	}
+
+	return stringWrapper.lowerRunes
+}
+
+// get uppercase rune array ptr
+func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.upperRunes == nil || *stringWrapper.upperRunes == nil {
+		upperRunes := charhelper.ToUpperRunes(stringWrapper.ToRunesPtr())
+		stringWrapper.upperRunes = upperRunes
+	}
+
+	return stringWrapper.upperRunes
+}
+
+// returns true if IsNullOrWhitespace(s)
+func (stringWrapper *StringWrapper) IsBlank() bool {
+	return (*stringWrapper).IsNullOrWhitespace()
+}
+
+// Has at least one character other than space or whitespace
+func (stringWrapper *StringWrapper) HasCharacter() bool {
+	return !(*stringWrapper).IsNullOrWhitespace()
+}
+
+// Has at least one character other than space or whitespace
+func (stringWrapper *StringWrapper) IsDefined() bool {
+	return !(*stringWrapper).IsNullOrWhitespace()
+}
+
+func (stringWrapper *StringWrapper) ToLower() string {
+	return *stringWrapper.ToLowerPtr()
+}
+
+func (stringWrapper *StringWrapper) ToLowerPtr() *string {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.lowerContent == nil && !(*stringWrapper).IsNull() {
+		lowerCase := string(*stringWrapper.ToLowerRunesPtr())
+		stringWrapper.lowerContent = &lowerCase
+	}
+
+	return stringWrapper.lowerContent
+}
+
+func (stringWrapper *StringWrapper) ToUpper() string {
+	return *stringWrapper.ToUpperPtr()
+}
+
+func (stringWrapper *StringWrapper) ToUpperPtr() *string {
+	stringWrapper.Lock()
+	defer stringWrapper.Unlock()
+
+	if stringWrapper.upperContent == nil && !(*stringWrapper).IsNullOrEmpty() {
+		upperContent := string(*stringWrapper.ToUpperRunesPtr())
+		stringWrapper.upperContent = &upperContent
+	}
+
+	return stringWrapper.upperContent
+}
+
+func (stringWrapper *StringWrapper) ToLowerWrapperPtr() *StringWrapper {
+	return New(stringWrapper.ToLowerPtr())
+}
+
+func (stringWrapper *StringWrapper) ToLowerWrapper() StringWrapper {
+	return *stringWrapper.ToLowerWrapperPtr()
+}
+
+// Returns strings to upper case as StringWrapper
+func (stringWrapper *StringWrapper) ToUpperWrapper() StringWrapper {
+	return *stringWrapper.ToUpperWrapperPtr()
+}
+
+// Returns strings to upper case as StringWrapper
+func (stringWrapper *StringWrapper) ToUpperWrapperPtr() *StringWrapper {
+	return New(stringWrapper.ToUpperPtr())
+}
+
+// Returns character at the given index, if not exist then panic.
+//
+// Slower than direct access
+//
+// Use loop version if want to loop through
+func (stringWrapper *StringWrapper) At(index int) uint8 {
+	return stringWrapper.ToUInt8s()[index]
+}
+
+// Loops through all the rune characters
+//
+// Slower than direct access
+func (stringWrapper *StringWrapper) LoopRunes(
+	simpleLoopProcessor func(args *strhelpercore.StringWrapperRuneLoopArgs) *string,
+) *[]*string {
+	runes := *stringWrapper.ToRunesPtr()
+	newStrings := make([]*string, len(runes))
+
+	args := strhelpercore.StringWrapperRuneLoopArgs{
+		Content: stringWrapper.content,
+		Runes:   &runes,
+		Index:   0,
+		Rune:    0,
+	}
+
+	for args.Index, args.Rune = range runes {
+		newStrings[args.Index] = simpleLoopProcessor(&args)
+	}
+
+	return &newStrings
+}
+
+// Loops through all the rune characters
+//
+// Slower than direct access
+func (stringWrapper *StringWrapper) LoopRunesToGetAnys(
+	loopProcessorInterface func(args *strhelpercore.StringWrapperRuneLoopArgs) *interface{},
+) *[]*interface{} {
+	runes := *stringWrapper.ToRunesPtr()
+	results := make([]*interface{}, len(runes))
+
+	args := strhelpercore.StringWrapperRuneLoopArgs{
+		Content: stringWrapper.content,
+		Runes:   &runes,
+		Index:   0,
+		Rune:    0,
+	}
+
+	for args.Index, args.Rune = range runes {
+		results[args.Index] = loopProcessorInterface(&args)
+	}
+
+	return &results
+}
+
+// Loops through all the rune characters
+//
+// Slower than direct access
+func (stringWrapper *StringWrapper) LoopRunesToGetRunes(
+	loopProcessorRune func(args *strhelpercore.StringWrapperRuneLoopArgs) rune,
+) *[]rune {
+	runes := *stringWrapper.ToRunesPtr()
+	newRunes := make([]rune, len(runes))
+
+	args := strhelpercore.StringWrapperRuneLoopArgs{
+		Content: stringWrapper.content,
+		Runes:   &runes,
+		Index:   0,
+		Rune:    0,
+	}
+
+	for args.Index, args.Rune = range runes {
+		newRunes[args.Index] = loopProcessorRune(&args)
+	}
+
+	return &newRunes
+}
+
+// Loops through all the lines.
+func (stringWrapper *StringWrapper) LoopLinesToStringArray(
+	loopProcessorRune func(args *strhelpercore.StringWrapperLineLoopArgs) *string,
+) *[]*string {
+	lines := stringWrapper.GetLines()
+	newStrings := make([]*string, len(*lines))
+
+	args := strhelpercore.StringWrapperLineLoopArgs{
+		Content: stringWrapper.content,
+		Lines:   lines,
+		Index:   -1,                    // it will change per line
+		Line:    constants.EmptyString, // it will change per line
+	}
+
+	for args.Index, args.Line = range *lines {
+		newStrings[args.Index] = loopProcessorRune(&args)
+	}
+
+	return &newStrings
+}
+
+// Loops through all the lines.
+func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
+	loopProcessorRune func(args *strhelpercore.StringWrapperLineLoopArgs) *string,
+) *[]*string {
+	lines := stringWrapper.GetLinesUnix()
+	newStrings := make([]*string, len(*lines))
+
+	args := strhelpercore.StringWrapperLineLoopArgs{
+		Content: stringWrapper.content,
+		Lines:   lines,
+		Index:   -1,                    // it will change per line
+		Line:    constants.EmptyString, // it will change per line
+	}
+
+	for args.Index, args.Line = range *lines {
+		newStrings[args.Index] = loopProcessorRune(&args)
+	}
+
+	return &newStrings
+}
+
+// Create regular expression from current string.
+// Recommendation, do not create regular expressions inside a function call, keep it on top of the file as variables
+func (stringWrapper *StringWrapper) CreateRegularExpression() *regexp.Regexp {
+	return regexp.MustCompile(*stringWrapper.content)
+}
+
+// Same as Value()
+func (stringWrapper *StringWrapper) String() string {
+	return stringWrapper.ValueWithoutPtr()
+}
+
+// returns -1 if the index is not present in strings lengthInBytes.
+// or else returns the character value from that index
+// performance should be very slow, use direct access of str.
+func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
+	if !stringWrapper.HasIndex(index) {
+		return constants.InvalidNotFoundCase
+	}
+
+	return int16(stringWrapper.ValueWithoutPtr()[index])
+}
+
+// returns -1 if the index is not present in strings lengthInBytes.
+// or else returns the character value from that index
+// performance should be very slow, use direct access of stringWrapper.ToRunesPtr().
+func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
+	if !stringWrapper.HasIndex(index) {
+		return constants.InvalidNotFoundCase
+	}
+
+	return stringWrapper.ToRunes()[index]
+}
+
+func (stringWrapper *StringWrapper) IsEqualAtIndex(
+	index int,
+	char uint8,
+	isCaseSensitive bool,
+) bool {
+	valueAt := stringWrapper.ValueWithoutPtr()[index]
+
+	if isCaseSensitive {
+		return valueAt == char
+	}
+
+	return charhelper.IsMatchCaseInsensitive(valueAt, char)
+}
+
+// (*stringWrapper).LengthInBytes()-1 >= index
+func (stringWrapper *StringWrapper) HasIndex(index int) bool {
+	return (*stringWrapper).LengthInBytes()-1 >= index
+}
+
+// (*stringWrapper).Length()-1 >= index
+func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
+	return (*stringWrapper).Length()-1 >= index
+}
+
+// Returns a new string builder contains text of stringWrapper and has a
+// growth = stringWrapper.lengthInBytes + additionalGrowLength
+func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Builder {
+	builder := strings.Builder{}
+	currentString := stringWrapper.content
+	length := stringWrapper.LengthInBytes() + additionalGrowLength
+	builder.Grow(length)
+	builder.WriteString(*currentString)
+	return builder
+}
+
+// Returns a new string builder contains text of stringWrapper + str and has a
+// growth = stringWrapper.lengthInBytes + additionalGrowLength + len(str)
+func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLength int) strings.Builder {
+	builder := strings.Builder{}
+	currentString := stringWrapper.content
+	length := stringWrapper.LengthInBytes() + len(*str) + additionalGrowLength
+	builder.Grow(length)
+	builder.WriteString(*currentString)
+	builder.WriteString(*str)
+
+	return builder
+}
+
+// Better to use slice or builder for appending lines in a loop.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) *StringWrapper {
+	return stringWrapper.concat(constants.NewLine, isSkipOnEmpty, &contents)
+}
+
+// Better to use slice or builder for appending or concatenating lines in a loop.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
+	return stringWrapper.concat(
+		constants.EmptyString,
+		false, // must add everything
+		&contents)
+}
+
+// Better to use slice or builder for appending lines.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) ConcatWrappers(
+	separator string,
+	isSkipOnEmpty bool,
+	stringWrappers ...StringWrapper,
+) *StringWrapper {
+	strArray := make([]*string, len(stringWrappers))
+
+	for i, wrapper := range stringWrappers {
+		strArray[i] = wrapper.content
+	}
+
+	return stringWrapper.ConcatPtrStr(
+		separator,
+		isSkipOnEmpty,
+		&strArray)
+}
+
+// Better to use slice or builder for appending lines.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) ConcatWrappersPtrs(
+	separator string,
+	isSkipOnEmpty bool,
+	stringWrappers ...*StringWrapper,
+) *StringWrapper {
+	strArray := make([]*string, len(stringWrappers))
+
+	for i, wrapper := range stringWrappers {
+		strArray[i] = wrapper.content
+	}
+
+	return stringWrapper.ConcatPtrStr(
+		separator,
+		isSkipOnEmpty,
+		&strArray)
+}
+
+// Better to use slice or builder for appending lines.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) ConcatWithSeparator(
+	separator string,
+	isSkipOnEmpty bool,
+	contents ...string,
+) *StringWrapper {
+	return stringWrapper.concat(
+		separator,
+		isSkipOnEmpty,
+		&contents)
+}
+
+// Better to use slice or builder for appending lines.
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) ConcatPtrsWithSeparator(
+	separator string,
+	isSkipOnEmpty bool,
+	contents ...*string,
+) *StringWrapper {
+	return stringWrapper.ConcatPtrStr(
+		separator,
+		isSkipOnEmpty,
+		&contents)
+}
+
+// combine current wrapper strings + all given ones with given separator and returns as wrapper
+//
+// stringWrapper.content + separator + JoinAll(separator, stringWrappers)
+func (stringWrapper *StringWrapper) concat(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]string,
+) *StringWrapper {
+	combinedResult := concat.StringsArrayWithSeparator(
+		stringWrapper.content,
+		&separator,
+		isSkipOnEmpty,
+		contents)
+
+	return New(&combinedResult)
+}
+
+// combine current wrapper strings + all given ones with given separator and returns as wrapper
+func (stringWrapper *StringWrapper) ConcatPtrStr(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]*string,
+) *StringWrapper {
+	combinedResult := concat.PtrStringsArrayWithSeparator(
+		stringWrapper.content,
+		&separator,
+		isSkipOnEmpty,
+		contents)
+
+	return New(&combinedResult)
+}
+
+func (stringWrapper *StringWrapper) ReplaceWrapper(
+	searchingWrapper,
+	replacingWrapper *StringWrapper,
+	isCaseSensitive bool,
+	startsAt int,
+	replaceCount int,
+) *StringWrapper {
+	replacedText := strhelper.ReplacePtr(
+		stringWrapper.content,
+		searchingWrapper.content,
+		replacingWrapper.content,
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
+
+	return New(&replacedText)
+}
+
+// For better performance use Ptr version.
+func (stringWrapper *StringWrapper) Replace(
+	search,
+	replaceText string,
+	isCaseSensitive bool,
+	startsAt int,
+	replaceCount int,
+) string {
+	return strhelper.ReplacePtr(
+		stringWrapper.content,
+		&search,
+		&replaceText,
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) ReplacePtr(
+	search,
+	replaceText *string,
+	startsAt int,
+	replaceCount int,
+	isCaseSensitive bool,
+) *string {
+	replacedText := strhelper.ReplacePtr(
+		stringWrapper.content,
+		search,
+		replaceText,
+		startsAt,
+		replaceCount,
+		isCaseSensitive,
+	)
+
+	return &replacedText
+}
+
+func (stringWrapper *StringWrapper) ReplaceAll(
+	search,
+	replaceText string,
+	isCaseSensitive bool,
+	startsAt int,
+) string {
+	return strhelper.ReplacePtr(
+		stringWrapper.content,
+		&search,
+		&replaceText,
+		startsAt,
+		-1,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) ReplaceMultiple(
+	searchReplaceMap *map[string]string,
+	startsAt int,
+) string {
+	return strhelper.ReplaceMultiplePtr(
+		stringWrapper.content,
+		searchReplaceMap,
+		startsAt,
+		-1,
+		true,
+	)
+}
+
+func (stringWrapper *StringWrapper) ReplaceMultipleCase(
+	searchReplaceMap *map[string]string,
+	startsAt int,
+	limits int,
+	isCaseSensitive bool,
+) string {
+	return strhelper.ReplaceMultiplePtr(
+		stringWrapper.content,
+		searchReplaceMap,
+		startsAt,
+		limits,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) LastIndexOf(
+	search string,
+	lastStartIndexReducedBy int,
+	isCaseSensitive bool,
+) int {
+	return strhelper.LastIndexOfPtr(
+		stringWrapper.content,
+		&search,
+		lastStartIndexReducedBy,
+		isCaseSensitive)
+}
+
+func (stringWrapper *StringWrapper) ReversePtr() string {
+	return strhelper.ReversePtr(stringWrapper.content)
+}
+
+func (stringWrapper *StringWrapper) LastIndexOfPtr(
+	search *string,
+	lastStartIndexReducedBy int,
+	isCaseSensitive bool,
+) int {
+	return strhelper.LastIndexOfPtr(
+		stringWrapper.content,
+		search,
+		lastStartIndexReducedBy,
+		isCaseSensitive)
+}
+
+// For better performance use strhelper.IsStartsWithPtr
+func (stringWrapper *StringWrapper) IsStartsWith(
+	search string,
+	isCaseSensitive bool,
+	startsAt int,
+) bool {
+	return strhelper.IsStartsWithPtr(
+		stringWrapper.content,
+		&search,
+		startsAt,
+		isCaseSensitive)
+}
+
+// Use direct strhelper.IsEndsWithPtr will be faster
+func (stringWrapper *StringWrapper) IsEndsWith(
+	endsWith string,
+	isCaseSensitive bool,
+	startsAt int,
+) bool {
+	return strhelper.IsEndsWithPtr(
+		stringWrapper.content,
+		&endsWith,
+		startsAt,
+		isCaseSensitive)
+}
+
+// Use direct strhelper.IsEndsWithPtr will be faster
+func (stringWrapper *StringWrapper) IsEndsWithPtr(
+	endsWith *string,
+	isCaseSensitive bool,
+	startsAt int,
+) bool {
+	return strhelper.IsEndsWithPtr(
+		stringWrapper.content,
+		endsWith,
+		startsAt,
+		isCaseSensitive)
+}
+
+func (stringWrapper *StringWrapper) PadLeftWithSpace(width int) string {
+	return strhelper.PadSpaceLeft(stringWrapper.content, width)
+}
+
+func (stringWrapper *StringWrapper) PadRightWithSpace(width int) string {
+	return strhelper.PadSpaceRight(stringWrapper.content, width)
+}
+
+func (stringWrapper *StringWrapper) PadLeft(width int, padding string) string {
+	return strhelper.PadLeft(stringWrapper.content, &padding, width)
+}
+
+func (stringWrapper *StringWrapper) PadRight(width int, padding string) string {
+	return strhelper.PadRight(stringWrapper.content, &padding, width)
+}
+
+func (stringWrapper *StringWrapper) Pad(width int, padding string, isLeft, isRight bool) string {
+	return strhelper.Pad(stringWrapper.content, &padding, width, isLeft, isRight)
+}
+
+// Multiple split occur from the given array of splits.
+//
+// Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
+//
+// limit :
+//  - number of times split will performed for all
+//  - if -1 then all split will occur
+//
+// splitStartsAt:
+//  - where split searching will start from.
+func (stringWrapper *StringWrapper) MultiSplit(
+	startsAt, limits int,
+	splitters ...string,
+) *strhelpercore.SplitResultOverview {
+	return strhelper.MultipleSplitsPtr(
+		stringWrapper.content,
+		&splitters,
+		startsAt,
+		limits,
+		true)
+}
+
+// Multiple split occur from the given array of splits.
+//
+// Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
+//
+// limit :
+//  - number of times split will performed for all
+//  - if -1 then all split will occur
+//
+// splitStartsAt:
+//  - where split searching will start from.
+func (stringWrapper *StringWrapper) MultiSplitCase(
+	startsAt, limits int,
+	isCaseSensitive bool,
+	splitters ...string,
+) *strhelpercore.SplitResultOverview {
+	return strhelper.MultipleSplitsPtr(
+		stringWrapper.content,
+		&splitters,
+		startsAt,
+		limits,
+		isCaseSensitive)
+}
+
+func (stringWrapper *StringWrapper) Split(splitter string) []string {
+	return strings.Split(
+		*stringWrapper.content,
+		splitter)
+}
+
+func (stringWrapper *StringWrapper) SplitN(splitter string, count int) []string {
+	return strings.SplitN(
+		*stringWrapper.content,
+		splitter,
+		count)
+}

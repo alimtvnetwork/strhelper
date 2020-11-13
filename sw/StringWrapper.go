@@ -1,3 +1,4 @@
+// String Wrapper, no caching, non optimized
 package sw
 
 import (
@@ -10,7 +11,14 @@ import (
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
+// no caching
 type StringWrapper string
+
+func New(str string) * StringWrapper {
+	stringWrapper := StringWrapper(str)
+
+	return &stringWrapper
+}
 
 func (stringWrapper *StringWrapper) Value() string {
 	return string(*stringWrapper)
