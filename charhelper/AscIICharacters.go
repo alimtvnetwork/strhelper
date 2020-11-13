@@ -1,6 +1,10 @@
 package charhelper
 
-import "unicode"
+import (
+	"unicode"
+
+	"gitlab.com/evatix-go/strhelper/constants"
+)
 
 type AscIICharacters struct {
 	// asciiChars[index] == 1 meaning char exist 0 means not exist
@@ -47,10 +51,8 @@ func (ascIICharacters *AscIICharacters) IsAnyExists(chars ...uint8) bool {
 
 func (ascIICharacters *AscIICharacters) IsAllCharsExistInStrings(strings ...*string) bool {
 	for _, str := range strings {
-		for i := range *str {
-			char := (*str)[i]
-
-			if (*ascIICharacters.asciiChars)[char] == 0 {
+		for _, r := range *str {
+			if r <= constants.MaxUnit8 && (*ascIICharacters.asciiChars)[r] == 0 {
 				return false
 			}
 		}

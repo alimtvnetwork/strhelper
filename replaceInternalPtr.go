@@ -19,28 +19,28 @@ func ReplaceUsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
 			request.HowManyReplace)
 	}
 
-	foundIndexes := IndexesOfAllPtr(
+	foundIndexesMap := IndexesOfAllAsKeyMap(
 		request.Text,
 		&request.Search,
 		request.StartsAt,
 		request.HowManyReplace,
 		(*request).IsCaseSensitive)
 
-	if foundIndexes == nil {
+	if foundIndexesMap == nil || *foundIndexesMap == nil {
 		// returns as is
 		return *request.Text
 	}
 
 	textLength := len(*request.Text)
-	replaceCount := len(foundIndexes)
+	replaceCount := len(*foundIndexesMap)
 	isHowManyReplaceSet := (*request).HowManyReplace > -1
 
 	if isHowManyReplaceSet && replaceCount > (*request).HowManyReplace {
 		replaceCount = request.HowManyReplace
 	}
 
-	// not found case
-	if request.HowManyReplace == 0 {
+	// not found or nothing to replace case
+	if request.HowManyReplace == 0 || replaceCount == 0 {
 		return *request.Text
 	}
 
@@ -51,7 +51,7 @@ func ReplaceUsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
 	chars := make([]byte, textLength+replaceCount*(newWordLength-searchLength))
 	wordIndex := 0
 	for i := 0; i < textLength; i++ {
-		if indexOfInts(&foundIndexes, i) > -1 && replaceCount > 0 {
+		if (*foundIndexesMap)[i] == true && replaceCount > 0 {
 			// found modify
 			wordIndex += copy(chars[wordIndex:], request.ReplaceWith)
 			i += searchLength - 1 // we should skip the search text since already replaced.

@@ -62,7 +62,7 @@ func getCompiledReplaceMultiple(
 			if replaceRequest.ShouldReplace() {
 				// too many nesting
 				// keeping as is for performance
-				// found modify
+				// found modify, reference : https://bit.ly/2IAEJNe
 				wordIndex += copy(chars[wordIndex:], replaceRequest.ReplaceWith)
 				i += len(searchStr) - 1 // we should skip the search text since already replaced.
 				replaceRequest.ReplaceCountDecrease()
@@ -91,7 +91,7 @@ func getChangeInNewLengthAndReplaceCountUpdate(
 	for searchKey, indexes := range *indexesResultSet.StringKeyAsIndexesMap {
 		replaceIndividualRequest := (*request.SearchReplaceMap)[searchKey]
 		replaceStr := replaceIndividualRequest.ReplaceWith
-		replaceCount := len(indexes)
+		replaceCount := len(*indexes)
 		replaceIndividualRequest.SetReplaceCount(replaceCount)
 		(*request.SearchReplaceMap)[searchKey] = replaceIndividualRequest
 		changeInLengthNewString += replaceCount * (len(replaceStr) - len(searchKey))

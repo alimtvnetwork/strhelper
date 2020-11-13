@@ -17,7 +17,7 @@ import (
 func IndexesOfAllUsingRequestPtr(
 	content *string,
 	request *strhelpercore.SearchRequest,
-) []int {
+) *[]int {
 	if content == nil || request == nil {
 		return nil
 	}
@@ -87,5 +87,5 @@ func IndexesOfAllUsingRequestPtr(
 		return nil
 	}
 
-	return indexes
+	return &indexes
 }
