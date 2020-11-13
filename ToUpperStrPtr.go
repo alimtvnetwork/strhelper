@@ -14,8 +14,7 @@ func ToUpperStrPtr(s *string) *string {
 	}
 
 	runes := []rune(*s)
-	runes = *charhelper.ToUpperRunesInPlace(&runes)
-	toUpperString := string(runes)
+	toUpperString := string(*charhelper.ToUpperRunesInPlace(&runes))
 
 	return &toUpperString
 }

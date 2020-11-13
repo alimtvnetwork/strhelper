@@ -66,8 +66,8 @@ func MultiStrIndexesOfAllUsingMapPtr(
 		return strhelpercore.NewEmptyIndexesResultSet()
 	}
 
-	indexesMap := make(map[string][]int, searchingItemsLength)
-	var hasFoundAny, isFound bool
+	indexesMap := make(map[string]*[]int, searchingItemsLength)
+	var hasFoundAny bool
 	var totalLength, maxIndexFound int
 	maxIndexFound = -1
 
@@ -92,18 +92,17 @@ func MultiStrIndexesOfAllUsingMapPtr(
 			sendingContent,
 			&searchRequest)
 
-		totalLength = len(indexes)
-		isFound = indexes != nil && totalLength > 0
-
-		if isFound {
-			indexesMap[key] = indexes
-			hasFoundAny = true
-		} else {
+		if indexes == nil || *indexes == nil {
 			indexesMap[key] = nil
+			continue
 		}
 
-		if isFound && maxIndexFound < indexes[totalLength-1] {
-			maxIndexFound = indexes[totalLength-1]
+		totalLength = len(*indexes)
+		indexesMap[key] = indexes
+		hasFoundAny = true
+
+		if maxIndexFound < (*indexes)[totalLength-1] {
+			maxIndexFound = (*indexes)[totalLength-1]
 		}
 	}
 

@@ -19,9 +19,9 @@ func IndexesOfAll(
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
-) []int {
+) *[]int {
 	if content == findingString && startsAtIndex == 0 {
-		return []int{0}
+		return &[]int{0}
 	}
 
 	request := createSearchRequest(

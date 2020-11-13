@@ -151,7 +151,7 @@ func (stringWrapper *StringWrapper) IndexesOfAll(
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
-) []int {
+) *[]int {
 	return strhelper.IndexesOfAllPtr(
 		stringWrapper.content,
 		findingString,
