@@ -34,14 +34,25 @@ func IndexesOfAllPtr(
 		return getAllIndexesFromTheStartIndexGiven(length, startsAtIndex)
 	}
 
+	// making a copy of pointer only, not the object. copy of reference address
+	// reference : https://play.golang.org/p/r65MrCg86YH
+	sendingContent := content
+	sendingSearchTerm := findingString
+
+	if isCaseSensitive == false {
+		// insensitive
+		sendingContent = ToLowerStrPtr(sendingContent)
+		sendingSearchTerm = ToLowerStrPtr(findingString)
+	}
+
 	indexes := make([]int, constants.Zero, length)
 
 	lastIndex := length - 1
 	foundIndex := IndexOfPtr(
-		content,
-		findingString,
+		sendingContent,
+		sendingSearchTerm,
 		startsAtIndex,
-		isCaseSensitive)
+		true)
 
 	if foundIndex > constants.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
@@ -56,10 +67,10 @@ func IndexesOfAllPtr(
 		}
 
 		foundIndex = IndexOfPtr(
-			content,
-			findingString,
+			sendingContent,
+			sendingSearchTerm,
 			nextIndex,
-			isCaseSensitive)
+			true)
 
 		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)

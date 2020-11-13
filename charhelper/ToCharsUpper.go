@@ -1,22 +1,11 @@
 package charhelper
 
-import "gitlab.com/evatix-go/strhelper/constants"
-
-// Makes a new char to lower, doesn't modify the existing one.
+// Makes a new char to Upper, doesn't modify the existing one.
+//
+// Warning: Requires double memory cost for copying the same data.
 func ToCharsUpper(chars *[]uint8) *[]uint8 {
-	length := len(*chars)
-	newChars := make([]uint8, length)
+	// Copying, reference: https://play.golang.org/p/r65MrCg86YH
+	newChars := *chars
 
-	for i := 0; i < length; i++ {
-		char := (*chars)[i]
-
-		if char >= constants.LowerCaseA &&
-			char <= constants.LowerCaseZ {
-			char = char + constants.UpperCaseA - constants.LowerCaseA
-		}
-
-		newChars[i] = char
-	}
-
-	return &newChars
+	return ToCharsUpperInPlace(&newChars)
 }

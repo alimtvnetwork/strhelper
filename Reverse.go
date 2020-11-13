@@ -17,10 +17,9 @@ func ReversePtr(str *string) string {
 		return constants.EmptyString
 	}
 
-	toRunes := []rune(*str)
-	reversed := ReverseRuneInPlacePtr(&toRunes)
+	runes := []rune(*str)
 
-	return string(*reversed)
+	return string(*ReverseRuneInPlacePtr(&runes))
 }
 
 // Modifies existing runesIn array to reverse order.

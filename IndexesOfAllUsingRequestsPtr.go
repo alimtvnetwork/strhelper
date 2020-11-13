@@ -32,13 +32,30 @@ func IndexesOfAllUsingRequestPtr(
 		return getAllIndexesFromTheStartIndexGiven(length, request.StartsAt)
 	}
 
-	indexes := make([]int, constants.Zero, length)
+	// making a copy of pointer only, not the object. copy of reference address
+	// reference : https://play.golang.org/p/r65MrCg86YH
+	sendingContent := content
+	sendingSearchTerm := &request.Search
 
+	if request.IsCaseSensitive == false {
+		// insensitive
+		sendingContent = ToLowerStrPtr(sendingContent)
+		sendingSearchTerm = ToLowerStrPtr(sendingSearchTerm)
+	}
+
+	indexes := make([]int, constants.Zero, length)
 	lastIndex := length - 1
 
+	sendingRequest := strhelpercore.SearchRequest{
+		Search:          *sendingSearchTerm,
+		StartsAt:        request.StartsAt,
+		Limits:          request.Limits,
+		IsCaseSensitive: true,
+	}
+
 	searchIndividualRequest := strhelpercore.SearchIndividualRequest{
-		Text:          content,
-		SearchRequest: request,
+		Text:          sendingContent,
+		SearchRequest: &sendingRequest,
 	}
 
 	foundIndex := IndexOfUsingRequestPtr(&searchIndividualRequest)
@@ -47,14 +64,6 @@ func IndexesOfAllUsingRequestPtr(
 		indexes = append(indexes, foundIndex)
 	}
 
-	request2 := strhelpercore.SearchRequest{
-		Search:          request.Search,
-		StartsAt:        foundIndex + 1,
-		Limits:          request.Limits,
-		IsCaseSensitive: request.IsCaseSensitive,
-	}
-
-	searchIndividualRequest.SearchRequest = &request2
 	var nextIndex int
 
 	for foundIndex > constants.InvalidNotFoundCase {
@@ -63,7 +72,7 @@ func IndexesOfAllUsingRequestPtr(
 			break
 		}
 
-		request2.StartsAt = nextIndex
+		sendingRequest.StartsAt = nextIndex
 		foundIndex = IndexOfUsingRequestPtr(&searchIndividualRequest)
 
 		if foundIndex > constants.InvalidNotFoundCase {

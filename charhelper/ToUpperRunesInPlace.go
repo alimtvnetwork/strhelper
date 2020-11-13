@@ -8,18 +8,13 @@ import "gitlab.com/evatix-go/strhelper/constants"
 //
 // Warning:
 //  - inputs will be modified.
-// Invalid case (returns nil)
-//  - if inputs == nil
+// Unhandled Case:
+//  - if `inputs` is nil
 func ToUpperRunesInPlace(inputs *[]rune) *[]rune {
-	if inputs == nil {
-		return nil
-	}
-
-	for index, rune := range *inputs {
-		if rune >= constants.LowerCaseA && rune <= constants.LowerCaseZ {
+	for index, r := range *inputs {
+		if r >= constants.LowerCaseA && r <= constants.LowerCaseZ {
 			// in lower case form, making it to upper case
-			rune = rune + constants.UpperCase
-			(*inputs)[index] = rune
+			(*inputs)[index] = r + constants.UpperCase
 		}
 	}
 

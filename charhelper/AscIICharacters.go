@@ -8,7 +8,7 @@ type AscIICharacters struct {
 }
 
 func NewAscIICharactersUsingString(str *string) AscIICharacters {
-	return AscIICharacters{asciiChars: StringToAscIICharacters(str)}
+	return AscIICharacters{asciiChars: StringToAscIICharactersExistenceArray(str)}
 }
 
 func NewAscIICharacters(chars *[256]uint8) AscIICharacters {
@@ -47,7 +47,7 @@ func (ascIICharacters *AscIICharacters) IsAnyExists(chars ...uint8) bool {
 
 func (ascIICharacters *AscIICharacters) IsAllCharsExistInStrings(strings ...*string) bool {
 	for _, str := range strings {
-		for i, _ := range *str {
+		for i := range *str {
 			char := (*str)[i]
 
 			if (*ascIICharacters.asciiChars)[char] == 0 {
