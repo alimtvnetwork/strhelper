@@ -71,9 +71,25 @@ func MultiStrIndexesOfAllUsingMapPtr(
 	var totalLength, maxIndexFound int
 	maxIndexFound = -1
 
+	// making a copy of pointer only, not the object. copy of reference address
+	// reference : https://play.golang.org/p/r65MrCg86YH
+	var lowerCaseContent, sendingContent *string
+	if hasAnyInsensitiveCase(searchRequestsMap) {
+		lowerCaseContent = ToLowerStrPtr(content)
+	}
+
 	for key, searchRequest := range *searchRequestsMap {
+		sendingContent = content
+
+		if searchRequest.IsCaseSensitive == false {
+			// insensitive
+			sendingContent = lowerCaseContent
+			searchRequest.Search = *ToLowerStrPtr(&searchRequest.Search)
+			searchRequest.IsCaseSensitive = true
+		}
+
 		indexes := IndexesOfAllUsingRequestPtr(
-			content,
+			sendingContent,
 			&searchRequest)
 
 		totalLength = len(indexes)
@@ -95,4 +111,15 @@ func MultiStrIndexesOfAllUsingMapPtr(
 		&indexesMap,
 		hasFoundAny,
 		maxIndexFound)
+}
+
+func hasAnyInsensitiveCase(searchRequestsMap *map[string]strhelpercore.SearchRequest) bool {
+	for _, searchRequest := range *searchRequestsMap {
+		if searchRequest.IsCaseSensitive == false {
+			// insensitive
+			return true
+		}
+	}
+
+	return false
 }

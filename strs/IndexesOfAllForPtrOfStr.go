@@ -84,4 +84,3 @@ func IndexesOfAllForPtrOfStr(
 
 	return indexes
 }
-

@@ -1,7 +1,5 @@
 package charhelper
 
-import "gitlab.com/evatix-go/strhelper/constants"
-
 // Returns Upper case runes by creating new runes. (Don't modify in place, thus requires more memory consumption)
 //
 // Invalid case (returns nil)
@@ -11,16 +9,8 @@ func ToUpperRunes(inputs *[]rune) *[]rune {
 		return nil
 	}
 
-	newRunes := make([]rune, len(*inputs))
+	// Copying, example reference : https://play.golang.org/p/r65MrCg86YH
+	newRunes := *inputs
 
-	for index, rune := range *inputs {
-		if rune >= constants.LowerCaseA && rune <= constants.LowerCaseZ {
-			// in lower case form, making it to upper case
-			rune = rune + constants.UpperCase
-		}
-
-		newRunes[index] = rune
-	}
-
-	return &newRunes
+	return ToUpperRunesInPlace(&newRunes)
 }

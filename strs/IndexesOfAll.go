@@ -32,7 +32,8 @@ func IndexesOfAll(
 		startAtIndexFailed(startsAtIndex, length)
 	}
 
-	// https://play.golang.org/p/DQ9GpqrfDRl
+	// making a copy of pointer only, not the object. copy of reference address
+	// reference : https://play.golang.org/p/r65MrCg86YH
 	sendingLines := lines
 	sendingSearchTerm := findingString
 

@@ -48,9 +48,8 @@ func IsCharNotWhitespace(char uint8) bool {
 	return !(asciiSpace[char] == 1 || unicode.IsSpace(rune(char)))
 }
 
-
 const (
-	maxUnit8                          = 255
+	maxUnit8 = 255
 )
 
 var (

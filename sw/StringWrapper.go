@@ -14,7 +14,7 @@ import (
 // no caching
 type StringWrapper string
 
-func New(str string) * StringWrapper {
+func New(str string) *StringWrapper {
 	stringWrapper := StringWrapper(str)
 
 	return &stringWrapper
