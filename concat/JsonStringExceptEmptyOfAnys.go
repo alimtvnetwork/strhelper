@@ -7,13 +7,25 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-// Concat any object to array first and then compile all together as JSON
+// Concatenates the inputItems and @singleContent to a single JSON string (@singleContent + separator + all items in inputItems).
+//
+//  Internally it creates a slice of interfaces pointers and
+//  then use strhelpercore.RawAnyItemsRequest to inject and then
+//  marshall from that strhelpercore.RawAnyItemsRequest to get the JSON result.
+//
+// @isSkipEmptyOrNil:
+//  - Skip nil in elements.
+//
+// @sep:
+//  - used to concat each strings / elements.
+//
+// Copied from golang library (reference : https://bit.ly/3oPHGdy).
 func JsonStringExceptEmptyOfAnys(
 	isSkipEmptyOrNil bool,
 	singleContent *interface{},
-	item *[]interface{},
+	inputItems *[]interface{},
 ) *strhelpercore.StringWithError {
-	items := make([]*interface{}, 0, len(*item)+2)
+	items := make([]*interface{}, 0, len(*inputItems)+2)
 
 	if isSkipEmptyOrNil && singleContent != nil && reflect.TypeOf(singleContent).Size() > 0 {
 		items = append(items, singleContent)
@@ -21,7 +33,7 @@ func JsonStringExceptEmptyOfAnys(
 		items = append(items, singleContent)
 	}
 
-	for _, item := range *item {
+	for _, item := range *inputItems {
 		if isSkipEmptyOrNil && item == nil {
 			continue
 		}
@@ -30,7 +42,6 @@ func JsonStringExceptEmptyOfAnys(
 	}
 
 	rawJson := strhelpercore.RawAnyItemsRequest{Items: &items}
-
 	jsonBytes, err := json.Marshal(rawJson)
 
 	if err != nil {
