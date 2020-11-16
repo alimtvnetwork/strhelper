@@ -3,7 +3,8 @@ package strs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Returns all indexes where findingString is found.
@@ -28,8 +29,8 @@ func IndexesOfAllForPtrOfStr(
 
 	length := len(*lines)
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		startAtIndexFailed(startsAtIndex, length)
+	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
 	// https://play.golang.org/p/LjzQDne39kA
@@ -44,21 +45,21 @@ func IndexesOfAllForPtrOfStr(
 		sendingSearchTerm = &searchTermLowerCase
 	}
 
-	indexes := make([]int, constants.Zero, length)
+	indexes := make([]int, strconst.Zero, length)
 	foundIndex := IndexOfPtrStr(
 		sendingLines,
 		sendingSearchTerm,
 		startsAtIndex,
 		true)
 
-	if foundIndex > constants.InvalidNotFoundCase {
+	if foundIndex > strconst.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
 	}
 
 	var nextIndex int
 	lastIndex := length - 1
 
-	for foundIndex > constants.InvalidNotFoundCase {
+	for foundIndex > strconst.InvalidNotFoundCase {
 		nextIndex = foundIndex + 1
 		if nextIndex > lastIndex || (limits > -1 && len(indexes) >= limits) {
 			break
@@ -71,14 +72,14 @@ func IndexesOfAllForPtrOfStr(
 			nextIndex,
 			true)
 
-		if foundIndex > constants.InvalidNotFoundCase {
+		if foundIndex > strconst.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)
 		} else {
 			break
 		}
 	}
 
-	if len(indexes) == constants.Zero {
+	if len(indexes) == strconst.Zero {
 		return nil
 	}
 

@@ -3,7 +3,7 @@ package concat
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Concatenates the strings / elements of to a single string using the @sep (separator).
@@ -17,7 +17,7 @@ import (
 func JoinPtrExceptFor(filterSkipMap *map[string]bool, elements *[]string, sep *string) string {
 	elementsLength := len(*elements)
 	if elementsLength == 0 {
-		return constants.EmptyString
+		return strconst.EmptyString
 	}
 
 	n := len(*sep) * (elementsLength - 1)

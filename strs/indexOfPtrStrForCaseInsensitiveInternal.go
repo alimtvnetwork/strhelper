@@ -3,7 +3,7 @@ package strs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Assumptions are lines, findingString are check already not null or empty
@@ -18,5 +18,5 @@ func indexOfPtrStrForCaseInsensitiveInternal(lines *[]*string, findingString *st
 		}
 	}
 
-	return constants.InvalidNotFoundCase
+	return strconst.InvalidNotFoundCase
 }

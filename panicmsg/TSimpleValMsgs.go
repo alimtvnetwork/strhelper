@@ -2,7 +2,7 @@ package panicmsg
 
 import (
 	"gitlab.com/evatix-go/strhelper/concat"
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Returns msg + referenceStart + TVar(typeName, variableName, printVal) + spaceParenthesisEnd
@@ -11,7 +11,7 @@ func TSimpleValMsgs(msg string, referenceValues ...ReferenceValue) string {
 	var printVal string
 
 	if referenceValues == nil || len(referenceValues) == 0 {
-		printVal = constants.NilString
+		printVal = strconst.NilString
 	} else {
 		stringsArray := make([]string, len(referenceValues))
 
@@ -21,7 +21,7 @@ func TSimpleValMsgs(msg string, referenceValues ...ReferenceValue) string {
 
 		printVal = concat.JoinPtr(
 			&stringsArray,
-			constants.CommaSpacePtr)
+			strconst.CommaSpacePtr)
 	}
 
 	return msg +
