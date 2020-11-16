@@ -1,6 +1,9 @@
 package strs
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/strconst"
+)
 
 // Returns the index where the string first found, rest don't care
 func IndexOf(
@@ -10,13 +13,13 @@ func IndexOf(
 	isCaseSensitive bool,
 ) int {
 	if IsEmpty(lines) || findingString == nil {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	length := len(*lines)
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		startAtIndexFailed(startsAtIndex, length)
+	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
 	if !isCaseSensitive {
@@ -30,5 +33,5 @@ func IndexOf(
 		}
 	}
 
-	return constants.InvalidNotFoundCase
+	return strconst.InvalidNotFoundCase
 }

@@ -1,6 +1,8 @@
 package panicmsg
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/strconst"
+)
 
 // Returns variableName + "[" + typeName + "]" + constants.SpaceColonSpace + value
 func TVar(typeName, variableName, value string) string {
@@ -8,6 +10,6 @@ func TVar(typeName, variableName, value string) string {
 		squareBracketStart +
 		typeName +
 		squareBracketEnd +
-		constants.SpaceColonSpace +
+		strconst.SpaceColonSpace +
 		value
 }

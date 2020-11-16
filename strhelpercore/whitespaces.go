@@ -3,7 +3,7 @@ package strhelpercore
 import (
 	"unicode"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 const (
@@ -11,7 +11,7 @@ const (
 )
 
 var (
-	asciiSpaces = constants.ASCIISpace
+	asciiSpaces = strconst.ASCIISpace
 )
 
 // Returns true for ASCII spaces and also all unicode spaces.

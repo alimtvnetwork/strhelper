@@ -10,10 +10,15 @@ import (
 	"strings"
 	"sync"
 
-	"gitlab.com/evatix-go/strhelper"
-	"gitlab.com/evatix-go/strhelper/charhelper"
+	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/lines"
+	padding2 "gitlab.com/evatix-go/strhelper/padding"
+	"gitlab.com/evatix-go/strhelper/replace"
+	"gitlab.com/evatix-go/strhelper/reverse"
+	"gitlab.com/evatix-go/strhelper/splits"
+	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -152,7 +157,7 @@ func (stringWrapper *StringWrapper) IndexesOfAll(
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	return strhelper.IndexesOfAllPtr(
+	return index.OfAllPtr(
 		stringWrapper.content,
 		findingString,
 		startsAtIndex,
@@ -171,7 +176,7 @@ func (stringWrapper *StringWrapper) MultipleStringIndexesOfAll(
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.IndexesResultSet {
-	return strhelper.MultiStrIndexesOfAllUsingSimpleArrayPtr(
+	return index.OfAllMany(
 		stringWrapper.content,
 		findingStrings,
 		startsAtIndex,
@@ -195,7 +200,7 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 
 	if stringWrapper.isEmptyOrWhitespace == nil {
 		value := stringWrapper.content
-		isEmptyOrNull := value == nil || *value == constants.EmptyString || (*stringWrapper).lengthInBytes == 0
+		isEmptyOrNull := value == nil || *value == strconst.EmptyString || (*stringWrapper).lengthInBytes == 0
 		stringWrapper.isNullOrEmpty = &isEmptyOrNull
 		isEmptyOrWhitespace := isEmptyOrNull || whitespace.IsWhitespaces(value)
 		(*stringWrapper).isEmptyOrWhitespace = &isEmptyOrWhitespace
@@ -253,7 +258,7 @@ func (stringWrapper *StringWrapper) GetLines() *[]string {
 	defer stringWrapper.Unlock()
 
 	if stringWrapper.lines == nil && !(*stringWrapper).IsNull() {
-		lines := strhelper.GetLines(stringWrapper.content)
+		lines := lines.GetLines(stringWrapper.content)
 		(*stringWrapper).lines = &lines
 	}
 
@@ -267,7 +272,7 @@ func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
 
 	isRequiresSetting := stringWrapper.linesUnix == nil &&
 		!(*stringWrapper).IsNull()
-	isNewLineSameAsUnix := constants.NewLine == constants.NewLineUnix
+	isNewLineSameAsUnix := strconst.NewLine == strconst.NewLineUnix
 
 	if isRequiresSetting && isNewLineSameAsUnix {
 		// same no need to process
@@ -276,7 +281,7 @@ func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
 
 	if isRequiresSetting && !isNewLineSameAsUnix {
 		// requires processing
-		linesUnix := strhelper.GetLinesUnix(stringWrapper.content)
+		linesUnix := lines.GetLinesUnix(stringWrapper.content)
 		(*stringWrapper).linesUnix = &linesUnix
 	}
 
@@ -340,7 +345,7 @@ func (stringWrapper *StringWrapper) ToLowerRunesPtr() *[]rune {
 	defer stringWrapper.Unlock()
 
 	if (stringWrapper.lowerRunes == nil || *stringWrapper.lowerRunes == nil) && !(*stringWrapper).IsNull() {
-		lowerRunes := charhelper.ToLowerRunes(stringWrapper.ToRunesPtr())
+		lowerRunes := chars.ToLowerRunes(stringWrapper.ToRunesPtr())
 		stringWrapper.lowerRunes = lowerRunes
 	}
 
@@ -353,7 +358,7 @@ func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
 	defer stringWrapper.Unlock()
 
 	if stringWrapper.upperRunes == nil || *stringWrapper.upperRunes == nil {
-		upperRunes := charhelper.ToUpperRunes(stringWrapper.ToRunesPtr())
+		upperRunes := chars.ToUpperRunes(stringWrapper.ToRunesPtr())
 		stringWrapper.upperRunes = upperRunes
 	}
 
@@ -513,8 +518,8 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 	args := strhelpercore.StringWrapperLineLoopArgs{
 		Content: stringWrapper.content,
 		Lines:   lines,
-		Index:   -1,                    // it will change per line
-		Line:    constants.EmptyString, // it will change per line
+		Index:   -1,                   // it will change per line
+		Line:    strconst.EmptyString, // it will change per line
 	}
 
 	for args.Index, args.Line = range *lines {
@@ -534,8 +539,8 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 	args := strhelpercore.StringWrapperLineLoopArgs{
 		Content: stringWrapper.content,
 		Lines:   lines,
-		Index:   -1,                    // it will change per line
-		Line:    constants.EmptyString, // it will change per line
+		Index:   -1,                   // it will change per line
+		Line:    strconst.EmptyString, // it will change per line
 	}
 
 	for args.Index, args.Line = range *lines {
@@ -561,7 +566,7 @@ func (stringWrapper *StringWrapper) String() string {
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 	if !stringWrapper.HasIndex(index) {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	return int16(stringWrapper.ValueWithoutPtr()[index])
@@ -572,7 +577,7 @@ func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 // performance should be very slow, use direct access of stringWrapper.ToRunesPtr().
 func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
 	if !stringWrapper.HasIndex(index) {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	return stringWrapper.ToRunes()[index]
@@ -589,7 +594,7 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 		return valueAt == char
 	}
 
-	return charhelper.IsMatchCaseInsensitive(valueAt, char)
+	return chars.IsMatchCaseInsensitive(valueAt, char)
 }
 
 // (*stringWrapper).LengthInBytes()-1 >= index
@@ -630,7 +635,7 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) *StringWrapper {
-	return stringWrapper.concat(constants.NewLine, isSkipOnEmpty, &contents)
+	return stringWrapper.concat(strconst.NewLine, isSkipOnEmpty, &contents)
 }
 
 // Better to use slice or builder for appending or concatenating lines in a loop.
@@ -638,7 +643,7 @@ func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 	return stringWrapper.concat(
-		constants.EmptyString,
+		strconst.EmptyString,
 		false, // must add everything
 		&contents)
 }
@@ -750,7 +755,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) *StringWrapper {
-	replacedText := strhelper.ReplacePtr(
+	replacedText := replace.ReplacePtr(
 		stringWrapper.content,
 		searchingWrapper.content,
 		replacingWrapper.content,
@@ -770,7 +775,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return strhelper.ReplacePtr(
+	return replace.ReplacePtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -787,7 +792,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) *string {
-	replacedText := strhelper.ReplacePtr(
+	replacedText := replace.ReplacePtr(
 		stringWrapper.content,
 		search,
 		replaceText,
@@ -805,7 +810,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return strhelper.ReplacePtr(
+	return replace.ReplacePtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -819,7 +824,7 @@ func (stringWrapper *StringWrapper) ReplaceMultiple(
 	searchReplaceMap *map[string]string,
 	startsAt int,
 ) string {
-	return strhelper.ReplaceMultiplePtr(
+	return replace.ReplaceMultiplePtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,
@@ -834,7 +839,7 @@ func (stringWrapper *StringWrapper) ReplaceMultipleCase(
 	limits int,
 	isCaseSensitive bool,
 ) string {
-	return strhelper.ReplaceMultiplePtr(
+	return replace.ReplaceMultiplePtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,
@@ -848,7 +853,7 @@ func (stringWrapper *StringWrapper) LastIndexOf(
 	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
 ) int {
-	return strhelper.LastIndexOfPtr(
+	return index.OfLastPtr(
 		stringWrapper.content,
 		&search,
 		lastStartIndexReducedBy,
@@ -856,7 +861,7 @@ func (stringWrapper *StringWrapper) LastIndexOf(
 }
 
 func (stringWrapper *StringWrapper) ReversePtr() string {
-	return strhelper.ReversePtr(stringWrapper.content)
+	return reverse.Ptr(stringWrapper.content)
 }
 
 func (stringWrapper *StringWrapper) LastIndexOfPtr(
@@ -864,7 +869,7 @@ func (stringWrapper *StringWrapper) LastIndexOfPtr(
 	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
 ) int {
-	return strhelper.LastIndexOfPtr(
+	return index.OfLastPtr(
 		stringWrapper.content,
 		search,
 		lastStartIndexReducedBy,
@@ -877,33 +882,33 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsStartsWithPtr(
+	return isstr.StartsWithPtr(
 		stringWrapper.content,
 		&search,
 		startsAt,
 		isCaseSensitive)
 }
 
-// Use direct strhelper.IsEndsWithPtr will be faster
+// Use direct strhelper.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsEndsWithPtr(
+	return isstr.EndsWithPtr(
 		stringWrapper.content,
 		&endsWith,
 		startsAt,
 		isCaseSensitive)
 }
 
-// Use direct strhelper.IsEndsWithPtr will be faster
+// Use direct strhelper.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWithPtr(
 	endsWith *string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsEndsWithPtr(
+	return isstr.EndsWithPtr(
 		stringWrapper.content,
 		endsWith,
 		startsAt,
@@ -911,23 +916,23 @@ func (stringWrapper *StringWrapper) IsEndsWithPtr(
 }
 
 func (stringWrapper *StringWrapper) PadLeftWithSpace(width int) string {
-	return strhelper.PadSpaceLeft(stringWrapper.content, width)
+	return padding2.SpaceLeft(stringWrapper.content, width)
 }
 
 func (stringWrapper *StringWrapper) PadRightWithSpace(width int) string {
-	return strhelper.PadSpaceRight(stringWrapper.content, width)
+	return padding2.SpaceRight(stringWrapper.content, width)
 }
 
 func (stringWrapper *StringWrapper) PadLeft(width int, padding string) string {
-	return strhelper.PadLeft(stringWrapper.content, &padding, width)
+	return padding2.Left(stringWrapper.content, &padding, width)
 }
 
 func (stringWrapper *StringWrapper) PadRight(width int, padding string) string {
-	return strhelper.PadRight(stringWrapper.content, &padding, width)
+	return padding2.Right(stringWrapper.content, &padding, width)
 }
 
 func (stringWrapper *StringWrapper) Pad(width int, padding string, isLeft, isRight bool) string {
-	return strhelper.Pad(stringWrapper.content, &padding, width, isLeft, isRight)
+	return padding2.Pad(stringWrapper.content, &padding, width, isLeft, isRight)
 }
 
 // Multiple split occur from the given array of splits.
@@ -944,7 +949,7 @@ func (stringWrapper *StringWrapper) MultiSplit(
 	startsAt, limits int,
 	splitters ...string,
 ) *strhelpercore.SplitResultOverview {
-	return strhelper.MultipleSplitsPtr(
+	return splits.ManyPtr(
 		stringWrapper.content,
 		&splitters,
 		startsAt,
@@ -967,7 +972,7 @@ func (stringWrapper *StringWrapper) MultiSplitCase(
 	isCaseSensitive bool,
 	splitters ...string,
 ) *strhelpercore.SplitResultOverview {
-	return strhelper.MultipleSplitsPtr(
+	return splits.ManyPtr(
 		stringWrapper.content,
 		&splitters,
 		startsAt,

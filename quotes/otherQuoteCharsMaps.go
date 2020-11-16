@@ -1,13 +1,15 @@
 package quotes
 
-import "gitlab.com/evatix-go/strhelper/constants"
+import (
+	"gitlab.com/evatix-go/strhelper/strconst"
+)
 
 var otherQuoteCharsMaps = map[uint8]QuoteStatus{
-	constants.SingleQuoteSymbol: {
+	strconst.SingleQuoteSymbol: {
 		IsQuoteFound: true,
 		Found:        Single,
 	},
-	constants.DoubleQuoteSymbol: {
+	strconst.DoubleQuoteSymbol: {
 		IsQuoteFound: true,
 		Found:        Double,
 	},

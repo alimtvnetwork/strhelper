@@ -3,7 +3,8 @@ package strs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 func IndexOfForCaseInsensitive(
@@ -12,13 +13,13 @@ func IndexOfForCaseInsensitive(
 	startsAtIndex int,
 ) int {
 	if IsEmpty(lines) || findingString == nil {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	length := len(*lines)
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		startAtIndexFailed(startsAtIndex)
+	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
 	findingStringToLower := strings.ToLower(*findingString)
@@ -29,5 +30,5 @@ func IndexOfForCaseInsensitive(
 		}
 	}
 
-	return constants.InvalidNotFoundCase
+	return strconst.InvalidNotFoundCase
 }

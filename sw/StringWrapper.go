@@ -5,10 +5,12 @@ import (
 	"regexp"
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper"
-	"gitlab.com/evatix-go/strhelper/charhelper"
+	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/padding"
+	"gitlab.com/evatix-go/strhelper/replace"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // no caching
@@ -61,7 +63,7 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 
 // returns len(s) == 0 || s == ""
 func (stringWrapper *StringWrapper) IsEmpty() bool {
-	return (*stringWrapper).Length() == 0 || string(*stringWrapper) == constants.EmptyString
+	return (*stringWrapper).Length() == 0 || string(*stringWrapper) == strconst.EmptyString
 }
 
 // IsNull(s) || IsEmpty(s)
@@ -71,7 +73,7 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 
 // IsNullOrEmpty(s) || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
-	return (*stringWrapper).IsNullOrEmpty() || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
+	return (*stringWrapper).IsNullOrEmpty() || isstr.BlankPtr(stringWrapper.ValuePtr())
 }
 
 func (stringWrapper *StringWrapper) TrimSpace() string {
@@ -193,7 +195,7 @@ func (stringWrapper *StringWrapper) String() string {
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 	if !stringWrapper.HasIndex(index) {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	return int16(stringWrapper.Value()[index])
@@ -210,7 +212,7 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 		return valueAt == char
 	}
 
-	return charhelper.IsMatchCaseInsensitive(valueAt, char)
+	return chars.IsMatchCaseInsensitive(valueAt, char)
 }
 
 func (stringWrapper *StringWrapper) HasIndex(index int) bool {
@@ -233,7 +235,7 @@ func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Bu
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
 	if !stringWrapper.HasIndex(index) {
-		return constants.InvalidNotFoundCase
+		return strconst.InvalidNotFoundCase
 	}
 
 	return stringWrapper.ToRunes()[index]
@@ -254,13 +256,13 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 
 // Better to use slice or builder for appending lines in a loop.
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) StringWrapper {
-	return stringWrapper.concat(constants.NewLine, isSkipOnEmpty, &contents)
+	return stringWrapper.concat(strconst.NewLine, isSkipOnEmpty, &contents)
 }
 
 // Better to use slice or builder for appending or concatenating lines in a loop.
 func (stringWrapper *StringWrapper) Concat(contents ...string) StringWrapper {
 	return stringWrapper.concat(
-		constants.EmptyString,
+		strconst.EmptyString,
 		false, // must add everything
 		&contents)
 }
@@ -317,7 +319,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) StringWrapper {
-	replacedText := strhelper.ReplacePtr(
+	replacedText := replace.ReplacePtr(
 		stringWrapper.ValuePtr(),
 		searchingWrapper.ValuePtr(),
 		replacingWrapper.ValuePtr(),
@@ -337,7 +339,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return strhelper.ReplacePtr(
+	return replace.ReplacePtr(
 		stringWrapper.ValuePtr(),
 		&search,
 		&replaceText,
@@ -354,7 +356,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) string {
-	return strhelper.ReplacePtr(
+	return replace.ReplacePtr(
 		stringWrapper.ValuePtr(),
 		search,
 		replaceText,
@@ -370,7 +372,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return strhelper.ReplacePtr(
+	return replace.ReplacePtr(
 		stringWrapper.ValuePtr(),
 		&search,
 		&replaceText,
@@ -385,7 +387,7 @@ func (stringWrapper *StringWrapper) LastIndexOf(
 	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
 ) int {
-	return strhelper.LastIndexOfPtr(
+	return index.OfLastPtr(
 		stringWrapper.ValuePtr(),
 		&search,
 		lastStartIndexReducedBy,
@@ -397,7 +399,7 @@ func (stringWrapper *StringWrapper) LastIndexOfPtr(
 	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
 ) int {
-	return strhelper.LastIndexOfPtr(
+	return index.OfLastPtr(
 		stringWrapper.ValuePtr(),
 		search,
 		lastStartIndexReducedBy,
@@ -410,33 +412,33 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsStartsWithPtr(
+	return isstr.StartsWithPtr(
 		stringWrapper.ValuePtr(),
 		&search,
 		startsAt,
 		isCaseSensitive)
 }
 
-// Use direct strhelper.IsEndsWithPtr will be faster
+// Use direct strhelper.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsEndsWithPtr(
+	return isstr.EndsWithPtr(
 		stringWrapper.ValuePtr(),
 		&endsWith,
 		startsAt,
 		isCaseSensitive)
 }
 
-// Use direct strhelper.IsEndsWithPtr will be faster
+// Use direct strhelper.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWithPtr(
 	endsWith *string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
-	return strhelper.IsEndsWithPtr(
+	return isstr.EndsWithPtr(
 		stringWrapper.ValuePtr(),
 		endsWith,
 		startsAt,
@@ -444,21 +446,21 @@ func (stringWrapper *StringWrapper) IsEndsWithPtr(
 }
 
 func (stringWrapper *StringWrapper) PadLeftWithSpace(width int) string {
-	return strhelper.PadSpaceLeft(stringWrapper.ValuePtr(), width)
+	return padding.SpaceLeft(stringWrapper.ValuePtr(), width)
 }
 
 func (stringWrapper *StringWrapper) PadRightWithSpace(width int) string {
-	return strhelper.PadSpaceRight(stringWrapper.ValuePtr(), width)
+	return padding.SpaceRight(stringWrapper.ValuePtr(), width)
 }
 
-func (stringWrapper *StringWrapper) PadLeft(width int, padding string) string {
-	return strhelper.PadLeft(stringWrapper.ValuePtr(), &padding, width)
+func (stringWrapper *StringWrapper) PadLeft(width int, paddingStr string) string {
+	return padding.Left(stringWrapper.ValuePtr(), &paddingStr, width)
 }
 
-func (stringWrapper *StringWrapper) PadRight(width int, padding string) string {
-	return strhelper.PadRight(stringWrapper.ValuePtr(), &padding, width)
+func (stringWrapper *StringWrapper) PadRight(width int, paddingStr string) string {
+	return padding.Right(stringWrapper.ValuePtr(), &paddingStr, width)
 }
 
-func (stringWrapper *StringWrapper) Pad(width int, padding string, isLeft, isRight bool) string {
-	return strhelper.Pad(stringWrapper.ValuePtr(), &padding, width, isLeft, isRight)
+func (stringWrapper *StringWrapper) Pad(width int, paddingStr string, isLeft, isRight bool) string {
+	return padding.Pad(stringWrapper.ValuePtr(), &paddingStr, width, isLeft, isRight)
 }

@@ -1,7 +1,7 @@
 package concat
 
 import (
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
@@ -29,11 +29,11 @@ func PtrStringsArrayWithSeparator(
 		combinedContents = JoinStrPtr(contents, separator)
 	}
 
-	if currentStr == nil || *currentStr == constants.EmptyString || len(*currentStr) == 0 {
+	if currentStr == nil || *currentStr == strconst.EmptyString || len(*currentStr) == 0 {
 		return combinedContents
 	}
 
-	if combinedContents != constants.EmptyString && !whitespace.IsWhitespaces(&combinedContents) {
+	if combinedContents != strconst.EmptyString && !whitespace.IsWhitespaces(&combinedContents) {
 		combinedContents = *separator + combinedContents
 	}
 

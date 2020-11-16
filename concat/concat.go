@@ -3,7 +3,7 @@ package concat
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Concat any objects to single string using sprintf format given constants.SprintValueFormat
@@ -21,7 +21,7 @@ func AnyValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintValueFormat,
+		strconst.SprintValueFormat,
 		nil,
 		&contents)
 }
@@ -41,7 +41,7 @@ func AnyNameValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintPropertyNameValueFormat,
+		strconst.SprintPropertyNameValueFormat,
 		nil,
 		&contents)
 }
@@ -61,7 +61,7 @@ func AnyFullNameValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintFullPropertyNameValueFormat,
+		strconst.SprintFullPropertyNameValueFormat,
 		nil,
 		&contents)
 }
@@ -111,7 +111,7 @@ func AnyArrayOfInterfaces(
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
 	} else if isSkipEmptyOrNil == false {
-		newLines = append(newLines, constants.NilString)
+		newLines = append(newLines, strconst.NilString)
 	}
 
 	for _, content := range *contents {
@@ -149,7 +149,7 @@ func AnyArrayOfInterfacesUsingFunc(
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
 	} else if isSkipEmptyOrNil == false {
-		newLines = append(newLines, constants.NilString)
+		newLines = append(newLines, strconst.NilString)
 	}
 
 	for _, content := range *contents {
