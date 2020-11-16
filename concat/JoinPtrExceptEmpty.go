@@ -6,10 +6,14 @@ import (
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
+// Concatenates the strings / elements of to a single string using the @sep (separator).
+//
+// Skip nil or empty string in elements.
+//
+// @sep:
+//  - used to concat each strings / elements.
+//
 // Copied from golang library (reference : https://bit.ly/3oPHGdy).
-// Join concatenates the elements of its first argument to create a single string. The separator
-// string sep is placed between elements in the resulting string.
-// Skip empty or whitespace string in elements.
 func JoinPtrExceptEmpty(elements *[]string, sep *string) string {
 	elementsLength := len(*elements)
 

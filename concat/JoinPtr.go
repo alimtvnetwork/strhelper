@@ -6,9 +6,12 @@ import (
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
+// Join concatenates the strings / elements of its first argument to a single string.
+//
+// @sep:
+//  - used to concat each strings / elements.
+//
 // Copied from golang library (reference : https://bit.ly/3oPHGdy).
-// Join concatenates the elements of its first argument to create a single string. The separator
-// string sep is placed between elements in the resulting string.
 func JoinPtr(elements *[]string, sep *string) string {
 	elementsLength := len(*elements)
 
@@ -27,8 +30,7 @@ func JoinPtr(elements *[]string, sep *string) string {
 	var b strings.Builder
 	b.Grow(n)
 	b.WriteString((*elements)[0])
-	restOfTheElementsExceptFirst := (*elements)[1:]
-	for _, s := range restOfTheElementsExceptFirst {
+	for _, s := range (*elements)[1:] {
 		b.WriteString(*sep)
 		b.WriteString(s)
 	}

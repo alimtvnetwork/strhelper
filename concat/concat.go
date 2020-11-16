@@ -6,6 +6,13 @@ import (
 	"gitlab.com/evatix-go/strhelper/constants"
 )
 
+// Concat any objects to single string using sprintf format given constants.SprintValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -19,7 +26,13 @@ func AnyValues(
 		&contents)
 }
 
-// Concat any object to string, sprintf format given constants.SprintPropertyNameValueFormat
+// Concat any objects to single string using sprintf format given constants.SprintPropertyNameValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -33,7 +46,13 @@ func AnyNameValues(
 		&contents)
 }
 
-// Concat any object to string, sprintf format given constants.SprintFullPropertyNameValueFormat
+// Concat any objects to single string using sprintf format given constants.SprintFullPropertyNameValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyFullNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -47,7 +66,13 @@ func AnyFullNameValues(
 		&contents)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to single string using it's sprintf format given
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func Anys(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -62,7 +87,13 @@ func Anys(
 		&contents)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to single string using it's sprintf format given
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyArrayOfInterfaces(
 	separator *string,
 	isSkipEmptyOrNil bool,
@@ -94,7 +125,13 @@ func AnyArrayOfInterfaces(
 	return StringsArrayWithSeparator(nil, separator, isSkipEmptyOrNil, &newLines)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to string using compiler function.
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each lines. Whereas compiler function only compile the single interface to string only.
 func AnyArrayOfInterfacesUsingFunc(
 	separator *string,
 	isSkipEmptyOrNil bool,
