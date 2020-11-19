@@ -1,6 +1,6 @@
 package strhelpercore
 
-type StringWrapperLineLoopArgs struct {
+type LineArgs struct {
 	Content *string
 	Lines   *[]string
 	Index   int

@@ -1,7 +1,7 @@
 package chars
 
 // Modifies existing chars array to reverse order.
-// if nil or empty then return nil
+// if nil or empty then returns nil
 func ReverseInPlacePtr(chars *[]uint8) *[]uint8 {
 	length := len(*chars)
 

@@ -51,7 +51,7 @@ func (wrapUnwrap *WrapUnWrap) WrapPtr(input *string) *string {
 // Conditions:
 //  - if input start has WrapUnWrap.Start then skips adding for WrapUnWrap.Start.
 //  - if input end has WrapUnWrap.End then skips adding for WrapUnWrap.End.
-//  - if both found then return as is.
+//  - if both found then returns as is.
 func (wrapUnwrap *WrapUnWrap) WrapByChecking(input string, isCaseSensitive bool) string {
 	return *wrapUnwrap.WrapByCheckingPtr(&input, isCaseSensitive)
 }
@@ -61,7 +61,7 @@ func (wrapUnwrap *WrapUnWrap) WrapByChecking(input string, isCaseSensitive bool)
 // Conditions:
 //  - if input start has WrapUnWrap.Start then skips adding for WrapUnWrap.Start.
 //  - if input end has WrapUnWrap.End then skips adding for WrapUnWrap.End.
-//  - if both found then return as is.
+//  - if both found then returns as is.
 func (wrapUnwrap *WrapUnWrap) WrapByCheckingPtr(input *string, isCaseSensitive bool) *string {
 	status := wrapUnwrap.WrapStatus(input, isCaseSensitive)
 	isBothFound := status.IsLeftFound && status.IsRightFound
@@ -111,7 +111,7 @@ func (wrapUnwrap *WrapUnWrap) HasEndAtEnding(input *string, isCaseSensitive bool
 //
 // Checks if the end exists on the right if so then unwraps it.
 //
-// If no wrap found then return input as is.
+// If no wrap found then returns input as is.
 func (wrapUnwrap *WrapUnWrap) Unwrap(input string, isCaseSensitive bool) string {
 	return wrapUnwrap.UnwrapPtr(&input, isCaseSensitive)
 }
@@ -120,7 +120,7 @@ func (wrapUnwrap *WrapUnWrap) Unwrap(input string, isCaseSensitive bool) string 
 //
 // Checks if the end exists on the right if so then unwraps it.
 //
-// If no wrap found then return input as is.
+// If no wrap found then returns input as is.
 func (wrapUnwrap *WrapUnWrap) UnwrapPtr(input *string, isCaseSensitive bool) string {
 	status := wrapUnwrap.WrapStatus(input, isCaseSensitive)
 	isBothFound := status.IsLeftFound && status.IsRightFound

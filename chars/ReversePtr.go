@@ -1,7 +1,7 @@
 package chars
 
 // Makes a new chars to reverse, doesn't modify the existing one.
-// if nil or empty then return nil
+// if nil or empty then returns nil
 func ReversePtr(chars *[]uint8) *[]uint8 {
 	length := len(*chars)
 
