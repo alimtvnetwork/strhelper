@@ -356,16 +356,44 @@ func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 //
 // Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
 func (stringWrapper *StringWrapper) GetLines() *[]string {
-	lines := strings.Split(*stringWrapper.content, strconst.NewLine)
+	currentLines := strings.Split(*stringWrapper.content, strconst.NewLine)
 
-	return &lines
+	return &currentLines
 }
 
 // GetLines splitted by newline using unix Split `\n`
 func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
-	lines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
+	currentLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
 
-	return &lines
+	return &currentLines
+}
+
+// GetLinesAsWrappers splitted by newline of os
+//
+// Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
+func (stringWrapper *StringWrapper) GetLinesAsWrappers() *[]*StringWrapper {
+	currentLines := strings.Split(*stringWrapper.content, strconst.NewLine)
+
+	wrappers := make([]*StringWrapper, len(currentLines))
+
+	for i, line := range currentLines {
+		wrappers[i] = New(line)
+	}
+
+	return &wrappers
+}
+
+// GetUnixLinesAsWrappers splitted by newline using unix Split `\n`
+func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
+	currentLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
+
+	wrappers := make([]*StringWrapper, len(currentLines))
+
+	for i, line := range currentLines {
+		wrappers[i] = New(line)
+	}
+
+	return &wrappers
 }
 
 // Loops through all the rune characters
