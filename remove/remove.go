@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	asciiSpaceArray       = whitespace.GetAscIISpaceArray()
-	asciiNewLinesArray    = whitespace.GetAscIINewLinesArray()
+	asciiSpaceArray       = whitespace.GetAsciiSpaceArray()
+	asciiNewLinesArray    = whitespace.GetAsciiNewLinesArray()
 	commaRemoveAscIIArray = [256]uint8{
 		',': 1,
 	}

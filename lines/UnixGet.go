@@ -7,6 +7,6 @@ import (
 )
 
 // Gets new line by \n
-func GetLinesUnix(content *string) []string {
+func UnixGet(content *string) []string {
 	return strings.Split(*content, strconst.NewLineUnix)
 }

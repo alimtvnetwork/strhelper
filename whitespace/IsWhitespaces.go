@@ -1,20 +1,9 @@
-package strhelpercore
+package whitespace
 
-import (
-	"unicode"
+import "unicode"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
-)
-
-const (
-	maxUnit8 = 255
-)
-
-var (
-	asciiSpaces = strconst.AsciiSpace
-)
-
-// Returns true for ASCII spaces and also all unicode spaces.
+// Returns true for if the contents are all whitespaces
+//  (including unicode whitespaces for only checking ascii use the ascii version a lot more faster)
 //
 // Checks from start and end if any valid char found returns immediately.
 //
@@ -25,7 +14,7 @@ var (
 //
 // References:
 //  - https://stackoverflow.com/a/15020162
-func isWhitespaces(s *string) bool {
+func IsWhitespaces(s *string) bool {
 	runes := []rune(*s)
 	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)
 	length := len(runes)

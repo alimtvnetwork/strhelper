@@ -4,10 +4,12 @@ package sw
 import (
 	"regexp"
 	"strings"
+	"unicode/utf8"
 
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/padding"
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/strconst"
@@ -22,23 +24,41 @@ func New(str string) *StringWrapper {
 	return &stringWrapper
 }
 
+// use swp, it is optimized for performance.
 func (stringWrapper *StringWrapper) Value() string {
 	return string(*stringWrapper)
 }
 
+// use swp, it is optimized for performance.
 func (stringWrapper *StringWrapper) ValuePtr() *string {
 	value := string(*stringWrapper)
 
 	return &value
 }
 
-func (stringWrapper *StringWrapper) Length() int {
+// use swp, it is optimized for performance.
+//
+// This verion is not performance optimized.
+func (stringWrapper *StringWrapper) LengthInBytes() int {
 	return len(stringWrapper.Value())
 }
 
-// Too slow, if you want IsEmptySpace use isEmptyOrWhitespace.
+// use swp, it is optimized for performance.
+//
+// Returns utf8.RuneCountInString(stringWrapper.Value())
+//
+// If don't care about unicode use len(str) which is LengthInBytes
+func (stringWrapper *StringWrapper) Length() int {
+	return utf8.RuneCountInString(stringWrapper.Value())
+}
+
+// Extremely slow, return rune count of after trimming the string, utf8.RuneCountInString(strings.TrimSpace(stringWrapper.Value())).
+//
+// If you want IsEmptySpace use isEmptyOrWhitespace.
+//
+// If don't care about unicode use len(str) which is LengthInBytes
 func (stringWrapper *StringWrapper) LengthWithoutWhitespaces() int {
-	return len(strings.TrimSpace(stringWrapper.Value()))
+	return utf8.RuneCountInString(strings.TrimSpace(stringWrapper.Value()))
 }
 
 func (stringWrapper *StringWrapper) IsEquals(s string, isCaseSensitive bool) bool {
@@ -217,6 +237,19 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 
 func (stringWrapper *StringWrapper) HasIndex(index int) bool {
 	return (*stringWrapper).Length()-1 >= index
+}
+
+func (stringWrapper *StringWrapper) HasLengthOf(length int) bool {
+	return (*stringWrapper).Length() >= length
+}
+
+func (stringWrapper *StringWrapper) RuneLength() int {
+	return utf8.RuneCountInString((*stringWrapper).Value())
+}
+
+// (*stringWrapper).Length()-1 >= index
+func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
+	return (*stringWrapper).RuneLength()-1 >= index
 }
 
 // Returns a new string builder contains text of stringWrapper and has a
@@ -406,7 +439,7 @@ func (stringWrapper *StringWrapper) LastIndexOfPtr(
 		isCaseSensitive)
 }
 
-// For better performance use strhelper.IsStartsWithPtr
+// For better performance use isstr.IsStartsWithPtr
 func (stringWrapper *StringWrapper) IsStartsWith(
 	search string,
 	isCaseSensitive bool,
@@ -419,7 +452,7 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 		isCaseSensitive)
 }
 
-// Use direct strhelper.EndsWithPtr will be faster
+// Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
@@ -432,7 +465,7 @@ func (stringWrapper *StringWrapper) IsEndsWith(
 		isCaseSensitive)
 }
 
-// Use direct strhelper.EndsWithPtr will be faster
+// Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWithPtr(
 	endsWith *string,
 	isCaseSensitive bool,

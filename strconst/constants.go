@@ -80,7 +80,7 @@ const (
 
 var (
 	// Copied from golang strings
-	ASCIISpace = [256]uint8{
+	AsciiSpace = [256]uint8{
 		TabByte:            One,
 		LineFeedUnixByte:   One,
 		TabVByte:           One,
@@ -92,7 +92,7 @@ var (
 	}
 
 	// FormFeed \f is also marked as newline here.
-	ASCIINewLinesCharArray = [256]uint8{
+	AsciiNewLinesChars = [256]uint8{
 		LineFeedUnix:   One,
 		FormFeed:       One,
 		CarriageReturn: One,
