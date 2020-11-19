@@ -25,7 +25,7 @@ func Ptr(str *string) string {
 }
 
 // Modifies existing runesIn array to reverse order.
-// if nil or empty then return nil
+// if nil or empty then returns nil
 func RunesInPlacePtr(runesIn *[]rune) *[]rune {
 	length := len(*runesIn)
 

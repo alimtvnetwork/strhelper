@@ -1,7 +1,7 @@
 package chars
 
 // Modifies existing runesIn array to reverse order.
-// if nil or empty then return nil
+// if nil or empty then returns nil
 func ReverseRuneInPlacePtr(runesIn *[]rune) *[]rune {
 	length := len(*runesIn)
 

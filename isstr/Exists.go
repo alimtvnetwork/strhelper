@@ -15,3 +15,14 @@ func Exists(
 		strconst.Zero,
 		isCaseSensitive) > strconst.InvalidNotFoundCase
 }
+
+func ExistsPtr(
+	s, findingString *string,
+	isCaseSensitive bool,
+) bool {
+	return index.OfPtr(
+		s,
+		findingString,
+		strconst.Zero,
+		isCaseSensitive) > strconst.InvalidNotFoundCase
+}

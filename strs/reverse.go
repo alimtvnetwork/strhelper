@@ -1,12 +1,12 @@
 package strs
 
-// Returns len == 0 then return as is.
+// Returns len == 0 then returns as is.
 // Returns new strings which is reversed.
 func Reverse(inputStrings []string) *[]string {
 	return ReverseStringsPtr(&inputStrings)
 }
 
-// Returns len == 0 then return as is.
+// Returns len == 0 then returns as is.
 // Returns new strings which is reversed from the given array.
 // Reference array copy/referencing : https://play.golang.org/p/GwELxdHZWoy
 func ReverseStringsPtr(inputStrings *[]string) *[]string {
@@ -22,7 +22,7 @@ func ReverseStringsPtr(inputStrings *[]string) *[]string {
 	return ReverseStringsInPlacePtr(&copyReference)
 }
 
-// Returns len == 0 then return as is.
+// Returns len == 0 then returns as is.
 // Modifies existing strings array to reverse order.
 func ReverseStringsInPlacePtr(inputStrings *[]string) *[]string {
 	length := len(*inputStrings)

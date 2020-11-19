@@ -13,6 +13,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
+	"gitlab.com/evatix-go/strhelper/remove"
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/reverse"
 	"gitlab.com/evatix-go/strhelper/splits"
@@ -190,7 +191,13 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 		value := stringWrapper.content
 		isEmptyOrNull := value == nil || *value == strconst.EmptyString || (*stringWrapper).lengthInBytes == 0
 		stringWrapper.isNullOrEmpty = &isEmptyOrNull
-		isEmptyOrWhitespace := isEmptyOrNull || whitespace.IsWhitespaces(value)
+		isEmptyOrWhitespace := isEmptyOrNull
+
+		if isEmptyOrNull == false {
+			allRunes := stringWrapper.ToRunesPtr()
+			isEmptyOrWhitespace = whitespace.IsRunesWhitespaces(allRunes)
+		}
+
 		(*stringWrapper).isEmptyOrWhitespace = &isEmptyOrWhitespace
 	}
 
@@ -493,44 +500,38 @@ func (stringWrapper *StringWrapper) LoopRunesToGetRunes(
 
 // Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopLinesToStringArray(
-	loopProcessorRune func(args *strhelpercore.StringWrapperLineLoopArgs) *string,
+	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	lines := stringWrapper.GetLines()
-	newStrings := make([]*string, len(*lines))
+	allLines := stringWrapper.GetLines()
 
-	args := strhelpercore.StringWrapperLineLoopArgs{
-		Content: stringWrapper.content,
-		Lines:   lines,
-		Index:   -1,                   // it will change per line
-		Line:    strconst.EmptyString, // it will change per line
-	}
-
-	for args.Index, args.Line = range *lines {
-		newStrings[args.Index] = loopProcessorRune(&args)
-	}
-
-	return &newStrings
+	return lines.Process(
+		stringWrapper.content,
+		allLines,
+		&lineProcessor)
 }
 
 // Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
-	loopProcessorRune func(args *strhelpercore.StringWrapperLineLoopArgs) *string,
+	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	lines := stringWrapper.GetLinesUnix()
-	newStrings := make([]*string, len(*lines))
+	allLines := stringWrapper.GetLinesUnix()
 
-	args := strhelpercore.StringWrapperLineLoopArgs{
-		Content: stringWrapper.content,
-		Lines:   lines,
-		Index:   -1,                   // it will change per line
-		Line:    strconst.EmptyString, // it will change per line
-	}
+	return lines.Process(
+		stringWrapper.content,
+		allLines,
+		&lineProcessor)
+}
 
-	for args.Index, args.Line = range *lines {
-		newStrings[args.Index] = loopProcessorRune(&args)
-	}
+// Loops through all the lines.
+func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
+	lineProcessor strhelpercore.LineProcessor,
+) *[]*string {
+	allLines := stringWrapper.GetLinesUnix()
 
-	return &newStrings
+	return lines.ProcessAsync(
+		stringWrapper.content,
+		allLines,
+		&lineProcessor)
 }
 
 // Create regular expression from current string.
@@ -614,18 +615,63 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 	return builder
 }
 
+// Add the contents before the content of StringWrapper.Value()
+func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
+	return *stringWrapper.Prepends(
+		strconst.EmptyString,
+		false, // must add everything
+		&contents)
+}
+
+// Line is the separator for add the content before the content of StringWrapper.Value()
+func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapper {
+	return *stringWrapper.Prepends(
+		strconst.NewLine,
+		false, // must add everything
+		&contents)
+}
+
+// all given strings with given separator + StringWrapper.Value() content and returns as a wrapper
+//
+// @isSkipEmptyOrNil:
+//  - Skip nil or empty string in elements. (not the whitespace)
+//  - If final string compiled string from contents is a whitespace then ignored.
+//
+// @separator:
+//  - used to concat each strings / elements.
+//
+// @Returns:
+//  - @isSkipEmptyOrNil false , (contents joined with separator) + separator + StringWrapper.Value()
+//  - @isSkipEmptyOrNil true ,
+//    - if not empty or whitespace (StringWrapper.Value()) + allContents join with separator (skips any with nil or "")
+//    - if not empty or whitespace (allContents join with separator(skips any with nil or "")) then returns StringWrapper.Value()
+//    - if both are not empty and combined @contents is not whitespace then (all @contents combined with separator (skips any with nil or "")) + separator + @StringWrapper.Value()
+func (stringWrapper *StringWrapper) Prepends(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]string,
+) *StringWrapper {
+	combinedResult := concat.PrependArrayWithSeparator(
+		stringWrapper.content,
+		&separator,
+		isSkipOnEmpty,
+		contents)
+
+	return New(&combinedResult)
+}
+
 // Better to use slice or builder for appending lines in a loop.
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) *StringWrapper {
-	return stringWrapper.concat(strconst.NewLine, isSkipOnEmpty, &contents)
+	return stringWrapper.Concatenates(strconst.NewLine, isSkipOnEmpty, &contents)
 }
 
 // Better to use slice or builder for appending or concatenating lines in a loop.
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
-	return stringWrapper.concat(
+	return stringWrapper.Concatenates(
 		strconst.EmptyString,
 		false, // must add everything
 		&contents)
@@ -679,7 +725,7 @@ func (stringWrapper *StringWrapper) ConcatWithSeparator(
 	isSkipOnEmpty bool,
 	contents ...string,
 ) *StringWrapper {
-	return stringWrapper.concat(
+	return stringWrapper.Concatenates(
 		separator,
 		isSkipOnEmpty,
 		&contents)
@@ -702,7 +748,7 @@ func (stringWrapper *StringWrapper) ConcatPtrsWithSeparator(
 // combine current wrapper strings + all given ones with given separator and returns as wrapper
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
-func (stringWrapper *StringWrapper) concat(
+func (stringWrapper *StringWrapper) Concatenates(
 	separator string,
 	isSkipOnEmpty bool,
 	contents *[]string,
@@ -797,6 +843,35 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 		stringWrapper.content,
 		&search,
 		&replaceText,
+		startsAt,
+		-1,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) Remove(
+	removeString *string,
+	isCaseSensitive bool,
+	startsAt int,
+	count int,
+) string {
+	return remove.GetPtr(
+		stringWrapper.content,
+		removeString,
+		startsAt,
+		count,
+		isCaseSensitive,
+	)
+}
+
+func (stringWrapper *StringWrapper) RemoveAll(
+	removeString *string,
+	isCaseSensitive bool,
+	startsAt int,
+) string {
+	return remove.GetPtr(
+		stringWrapper.content,
+		removeString,
 		startsAt,
 		-1,
 		isCaseSensitive,
