@@ -6,6 +6,6 @@ import (
 )
 
 // String join using Unix New Line "\n"
-func GetContentFormLinesUnix(lines []string) string {
-	return concat.JoinPtr(&lines, strconst.NewLineUnixPtr)
+func UnixContentPtr(lines *[]string) string {
+	return concat.JoinPtr(lines, strconst.NewLineUnixPtr)
 }

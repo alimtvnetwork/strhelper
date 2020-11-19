@@ -48,9 +48,9 @@ func main() {
 	// fmt.Println(strhelper.ReplaceMultiple(a2, replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
 	// replaceMap[""] = "Hello"
 	// fmt.Println(strhelper.ReplaceMultiple("", replaceMap, 0,-1, false)) // expects "xcabhellophwihw-REPLACED ALIM-..CAB"
-	asciiWhitespacesArray := whitespace.GetAscIISpaceArray()
+	asciiWhitespacesArray := whitespace.GetAsciiSpaceArray()
 	asciiWhitespacesArray['p'] = 1
-	asciiWhitespacesArray2 := whitespace.GetAscIISpaceArray()
+	asciiWhitespacesArray2 := whitespace.GetAsciiSpaceArray()
 	fmt.Println((asciiWhitespacesArray2))
 	fmt.Println(chars.AscIIArrayToString(&asciiWhitespacesArray))
 	fmt.Println(remove.Whitespaces("                                                   Hello No Sapce               Alim                                  ", 0)) // expects "HelloNoSapceAlim"

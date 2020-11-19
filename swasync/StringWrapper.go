@@ -13,6 +13,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
 	"gitlab.com/evatix-go/strhelper/replace"
@@ -93,6 +94,8 @@ func (stringWrapper *StringWrapper) LengthInBytes() int {
 // As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
 //
 // It returns the len([]rune(str)) or len([]runeCached) cached version.
+//
+// If don't care about unicode use len(str) which is LengthInBytes
 func (stringWrapper *StringWrapper) Length() int {
 	stringWrapper.Lock()
 	defer stringWrapper.Unlock()
@@ -258,7 +261,7 @@ func (stringWrapper *StringWrapper) GetLines() *[]string {
 	defer stringWrapper.Unlock()
 
 	if stringWrapper.lines == nil && !(*stringWrapper).IsNull() {
-		lines := lines.GetLines(stringWrapper.content)
+		lines := lines.Get(stringWrapper.content)
 		(*stringWrapper).lines = &lines
 	}
 
@@ -281,7 +284,7 @@ func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
 
 	if isRequiresSetting && !isNewLineSameAsUnix {
 		// requires processing
-		linesUnix := lines.GetLinesUnix(stringWrapper.content)
+		linesUnix := lines.UnixGet(stringWrapper.content)
 		(*stringWrapper).linesUnix = &linesUnix
 	}
 
@@ -602,6 +605,10 @@ func (stringWrapper *StringWrapper) HasIndex(index int) bool {
 	return (*stringWrapper).LengthInBytes()-1 >= index
 }
 
+func (stringWrapper *StringWrapper) HasLengthOf(length int) bool {
+	return (*stringWrapper).Length() >= length
+}
+
 // (*stringWrapper).Length()-1 >= index
 func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
 	return (*stringWrapper).Length()-1 >= index
@@ -889,7 +896,7 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 		isCaseSensitive)
 }
 
-// Use direct strhelper.EndsWithPtr will be faster
+// Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
@@ -902,7 +909,7 @@ func (stringWrapper *StringWrapper) IsEndsWith(
 		isCaseSensitive)
 }
 
-// Use direct strhelper.EndsWithPtr will be faster
+// Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWithPtr(
 	endsWith *string,
 	isCaseSensitive bool,

@@ -2,6 +2,7 @@ package splits
 
 import (
 	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
@@ -128,7 +129,7 @@ func ManyPtr(
 		isIndexExist = isIndexExist && lastIndexOfSplit <= splitStartsAt
 		if isIndexExist {
 			word := (*str)[lastIndexOfSplit:splitStartsAt]
-			isEmptyWord = word == "" || whitespace.IsASCIIWhitespaces(&word)
+			isEmptyWord = word == "" || whitespace.IsAsciiWhitespaces(&word)
 
 			splitResult := strhelpercore.SplitResult{
 				SplitPrev: &word,
