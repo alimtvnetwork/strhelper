@@ -522,6 +522,34 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 		&lineProcessor)
 }
 
+// GetLinesAsWrappers splitted by newline of os
+//
+// Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
+func (stringWrapper *StringWrapper) GetLinesAsWrappers() *[]*StringWrapper {
+	allLines := strings.Split(*stringWrapper.content, strconst.NewLine)
+	length := len(allLines)
+	wrappers := make([]*StringWrapper, length)
+
+	for i := 0; i < length; i++ {
+		wrappers[i] = New(&allLines[i])
+	}
+
+	return &wrappers
+}
+
+// GetUnixLinesAsWrappers splitted by newline using unix Split `\n`
+func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
+	allLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
+	length := len(allLines)
+	wrappers := make([]*StringWrapper, len(allLines))
+
+	for i := 0; i < length; i++ {
+		wrappers[i] = New(&allLines[i])
+	}
+
+	return &wrappers
+}
+
 // Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
