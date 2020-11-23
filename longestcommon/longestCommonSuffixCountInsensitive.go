@@ -4,7 +4,8 @@ import "strings"
 
 // Assumptions here are a,b are not nil, at least empty string.
 //
-// Results count of suffix character matches. Where a, b can be at different lengths, it will find the longest common suffix.
+// Results count of suffix character matches. Where a, b can be at different lengths,
+// it will find the longest common suffix.
 //
 // Returns
 //

@@ -5,6 +5,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/tests/testscore"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers"
 )

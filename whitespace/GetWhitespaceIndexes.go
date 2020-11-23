@@ -23,10 +23,10 @@ func GetWhitespaceIndexes(allRunes *[]rune, startsAt int) *[]int {
 	indexes := make([]int, 0, length/2)
 	hasFoundAny := false
 
-	var rune rune
+	var r rune
 	for ; startsAt < length; startsAt++ {
-		rune = (*allRunes)[startsAt]
-		if (rune <= maxUnit8 && asciiSpaces[rune] == 1) || (rune > maxUnit8 && unicode.IsSpace(rune)) {
+		r = (*allRunes)[startsAt]
+		if (r <= maxUnit8 && asciiSpaces[r] == 1) || (r > maxUnit8 && unicode.IsSpace(r)) {
 			indexes = append(indexes, startsAt)
 			hasFoundAny = true
 		}

@@ -10,6 +10,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
@@ -72,24 +73,34 @@ func (stringWrapper *StringWrapper) ValueWithoutPtr() string {
 	return *stringWrapper.content
 }
 
-// As there is a difference between len(str) and utf8.RuneCountInString(str)
+// There is a difference between length in bytes (doesn't represent proper unicode chars) and
 //
+// length in runes (represents actual char length in unicode format).
+//
+// If care about unicode chars count then use Length version.
 // It returns the len(str) cached version.
-func (stringWrapper *StringWrapper) LengthInBytes() int {
+// Note :
+//  - This version returns cached version of len(str) which is saved during the instantiation of the object creation.
+//  - Less expensive (returns StringWrapper.length). Effective for bytes knowledge only.
+//  - Doesn't yield accurate characters length of unicode characters but only ascii.
+//  - There is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str)).
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
+func (stringWrapper *StringWrapper) BytesLength() int {
 	return stringWrapper.lengthInBytes
 }
 
-// As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
+// Returns len(ToRunesPtr()) cached version. If once runeLength generated then it will not generate again.
 //
-// It returns the len([]rune(str)) or len([]runeCached) cached version.
-//
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
-//
-// If don't care about unicode use len(str) which is LengthInBytes
+// If don't care about unicode then use len(str) which is BytesLength
+// Note :
+//  - A bit expensive to generate. However, this one is cached version.
+//  - Yields accurate characters length regardless of unicode.
+//  - As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
 func (stringWrapper *StringWrapper) Length() int {
 	if stringWrapper.runesLength == nil {
 		runesLength := len(stringWrapper.ToRunes())
-		(*stringWrapper).runesLength = &runesLength
+		stringWrapper.runesLength = &runesLength
 	}
 
 	return *stringWrapper.runesLength
@@ -101,9 +112,9 @@ func (stringWrapper *StringWrapper) IsEquals(s string, isCaseSensitive bool) boo
 	}
 
 	// insensitive
-	lower := strings.ToLower(s)
+	lower := stringWrapper.ToLowerPtr()
 
-	return lower == stringWrapper.ToLower()
+	return *lower == stringWrapper.ToLower()
 }
 
 func (stringWrapper *StringWrapper) IsAnyEquals(
@@ -111,7 +122,7 @@ func (stringWrapper *StringWrapper) IsAnyEquals(
 	contents ...*string,
 ) bool {
 	for _, content := range contents {
-		if (*stringWrapper).IsEquals(*content, isCaseSensitive) {
+		if stringWrapper.IsEquals(*content, isCaseSensitive) {
 			return true
 		}
 	}
@@ -124,7 +135,7 @@ func (stringWrapper *StringWrapper) IsAllEquals(
 	contents ...*string,
 ) bool {
 	for _, content := range contents {
-		if !(*stringWrapper).IsEquals(*content, isCaseSensitive) {
+		if !stringWrapper.IsEquals(*content, isCaseSensitive) {
 			return false
 		}
 	}
@@ -160,7 +171,7 @@ func (stringWrapper *StringWrapper) IndexesOfAll(
 // limits:
 //  - How many indexes should we search for and then stop looking further.
 //  - `-1` means find all
-func (stringWrapper *StringWrapper) MultipleStringIndexesOfAll(
+func (stringWrapper *StringWrapper) ManyIndexesOfAll(
 	findingStrings *[]string,
 	startsAtIndex int,
 	limits int,
@@ -185,11 +196,11 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 
 // returns s == nil || len(s) == 0 || s == ""
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 	if stringWrapper.isEmptyOrWhitespace == nil {
 		value := stringWrapper.content
-		isEmptyOrNull := value == nil || *value == strconst.EmptyString || (*stringWrapper).lengthInBytes == 0
+		isEmptyOrNull := value == nil || *value == strconst.EmptyString || stringWrapper.lengthInBytes == 0
 		stringWrapper.isNullOrEmpty = &isEmptyOrNull
 		isEmptyOrWhitespace := isEmptyOrNull
 
@@ -198,29 +209,29 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 			isEmptyOrWhitespace = whitespace.IsRunesWhitespaces(allRunes)
 		}
 
-		(*stringWrapper).isEmptyOrWhitespace = &isEmptyOrWhitespace
+		stringWrapper.isEmptyOrWhitespace = &isEmptyOrWhitespace
 	}
 
-	return *(*stringWrapper).isNullOrEmpty
+	return *stringWrapper.isNullOrEmpty
 }
 
 // IsNull(s) || IsNullOrEmpty(s)
 func (stringWrapper *StringWrapper) IsNull() bool {
-	return (*stringWrapper).content == nil
+	return stringWrapper.content == nil
 }
 
-// IsNullOrEmpty(s) || strhelper.IsBlankPtr(stringWrapper.content)
+// IsNullOrEmpty(s) || isstr.BlankPtr(stringWrapper.content)
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
-	return (*stringWrapper).IsNullOrEmpty() || *(*stringWrapper).isEmptyOrWhitespace
+	return stringWrapper.IsNullOrEmpty() || *stringWrapper.isEmptyOrWhitespace
 }
 
 // Trimmed space string (use caching, doesn't run multiple times)
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) TrimSpace() *string {
-	if stringWrapper.trimmedSpaceContent == nil && !(*stringWrapper).IsNull() {
+	if stringWrapper.trimmedSpaceContent == nil && !stringWrapper.IsNull() {
 		content := stringWrapper.ValueWithoutPtr()
 		trimmed := strings.TrimSpace(content)
 		stringWrapper.trimmedSpaceContent = &trimmed
@@ -247,40 +258,67 @@ func (stringWrapper *StringWrapper) TrimRight(cutSet string) *string {
 	return &trimmed
 }
 
-// GetLines splitted by newline of os
+// GetLines splits by newline of os
 //
 // Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) GetLines() *[]string {
-	if stringWrapper.lines == nil && !(*stringWrapper).IsNull() {
-		lines := lines.Get(stringWrapper.content)
-		(*stringWrapper).lines = &lines
+	if stringWrapper.lines == nil && !stringWrapper.IsNull() {
+		stringWrapper.lines = lines.GetPtr(stringWrapper.content)
 	}
 
 	return stringWrapper.lines
 }
 
-// GetLines splitted by newline using unix Split `\n`
+// GetLines splits by newline using unix Split `\n`
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
-func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
+func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
 	isRequiresSetting := stringWrapper.linesUnix == nil &&
-		!(*stringWrapper).IsNull()
-	isNewLineSameAsUnix := strconst.NewLine == strconst.NewLineUnix
+		!stringWrapper.IsNull()
+	isNewLineSameAsUnix := isinternal.IsCurrentOsUnix()
 
 	if isRequiresSetting && isNewLineSameAsUnix {
 		// same no need to process
-		stringWrapper.linesUnix = stringWrapper.lines
+		stringWrapper.linesUnix = stringWrapper.GetLines()
 	}
 
 	if isRequiresSetting && !isNewLineSameAsUnix {
 		// requires processing
 		linesUnix := lines.UnixGet(stringWrapper.content)
-		(*stringWrapper).linesUnix = &linesUnix
+		stringWrapper.linesUnix = &linesUnix
 	}
 
 	return stringWrapper.linesUnix
+}
+
+// GetLinesAsWrappers splits by newline of os
+//
+// Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
+func (stringWrapper *StringWrapper) GetLinesAsWrappers() *[]*StringWrapper {
+	allLines := stringWrapper.GetLines()
+	length := len(*allLines)
+	wrappers := make([]*StringWrapper, length)
+
+	for i := 0; i < length; i++ {
+		wrappers[i] = New(&(*allLines)[i])
+	}
+
+	return &wrappers
+}
+
+// GetUnixLinesAsWrappers splits by newline using unix Split `\n`
+func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
+	allLines := stringWrapper.GetUnixLines()
+	length := len(*allLines)
+	wrappers := make([]*StringWrapper, length)
+
+	for i := 0; i < length; i++ {
+		wrappers[i] = New(&(*allLines)[i])
+	}
+
+	return &wrappers
 }
 
 // get uint8 array
@@ -290,9 +328,9 @@ func (stringWrapper *StringWrapper) ToUInt8s() []uint8 {
 
 // get uint8 array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToUInt8sPtr() *[]uint8 {
-	if (stringWrapper.uint8s == nil || *stringWrapper.uint8s == nil) && !(*stringWrapper).IsNull() {
+	if (stringWrapper.uint8s == nil || *stringWrapper.uint8s == nil) && !stringWrapper.IsNull() {
 		*stringWrapper.uint8s = []uint8(*stringWrapper.content)
 	}
 
@@ -306,7 +344,7 @@ func (stringWrapper *StringWrapper) ToBytes() []byte {
 
 // get bytes array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
 	if stringWrapper.bytes == nil || *stringWrapper.bytes == nil {
 		*stringWrapper.bytes = []byte(*stringWrapper.content)
@@ -322,9 +360,9 @@ func (stringWrapper *StringWrapper) ToRunes() []rune {
 
 // get rune array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
-	if (stringWrapper.runes == nil || *stringWrapper.runes == nil) && !(*stringWrapper).IsNull() {
+	if (stringWrapper.runes == nil || *stringWrapper.runes == nil) && !stringWrapper.IsNull() {
 		*stringWrapper.runes = []rune(*stringWrapper.content)
 	}
 
@@ -333,9 +371,9 @@ func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
 
 // get lowercase rune array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToLowerRunesPtr() *[]rune {
-	if (stringWrapper.lowerRunes == nil || *stringWrapper.lowerRunes == nil) && !(*stringWrapper).IsNull() {
+	if (stringWrapper.lowerRunes == nil || *stringWrapper.lowerRunes == nil) && !stringWrapper.IsNull() {
 		lowerRunes := chars.ToLowerRunes(stringWrapper.ToRunesPtr())
 		stringWrapper.lowerRunes = lowerRunes
 	}
@@ -345,7 +383,7 @@ func (stringWrapper *StringWrapper) ToLowerRunesPtr() *[]rune {
 
 // get uppercase rune array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
 	if stringWrapper.upperRunes == nil || *stringWrapper.upperRunes == nil {
 		upperRunes := chars.ToUpperRunes(stringWrapper.ToRunesPtr())
@@ -357,17 +395,17 @@ func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
 
 // returns true if IsNullOrWhitespace(s)
 func (stringWrapper *StringWrapper) IsBlank() bool {
-	return (*stringWrapper).IsNullOrWhitespace()
+	return stringWrapper.IsNullOrWhitespace()
 }
 
 // Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) HasCharacter() bool {
-	return !(*stringWrapper).IsNullOrWhitespace()
+	return !stringWrapper.IsNullOrWhitespace()
 }
 
 // Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) IsDefined() bool {
-	return !(*stringWrapper).IsNullOrWhitespace()
+	return !stringWrapper.IsNullOrWhitespace()
 }
 
 func (stringWrapper *StringWrapper) ToLower() string {
@@ -376,9 +414,9 @@ func (stringWrapper *StringWrapper) ToLower() string {
 
 // Return lower string (used caching)
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToLowerPtr() *string {
-	if stringWrapper.lowerContent == nil && !(*stringWrapper).IsNull() {
+	if stringWrapper.lowerContent == nil && !stringWrapper.IsNull() {
 		lowerCase := string(*stringWrapper.ToLowerRunesPtr())
 		stringWrapper.lowerContent = &lowerCase
 	}
@@ -392,9 +430,9 @@ func (stringWrapper *StringWrapper) ToUpper() string {
 
 // Return uppercase string (used caching)
 //
-// Thread safety is NOT guaranteed, for parallel programming use swpa (StringWrapper) pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToUpperPtr() *string {
-	if stringWrapper.upperContent == nil && !(*stringWrapper).IsNullOrEmpty() {
+	if stringWrapper.upperContent == nil && !stringWrapper.IsNullOrEmpty() {
 		upperContent := string(*stringWrapper.ToUpperRunesPtr())
 		stringWrapper.upperContent = &upperContent
 	}
@@ -420,7 +458,7 @@ func (stringWrapper *StringWrapper) ToUpperWrapperPtr() *StringWrapper {
 	return New(stringWrapper.ToUpperPtr())
 }
 
-// Returns character at the given index, if not exist then panichelper.
+// Returns character at the given index, if not exist then panic.
 //
 // Slower than direct access
 //
@@ -514,7 +552,7 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	allLines := stringWrapper.GetLinesUnix()
+	allLines := stringWrapper.GetUnixLines()
 
 	return lines.Process(
 		stringWrapper.content,
@@ -522,39 +560,11 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 		&lineProcessor)
 }
 
-// GetLinesAsWrappers splitted by newline of os
-//
-// Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
-func (stringWrapper *StringWrapper) GetLinesAsWrappers() *[]*StringWrapper {
-	allLines := strings.Split(*stringWrapper.content, strconst.NewLine)
-	length := len(allLines)
-	wrappers := make([]*StringWrapper, length)
-
-	for i := 0; i < length; i++ {
-		wrappers[i] = New(&allLines[i])
-	}
-
-	return &wrappers
-}
-
-// GetUnixLinesAsWrappers splitted by newline using unix Split `\n`
-func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
-	allLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
-	length := len(allLines)
-	wrappers := make([]*StringWrapper, len(allLines))
-
-	for i := 0; i < length; i++ {
-		wrappers[i] = New(&allLines[i])
-	}
-
-	return &wrappers
-}
-
 // Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	allLines := stringWrapper.GetLinesUnix()
+	allLines := stringWrapper.GetUnixLines()
 
 	return lines.ProcessAsync(
 		stringWrapper.content,
@@ -609,14 +619,14 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 	return chars.IsMatchCaseInsensitive(valueAt, char)
 }
 
-// (*stringWrapper).LengthInBytes()-1 >= index
+// stringWrapper.BytesLength()-1 >= index
 func (stringWrapper *StringWrapper) HasIndex(index int) bool {
-	return (*stringWrapper).LengthInBytes()-1 >= index
+	return stringWrapper.BytesLength()-1 >= index
 }
 
-// (*stringWrapper).Length()-1 >= index
+// stringWrapper.Length()-1 >= index
 func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
-	return (*stringWrapper).Length()-1 >= index
+	return stringWrapper.Length()-1 >= index
 }
 
 // Returns a new string builder contains text of stringWrapper and has a
@@ -624,7 +634,7 @@ func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
 func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Builder {
 	builder := strings.Builder{}
 	currentString := stringWrapper.content
-	length := stringWrapper.LengthInBytes() + additionalGrowLength
+	length := stringWrapper.BytesLength() + additionalGrowLength
 	builder.Grow(length)
 	builder.WriteString(*currentString)
 	return builder
@@ -635,7 +645,7 @@ func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Bu
 func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLength int) strings.Builder {
 	builder := strings.Builder{}
 	currentString := stringWrapper.content
-	length := stringWrapper.LengthInBytes() + len(*str) + additionalGrowLength
+	length := stringWrapper.BytesLength() + len(*str) + additionalGrowLength
 	builder.Grow(length)
 	builder.WriteString(*currentString)
 	builder.WriteString(*str)
@@ -659,7 +669,13 @@ func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapp
 		&contents)
 }
 
-// all given strings with given separator + StringWrapper.Value() content and returns as a wrapper
+// Prepends array @contents before @StringWrapper.Value()
+// (@combinedContents + *separator + @StringWrapper.Value())
+// and compiles to a single string using @separator.
+//
+// @Expression:
+//  - @combinedContents = contents joined to single one using separator (skip empty if flag is enabled)
+//  - returns @combinedContents + *separator + @StringWrapper.Value()
 //
 // @isSkipEmptyOrNil:
 //  - Skip nil or empty string in elements. (not the whitespace)
@@ -669,23 +685,60 @@ func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapp
 //  - used to concat each strings / elements.
 //
 // @Returns:
-//  - @isSkipEmptyOrNil false , (contents joined with separator) + separator + StringWrapper.Value()
+//  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
 //  - @isSkipEmptyOrNil true ,
-//    - if not empty or whitespace (StringWrapper.Value()) + allContents join with separator (skips any with nil or "")
-//    - if not empty or whitespace (allContents join with separator(skips any with nil or "")) then returns StringWrapper.Value()
-//    - if both are not empty and combined @contents is not whitespace then (all @contents combined with separator (skips any with nil or "")) + separator + @StringWrapper.Value()
+//    - if not empty or whitespace (@StringWrapper.Value()) then @combinedContents
+//    - if not empty or whitespace (@combinedContents) then returns @StringWrapper.Value()
+//    - if both are not empty and combined contents is not whitespace then
+//          returns (@combinedContents) + separator + @StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepends(
 	separator string,
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.PrependArrayWithSeparator(
+	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
 		stringWrapper.content,
 		&separator,
 		isSkipOnEmpty,
 		contents)
 
 	return New(&combinedResult)
+}
+
+// Prepends array @contents before
+// @StringWrapper.Value() (@combinedContents + *separator + @StringWrapper.Value())
+// and compiles to a single string using @separator.
+//
+// @Expression:
+//  - @combinedContents = contents joined to single one using separator (skip empty if flag is enabled)
+//  - returns @combinedContents + *separator + @StringWrapper.Value()
+//
+// @isSkipEmptyOrNil:
+//  - Skip nil or empty string in elements. (not the whitespace)
+//  - If final string compiled string from contents is a whitespace then ignored.
+//
+// @separator:
+//  - used to concat each strings / elements.
+//
+// @Returns:
+//  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
+//  - @isSkipEmptyOrNil true ,
+//    - if not empty or whitespace (@StringWrapper.Value()) then returns @combinedContents
+//    - if not empty or whitespace (@combinedContents) then returns @StringWrapper.Value()
+//    - if both are not empty and combined contents is not whitespace then
+//          returns (@combinedContents) + separator + @StringWrapper.Value()
+func (stringWrapper *StringWrapper) PrependAsString(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]string,
+) *string {
+	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.content,
+		&separator,
+		isSkipOnEmpty,
+		contents)
+
+	return &combinedResult
 }
 
 // Better to use slice or builder for appending lines in a loop.
@@ -728,7 +781,7 @@ func (stringWrapper *StringWrapper) ConcatWrappers(
 // Better to use slice or builder for appending lines.
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
-func (stringWrapper *StringWrapper) ConcatWrappersPtrs(
+func (stringWrapper *StringWrapper) ConcatWrappersPointers(
 	separator string,
 	isSkipOnEmpty bool,
 	stringWrappers ...*StringWrapper,
@@ -762,7 +815,7 @@ func (stringWrapper *StringWrapper) ConcatWithSeparator(
 // Better to use slice or builder for appending lines.
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
-func (stringWrapper *StringWrapper) ConcatPtrsWithSeparator(
+func (stringWrapper *StringWrapper) ConcatStrPointersWithSeparator(
 	separator string,
 	isSkipOnEmpty bool,
 	contents ...*string,
@@ -812,7 +865,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) *StringWrapper {
-	replacedText := replace.ReplacePtr(
+	replacedText := replace.GetPtr(
 		stringWrapper.content,
 		searchingWrapper.content,
 		replacingWrapper.content,
@@ -832,7 +885,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -849,7 +902,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) *string {
-	replacedText := replace.ReplacePtr(
+	replacedText := replace.GetPtr(
 		stringWrapper.content,
 		search,
 		replaceText,
@@ -867,7 +920,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -910,7 +963,7 @@ func (stringWrapper *StringWrapper) ReplaceMultiple(
 	searchReplaceMap *map[string]string,
 	startsAt int,
 ) string {
-	return replace.ReplaceMultiplePtr(
+	return replace.ManyPtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,
@@ -925,7 +978,7 @@ func (stringWrapper *StringWrapper) ReplaceMultipleCase(
 	limits int,
 	isCaseSensitive bool,
 ) string {
-	return replace.ReplaceMultiplePtr(
+	return replace.ManyPtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,

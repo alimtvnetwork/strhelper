@@ -1,14 +1,20 @@
 package strhelpercore
 
 import (
+	"encoding/json"
 	"fmt"
 
+	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 type StringWithError struct {
 	content      *string
+	bytes        *[]byte
+	runes        *[]rune
 	error        *error
+	bytesLength  int
+	runeLength   *int
 	isWhitespace *bool
 }
 
@@ -20,49 +26,121 @@ func NewStringWithErrorOnlyError(err *error) *StringWithError {
 }
 
 func NewStringWithError(str *string, err *error) *StringWithError {
+	length := 0
+
+	if str != nil {
+		length = len(*str)
+	}
+
 	return &StringWithError{
-		content: str,
-		error:   err,
+		content:     str,
+		error:       err,
+		bytesLength: length,
 	}
 }
 
 func NewStringWithNoError(str *string) *StringWithError {
+	length := 0
+
+	if str != nil {
+		length = len(*str)
+	}
+
 	return &StringWithError{
-		content: str,
-		error:   nil,
+		content:     str,
+		error:       nil,
+		bytesLength: length,
 	}
 }
 
+func (stringWithError *StringWithError) ToBytesPtr() *[]byte {
+	if stringWithError.bytes != nil {
+		return stringWithError.bytes
+	}
+
+	bytes := []byte(*stringWithError.content)
+	stringWithError.bytes = &bytes
+
+	return stringWithError.bytes
+}
+
+// Returns len(ToRunesPtr()) cached version. If once runeLength generated then it will not generate again.
+//
+// If don't care about unicode then use len(str) which is BytesLength
+// Note :
+//  - A bit expensive to generate. However, this one is cached version.
+//  - Yields accurate characters length regardless of unicode.
+//  - As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
+func (stringWithError *StringWithError) Length() int {
+	if stringWithError.runeLength == nil {
+		allRunes := stringWithError.ToRunesPtr()
+		runesLength := len(*allRunes)
+		stringWithError.runeLength = &runesLength
+	}
+
+	return *stringWithError.runeLength
+}
+
+// There is a difference between length in bytes (doesn't represent proper unicode chars) and
+//
+// length in runes (represents actual char length in unicode format).
+//
+// If care about unicode chars count then use Length version.
+// It returns the len(str) cached version.
+// Note :
+//  - This version returns cached version of len(str) which is saved during the instantiation of the object creation.
+//  - Less expensive (returns StringWithError.bytesLength). Effective for bytes knowledge only.
+//  - Doesn't yield accurate characters length of unicode characters but only ascii.
+//  - There is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str)).
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
+func (stringWithError *StringWithError) BytesLength() int {
+	return stringWithError.bytesLength
+}
+
+func (stringWithError *StringWithError) ToRunesPtr() *[]rune {
+	if stringWithError.runes == nil {
+		allRunes := []rune(*stringWithError.content)
+		stringWithError.runes = &allRunes
+	}
+
+	return stringWithError.runes
+}
+
 func (stringWithError *StringWithError) IsNull() bool {
-	return stringWithError.content == nil || (*stringWithError).content == nil
+	return stringWithError.content == nil
 }
 
 func (stringWithError *StringWithError) IsNullOrEmpty() bool {
 	return stringWithError.content == nil ||
-		(*stringWithError).content == nil ||
 		*stringWithError.content == strconst.EmptyString
 }
 
 // Returns true if nil or "" or all whitespaces (including unicode whitespaces)
 func (stringWithError *StringWithError) IsNullOrEmptyOrWhitespaces() bool {
 	if stringWithError.isWhitespace == nil {
-		*stringWithError.isWhitespace = stringWithError.content == nil ||
-			(*stringWithError).content == nil ||
-			*stringWithError.content == strconst.EmptyString ||
-			isWhitespaces(stringWithError.content)
+		isWhitespace := stringWithError.content == nil ||
+			*stringWithError.content == strconst.EmptyString
+
+		if !isWhitespace {
+			allRunes := stringWithError.ToRunesPtr()
+			isWhitespace = whitespacesinternal.IsRunesWhitespaces(allRunes)
+		}
+
+		stringWithError.isWhitespace = &isWhitespace
 	}
 
-	return *(*stringWithError).isWhitespace
+	return *stringWithError.isWhitespace
 }
 
-// Returns true if no error and has at least one characters other than whitespace
+// Returns true if no currentError and has at least one characters other than whitespace
 func (stringWithError *StringWithError) IsDefined() bool {
-	return (*stringWithError).IsErrorEmpty() && !(*stringWithError).IsNullOrEmptyOrWhitespaces()
+	return stringWithError.IsErrorEmpty() && !stringWithError.IsNullOrEmptyOrWhitespaces()
 }
 
 // Returns true meaning has at least one characters other than whitespace
 func (stringWithError *StringWithError) HasValidCharacters() bool {
-	return !(*stringWithError).IsNullOrEmptyOrWhitespaces()
+	return !stringWithError.IsNullOrEmptyOrWhitespaces()
 }
 
 func (stringWithError *StringWithError) Error() *error {
@@ -70,16 +148,16 @@ func (stringWithError *StringWithError) Error() *error {
 }
 
 func (stringWithError *StringWithError) IsErrorEmpty() bool {
-	return stringWithError.error == nil || (*stringWithError).error == nil
+	return stringWithError.error == nil
 }
 
 func (stringWithError *StringWithError) HasError() bool {
-	return stringWithError.error != nil && (*stringWithError).error != nil
+	return stringWithError.error != nil
 }
 
-// Only call panic if has error
+// Only call panic if has currentError
 func (stringWithError *StringWithError) HandleError() {
-	if !(*stringWithError).HasError() {
+	if !stringWithError.HasError() {
 		return
 	}
 
@@ -88,9 +166,9 @@ func (stringWithError *StringWithError) HandleError() {
 	panic(message)
 }
 
-// Only call panic if has error
-func (stringWithError *StringWithError) HandleErrorMsg(newMessage string) {
-	if !(*stringWithError).HasError() {
+// Only call panic if has currentError
+func (stringWithError *StringWithError) HandleErrorWithMsg(newMessage string) {
+	if !stringWithError.HasError() {
 		return
 	}
 
@@ -106,6 +184,11 @@ func (stringWithError *StringWithError) Value() *string {
 // note: that it makes a copy of the content so use it wisely
 func (stringWithError *StringWithError) ValueWithoutPtr() string {
 	return *stringWithError.content
+}
+
+// ToType usages json unmarshal to convert to object
+func (stringWithError *StringWithError) ToType(result *interface{}) error {
+	return json.Unmarshal(*stringWithError.ToBytesPtr(), result)
 }
 
 // note: that it makes a copy of the content so use it wisely

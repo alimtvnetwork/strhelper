@@ -3,7 +3,6 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/constants"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
@@ -19,9 +18,15 @@ import (
 // Conditions (for panic):
 //  - SearchRequest, SearchRequest.Text, SearchRequest.Search should NOT be nil.
 //  - startsAt cannot be negative or greater than the length of text(s)
+//goland:noinspection ALL
 func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRequest) int {
-	if searchIndividualRequest == nil || searchIndividualRequest.Text == nil || searchIndividualRequest.SearchRequest == nil {
-		panic(constants.SearchNullPanicMessage)
+	if searchIndividualRequest == nil ||
+		searchIndividualRequest.Text == nil ||
+		searchIndividualRequest.SearchRequest == nil {
+		panichelper.NullReferences(
+			"searchIndividualRequest",
+			"searchIndividualRequest.Text",
+			"searchIndividualRequest.SearchRequest")
 	}
 
 	length := len(*searchIndividualRequest.Text)

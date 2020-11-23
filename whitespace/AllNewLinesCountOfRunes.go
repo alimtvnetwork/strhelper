@@ -14,11 +14,11 @@ func AllNewLinesCountOfRunes(allRunes *[]rune, startsAt int) int {
 	}
 
 	newLineFound := 0
-	var rune rune
+	var r rune
 
 	for ; startsAt < length; startsAt++ {
-		rune = (*allRunes)[startsAt]
-		if rune <= maxUnit8 && asciiNewLinesChars[rune] == 1 {
+		r = (*allRunes)[startsAt]
+		if r <= maxUnit8 && asciiNewLinesChars[r] == 1 {
 			newLineFound++
 		}
 	}

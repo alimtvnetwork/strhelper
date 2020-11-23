@@ -1,8 +1,11 @@
 package concat
 
-import "gitlab.com/evatix-go/strhelper/strconst"
+import (
+	"gitlab.com/evatix-go/strhelper/strconst"
+)
 
-// Concatenates the (@preContents to a string using separator) with (@postContents to a string using separator) using separator to a string.
+// Concatenates the (@preContents to a string using separator) with
+// (@postContents to a string using separator) using separator to a string.
 //
 // Expression:
 //  - (@preContents to a string using separator) + separator + (@postContents to a string using separator)
@@ -19,7 +22,8 @@ import "gitlab.com/evatix-go/strhelper/strconst"
 //  - @isSkipEmptyOrNil true ,
 //    - if empty (preContents combined) then returns combined [postContents] combined with separator.
 //    - if empty (postContents combined) then returns combined [preContents] combined with separator.
-//    - if both are not empty and combined string is not whitespace then (preContents joined with separator) + separator + (postContents joined with separator)
+//    - if both are not empty and combined string is not whitespace then
+//          (preContents joined with separator) + separator + (postContents joined with separator)
 func CombineArrayWithAnotherUsingSeparator(
 	separator *string,
 	isSkipEmptyOrNil bool,

@@ -7,7 +7,7 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseSensitive(s, findingString *string, startAt int) int {
+func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int {
 	length := len(*s)
 	wordLength := len(*findingString)
 
@@ -15,9 +15,9 @@ func OfLastCaseSensitive(s, findingString *string, startAt int) int {
 		return strconst.InvalidNotFoundCase
 	}
 
-	textLength := length - startAt
+	textLength := length - lastIndexIncreasedBy
 
-	for newStartIndex := startAt; newStartIndex < textLength; newStartIndex++ {
+	for newStartIndex := lastIndexIncreasedBy; newStartIndex < textLength; newStartIndex++ {
 		if textLength-newStartIndex < wordLength {
 			// there is no need to check anymore
 			// exceeded word length and not found case

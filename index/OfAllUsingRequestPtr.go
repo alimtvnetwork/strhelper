@@ -4,6 +4,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
 	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strto"
 )
 
 // Returns all indexes where findingString is found.

@@ -20,10 +20,10 @@ func AllWhitespaceCountOfRunes(allRunes *[]rune, startsAt int) int {
 
 	spacesFound := 0
 
-	var rune rune
+	var r rune
 	for ; startsAt < length; startsAt++ {
-		rune = (*allRunes)[startsAt]
-		if (rune <= maxUnit8 && asciiSpaces[rune] == 1) || (rune > maxUnit8 && unicode.IsSpace(rune)) {
+		r = (*allRunes)[startsAt]
+		if (r <= maxUnit8 && asciiSpaces[r] == 1) || (r > maxUnit8 && unicode.IsSpace(r)) {
 			spacesFound++
 		}
 	}

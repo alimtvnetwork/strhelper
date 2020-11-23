@@ -1,0 +1,146 @@
+package linestestwrappers
+
+import (
+	"strings"
+)
+
+var CompareTestCases = []CompareTestWrapper{
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		RightLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("a", "a"),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		RightLines: &[]string{
+			"Line 1",
+			"line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		StartsAt:                 1,
+		IsCaseSensitive:          false,
+		funcName:                 compare,
+		expected:                 strings.Compare("a", "a"),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: nil,
+		RightLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("", "b"),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		RightLines:               nil,
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("a", ""),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+		},
+		RightLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("", "b"),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		RightLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+		},
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("a", ""),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+			"Line 4",
+			"Line 5",
+		},
+		RightLines: &[]string{
+			"Line 1",
+			"Line 2",
+			"Line 3",
+		},
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 strings.Compare("a", ""),
+		IsPanicOnLengthDifferent: false,
+	},
+	{
+		LeftLines:                nil,
+		RightLines:               nil,
+		StartsAt:                 0,
+		IsCaseSensitive:          true,
+		funcName:                 compare,
+		expected:                 0,
+		IsPanicOnLengthDifferent: false,
+	},
+}

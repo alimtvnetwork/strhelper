@@ -4,7 +4,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
-// Results count of suffix character matches. Where a, b can be at different lengths, it will find the longest common suffix.
+// Results count of suffix character matches. Where a, b can be at different lengths,
+// it will find the longest common suffix.
 //
 // Returns
 //
@@ -36,11 +37,15 @@ func SuffixCountPtr(
 	lenA := len(*a)
 	lenB := len(*b)
 
-	if lenA == strconst.Zero && ((lenB == strconst.Zero && bothLastIndexReduceBy == strconst.Zero) || lenB-1 >= bothLastIndexReduceBy) {
+	if lenA == strconst.Zero &&
+		((lenB == strconst.Zero && bothLastIndexReduceBy == strconst.Zero) ||
+			lenB-1 >= bothLastIndexReduceBy) {
 		return 0
 	}
 
-	if lenB == strconst.Zero && lenA == strconst.Zero && bothLastIndexReduceBy == strconst.Zero {
+	if lenB == strconst.Zero &&
+		lenA == strconst.Zero &&
+		bothLastIndexReduceBy == strconst.Zero {
 		return 0
 	}
 

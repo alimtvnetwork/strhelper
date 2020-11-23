@@ -4,7 +4,8 @@ import "strings"
 
 // Assumptions here are a,b are not nil, at least empty string.
 //
-// Results count of prefix character matches. Where a, b can be at different lengths, it will find the longest common prefix(thus start matching).
+// Results count of prefix character matches. Where a, b can be at different lengths, it will find
+// the longest common prefix(thus start matching).
 //
 // Returns
 //

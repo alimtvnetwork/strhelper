@@ -21,7 +21,8 @@ import (
 //  - @isSkipEmptyOrNil true ,
 //    - if not empty or whitespace (currentStr) then returns allContents join with separator (skips any with nil or "")
 //    - if not empty or whitespace (allContents join with separator (skips any with nil or "")) then returns currentStr
-//    - if both are not empty and combined contents is not whitespace then returns @currentStr + separator + all contents combined with separator (skips any with nil or "")
+//    - if both are not empty and combined contents is not whitespace then returns
+//          @currentStr + separator + all contents combined with separator (skips any with nil or "")
 func StringsArrayWithSeparator(
 	currentStr,
 	separator *string,

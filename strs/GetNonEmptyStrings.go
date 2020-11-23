@@ -3,6 +3,7 @@ package strs
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
@@ -10,7 +11,7 @@ import (
 func GetNonEmptyStrings(lines *[]string, isTrimSpace bool) *[]string {
 	newLines := make([]string, 0, len(*lines))
 
-	if IsEmpty(lines) {
+	if isstrsinternal.Empty(lines) {
 		return &newLines
 	}
 

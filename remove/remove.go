@@ -23,7 +23,7 @@ var (
 )
 
 func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		str,
 		removeStr,
 		strconst.EmptyStringPtr,
@@ -33,7 +33,7 @@ func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) s
 }
 
 func Get(str, removeStr string, startsAt, count int, isCaseSensitive bool) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		&str,
 		&removeStr,
 		strconst.EmptyStringPtr,
@@ -85,23 +85,23 @@ func WhitespacesPtr(str *string, startsAt int) string {
 		panichelper.StartAtIndexFailed(startsAt, length)
 	}
 
-	chars := make([]byte, length-whitespace.AllWhitespaceCount(str, startsAt))
+	newChars := make([]byte, length-whitespace.AllWhitespaceCount(str, startsAt))
 
 	for i := 0; i < startsAt; i++ {
 		// copy as is
-		chars[i] = (*str)[i]
+		newChars[i] = (*str)[i]
 	}
 
 	wordIndex := startsAt
 	for ; startsAt < length; startsAt++ {
 		char := (*str)[startsAt]
 		if !(asciiSpaceArray[char] == 1 || unicode.IsSpace(rune(char))) {
-			chars[wordIndex] = (*str)[startsAt]
+			newChars[wordIndex] = (*str)[startsAt]
 			wordIndex++
 		}
 	}
 
-	return string(chars)
+	return string(newChars)
 }
 
 // Returns empty string if str is nil or empty.
@@ -123,23 +123,23 @@ func NewLinesPtr(str *string, startsAt int) string {
 		panichelper.StartAtIndexFailed(startsAt, length)
 	}
 
-	chars := make([]byte, length-whitespace.AllNewLinesCount(str, startsAt))
+	newChars := make([]byte, length-whitespace.AllNewLinesCount(str, startsAt))
 
 	for i := 0; i < startsAt; i++ {
 		// copy as is
-		chars[i] = (*str)[i]
+		newChars[i] = (*str)[i]
 	}
 
 	wordIndex := startsAt
 	for ; startsAt < length; startsAt++ {
 		char := (*str)[startsAt]
 		if !(asciiNewLinesArray[char] == 1) {
-			chars[wordIndex] = (*str)[startsAt]
+			newChars[wordIndex] = (*str)[startsAt]
 			wordIndex++
 		}
 	}
 
-	return string(chars)
+	return string(newChars)
 }
 
 // Returns empty string if str is nil or empty.
@@ -198,21 +198,21 @@ func CharactersPtr(
 		return *str
 	}
 
-	chars := make([]byte, length-removingCharactersCount)
+	newChars := make([]byte, length-removingCharactersCount)
 
 	for i := 0; i < startsAt; i++ {
 		// copy as is
-		chars[i] = (*str)[i]
+		newChars[i] = (*str)[i]
 	}
 
 	wordIndex := startsAt
 	for ; startsAt < length; startsAt++ {
 		char := (*str)[startsAt]
 		if !(removingCharacters[char] == 1) {
-			chars[wordIndex] = (*str)[startsAt]
+			newChars[wordIndex] = (*str)[startsAt]
 			wordIndex++
 		}
 	}
 
-	return string(chars)
+	return string(newChars)
 }
