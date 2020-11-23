@@ -43,8 +43,8 @@ func NewRegExResultWrapper(
 	index int,
 	content *string,
 	regexp *regexp.Regexp,
-) RegExResultWrapper {
-	return RegExResultWrapper{
+) *RegExResultWrapper {
+	return &RegExResultWrapper{
 		Index:        index,
 		Regexp:       regexp,
 		content:      content,

@@ -1,7 +1,7 @@
 package strto
 
-func RunesArrayPtr(string string) *[]rune {
-	val := []rune(string)
+func RunesArrayPtr(str string) *[]rune {
+	val := []rune(str)
 
 	return &val
 }

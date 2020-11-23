@@ -7,7 +7,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-// Concatenates the inputItems and @singleContent to a single JSON string (@singleContent + separator + all items in inputItems).
+// Concatenates the inputItems and @singleContent to a single JSON string
+// (@singleContent + separator + all items in inputItems).
 //
 //  Internally it creates a slice of interfaces pointers and
 //  then use strhelpercore.RawAnyItemsRequest to inject and then

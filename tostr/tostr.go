@@ -60,10 +60,10 @@ func Any(any interface{}) string {
 }
 
 func AnyToJsonStrWithErrorPtr(any *interface{}) *strhelpercore.StringWithError {
-	jsonBytes, error := json.Marshal(any)
+	jsonBytes, er := json.Marshal(any)
 
-	if error != nil {
-		return strhelpercore.NewStringWithErrorOnlyError(&error)
+	if er != nil {
+		return strhelpercore.NewStringWithErrorOnlyError(&er)
 	}
 
 	jsonStr := string(jsonBytes)
@@ -72,7 +72,7 @@ func AnyToJsonStrWithErrorPtr(any *interface{}) *strhelpercore.StringWithError {
 }
 
 // if nil then empty string.
-func JsonOf(any interface{}) string {
+func Json(any interface{}) string {
 	jsonResult := AnyToJsonStrWithErrorPtr(&any)
 
 	jsonResult.HasError()

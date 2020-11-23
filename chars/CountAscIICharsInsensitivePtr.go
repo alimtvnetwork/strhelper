@@ -12,7 +12,7 @@ func CountAscIICharsInsensitivePtr(
 	length := len(*str)
 	found := 0
 	strLower := strings.ToLower(*str)
-	charsLower := ToASCIICharsLower(chars)
+	charsLower := ToAsciiCharsLower(chars)
 
 	for ; at < length; at++ {
 		char := strLower[at]

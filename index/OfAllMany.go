@@ -2,6 +2,7 @@ package index
 
 import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strto"
 )
 
 // Find all the indexes for all the finding strings given.

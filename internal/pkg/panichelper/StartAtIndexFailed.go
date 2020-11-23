@@ -4,7 +4,7 @@ import "gitlab.com/evatix-go/strhelper/panicmsg"
 
 func StartAtIndexFailed(startsAtIndex, contentLength int) {
 	message := panicmsg.TSimpleValMsgs(
-		"startsAtIndex cannot be negative or more than the length of content. ",
+		"startsAtIndex cannot be negative or more than the length of content.",
 		panicmsg.ReferenceValue{
 			VariableName: "startsAtIndex",
 			Value:        startsAtIndex,

@@ -32,7 +32,8 @@ func EndsWithPtr(
 	wholeTextLength := len(*wholeText)
 
 	if searchLength == strconst.Zero {
-		return (wholeTextLength == strconst.Zero && lastIndexIncreasedBy == strconst.Zero) || wholeTextLength-1 >= lastIndexIncreasedBy
+		return (wholeTextLength == strconst.Zero && lastIndexIncreasedBy == strconst.Zero) ||
+			wholeTextLength-1 >= lastIndexIncreasedBy
 	}
 
 	if wholeTextLength == strconst.Zero {

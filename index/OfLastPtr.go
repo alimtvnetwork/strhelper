@@ -6,22 +6,22 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/pkg/constants"
 )
 
-// Returns the last index of the findingString in s
+// Returns the last index of the searchTerm in s
 // it returns the index where the word starts from not the end of index
-// startsAt cannot be negative
+// lastIndexIncreasedBy cannot be negative
 // If found returns the index from last, if not then returns -1
-func OfLastPtr(s, findingString *string, startsAt int, isCaseSensitive bool) int {
-	if s == nil || findingString == nil {
+func OfLastPtr(s, searchTerm *string, lastIndexIncreasedBy int, isCaseSensitive bool) int {
+	if s == nil || searchTerm == nil {
 		panic(constants.SearchNullPanicMessage)
 	}
 
-	if isCaseSensitive && startsAt == 0 {
-		return strings.LastIndex(*s, *findingString)
+	if isCaseSensitive && lastIndexIncreasedBy == 0 {
+		return strings.LastIndex(*s, *searchTerm)
 	}
 
 	if isCaseSensitive {
-		return OfLastCaseSensitive(s, findingString, startsAt)
+		return OfLastCaseSensitive(s, searchTerm, lastIndexIncreasedBy)
 	}
 
-	return OfLastCaseInsensitive(s, findingString, startsAt)
+	return OfLastCaseInsensitive(s, searchTerm, lastIndexIncreasedBy)
 }

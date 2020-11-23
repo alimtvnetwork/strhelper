@@ -3,6 +3,7 @@ package padding
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 

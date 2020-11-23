@@ -1,12 +1,9 @@
 package longestcommon
 
-import (
-	"gitlab.com/evatix-go/strhelper/strconst"
-)
-
 // Assumptions here are a,b are not nil, at least empty string.
 //
-// Results count of prefix character matches. Where a, b can be at different lengths, it will find the longest common prefix(thus start matching).
+// Results count of prefix character matches. Where a, b can be at different lengths,
+// it will find the longest common prefix(thus start matching).
 //
 // Returns
 //
@@ -38,11 +35,15 @@ func PrefixCountPtr(
 	lenA := len(*a)
 	lenB := len(*b)
 
-	if lenA == strconst.Zero && ((lenB == strconst.Zero && bothStartAtIndex == strconst.Zero) || lenB-1 >= bothStartAtIndex) {
+	if lenA == 0 &&
+		((lenB == 0 && bothStartAtIndex == 0) ||
+			lenB-1 >= bothStartAtIndex) {
 		return 0
 	}
 
-	if lenB == strconst.Zero && lenA == strconst.Zero && bothStartAtIndex == strconst.Zero {
+	if lenB == 0 &&
+		lenA == 0 &&
+		bothStartAtIndex == 0 {
 		return 0
 	}
 

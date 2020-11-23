@@ -1,6 +1,7 @@
 package brackets
 
-// Note : It doesn't care about in brackets exist in middle of (str), it just unwrap from both sides if brackets are there.
+// Note : It doesn't care about in brackets exist in middle of (str),
+// it just unwrap from both sides if brackets are there.
 func UnWrapWithPtr(str *string, category Category) string {
 	if isEmptyStringPtr(str) {
 		return *str

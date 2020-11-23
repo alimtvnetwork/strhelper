@@ -49,38 +49,50 @@ func NewPtr(str *string) *StringWrapper {
 //
 // Recommendation: Use ValuePtr instead of Value()
 func (stringWrapper *StringWrapper) Value() string {
-	return *(*stringWrapper).content
+	return *stringWrapper.content
 }
 
 // use swp, it is optimized for performance.
 func (stringWrapper *StringWrapper) ValuePtr() *string {
-	return (*stringWrapper).content
+	return stringWrapper.content
 }
 
 // use swp, it is optimized for performance.
 //
 // Recommendation: Use ValuePtr / StringPtr() instead of Value() or String()
 func (stringWrapper *StringWrapper) String() string {
-	return *(*stringWrapper).content
+	return *stringWrapper.content
 }
 
 // use swp, it is optimized for performance.
 func (stringWrapper *StringWrapper) StringPtr() *string {
-	return (*stringWrapper).content
+	return stringWrapper.content
 }
 
-// use swp, it is optimized for performance.
+// There is a difference between length in bytes (doesn't represent proper unicode chars) and
 //
-// This verion is not performance optimized.
-func (stringWrapper *StringWrapper) LengthInBytes() int {
+// length in runes (represents actual char length in unicode format).
+//
+// If care about unicode chars count then use Length version.
+// It returns the len(str) cached version.
+// Note :
+//  - This version returns cached version of len(str) which is saved during the instantiation of the object creation.
+//  - Less expensive (returns StringWrapper.length). Effective for bytes knowledge only.
+//  - Doesn't yield accurate characters length of unicode characters but only ascii.
+//  - There is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str)).
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
+func (stringWrapper *StringWrapper) BytesLength() int {
 	return stringWrapper.length
 }
 
-// use swp, it is optimized for performance.
+// Returns len(ToRunesPtr()) cached version. If once runeLength generated then it will not generate again.
 //
-// Returns utf8.RuneCountInString(stringWrapper.Value())
-//
-// If don't care about unicode then use len(str) which is LengthInBytes
+// If don't care about unicode then use len(str) which is BytesLength
+// Note :
+//  - A bit expensive to generate. However, this one is cached version.
+//  - Yields accurate characters length regardless of unicode.
+//  - As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
+//  - Example : https://play.golang.org/p/78uFF8s-Dw1
 func (stringWrapper *StringWrapper) Length() int {
 	if stringWrapper.runeLength == nil {
 		allRunes := stringWrapper.ToRunesPtr()
@@ -92,14 +104,15 @@ func (stringWrapper *StringWrapper) Length() int {
 }
 
 func (stringWrapper *StringWrapper) HasLengthOf(length int) bool {
-	return (*stringWrapper).Length() >= length
+	return stringWrapper.Length() >= length
 }
 
-// Extremely slow, return rune count of after trimming the string, utf8.RuneCountInString(strings.TrimSpace(stringWrapper.Value())).
+// Extremely slow, return rune count of after trimming the string,
+// utf8.RuneCountInString(strings.TrimSpace(stringWrapper.Value())).
 //
 // If you want IsEmptySpace use isEmptyOrWhitespace.
 //
-// If don't care about unicode use len(str) which is LengthInBytes
+// If don't care about unicode use len(str) which is BytesLength
 func (stringWrapper *StringWrapper) LengthWithoutWhitespaces() int {
 	return utf8.RuneCountInString(strings.TrimSpace(stringWrapper.Value()))
 }
@@ -126,17 +139,17 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 
 // returns len(s) == 0 || s == ""
 func (stringWrapper *StringWrapper) IsEmpty() bool {
-	return (*stringWrapper).Length() == 0 || *(*stringWrapper).content == strconst.EmptyString
+	return stringWrapper.Length() == 0 || *stringWrapper.content == strconst.EmptyString
 }
 
 // IsNull(s) || IsEmpty(s)
 func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
-	return (*stringWrapper).IsEmpty()
+	return stringWrapper.IsEmpty()
 }
 
-// IsNullOrEmpty(s) || strhelper.IsBlankPtr(stringWrapper.ValuePtr())
+// IsNullOrEmpty(s) || isstr.BlankPtr(stringWrapper.ValuePtr())
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
-	return (*stringWrapper).IsNullOrEmpty() || isstr.BlankPtr(stringWrapper.ValuePtr())
+	return stringWrapper.IsNullOrEmpty() || isstr.BlankPtr(stringWrapper.ValuePtr())
 }
 
 func (stringWrapper *StringWrapper) TrimSpace() string {
@@ -207,17 +220,17 @@ func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
 
 // returns true if IsNullOrWhitespace(s)
 func (stringWrapper *StringWrapper) IsBlank() bool {
-	return (*stringWrapper).IsNullOrWhitespace()
+	return stringWrapper.IsNullOrWhitespace()
 }
 
 // Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) HasCharacter() bool {
-	return !(*stringWrapper).IsNullOrWhitespace()
+	return !stringWrapper.IsNullOrWhitespace()
 }
 
 // Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) IsDefined() bool {
-	return !(*stringWrapper).IsNullOrWhitespace()
+	return !stringWrapper.IsNullOrWhitespace()
 }
 
 func (stringWrapper *StringWrapper) ToLower() string {
@@ -274,16 +287,16 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 }
 
 func (stringWrapper *StringWrapper) HasIndex(index int) bool {
-	return (*stringWrapper).Length()-1 >= index
+	return stringWrapper.Length()-1 >= index
 }
 
 func (stringWrapper *StringWrapper) RuneLength() int {
 	return utf8.RuneCountInString((*stringWrapper).Value())
 }
 
-// (*stringWrapper).Length()-1 >= index
+// stringWrapper.Length()-1 >= index
 func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
-	return (*stringWrapper).RuneLength()-1 >= index
+	return stringWrapper.RuneLength()-1 >= index
 }
 
 // Returns a new string builder contains text of stringWrapper and has a
@@ -352,7 +365,7 @@ func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 		&contents)
 }
 
-// GetLines splitted by newline of os
+// GetLines splits by newline of os
 //
 // Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
 func (stringWrapper *StringWrapper) GetLines() *[]string {
@@ -361,36 +374,36 @@ func (stringWrapper *StringWrapper) GetLines() *[]string {
 	return &currentLines
 }
 
-// GetLines splitted by newline using unix Split `\n`
-func (stringWrapper *StringWrapper) GetLinesUnix() *[]string {
+// GetLines splits by newline using unix Split `\n`
+func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
 	currentLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
 
 	return &currentLines
 }
 
-// GetLinesAsWrappers splitted by newline of os
+// GetLinesAsWrappers splits by newline of os
 //
 // Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
 func (stringWrapper *StringWrapper) GetLinesAsWrappers() *[]*StringWrapper {
-	currentLines := strings.Split(*stringWrapper.content, strconst.NewLine)
+	allLines := stringWrapper.GetLines()
+	length := len(*allLines)
+	wrappers := make([]*StringWrapper, length)
 
-	wrappers := make([]*StringWrapper, len(currentLines))
-
-	for i, line := range currentLines {
-		wrappers[i] = New(line)
+	for i := 0; i < length; i++ {
+		wrappers[i] = NewPtr(&(*allLines)[i])
 	}
 
 	return &wrappers
 }
 
-// GetUnixLinesAsWrappers splitted by newline using unix Split `\n`
+// GetUnixLinesAsWrappers splits by newline using unix Split `\n`
 func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
-	currentLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
+	allLines := stringWrapper.GetUnixLines()
+	length := len(*allLines)
+	wrappers := make([]*StringWrapper, length)
 
-	wrappers := make([]*StringWrapper, len(currentLines))
-
-	for i, line := range currentLines {
-		wrappers[i] = New(line)
+	for i := 0; i < length; i++ {
+		wrappers[i] = NewPtr(&(*allLines)[i])
 	}
 
 	return &wrappers
@@ -481,7 +494,7 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	allLines := stringWrapper.GetLinesUnix()
+	allLines := stringWrapper.GetUnixLines()
 
 	return lines.Process(
 		stringWrapper.content,
@@ -493,7 +506,7 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
-	allLines := stringWrapper.GetLinesUnix()
+	allLines := stringWrapper.GetUnixLines()
 
 	return lines.ProcessAsync(
 		stringWrapper.content,
@@ -552,7 +565,13 @@ func (stringWrapper *StringWrapper) Concatenates(
 	return NewPtr(&combinedResult)
 }
 
-// all given strings with given separator + StringWrapper.Value() content and returns as a wrapper
+// Prepends array @contents before
+// @StringWrapper.Value() (@combinedContents + *separator + @StringWrapper.Value())
+// and compiles to a single string using @separator.
+//
+// @Expression:
+//  - @combinedContents = contents joined to single one using separator (skip empty if flag is enabled)
+//  - returns @combinedContents + *separator + @StringWrapper.Value()
 //
 // @isSkipEmptyOrNil:
 //  - Skip nil or empty string in elements. (not the whitespace)
@@ -562,23 +581,60 @@ func (stringWrapper *StringWrapper) Concatenates(
 //  - used to concat each strings / elements.
 //
 // @Returns:
-//  - @isSkipEmptyOrNil false , (contents joined with separator) + separator + StringWrapper.Value()
+//  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
 //  - @isSkipEmptyOrNil true ,
-//    - if not empty or whitespace (StringWrapper.Value()) + allContents join with separator (skips any with nil or "")
-//    - if not empty or whitespace (allContents join with separator(skips any with nil or "")) then returns StringWrapper.Value()
-//    - if both are not empty and combined @contents is not whitespace then (all @contents combined with separator (skips any with nil or "")) + separator + @StringWrapper.Value()
+//    - if not empty or whitespace (@StringWrapper.Value()) then @combinedContents
+//    - if not empty or whitespace (@combinedContents) then returns @StringWrapper.Value()
+//    - if both are not empty and combined contents is not whitespace then
+//              returns (@combinedContents) + separator + @StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepends(
 	separator string,
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.PrependArrayWithSeparator(
+	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
 		stringWrapper.content,
 		&separator,
 		isSkipOnEmpty,
 		contents)
 
 	return NewPtr(&combinedResult)
+}
+
+// PrependAsString : Prepends array @contents before
+// @StringWrapper.Value() (@combinedContents + *separator + @StringWrapper.Value())
+// and compiles to a single string using @separator.
+//
+// @Expression:
+//  - @combinedContents = contents joined to single one using separator (skip empty if flag is enabled)
+//  - returns @combinedContents + *separator + @StringWrapper.Value()
+//
+// @isSkipEmptyOrNil:
+//  - Skip nil or empty string in elements. (not the whitespace)
+//  - If final string compiled string from contents is a whitespace then ignored.
+//
+// @separator:
+//  - used to concat each strings / elements.
+//
+// @Returns:
+//  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
+//  - @isSkipEmptyOrNil true ,
+//    - if not empty or whitespace (@StringWrapper.Value()) then returns @combinedContents
+//    - if not empty or whitespace (@combinedContents) then returns @StringWrapper.Value()
+//    - if both are not empty and combined contents is not whitespace then
+//          returns (@combinedContents) + separator + @StringWrapper.Value()
+func (stringWrapper *StringWrapper) PrependAsString(
+	separator string,
+	isSkipOnEmpty bool,
+	contents *[]string,
+) *string {
+	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.content,
+		&separator,
+		isSkipOnEmpty,
+		contents)
+
+	return &combinedResult
 }
 
 func (stringWrapper *StringWrapper) ReplaceWrapper(
@@ -588,7 +644,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) *StringWrapper {
-	replacedText := replace.ReplacePtr(
+	replacedText := replace.GetPtr(
 		stringWrapper.content,
 		searchingWrapper.ValuePtr(),
 		replacingWrapper.ValuePtr(),
@@ -608,7 +664,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -625,7 +681,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		stringWrapper.content,
 		search,
 		replaceText,
@@ -641,7 +697,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return replace.ReplacePtr(
+	return replace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,

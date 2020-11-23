@@ -13,9 +13,7 @@ package whitespace
 //  - https://stackoverflow.com/a/15020162
 func IsAsciiWhitespaces(s *string) bool {
 	length := len(*s)
-	isEven := length%2 == 0
 	mid := length / 2 // 5/2 should return 2
-	midLessThanOne := mid - 1
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
 		char := (*s)[i]
@@ -23,7 +21,7 @@ func IsAsciiWhitespaces(s *string) bool {
 			return false
 		}
 
-		if i == mid || (isEven && midLessThanOne == i) {
+		if i == mid {
 			// already tested above and reached the end
 			break
 		}

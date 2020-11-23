@@ -4,7 +4,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
-// Concatenates the (@preContents to a string using separator) with (@postContents to a string using separator) using separator to a string.
+// Concatenates the (@preContents to a string using separator) with
+// (@postContents to a string using separator) using separator to a string.
 //
 // Expression:
 //  - join all many of manyArrays to a single string using separator.

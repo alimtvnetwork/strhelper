@@ -4,7 +4,11 @@ import (
 	"sync"
 )
 
+// Search term with indexes where found.
 type IndexesResultSet struct {
+	// Key : Search term
+	//
+	// Values : Indexes where the search terms are found.
 	StringKeyAsIndexesMap *map[string]*[]int
 	// represents the last index where search key is possible
 	LastIndexFound  int
@@ -20,9 +24,7 @@ func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKeyWithLock()
 	indexesResultSet.indexesKeyMutex.Lock()
 	defer indexesResultSet.indexesKeyMutex.Unlock()
 
-	resultsMap := indexesResultSet.GetIndexesMapWhereIndexAsKey()
-
-	return resultsMap
+	return indexesResultSet.GetIndexesMapWhereIndexAsKey()
 }
 
 func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKey() *map[int]string {
@@ -71,7 +73,7 @@ func (indexesResultSet *IndexesResultSet) CountOfAllFoundIndexes() int {
 	return *indexesResultSet.totalFound
 }
 
-func (indexesResultSet IndexesResultSet) HasResultBy(key string) bool {
+func (indexesResultSet *IndexesResultSet) HasResultBy(key string) bool {
 	results, has := (*indexesResultSet.StringKeyAsIndexesMap)[key]
 
 	if has && len(*results) > 0 {
@@ -82,7 +84,7 @@ func (indexesResultSet IndexesResultSet) HasResultBy(key string) bool {
 }
 
 // Returns indexes if exists or else returns nil.
-func (indexesResultSet IndexesResultSet) GetIndexes(key string) *[]int {
+func (indexesResultSet *IndexesResultSet) GetIndexes(key string) *[]int {
 	results, has := (*indexesResultSet.StringKeyAsIndexesMap)[key]
 
 	if has && len(*results) > 0 {
@@ -96,15 +98,22 @@ func (indexesResultSet *IndexesResultSet) SetHasResult(hasResult bool) {
 	indexesResultSet.hasResult = hasResult
 }
 
-func (indexesResultSet IndexesResultSet) HasResult() bool {
+func (indexesResultSet *IndexesResultSet) HasResult() bool {
 	return indexesResultSet.hasResult
 }
 
-func (indexesResultSet IndexesResultSet) SetEmpty(isEmpty bool) {
+func (indexesResultSet *IndexesResultSet) SetEmpty(isEmpty bool) {
 	indexesResultSet.isEmptySet = isEmpty
 }
 
-func (indexesResultSet IndexesResultSet) IsEmpty() bool {
+func (indexesResultSet *IndexesResultSet) HasResultWithLock() bool {
+	indexesResultSet.Lock()
+	defer indexesResultSet.Unlock()
+
+	return indexesResultSet.hasResult
+}
+
+func (indexesResultSet *IndexesResultSet) IsEmpty() bool {
 	return indexesResultSet.isEmptySet
 }
 

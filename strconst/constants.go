@@ -23,6 +23,7 @@ var (
 	PipePtr = &pipe
 )
 
+//goland:noinspection ALL
 const (
 	UpperCaseA                        = 'A'
 	UpperCaseZ                        = 'Z'
