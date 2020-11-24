@@ -22,7 +22,8 @@ func (splitResultOverview *SplitResultOverview) ResultsToRegexMap() *map[string]
 
 func (splitResultOverview *SplitResultOverview) initializeRegExWrappersCollection() {
 	if splitResultOverview.regExWrappersCollection == nil {
-		splitResultOverview.regExWrappersCollection = NewRegExWrappersCollectionUsingStringPointer(splitResultOverview.Results)
+		splitResultOverview.regExWrappersCollection =
+			NewRegExWrappersCollectionUsingStringPointer(splitResultOverview.Results)
 	}
 }
 
@@ -55,12 +56,12 @@ func (splitResultOverview *SplitResultOverview) NonEmptyResultsLength() int {
 
 // Returns Results from *[]*string to *[]string
 func (splitResultOverview *SplitResultOverview) ToSimpleArray() *[]string {
-	return misc.ConvertPtrStringArrayToStringArray(splitResultOverview.Results)
+	return misc.ConvertPointerStringsToStrings(splitResultOverview.Results)
 }
 
 // Returns NonEmptyResults *[]*string to *[]string
 func (splitResultOverview *SplitResultOverview) NonEmptyToSimpleArray() *[]string {
-	return misc.ConvertPtrStringArrayToStringArray(splitResultOverview.NonEmptyResults)
+	return misc.ConvertPointerStringsToStrings(splitResultOverview.NonEmptyResults)
 }
 
 func NewEmptySplitResultOverview(str *string) *SplitResultOverview {

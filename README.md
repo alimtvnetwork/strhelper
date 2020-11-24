@@ -2,7 +2,7 @@
 
 # Strings Extension Introduction (`strhelper`)
 
-Go Strings library additional methods, simplification of string modification and verificiation.
+Go Strings library additional methods, simplification of string modification and verification.
 
 ## Git Clone
 
@@ -10,7 +10,8 @@ Go Strings library additional methods, simplification of string modification and
 
 ### 2FA enabled, for linux
 
-`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
+`git clone 
+https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
 
 ### Prerequisites
 

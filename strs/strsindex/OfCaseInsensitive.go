@@ -13,7 +13,7 @@ func OfCaseInsensitive(
 	findingString *string,
 	startsAtIndex int,
 ) int {
-	if isstrsinternal.Empty(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
 		return strconst.InvalidNotFoundCase
 	}
 

@@ -7,11 +7,11 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
-// Returns new array without empty strings, skip whitespaces if isTrimSpace true
+// GetNonEmptyStrings returns new array without empty strings, skip whitespaces if isTrimSpace true
 func GetNonEmptyStrings(lines *[]string, isTrimSpace bool) *[]string {
 	newLines := make([]string, 0, len(*lines))
 
-	if isstrsinternal.Empty(lines) {
+	if isstrsinternal.EmptyPtr(lines) {
 		return &newLines
 	}
 

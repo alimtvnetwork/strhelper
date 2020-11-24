@@ -21,7 +21,7 @@ func NewRegExWrapper(index int, request *string) *RegExWrapper {
 
 // Requires to compile regex
 func (regExWrapper *RegExWrapper) RegExResultWrapper(content *string) *RegExResultWrapper {
-	if regExWrapper.regExResultWrapper == nil && regExWrapper.ErrorWrapper().IsErrorEmpty() {
+	if regExWrapper.regExResultWrapper == nil && regExWrapper.ErrorWrapper().IsEmpty() {
 		regExWrapper.regExResultWrapper = NewRegExResultWrapper(regExWrapper.index, content, regExWrapper.regex)
 	}
 

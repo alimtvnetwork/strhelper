@@ -26,7 +26,7 @@ func New(length int) *Hashset {
 
 func NewWithValues(items ...string) *Hashset {
 	if items == nil {
-		panichelper.NullReferenceMsg("Items cannot be null.", "items")
+		panichelper.NullReferenceMsg("items cannot be null.", "items")
 	}
 
 	return NewUsingArray(&items)
@@ -37,7 +37,7 @@ func NewUsingStringPointersArray(inputArray *[]*string) *Hashset {
 		return New(defaultItems)
 	}
 
-	maps := converters.StringsPointersArrayToMap(inputArray)
+	maps := converters.StringsPointersToStringBoolMap(inputArray)
 
 	return NewUsingMap(maps)
 }
@@ -47,7 +47,7 @@ func NewUsingArray(inputArray *[]string) *Hashset {
 		return New(defaultItems)
 	}
 
-	maps := converters.StringArrayToMap(inputArray)
+	maps := converters.StringsToMap(inputArray)
 
 	return NewUsingMap(maps)
 }

@@ -16,7 +16,7 @@ func NewRegExWrappersCollection(expressions *[]string) *RegExWrappersCollection 
 }
 
 func NewRegExWrappersCollectionUsingStringPointer(expressions *[]*string) *RegExWrappersCollection {
-	parsableExpression := misc.ConvertPtrStringArrayToStringArray(expressions)
+	parsableExpression := misc.ConvertPointerStringsToStrings(expressions)
 
 	return &RegExWrappersCollection{
 		expressions: parsableExpression,

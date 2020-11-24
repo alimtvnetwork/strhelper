@@ -1,24 +1,31 @@
 package strhelpercore
 
 import (
+	"errors"
+
 	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 type BytesWithError struct {
 	bytes        *[]byte
 	lines        *[]string
 	content      *string
-	error        *ErrorWrapper
+	errorWrapper ErrorWrapper
 	bytesLength  int
 	stringLength *int
 	isWhitespace *bool
 }
 
-func NewBytesWithErrorOnlyError(err *error) *BytesWithError {
+func NewBytesWithErrorOnlyError(err error) *BytesWithError {
 	return &BytesWithError{
-		error: NewErrorWrapperPtr(err),
+		errorWrapper: *NewErrorWrapperPtr(&err),
+	}
+}
+
+func NewBytesWithErrorOnlyErrorPtr(err *error) *BytesWithError {
+	return &BytesWithError{
+		errorWrapper: *NewErrorWrapperPtr(err),
 	}
 }
 
@@ -30,25 +37,33 @@ func NewBytesWithError(bytes *[]byte, err *error) *BytesWithError {
 	}
 
 	return &BytesWithError{
-		bytes:       bytes,
-		error:       NewErrorWrapperPtr(err),
-		bytesLength: length,
+		bytes:        bytes,
+		errorWrapper: *NewErrorWrapperPtr(err),
+		bytesLength:  length,
 	}
 }
 
+// NewBytesWithErrorUsingAny converts interface object using encoder
+// If any is still, still it creates BytesWithError with errorWrapper details and nil contents.
 func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 	length := 0
 
-	bytes := misc.ToBytesOfAny(any)
+	if any == nil {
+		newError := errors.New("given any object is nil/null, cannot be parsed to bytes")
 
-	if bytes != nil {
+		return NewBytesWithErrorOnlyErrorPtr(&newError)
+	}
+
+	bytes, err := misc.ToBytesOfAny(any)
+
+	if bytes != nil && *bytes != nil {
 		length = len(*bytes)
 	}
 
 	return &BytesWithError{
-		bytes:       bytes,
-		error:       NewErrorWrapperPtr(nil),
-		bytesLength: length,
+		bytes:        bytes,
+		errorWrapper: *NewErrorWrapper(err),
+		bytesLength:  length,
 	}
 }
 
@@ -57,6 +72,12 @@ func NewBytesWithNoError(bytes *[]byte) *BytesWithError {
 	return NewBytesWithError(bytes, nil)
 }
 
+// ContentAsString represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (bytesWithError *BytesWithError) ContentAsString() *string {
 	return bytesWithError.StringPtr()
 }
@@ -74,8 +95,9 @@ func (bytesWithError *BytesWithError) StringLength() int {
 	return *bytesWithError.stringLength
 }
 
-func (bytesWithError *BytesWithError) Error() *ErrorWrapper {
-	return bytesWithError.error
+// Error must be initialize have it or not. Then check Error().IsEmpty()
+func (bytesWithError *BytesWithError) Error() ErrorWrapper {
+	return bytesWithError.errorWrapper
 }
 
 func (bytesWithError *BytesWithError) IsNull() bool {
@@ -83,36 +105,116 @@ func (bytesWithError *BytesWithError) IsNull() bool {
 }
 
 func (bytesWithError *BytesWithError) IsNullOrEmpty() bool {
+	// checking bytesLength == 0 is enough to prove empty string ""
+	// reference : https://play.golang.org/p/6vU5y92LKYg
 	return bytesWithError.bytes == nil ||
-		*bytesWithError.StringPtr() == strconst.EmptyString
+		bytesWithError.bytesLength == 0
 }
 
-// IsNullOrEmptyOrWhitespaces returns true if nil or "" or all whitespaces (including unicode whitespaces)
+// IsNullOrEmptyOrWhitespaces returns true if nil or "" or all whitespaces
+// (excluding unicode whitespaces, only limited to ASCII spaces)
+//
+// To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
 func (bytesWithError *BytesWithError) IsNullOrEmptyOrWhitespaces() bool {
 	if bytesWithError.isWhitespace == nil {
-		str := bytesWithError.StringPtr()
-		*bytesWithError.isWhitespace = str == nil ||
-			*str == strconst.EmptyString ||
-			whitespacesinternal.IsWhitespaces(str)
+		// checking bytesLength == 0 is enough to prove empty string ""
+		// reference : https://play.golang.org/p/6vU5y92LKYg
+		*bytesWithError.isWhitespace = bytesWithError.bytes == nil ||
+			bytesWithError.bytesLength == 0 ||
+			whitespacesinternal.IsAsciiWhitespacesBytes(bytesWithError.bytes)
 	}
 
 	return *bytesWithError.isWhitespace
 }
 
-// IsDefined returns true if no currentError and has at least one characters other than whitespace
+// IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
 func (bytesWithError *BytesWithError) IsDefined() bool {
-	return bytesWithError.error.IsErrorEmpty() && !bytesWithError.IsNullOrEmptyOrWhitespaces()
+	return bytesWithError.errorWrapper.IsEmpty() && !bytesWithError.IsNullOrEmptyOrWhitespaces()
 }
 
-// HasValidCharacters returns true meaning has at least one characters other than whitespace
+// HasValidCharacters returns true meaning has at least one characters other than whitespace (Ascii only)
 func (bytesWithError *BytesWithError) HasValidCharacters() bool {
 	return !bytesWithError.IsNullOrEmptyOrWhitespaces()
 }
 
+// IsEqualAny returns true if bytes contents are same as the any converted bytes contents
+//
+// Steps :
+//  - converts any using the same method as NewBytesWithErrorUsingAny / encoder to bytes (strs.ToBytesOfAny(any))
+//  - then compare with bytes
+func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}) bool {
+	if bytesWithError.IsNull() && any == nil {
+		return true
+	}
+
+	if any == nil {
+		return false
+	}
+
+	bytes, _ := misc.ToBytesOfAny(any)
+
+	return misc.BytesEquals(
+		bytesWithError.bytes,
+		bytes,
+		0)
+}
+
+func (bytesWithError *BytesWithError) IsEqualBytes(bytes *[]byte) bool {
+	if bytesWithError.IsNull() && bytes == nil {
+		return true
+	}
+
+	// both are not nil confirmed, so if any nil returns false.
+	if bytes == nil || bytesWithError.IsNull() {
+		return false
+	}
+
+	return misc.BytesEquals(
+		bytesWithError.bytes,
+		bytes,
+		0)
+}
+
+func (bytesWithError *BytesWithError) IsEquals(bytesWithError2 *BytesWithError) bool {
+	if bytesWithError2 == nil {
+		return false
+	}
+
+	// same pointer
+	if bytesWithError == bytesWithError2 {
+		return true
+	}
+
+	if bytesWithError.IsNullOrEmpty() == bytesWithError2.IsNullOrEmpty() {
+		return true
+	}
+
+	if bytesWithError.BytesLength() != bytesWithError2.BytesLength() {
+		return false
+	}
+
+	return misc.BytesEquals(
+		bytesWithError.bytes,
+		bytesWithError2.bytes,
+		0)
+}
+
+// Bytes represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (bytesWithError *BytesWithError) Bytes() *[]byte {
 	return bytesWithError.bytes
 }
 
+// Value represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (bytesWithError *BytesWithError) Value() *[]byte {
 	return bytesWithError.bytes
 }
@@ -127,6 +229,15 @@ func (bytesWithError *BytesWithError) String() string {
 	return *bytesWithError.StringPtr()
 }
 
+// StringPtr is an expensive operation, it creates new memory using string(*bytesWithError.bytes)
+// However, it does it at once, so calling it 3 times will only create once and cached result will be returned.
+//
+// StringPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (bytesWithError *BytesWithError) StringPtr() *string {
 	if bytesWithError.content == nil && bytesWithError.bytes != nil {
 		newString := string(*bytesWithError.bytes)

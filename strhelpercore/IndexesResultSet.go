@@ -51,9 +51,7 @@ func (indexesResultSet *IndexesResultSet) CountOfAllFoundIndexesWithLock() int {
 	indexesResultSet.Mutex.Lock()
 	defer indexesResultSet.Mutex.Unlock()
 
-	count := indexesResultSet.CountOfAllFoundIndexes()
-
-	return count
+	return indexesResultSet.CountOfAllFoundIndexes()
 }
 
 func (indexesResultSet *IndexesResultSet) CountOfAllFoundIndexes() int {

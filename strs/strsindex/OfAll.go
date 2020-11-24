@@ -25,7 +25,7 @@ func OfAll(
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	if isstrsinternal.Empty(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
 		return nil
 	}
 

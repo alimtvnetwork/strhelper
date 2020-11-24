@@ -85,7 +85,7 @@ func WhitespacesPtr(str *string, startsAt int) string {
 		panichelper.StartAtIndexFailed(startsAt, length)
 	}
 
-	newChars := make([]byte, length-whitespace.AllWhitespaceCount(str, startsAt))
+	newChars := make([]byte, length-whitespace.AllWhitespacesCount(str, startsAt))
 
 	for i := 0; i < startsAt; i++ {
 		// copy as is

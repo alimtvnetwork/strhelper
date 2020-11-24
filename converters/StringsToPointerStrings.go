@@ -1,7 +1,7 @@
 package converters
 
-// StringArrayToPtrStringArray will give empty or converted results array (not nil)
-func StringArrayToPtrStringArray(ptrStrArray *[]string) *[]*string {
+// StringsToPointerStrings will give empty or converted results array (not nil)
+func StringsToPointerStrings(ptrStrArray *[]string) *[]*string {
 	if ptrStrArray == nil || *ptrStrArray == nil {
 		var emptyResult []*string
 

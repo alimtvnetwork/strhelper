@@ -6,8 +6,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
 )
 
-// Returns the whitespace (including unicode whitespaces) counts
-func AllWhitespaceCountOfRunes(allRunes *[]rune, startsAt int) int {
+// AllWhitespacesCountOfRunes returns the whitespace (including unicode whitespaces) counts
+func AllWhitespacesCountOfRunes(allRunes *[]rune, startsAt int) int {
 	if allRunes == nil || len(*allRunes) == 0 {
 		return 0
 	}

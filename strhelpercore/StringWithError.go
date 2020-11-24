@@ -2,8 +2,10 @@ package strhelpercore
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
@@ -53,6 +55,12 @@ func NewStringWithNoError(str *string) *StringWithError {
 	}
 }
 
+// ToBytesPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (stringWithError *StringWithError) ToBytesPtr() *[]byte {
 	if stringWithError.bytes != nil {
 		return stringWithError.bytes
@@ -98,6 +106,12 @@ func (stringWithError *StringWithError) BytesLength() int {
 	return stringWithError.bytesLength
 }
 
+// ToRunesPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (stringWithError *StringWithError) ToRunesPtr() *[]rune {
 	if stringWithError.runes == nil {
 		allRunes := []rune(*stringWithError.content)
@@ -196,6 +210,64 @@ func (stringWithError *StringWithError) String() string {
 	return *stringWithError.content
 }
 
+func (stringWithError *StringWithError) ToByesWithError() *BytesWithError {
+	if stringWithError.IsNull() {
+		err := errors.New("content has nil string pointer and nothing to add")
+
+		return NewBytesWithErrorOnlyError(err)
+	}
+
+	return NewBytesWithNoError(stringWithError.ToBytesPtr())
+}
+
 func (stringWithError *StringWithError) StringPtr() *string {
 	return stringWithError.content
+}
+
+func (stringWithError *StringWithError) IsEquals(another *StringWithError, isCaseSensitive bool) bool {
+	if another == nil {
+		return false
+	}
+
+	// same pointer
+	if stringWithError == another {
+		return true
+	}
+
+	if stringWithError.IsNullOrEmpty() == another.IsNullOrEmpty() {
+		return true
+	}
+
+	if stringWithError.BytesLength() != another.BytesLength() {
+		return false
+	}
+
+	return isinternal.EqualsPtr(
+		stringWithError.StringPtr(),
+		another.StringPtr(),
+		isCaseSensitive)
+}
+
+func (stringWithError *StringWithError) IsStringEquals(another *string, isCaseSensitive bool) bool {
+	if stringWithError.IsNull() && another == nil {
+		return true
+	}
+
+	if stringWithError.IsNull() || another == nil {
+		return false
+	}
+
+	// same pointer
+	if stringWithError.content == another {
+		return true
+	}
+
+	if stringWithError.BytesLength() != len(*another) {
+		return false
+	}
+
+	return isinternal.EqualsPtr(
+		stringWithError.StringPtr(),
+		another,
+		isCaseSensitive)
 }

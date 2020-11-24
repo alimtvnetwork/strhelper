@@ -11,8 +11,8 @@ import (
 // (@singleContent + separator + all items in inputItems).
 //
 //  Internally it creates a slice of interfaces pointers and
-//  then use strhelpercore.RawAnyItemsRequest to inject and then
-//  marshall from that strhelpercore.RawAnyItemsRequest to get the JSON result.
+//  then use strhelpercore.AnyItems to inject and then
+//  marshall from that strhelpercore.AnyItems to get the JSON result.
 //
 // @isSkipEmptyOrNil:
 //  - Skip nil in elements.
@@ -42,7 +42,7 @@ func JsonStringExceptEmptyOfAnys(
 		items = append(items, &item)
 	}
 
-	rawJson := strhelpercore.RawAnyItemsRequest{Items: &items}
+	rawJson := strhelpercore.NewAnyItems(&items)
 	jsonBytes, err := json.Marshal(rawJson)
 
 	if err != nil {

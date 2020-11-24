@@ -15,7 +15,7 @@ func OfLastPtr(
 	lastIndexIncreasedBy int,
 	isCaseSensitive bool,
 ) int {
-	if isstrsinternal.Empty(lines) || searchTerm == nil {
+	if isstrsinternal.EmptyPtr(lines) || searchTerm == nil {
 		return strconst.InvalidNotFoundCase
 	}
 

@@ -1,5 +1,5 @@
-package isstrs
+package misc
 
-func Empty(lines *[]string) bool {
+func EmptyBytes(lines *[]byte) bool {
 	return lines == nil || *lines == nil || len(*lines) == 0
 }

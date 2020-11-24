@@ -33,8 +33,66 @@ func (errorWrapper *ErrorWrapper) Error() *error {
 	return errorWrapper.currentError
 }
 
-func (errorWrapper *ErrorWrapper) IsErrorEmpty() bool {
+func (errorWrapper *ErrorWrapper) ErrorString() string {
+	if errorWrapper.currentError == nil {
+		return ""
+	}
+
+	return (*errorWrapper.currentError).Error()
+}
+
+func (errorWrapper *ErrorWrapper) IsEmpty() bool {
 	return errorWrapper.currentError == nil || *errorWrapper.currentError == nil
+}
+
+func (errorWrapper *ErrorWrapper) IsEquals(another *ErrorWrapper) bool {
+	if another == nil {
+		return false
+	}
+
+	if errorWrapper == another {
+		return true
+	}
+
+	if errorWrapper.IsEmpty() == another.IsEmpty() {
+		return true
+	}
+
+	// both are not nil confirmed, so if any nil returns false.
+	if another.IsEmpty() || errorWrapper.IsEmpty() {
+		return false
+	}
+
+	// both are defined, now if both pointers are same then it is same object.
+	if errorWrapper.Error() == another.Error() {
+		return true
+	}
+
+	if errorWrapper.ErrorString() == another.ErrorString() {
+		return true
+	}
+
+	return false
+}
+
+func (errorWrapper *ErrorWrapper) IsErrorEquals(err error) bool {
+	if err == nil && errorWrapper.IsEmpty() {
+		return true
+	}
+
+	if err == nil || errorWrapper.IsEmpty() {
+		return false
+	}
+
+	if *errorWrapper.Error() == err {
+		return true
+	}
+
+	if errorWrapper.ErrorString() == err.Error() {
+		return true
+	}
+
+	return false
 }
 
 // Only call panic if has currentError

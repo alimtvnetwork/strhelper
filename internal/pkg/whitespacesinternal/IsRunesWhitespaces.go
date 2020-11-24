@@ -11,7 +11,7 @@ import "unicode"
 //  - Panic if nil, expected to be check with nil for `runes`
 //
 // References:
-//  - https://stackoverflow.com/a/15020162
+//  - https://play.golang.org/p/78uFF8s-Dw1
 func IsRunesWhitespaces(runes *[]rune) bool {
 	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)
 	length := len(*runes)

@@ -1,5 +1,5 @@
 package whitespace
 
-func IsAsciiWhiteSpace(char uint8) bool {
+func IsAsciiWhitespace(char uint8) bool {
 	return asciiSpaces[char] == 1
 }

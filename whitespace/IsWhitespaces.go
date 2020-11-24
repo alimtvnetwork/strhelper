@@ -13,7 +13,7 @@ import "unicode"
 //  - Panic if nil, expected to be check with nil for `s`
 //
 // References:
-//  - https://stackoverflow.com/a/15020162
+//  - https://play.golang.org/p/78uFF8s-Dw1
 func IsWhitespaces(s *string) bool {
 	runes := []rune(*s)
 	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)

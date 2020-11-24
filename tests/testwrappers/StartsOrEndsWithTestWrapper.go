@@ -36,4 +36,3 @@ func (startsOrEndsWithTestWrapper StartsOrEndsWithTestWrapper) Value() interface
 func (startsOrEndsWithTestWrapper StartsOrEndsWithTestWrapper) Expected() interface{} {
 	return startsOrEndsWithTestWrapper.expected
 }
-
