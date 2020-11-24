@@ -20,9 +20,15 @@ func IsAsciiNumberPtr(str *string) bool {
 		return false
 	}
 
-	isFirstCharMinus := (*str)[0] == '-'
+	firstChar := (*str)[0]
+	isFirstCharSign := firstChar == '-' || firstChar == '+'
 	isSingleDotFound := false
-	if isFirstCharMinus {
+
+	if isFirstCharSign {
+		if len(*str) <=1 {
+			return false
+		}
+
 		for _, c := range (*str)[1:] {
 			if !isSingleDotFound && c == '.' {
 				isSingleDotFound = true
@@ -66,9 +72,16 @@ func IsUnicodeRunesNumberPtr(allRunes *[]rune) bool {
 		return false
 	}
 
-	isFirstCharMinus := (*allRunes)[0] == '-'
+	firstRune := (*allRunes)[0]
+	isFirstCharSign := firstRune == '-' || firstRune == '+'
+
+
 	isSingleDotFound := false
-	if isFirstCharMinus {
+	if isFirstCharSign {
+		if len(*allRunes) <=1 {
+			return false
+		}
+
 		for _, r := range (*allRunes)[1:] {
 			if !isSingleDotFound && r == '.' {
 				isSingleDotFound = true
