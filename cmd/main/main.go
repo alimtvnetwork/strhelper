@@ -35,7 +35,6 @@ func main() {
 	fmt.Println(comparedResult2)
 	fmt.Println(strings.Compare("", "a"))
 
-
 	comparedResult3 := lines.Compare(&leftLines, nil, 0, false, true)
 
 	fmt.Println(comparedResult3)
@@ -53,10 +52,8 @@ func main() {
 
 	fmt.Println(comparedResult5)
 
-
-
-	leftBytes = strs.ToBytesOfAny(leftUpto3)
-	rightBytes = strs.ToBytesOfAny(rightLines)
+	leftBytes, _ = strs.ToBytesOfAny(leftUpto3)
+	rightBytes, _ = strs.ToBytesOfAny(rightLines)
 	comparedResult6 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
 
 	fmt.Println(comparedResult6)
@@ -67,7 +64,7 @@ func main() {
 		"Line 3",
 	}
 
-	leftBytes2 := strs.ToBytesOfAny(left2Lines)
+	leftBytes2, _ := strs.ToBytesOfAny(left2Lines)
 
 	comparedResult7 := isstrs.BytesEquals(leftBytes2, rightBytes, 0)
 	fmt.Println(comparedResult7)

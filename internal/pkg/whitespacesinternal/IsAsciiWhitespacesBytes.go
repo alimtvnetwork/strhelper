@@ -1,4 +1,4 @@
-package whitespace
+package whitespacesinternal
 
 // Returns true for ASCII spaces only. Returns false for unicode whitespaces.
 //
@@ -11,12 +11,12 @@ package whitespace
 //
 // References:
 //  - https://play.golang.org/p/78uFF8s-Dw1
-func IsAsciiWhitespaces(s *string) bool {
-	length := len(*s)
+func IsAsciiWhitespacesBytes(bytes *[]byte) bool {
+	length := len(*bytes)
 	mid := length / 2 // 5/2 should return 2
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
-		char := (*s)[i]
+		char := (*bytes)[i]
 		if !(asciiSpaces[char] == 1) {
 			return false
 		}
@@ -27,7 +27,7 @@ func IsAsciiWhitespaces(s *string) bool {
 		}
 
 		lastIndex = lastIndex - i
-		char = (*s)[lastIndex]
+		char = (*bytes)[lastIndex]
 
 		if !(asciiSpaces[char] == 1) {
 			return false

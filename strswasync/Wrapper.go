@@ -8,10 +8,10 @@ package strswasync
 import (
 	"strings"
 	"sync"
-	"unsafe"
 
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	"gitlab.com/evatix-go/strhelper/remove"
@@ -27,7 +27,12 @@ import (
 //
 // Thread safety ensured.
 //
-// This for async transaction purpose.
+// This for async transaction purpose. (Use the lock version of the methods to ensure thread-safety)
+//
+// Warnings & Use Case:
+//  - Mostly used for cached data related. It is not used for in place line modifications.
+//  - Don't modify returned pointer object then this will give unpredictable results.
+//  - To modify, create a new one, use it as immutable object.
 type Wrapper struct {
 	lines                        *[]string
 	linesWrappers                *[]*swasync.StringWrapper
@@ -47,39 +52,6 @@ type Wrapper struct {
 	length int
 }
 
-func NewPtr(lines *[]string) *Wrapper {
-	return &Wrapper{
-		lines:         lines,
-		linesWrappers: nil,
-		lowerLines:    nil,
-		upperLines:    nil,
-		Mutex:         sync.Mutex{},
-		length:        len(*lines),
-	}
-}
-
-func New(lines []string) *Wrapper {
-	if lines == nil {
-		return &Wrapper{
-			lines:         nil,
-			linesWrappers: nil,
-			lowerLines:    nil,
-			upperLines:    nil,
-			Mutex:         sync.Mutex{},
-			length:        0,
-		}
-	}
-
-	return &Wrapper{
-		lines:         &lines,
-		linesWrappers: nil,
-		lowerLines:    nil,
-		upperLines:    nil,
-		Mutex:         sync.Mutex{},
-		length:        len(lines),
-	}
-}
-
 func (wrapper *Wrapper) Lock() {
 	wrapper.Mutex.Lock()
 }
@@ -88,6 +60,12 @@ func (wrapper *Wrapper) Unlock() {
 	wrapper.Mutex.Unlock()
 }
 
+// Value represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (wrapper *Wrapper) Value() *[]string {
 	return wrapper.lines
 }
@@ -111,6 +89,13 @@ func (wrapper *Wrapper) BytesLength() int {
 	}
 
 	return *wrapper.bytesLength
+}
+
+func (wrapper *Wrapper) BytesLengthLock() int {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.BytesLength()
 }
 
 func (wrapper *Wrapper) IsEquals(items *[]string, isCaseSensitive bool) bool {
@@ -189,6 +174,32 @@ func (wrapper *Wrapper) IndexesOfAll(
 		isCaseSensitive)
 }
 
+// Returns all indexes where findingString is found.
+//
+// @limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+//
+// Results:
+//  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
+//  - If no indexes found returns nil
+func (wrapper *Wrapper) IndexesOfAllLock(
+	findingString *string,
+	startsAtIndex int,
+	limits int,
+	isCaseSensitive bool,
+) *[]int {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return strsindex.OfAll(
+		wrapper.lines,
+		findingString,
+		startsAtIndex,
+		limits,
+		isCaseSensitive)
+}
+
 // Find all the indexes for all the searchTerms given.
 //
 // limits:
@@ -208,6 +219,28 @@ func (wrapper *Wrapper) ManyIndexesOfAll(
 		isCaseSensitive)
 }
 
+// Find all the indexes for all the searchTerms given.
+//
+// limits:
+//  - How many indexes should we search for and then stop looking further.
+//  - `-1` means find all
+func (wrapper *Wrapper) ManyIndexesOfAllLock(
+	searchTerms *[]string,
+	startsAtIndex int,
+	limits int,
+	isCaseSensitive bool,
+) *strhelpercore.IndexesResultSet {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return strsindex.OfAllMany(
+		wrapper.lines,
+		searchTerms,
+		startsAtIndex,
+		limits,
+		isCaseSensitive)
+}
+
 func (wrapper *Wrapper) IsNullOrEmptyFirstItem() bool {
 	if wrapper.isNullOrEmptyFirstItem == nil {
 		isNullOrEmptyFirstItem := wrapper.IsNull() || (wrapper.length > 0 && (*wrapper.lines)[0] == "")
@@ -215,6 +248,13 @@ func (wrapper *Wrapper) IsNullOrEmptyFirstItem() bool {
 	}
 
 	return *wrapper.isNullOrEmptyFirstItem
+}
+
+func (wrapper *Wrapper) IsNullOrEmptyFirstItemLock() bool {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.IsNullOrEmptyFirstItem()
 }
 
 func (wrapper *Wrapper) IsNullOrEmptyFirstItemWhitespace() bool {
@@ -227,19 +267,56 @@ func (wrapper *Wrapper) IsNullOrEmptyFirstItemWhitespace() bool {
 	return *wrapper.isEmptyOrWhitespaceFirstItem
 }
 
+func (wrapper *Wrapper) IsNullOrEmptyFirstItemWhitespaceLock() bool {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.IsNullOrEmptyFirstItemWhitespace()
+}
+
 // IsNull(s) || IsNullOrEmpty(s)
 func (wrapper *Wrapper) IsNull() bool {
 	return wrapper.lines == nil || *wrapper.lines == nil
 }
 
+// IsNull(s) || IsNullOrEmpty(s)
+func (wrapper *Wrapper) IsNullLock() bool {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.lines == nil || *wrapper.lines == nil
+}
+
+// Lines represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (wrapper *Wrapper) Lines() *[]string {
 	return wrapper.lines
 }
 
-func (wrapper *Wrapper) GetAsWrappers() *[]*swasync.StringWrapper {
+// LinesLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) LinesLock() *[]string {
 	wrapper.Lock()
 	defer wrapper.Unlock()
 
+	return wrapper.lines
+}
+
+// GetAsWrappers represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) GetAsWrappers() *[]*swasync.StringWrapper {
 	if wrapper.linesWrappers == nil {
 		wrappers := make([]*swasync.StringWrapper, wrapper.length)
 
@@ -253,17 +330,51 @@ func (wrapper *Wrapper) GetAsWrappers() *[]*swasync.StringWrapper {
 	return wrapper.linesWrappers
 }
 
-// get bytes array ptr
-func (wrapper *Wrapper) ToBytesPtr() *[]byte {
+// GetAsWrappers represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) GetAsWrappersLock() *[]*swasync.StringWrapper {
 	wrapper.Lock()
 	defer wrapper.Unlock()
 
+	return wrapper.GetAsWrappers()
+}
+
+// ToBytesPtr represents the pointer to optimize memory copying.
+//
+// Returns bytes array ptr
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToBytesPtr() *[]byte {
 	if wrapper.bytes == nil || *wrapper.bytes == nil {
 		// Reference : https://bit.ly/2ITGTaU
-		*wrapper.bytes = *(*[]byte)(unsafe.Pointer(wrapper.lines))
+		bytes := misc.ToBytes(wrapper.lines)
+
+		wrapper.bytes = bytes
 	}
 
 	return wrapper.bytes
+}
+
+// ToBytesPtr represents the pointer to optimize memory copying.
+//
+// Returns bytes array ptr
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToBytesPtrLock() *[]byte {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.ToBytesPtr()
 }
 
 // Returns:
@@ -294,10 +405,13 @@ func (wrapper *Wrapper) IsAnyDefined() bool {
 	return isstrs.AnyDefined(wrapper.lines)
 }
 
+// ToLowersPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (wrapper *Wrapper) ToLowersPtr() *[]string {
-	wrapper.Lock()
-	defer wrapper.Unlock()
-
 	if wrapper.lowerLines == nil && !wrapper.IsNull() {
 		lowerLines := make([]string, wrapper.length)
 		allLines := wrapper.lines
@@ -311,10 +425,26 @@ func (wrapper *Wrapper) ToLowersPtr() *[]string {
 	return wrapper.lowerLines
 }
 
-func (wrapper *Wrapper) ToUppersPtr() *[]string {
+// ToLowersPtrLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToLowersPtrLock() *[]string {
 	wrapper.Lock()
 	defer wrapper.Unlock()
 
+	return wrapper.ToLowersPtr()
+}
+
+// ToUppersPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToUppersPtr() *[]string {
 	if wrapper.lowerLines == nil && !wrapper.IsNull() {
 		upperLines := make([]string, wrapper.length)
 		allLines := wrapper.lines
@@ -328,10 +458,26 @@ func (wrapper *Wrapper) ToUppersPtr() *[]string {
 	return wrapper.upperLines
 }
 
-func (wrapper *Wrapper) ToLowersWrappersPtr() *[]*swasync.StringWrapper {
+// ToUppersPtrLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToUppersPtrLock() *[]string {
 	wrapper.Lock()
 	defer wrapper.Unlock()
 
+	return wrapper.ToUppersPtr()
+}
+
+// ToLowersWrappersPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToLowersWrappersPtr() *[]*swasync.StringWrapper {
 	if wrapper.lowerWrappers == nil {
 		allLowers := wrapper.ToLowersPtr()
 		wrappers := make([]*swasync.StringWrapper, wrapper.length)
@@ -346,10 +492,26 @@ func (wrapper *Wrapper) ToLowersWrappersPtr() *[]*swasync.StringWrapper {
 	return wrapper.lowerWrappers
 }
 
-func (wrapper *Wrapper) ToUpperWrappersPtr() *[]*swasync.StringWrapper {
+// ToLowersWrappersPtrLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToLowersWrappersPtrLock() *[]*swasync.StringWrapper {
 	wrapper.Lock()
 	defer wrapper.Unlock()
 
+	return wrapper.ToLowersWrappersPtr()
+}
+
+// ToUpperWrappersPtr represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToUpperWrappersPtr() *[]*swasync.StringWrapper {
 	if wrapper.upperWrappers == nil {
 		allUppers := wrapper.ToUppersPtr()
 		wrappers := make([]*swasync.StringWrapper, wrapper.length)
@@ -364,15 +526,54 @@ func (wrapper *Wrapper) ToUpperWrappersPtr() *[]*swasync.StringWrapper {
 	return wrapper.upperWrappers
 }
 
+// ToUpperWrappersPtrLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) ToUpperWrappersPtrLock() *[]*swasync.StringWrapper {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.ToUpperWrappersPtr()
+}
+
 func (wrapper *Wrapper) At(index int) *string {
 	return &(*wrapper.lines)[index]
 }
 
+func (wrapper *Wrapper) AtLock(index int) *string {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return &(*wrapper.lines)[index]
+}
+
+// WrapperAt represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
 func (wrapper *Wrapper) WrapperAt(index int) *swasync.StringWrapper {
 	return (*wrapper.GetAsWrappers())[index]
 }
 
-// Loops through all the lines.
+// WrapperAtLock represents the pointer to optimize memory copying.
+//
+// Warning:
+//  - Returns cached value from a field. Expects no modification in data.
+//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
+//  - Reviewer should check the mutation of the pointers.
+func (wrapper *Wrapper) WrapperAtLock(index int) *swasync.StringWrapper {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return (*wrapper.GetAsWrappers())[index]
+}
+
+// LoopLines loops through all the lines.
 func (wrapper *Wrapper) LoopLines(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
@@ -384,7 +585,17 @@ func (wrapper *Wrapper) LoopLines(
 		&lineProcessor)
 }
 
-// Loops through all the lines.
+// LoopLinesLock loops through all the lines.
+func (wrapper *Wrapper) LoopLinesLock(
+	lineProcessor strhelpercore.LineProcessor,
+) *[]*string {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	return wrapper.LoopLines(lineProcessor)
+}
+
+// LoopParallel runs loops in parallel and when all complete returns the result.
 func (wrapper *Wrapper) LoopParallel(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
@@ -396,10 +607,36 @@ func (wrapper *Wrapper) LoopParallel(
 		&lineProcessor)
 }
 
+// LoopParallelLock runs loops in parallel and when all complete returns the result.
+func (wrapper *Wrapper) LoopParallelLock(
+	lineProcessor strhelpercore.LineProcessor,
+) *[]*string {
+	allLines := wrapper.lines
+
+	return lines.ProcessAsync(
+		nil,
+		allLines,
+		&lineProcessor)
+}
+
 // Returns
-//  - defaultValue : if the index is not valid.
-//  - *string : if index is valid and within the range
+//  - defaultValue : if the index is not valid ( less than 0 or more than the range ).
+//  - *string at index : if index is valid and within the range
 func (wrapper *Wrapper) GetSafeIndexAt(index int, defaultValue *string) *string {
+	if !wrapper.HasIndex(index) || index < 0 {
+		return defaultValue
+	}
+
+	return &(*wrapper.lines)[index]
+}
+
+// Returns
+//  - defaultValue : if the index is not valid ( less than 0 or more than the range ).
+//  - *string at index : if index is valid and within the range
+func (wrapper *Wrapper) GetSafeIndexAtLock(index int, defaultValue *string) *string {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
 	if !wrapper.HasIndex(index) || index < 0 {
 		return defaultValue
 	}
@@ -417,8 +654,29 @@ func (wrapper *Wrapper) IsEqualAtIndex(
 	return isstr.EqualsPtr(&valueAt, compareStr, isCaseSensitive)
 }
 
+func (wrapper *Wrapper) IsEqualAtIndexLock(
+	index int,
+	compareStr *string,
+	isCaseSensitive bool,
+) bool {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
+	valueAt := (*wrapper.lines)[index]
+
+	return isstr.EqualsPtr(&valueAt, compareStr, isCaseSensitive)
+}
+
 // wrapper.BytesLength()-1 >= index
 func (wrapper *Wrapper) HasIndex(index int) bool {
+	return wrapper.length-1 >= index
+}
+
+// wrapper.BytesLength()-1 >= index
+func (wrapper *Wrapper) HasIndexLock(index int) bool {
+	wrapper.Lock()
+	defer wrapper.Unlock()
+
 	return wrapper.length-1 >= index
 }
 
@@ -538,7 +796,7 @@ func (wrapper *Wrapper) Concat(contents ...string) *[]string {
 // Wrapper.Lines() + @contents
 //
 // @skipFilter:
-//  - Items will be skipped from the compiled one.
+//  - items will be skipped from the compiled one.
 func (wrapper *Wrapper) Concatenates(
 	isSkipEmptyOrNil bool,
 	skipFilter *strhashset.Hashset,

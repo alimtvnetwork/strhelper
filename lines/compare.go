@@ -9,6 +9,27 @@ import (
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
+// Compare returns similar to strings.Compare(...), all cumulated sum values of strings.Compare
+// Here it returns for multiple lines.
+//
+//  Having 0 doesn't confirm lines are equal. It can be use for sorting only.
+//
+// Expression / Logic:
+//  - Takes each item in lines and compare using strings.Compare() and stores += strings.Compare()
+//  - Inside strings.Compare
+//      - left(a) == right(b) return 0
+//      - left(a) < right(b) return -1
+//      - left(a) > right(b) return +1
+//  - Notes: if there are 2 lines (left, right passed), one is -1 and in another is +1
+//           the ultimate compare value will be 0 that doesn't mean both lines are same.
+//
+// Returns:
+//  - leftLines nil or empty or has less lines than rightLines returns -1
+//  - rightLines nil or empty or has less lines than leftLines returns +1
+//  - if both lines nil or empty returns 0
+//  - Cumulated Values == 0 return 0, doesn't confirm lines are equal.
+//  - Cumulated Values > 0  return +1
+//  - Cumulated Values < 0  return -1
 func Compare(
 	leftLines *[]string,
 	rightLines *[]string,

@@ -1,5 +1,5 @@
-package isstrs
+package isstrsinternal
 
-func Empty(lines *[]string) bool {
+func EmptyPtr(lines *[]string) bool {
 	return lines == nil || *lines == nil || len(*lines) == 0
 }

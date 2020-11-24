@@ -1,5 +1,6 @@
 package testwrappers
 
+//goland:noinspection ALL
 var StartsWithTestCases = []StartsOrEndsWithTestWrapper{
 	{
 		WholeText:       "Alim Ul Karim",

@@ -24,7 +24,7 @@ func OfAllMany(
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.IndexesResultSet {
-	if isstrsinternal.Empty(lines) || isstrsinternal.Empty(searchTerms) {
+	if isstrsinternal.EmptyPtr(lines) || isstrsinternal.EmptyPtr(searchTerms) {
 		return nil
 	}
 
