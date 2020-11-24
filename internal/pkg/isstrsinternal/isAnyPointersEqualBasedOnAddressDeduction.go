@@ -13,9 +13,7 @@ import "gitlab.com/evatix-go/strhelper/internal/pkg/coreinternal"
 func isAnyPointersEqualBasedOnAddressDeduction(
 	leftItems *[]*interface{},
 	rightItems *[]*interface{},
-) (
-	coreinternal.BoolResultWrapper,
-) {
+) coreinternal.BoolResultWrapper {
 	if leftItems == rightItems && leftItems == nil {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}

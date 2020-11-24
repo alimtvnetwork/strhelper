@@ -18,9 +18,14 @@ func IsAsciiIntegerNumberPtr(str *string) bool {
 	if str == nil || *str == "" {
 		return false
 	}
+	firstChar := (*str)[0]
+	isFirstCharSign := firstChar == '-' || firstChar == '+'
 
-	isFirstCharMinus := (*str)[0] == '-'
-	if isFirstCharMinus {
+	if isFirstCharSign {
+		if len(*str) <=1 {
+			return false
+		}
+
 		for _, c := range (*str)[1:] {
 			if !('0' <= c && c <= '9') {
 				return false
@@ -52,8 +57,14 @@ func IsUnicodeRunesIntegerNumberPtr(allRunes *[]rune) bool {
 		return false
 	}
 
-	isFirstCharMinus := (*allRunes)[0] == '-'
-	if isFirstCharMinus {
+	firstRune := (*allRunes)[0]
+	isFirstCharSign := firstRune == '-' || firstRune == '+'
+
+	if isFirstCharSign {
+		if len(*allRunes) <=1 {
+			return false
+		}
+
 		for _, r := range (*allRunes)[1:] {
 			if !unicode.IsDigit(r) {
 				return false

@@ -10,9 +10,7 @@ import "gitlab.com/evatix-go/strhelper/internal/pkg/coreinternal"
 func isAnyEqualBasedOnAddressDeduction(
 	leftItems *[]interface{},
 	rightItems *[]interface{},
-) (
-	coreinternal.BoolResultWrapper,
-) {
+) coreinternal.BoolResultWrapper {
 	if leftItems == rightItems && leftItems == nil {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}

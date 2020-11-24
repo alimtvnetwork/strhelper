@@ -14,7 +14,7 @@ func IsUniCodeRunesNumber(allRunes []rune) bool {
 	return IsUnicodeRunesNumberPtr(&allRunes)
 }
 
-// Example : https://play.golang.org/p/xxAEcqa5IGY
+// Example : https://play.golang.org/p/_314bvo6TDk
 func IsAsciiNumberPtr(str *string) bool {
 	if str == nil || *str == "" {
 		return false
@@ -55,7 +55,7 @@ func IsAsciiNumberPtr(str *string) bool {
 	return true
 }
 
-// Example : https://play.golang.org/p/xxAEcqa5IGY
+// Example : https://play.golang.org/p/_314bvo6TDk
 func IsUnicodeNumberPtr(str *string) bool {
 	if str == nil || *str == "" {
 		return false
@@ -66,7 +66,7 @@ func IsUnicodeNumberPtr(str *string) bool {
 	return IsUnicodeRunesNumberPtr(&allRunes)
 }
 
-// Example : https://play.golang.org/p/xxAEcqa5IGY
+// Example : https://play.golang.org/p/_314bvo6TDk
 func IsUnicodeRunesNumberPtr(allRunes *[]rune) bool {
 	if allRunes == nil || *allRunes == nil {
 		return false
@@ -74,7 +74,6 @@ func IsUnicodeRunesNumberPtr(allRunes *[]rune) bool {
 
 	firstRune := (*allRunes)[0]
 	isFirstCharSign := firstRune == '-' || firstRune == '+'
-
 
 	isSingleDotFound := false
 	if isFirstCharSign {

@@ -43,7 +43,7 @@ func BytesEquals(
 	}
 
 	if startsAt < 0 || startsAt > leftLength-1 {
-		panic("Start index has exceed length or negative.")
+		panic("Start index has exceeded length or negative.")
 	}
 
 	return bytesEqual(

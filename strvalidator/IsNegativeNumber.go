@@ -16,7 +16,7 @@ func IsUniCodeRunesNegativeNumber(allRunes []rune) bool {
 
 // Example : https://play.golang.org/p/UtTytkdk3KP
 func IsAsciiNegativeNumberPtr(str *string) bool {
-	if str == nil || *str == "" || (*str)[0] != '-' {
+	if str == nil || *str == "" || (*str)[0] != '-' || len(*str) <= 1 {
 		return false
 	}
 
@@ -49,7 +49,7 @@ func IsUnicodeNegativeNumberPtr(str *string) bool {
 
 // Example : https://play.golang.org/p/UtTytkdk3KP
 func IsUnicodeRunesNegativeNumberPtr(allRunes *[]rune) bool {
-	if allRunes == nil || *allRunes == nil || (*allRunes)[0] != '-' {
+	if allRunes == nil || *allRunes == nil || (*allRunes)[0] != '-' || len(*allRunes) <= 1 {
 		return false
 	}
 
