@@ -2,6 +2,7 @@ package strhelpercore
 
 import (
 	"fmt"
+	"strings"
 
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
@@ -93,6 +94,52 @@ func (errorWrapper *ErrorWrapper) IsErrorEquals(err error) bool {
 	}
 
 	return false
+}
+
+// If error IsEmpty then returns false regardless
+func (errorWrapper *ErrorWrapper) IsErrorMessage(msg string, isCaseSensitive bool) bool {
+	if errorWrapper.IsEmpty() {
+		return false
+	}
+
+	errMsg := errorWrapper.ErrorString()
+
+	if errMsg == msg {
+		// same string or empty or also for case sensitivity
+		return true
+	}
+
+	if !isCaseSensitive {
+		lowerErrorMsg := strings.ToLower(errMsg)
+		lowerMsg := strings.ToLower(msg)
+
+		return lowerErrorMsg == lowerMsg
+	}
+
+	return false
+}
+
+// If error IsEmpty then returns false regardless
+func (errorWrapper *ErrorWrapper) IsErrorMessageContains(msg string, isCaseSensitive bool) bool {
+	if errorWrapper.IsEmpty() {
+		return false
+	}
+
+	errMsg := errorWrapper.ErrorString()
+
+	if errMsg == msg && msg == "" {
+		// same string or empty or also for case sensitivity
+		return true
+	}
+
+	if !isCaseSensitive {
+		lowerErrorMsg := strings.ToLower(errMsg)
+		lowerMsg := strings.ToLower(msg)
+
+		return strings.Index(lowerErrorMsg, lowerMsg) > -1
+	}
+
+	return strings.Index(errMsg, msg) > -1
 }
 
 // Only call panic if has currentError

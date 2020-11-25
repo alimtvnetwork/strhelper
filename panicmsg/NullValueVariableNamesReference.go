@@ -1,6 +1,6 @@
 package panicmsg
 
-func NilValueVariableNamesReference(names ...string) *[]ReferenceValue {
+func NullValueVariableNamesReference(names ...string) *[]ReferenceValue {
 	references := make([]ReferenceValue, len(names))
 
 	for i, name := range names {

@@ -22,7 +22,7 @@ func IsAsciiIntegerNumberPtr(str *string) bool {
 	isFirstCharSign := firstChar == '-' || firstChar == '+'
 
 	if isFirstCharSign {
-		if len(*str) <=1 {
+		if len(*str) <= 1 {
 			return false
 		}
 
@@ -61,7 +61,7 @@ func IsUnicodeRunesIntegerNumberPtr(allRunes *[]rune) bool {
 	isFirstCharSign := firstRune == '-' || firstRune == '+'
 
 	if isFirstCharSign {
-		if len(*allRunes) <=1 {
+		if len(*allRunes) <= 1 {
 			return false
 		}
 

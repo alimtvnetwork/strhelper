@@ -2,6 +2,7 @@ package strhelpercore
 
 import (
 	"errors"
+	"fmt"
 
 	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
@@ -142,7 +143,7 @@ func (bytesWithError *BytesWithError) HasValidCharacters() bool {
 // Steps :
 //  - converts any using the same method as NewBytesWithErrorUsingAny / encoder to bytes (strs.ToBytesOfAny(any))
 //  - then compare with bytes
-func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}) bool {
+func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}, isPanicOnErrorParse bool) bool {
 	if bytesWithError.IsNull() && any == nil {
 		return true
 	}
@@ -151,7 +152,11 @@ func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}) bool {
 		return false
 	}
 
-	bytes, _ := misc.ToBytesOfAny(any)
+	bytes, err := misc.ToBytesOfAny(any)
+
+	if err != nil && isPanicOnErrorParse {
+		panic(fmt.Sprintf("%s %s", "any parse failed:", err))
+	}
 
 	return misc.BytesEquals(
 		bytesWithError.bytes,
@@ -175,27 +180,27 @@ func (bytesWithError *BytesWithError) IsEqualBytes(bytes *[]byte) bool {
 		0)
 }
 
-func (bytesWithError *BytesWithError) IsEquals(bytesWithError2 *BytesWithError) bool {
-	if bytesWithError2 == nil {
+func (bytesWithError *BytesWithError) IsEquals(another *BytesWithError) bool {
+	if another == nil {
 		return false
 	}
 
 	// same pointer
-	if bytesWithError == bytesWithError2 {
+	if bytesWithError == another {
 		return true
 	}
 
-	if bytesWithError.IsNullOrEmpty() == bytesWithError2.IsNullOrEmpty() {
+	if bytesWithError.IsNullOrEmpty() == another.IsNullOrEmpty() {
 		return true
 	}
 
-	if bytesWithError.BytesLength() != bytesWithError2.BytesLength() {
+	if bytesWithError.BytesLength() != another.BytesLength() {
 		return false
 	}
 
 	return misc.BytesEquals(
 		bytesWithError.bytes,
-		bytesWithError2.bytes,
+		another.bytes,
 		0)
 }
 

@@ -9,7 +9,7 @@ func SimplePanicVariableNames(isPanic bool, msg string, referencesNames ...strin
 
 	references := panicmsg.EmptyValueVariableNamesReference(referencesNames...)
 
-	message := panicmsg.TSimpleValMsgs(
+	message := panicmsg.SimpleValMsgsWithType(
 		msg,
 		*references...)
 

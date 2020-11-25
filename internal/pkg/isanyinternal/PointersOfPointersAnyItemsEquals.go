@@ -1,10 +1,10 @@
-package isstrsinternal
+package isanyinternal
 
 import (
 	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 )
 
-// AnyPointersEquals compares leftItems and rightItems and returns bool
+// PointersOfPointersAnyItemsEquals compares leftItems and rightItems and returns bool
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both lengths are not same returns false.
@@ -15,7 +15,7 @@ import (
 //  - if true then if at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
-func AnyPointersEquals(
+func PointersOfPointersAnyItemsEquals(
 	leftItems *[]*interface{},
 	rightItems *[]*interface{},
 	startsAt int,

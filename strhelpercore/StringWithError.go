@@ -224,7 +224,11 @@ func (stringWithError *StringWithError) StringPtr() *string {
 	return stringWithError.content
 }
 
-func (stringWithError *StringWithError) IsEquals(another *StringWithError, isCaseSensitive bool) bool {
+func (stringWithError *StringWithError) IsEquals(another *StringWithError) bool {
+	return stringWithError.IsEqualsCase(another, true)
+}
+
+func (stringWithError *StringWithError) IsEqualsCase(another *StringWithError, isCaseSensitive bool) bool {
 	if another == nil {
 		return false
 	}
@@ -242,13 +246,17 @@ func (stringWithError *StringWithError) IsEquals(another *StringWithError, isCas
 		return false
 	}
 
-	return isinternal.EqualsPtr(
+	return isinternal.EqualsCasePtr(
 		stringWithError.StringPtr(),
 		another.StringPtr(),
 		isCaseSensitive)
 }
 
-func (stringWithError *StringWithError) IsStringEquals(another *string, isCaseSensitive bool) bool {
+func (stringWithError *StringWithError) IsStringEquals(another *string) bool {
+	return stringWithError.IsStringCaseEquals(another, true)
+}
+
+func (stringWithError *StringWithError) IsStringCaseEquals(another *string, isCaseSensitive bool) bool {
 	if stringWithError.IsNull() && another == nil {
 		return true
 	}
@@ -266,7 +274,7 @@ func (stringWithError *StringWithError) IsStringEquals(another *string, isCaseSe
 		return false
 	}
 
-	return isinternal.EqualsPtr(
+	return isinternal.EqualsCasePtr(
 		stringWithError.StringPtr(),
 		another,
 		isCaseSensitive)

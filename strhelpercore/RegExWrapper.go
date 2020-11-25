@@ -2,6 +2,8 @@ package strhelpercore
 
 import (
 	"regexp"
+
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
 )
 
 type RegExWrapper struct {
@@ -28,8 +30,24 @@ func (regExWrapper *RegExWrapper) RegExResultWrapper(content *string) *RegExResu
 	return regExWrapper.regExResultWrapper
 }
 
-func (regExWrapper *RegExWrapper) Request() *string {
-	return regExWrapper.request
+func (regExWrapper *RegExWrapper) Request() string {
+	return *regExWrapper.request
+}
+
+func (regExWrapper *RegExWrapper) IsEquals(another *RegExWrapper) bool {
+	if another == nil {
+		return false
+	}
+
+	if another == regExWrapper {
+		return true
+	}
+
+	return isinternal.EqualsPtr(regExWrapper.request, another.request)
+}
+
+func (regExWrapper *RegExWrapper) IsEqualsString(str *string) bool {
+	return isinternal.EqualsPtr(regExWrapper.request, str)
 }
 
 // Requires to compile regex to get the currentError

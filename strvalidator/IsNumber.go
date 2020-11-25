@@ -25,7 +25,7 @@ func IsAsciiNumberPtr(str *string) bool {
 	isSingleDotFound := false
 
 	if isFirstCharSign {
-		if len(*str) <=1 {
+		if len(*str) <= 1 {
 			return false
 		}
 
@@ -77,7 +77,7 @@ func IsUnicodeRunesNumberPtr(allRunes *[]rune) bool {
 
 	isSingleDotFound := false
 	if isFirstCharSign {
-		if len(*allRunes) <=1 {
+		if len(*allRunes) <= 1 {
 			return false
 		}
 
