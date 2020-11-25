@@ -3,6 +3,7 @@ package strhelpercore
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
@@ -25,11 +26,59 @@ type WrapStatus struct {
 	IsRightFound bool
 }
 
-func NewWrapUnWrap(start, end *string) *WrapUnWrap {
+func NewWrapUnWrap(start, end string) *WrapUnWrap {
+	return &WrapUnWrap{
+		Start: &start,
+		End:   &end,
+	}
+}
+
+func NewWrapUnWrapPtr(start, end *string) *WrapUnWrap {
 	return &WrapUnWrap{
 		Start: start,
 		End:   end,
 	}
+}
+
+func (wrapUnwrap *WrapUnWrap) IsNull() bool {
+	return (wrapUnwrap.Start == nil) && (wrapUnwrap.End == nil)
+}
+
+func (wrapUnwrap *WrapUnWrap) IsEmpty() bool {
+	return (wrapUnwrap.Start == nil || *wrapUnwrap.Start == "") && (wrapUnwrap.End == nil || *wrapUnwrap.End == "")
+}
+
+func (wrapUnwrap *WrapUnWrap) IsStartEmpty() bool {
+	return wrapUnwrap.Start == nil || *wrapUnwrap.Start == ""
+}
+
+func (wrapUnwrap *WrapUnWrap) IsEndEmpty() bool {
+	return wrapUnwrap.End == nil || *wrapUnwrap.End == ""
+}
+
+func (wrapUnwrap *WrapUnWrap) IsEquals(another *WrapUnWrap) bool {
+	if another == nil {
+		return false
+	}
+
+	if wrapUnwrap.IsNull() && another.IsNull() {
+		return true
+	}
+
+	isStartWrapper := isinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.Start, another.Start)
+
+	if isStartWrapper.IsApplicableWithFalse() {
+		return isStartWrapper.Result
+	}
+
+	isEndWrapper := isinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.End, another.End)
+
+	if isEndWrapper.IsApplicableWithFalse() {
+		return isEndWrapper.Result
+	}
+
+	return isinternal.EqualsPtr(wrapUnwrap.Start, another.Start) &&
+		isinternal.EqualsPtr(wrapUnwrap.End, another.End)
 }
 
 // Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.

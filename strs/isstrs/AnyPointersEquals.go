@@ -1,6 +1,8 @@
 package isstrs
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
+import (
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isanyinternal"
+)
 
 // AnyPointersEquals compares leftItems and rightItems and returns bool
 //  - If both nil returns true.
@@ -19,7 +21,7 @@ func AnyPointersEquals(
 	startsAt int,
 	isContinueOnBothItemParseError bool,
 ) bool {
-	return isstrsinternal.AnyPointersEquals(
+	return isanyinternal.PointersOfPointersAnyItemsEquals(
 		leftItems,
 		rightItems,
 		startsAt,

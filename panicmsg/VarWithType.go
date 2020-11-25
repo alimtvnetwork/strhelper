@@ -5,7 +5,7 @@ import (
 )
 
 // Returns variableName + "[" + typeName + "]" + constants.SpaceColonSpace + value
-func TVar(typeName, variableName, value string) string {
+func VarWithType(typeName, variableName, value string) string {
 	return variableName +
 		squareBracketStart +
 		typeName +

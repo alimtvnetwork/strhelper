@@ -6,9 +6,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
-// Returns msg + referenceStart + TVar(typeName, variableName, printVal) + spaceParenthesisEnd
+// Returns msg + referenceStart + VarWithType(typeName, variableName, printVal) + spaceParenthesisEnd
 // Type name included
-func TSimpleValMsg(msg, variableName string, value interface{}) string {
+func SimpleValMsgWithType(msg, variableName string, value interface{}) string {
 	var printVal string
 	typeName := fmt.Sprintf(strconst.SprintTypeFormat, value)
 
@@ -18,7 +18,7 @@ func TSimpleValMsg(msg, variableName string, value interface{}) string {
 		printVal = fmt.Sprintf(strconst.SprintValueFormat, value)
 	}
 
-	typedVariableReference := TVar(typeName, variableName, printVal)
+	typedVariableReference := VarWithType(typeName, variableName, printVal)
 
 	return msg +
 		referenceStart +

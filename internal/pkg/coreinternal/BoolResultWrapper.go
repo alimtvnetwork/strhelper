@@ -29,3 +29,11 @@ func NewBoolResultWrapper(result bool) BoolResultWrapper {
 func NewBoolResultWrapperNotApplicable() BoolResultWrapper {
 	return BoolResultWrapper{Result: false, IsApplicable: false}
 }
+
+func (boolResultWrapper *BoolResultWrapper) IsApplicableWithTrue() bool {
+	return boolResultWrapper.IsApplicable && boolResultWrapper.Result
+}
+
+func (boolResultWrapper *BoolResultWrapper) IsApplicableWithFalse() bool {
+	return boolResultWrapper.IsApplicable && !boolResultWrapper.Result
+}

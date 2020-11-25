@@ -53,6 +53,44 @@ func (regExWrappersCollection *RegExWrappersCollection) Length() int {
 	return len(*regExWrappersCollection.expressions)
 }
 
+func (regExWrappersCollection *RegExWrappersCollection) IsEquals(
+	anotherRegExCollection *RegExWrappersCollection,
+) bool {
+	if anotherRegExCollection == nil {
+		return false
+	}
+
+	if anotherRegExCollection.IsEmpty() && regExWrappersCollection.IsEmpty() {
+		return true
+	}
+
+	if anotherRegExCollection.IsEmpty() || regExWrappersCollection.IsEmpty() {
+		return false
+	}
+
+	if anotherRegExCollection.Length() != regExWrappersCollection.Length() {
+		return false
+	}
+
+	for i, regExWrapper := range *anotherRegExCollection.regexes {
+		current := (*regExWrappersCollection.regexes)[i]
+
+		if regExWrapper == nil && current == nil {
+			continue
+		}
+
+		if regExWrapper == nil || current == nil {
+			return false
+		}
+
+		if !current.IsEquals(regExWrapper) {
+			return false
+		}
+	}
+
+	return true
+}
+
 func (regExWrappersCollection *RegExWrappersCollection) Value() *[]*RegExWrapper {
 	if regExWrappersCollection.regexes == nil && regExWrappersCollection.IsDefined() {
 		length := regExWrappersCollection.Length()

@@ -3,7 +3,7 @@ package strhelpercore
 import (
 	"sync"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/isanyinternal"
 )
 
 type AnyItems struct {
@@ -114,7 +114,7 @@ func (anyItems *AnyItems) IsEquals(another *AnyItems) bool {
 		return true
 	}
 
-	return isstrsinternal.AnyPointersEquals(
+	return isanyinternal.PointersOfPointersAnyItemsEquals(
 		anyItems.Items,
 		another.Items,
 		0,
@@ -135,7 +135,7 @@ func (anyItems *AnyItems) IsEqualsLock(another *AnyItems) bool {
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
 func (anyItems *AnyItems) IsAnyItemsEquals(anyItemsPtr *[]*interface{}, isContinueOnBothItemParseError bool) bool {
-	return isstrsinternal.AnyPointersEquals(
+	return isanyinternal.PointersOfPointersAnyItemsEquals(
 		anyItems.Items,
 		anyItemsPtr,
 		0,
@@ -153,7 +153,7 @@ func (anyItems *AnyItems) IsAnyItemsEqualsLock(anyItemsPtr *[]*interface{}, isCo
 	anyItems.Lock()
 	defer anyItems.Unlock()
 
-	return isstrsinternal.AnyPointersEquals(
+	return isanyinternal.PointersOfPointersAnyItemsEquals(
 		anyItems.Items,
 		anyItemsPtr,
 		0,
@@ -170,7 +170,7 @@ func (anyItems *AnyItems) IsAnyItemsWithoutPointersEquals(
 	anyItemsValues *[]interface{},
 	isContinueOnBothItemParseError bool,
 ) bool {
-	return isstrsinternal.AnyEqualsWhereOnePointer(
+	return isanyinternal.ItemsEqualsWhereOnePointersOfPointersAnyItems(
 		anyItems.Items,
 		anyItemsValues,
 		0,
@@ -190,7 +190,7 @@ func (anyItems *AnyItems) IsAnyItemsWithoutPointersEqualsLock(
 	anyItems.Lock()
 	defer anyItems.Unlock()
 
-	return isstrsinternal.AnyEqualsWhereOnePointer(
+	return isanyinternal.ItemsEqualsWhereOnePointersOfPointersAnyItems(
 		anyItems.Items,
 		anyItemsValues,
 		0,

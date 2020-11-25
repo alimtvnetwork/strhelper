@@ -7,7 +7,7 @@ func SimplePanic(isPanic bool, msg string, references ...panicmsg.ReferenceValue
 		return
 	}
 
-	message := panicmsg.TSimpleValMsgs(
+	message := panicmsg.SimpleValMsgsWithType(
 		msg,
 		references...)
 

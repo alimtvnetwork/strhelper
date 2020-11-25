@@ -6,9 +6,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
-// Returns msg + referenceStart + TVar(typeName, variableName, printVal) + spaceParenthesisEnd
+// Returns msg + referenceStart + VarWithType(typeName, variableName, printVal) + spaceParenthesisEnd
 // Type name included
-func TSimpleValMsgsUsingArray(msg string, referenceValues *[]ReferenceValue) string {
+func SimpleValMsgsUsingReferencesWithType(msg string, referenceValues *[]ReferenceValue) string {
 	var printVal string
 
 	if referenceValues == nil || len(*referenceValues) == 0 {

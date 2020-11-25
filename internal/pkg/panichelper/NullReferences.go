@@ -3,9 +3,9 @@ package panichelper
 import "gitlab.com/evatix-go/strhelper/panicmsg"
 
 func NullReferences(nullReferenceNames ...string) {
-	references := panicmsg.NilValueVariableNamesReference(nullReferenceNames...)
+	references := panicmsg.NullValueVariableNamesReference(nullReferenceNames...)
 
-	message := panicmsg.TSimpleValMsgsUsingArray(
+	message := panicmsg.SimpleValMsgsUsingReferencesWithType(
 		"Cannot be nil. ",
 		references,
 	)
