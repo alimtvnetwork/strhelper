@@ -5,7 +5,7 @@ import (
 
 	. "github.com/smartystreets/goconvey/convey"
 
-	"gitlab.com/evatix-go/strhelper"
+	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/tests/testscore"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers"
 )
@@ -16,7 +16,7 @@ func TestIsStartsWith(t *testing.T) {
 		testHeader := testscore.GetTestHeader(testCase)
 
 		// Act
-		actual := strhelper.IsStartsWith(
+		actual := isstr.StartsWith(
 			testCase.WholeText,
 			testCase.Search,
 			testCase.StartsAt,

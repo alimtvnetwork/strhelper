@@ -4,8 +4,8 @@ import (
 	"fmt"
 )
 
-func GetTestHeader(testCaseMessager TestCaseMessager) string {
+func GetTestHeader(testCaseMessenger TestCaseMessenger) string {
 	return fmt.Sprintf("Method : [%s]",
-		testCaseMessager.FuncName(),
+		testCaseMessenger.FuncName(),
 	)
 }

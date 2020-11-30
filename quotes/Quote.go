@@ -3,9 +3,9 @@ package quotes
 type Quote uint8
 
 const (
-	UnknownQuote = iota
-	Double Quote = '"'
-	Single Quote = '\''
+	UnknownQuote Quote = iota
+	Double       Quote = '"'
+	Single       Quote = '\''
 )
 
 func (quote Quote) IsEqual(char uint8) bool {

@@ -1,9 +1,9 @@
 package testscore
 
-func GetAssertMessage(testCaseMessager TestCaseMessager, counter int) string {
+func GetAssertMessage(testCaseMessenger TestCaseMessenger, counter int) string {
 	return GetAssertMessageQuick(
-		testCaseMessager.Value(),
-		testCaseMessager.Actual(),
-		testCaseMessager.Expected(),
+		testCaseMessenger.Value(),
+		testCaseMessenger.Actual(),
+		testCaseMessenger.Expected(),
 		counter)
 }

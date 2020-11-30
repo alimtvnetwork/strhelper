@@ -42,8 +42,9 @@ func (regExResultWrapper *RegExResultWrapper) Indexes() [][]int {
 func NewRegExResultWrapper(
 	index int,
 	content *string,
-	regexp *regexp.Regexp) RegExResultWrapper {
-	return RegExResultWrapper{
+	regexp *regexp.Regexp,
+) *RegExResultWrapper {
+	return &RegExResultWrapper{
 		Index:        index,
 		Regexp:       regexp,
 		content:      content,
