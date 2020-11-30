@@ -1,4 +1,4 @@
-package strhelpercore
+package strerror
 
 import (
 	"fmt"
@@ -18,24 +18,33 @@ func NewErrorWrapperPtr(error *error) *ErrorWrapper {
 	return &ErrorWrapper{currentError: error}
 }
 
-func NewErrorWrapper(error error) *ErrorWrapper {
+func NewErrorWrapper(error error) ErrorWrapper {
 	if error == nil {
-		return &ErrorWrapper{currentError: nil}
+		return ErrorWrapper{currentError: nil}
 	}
 
-	return &ErrorWrapper{currentError: &error}
+	return ErrorWrapper{currentError: &error}
 }
 
 func (errorWrapper *ErrorWrapper) HasError() bool {
 	return errorWrapper.currentError != nil && *errorWrapper.currentError != nil
 }
 
-func (errorWrapper *ErrorWrapper) Error() *error {
+func (errorWrapper *ErrorWrapper) ErrorPtr() *error {
 	return errorWrapper.currentError
 }
 
+func (errorWrapper *ErrorWrapper) Error() error {
+	if errorWrapper.IsEmpty() {
+		return nil
+	}
+
+	return *errorWrapper.currentError
+}
+
+// ErrorString if empty error then returns ""
 func (errorWrapper *ErrorWrapper) ErrorString() string {
-	if errorWrapper.currentError == nil {
+	if errorWrapper.IsEmpty() {
 		return ""
 	}
 
@@ -85,7 +94,7 @@ func (errorWrapper *ErrorWrapper) IsErrorEquals(err error) bool {
 		return false
 	}
 
-	if *errorWrapper.Error() == err {
+	if errorWrapper.Error() == err {
 		return true
 	}
 

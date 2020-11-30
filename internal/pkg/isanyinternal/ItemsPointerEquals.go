@@ -1,6 +1,9 @@
 package isanyinternal
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/misc"
+import (
+	"gitlab.com/evatix-go/strhelper/anyto"
+	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
+)
 
 // ItemsPointerEquals compares leftItems and rightItems and returns bool
 //  - If both nil returns true.
@@ -19,7 +22,7 @@ func ItemsPointerEquals(
 	startsAt int,
 	isContinueOnBothItemParseError bool,
 ) bool {
-	resultWrapper := AnyItemsPointerEqualBasedOnAddressDeduction(leftItems, rightItems)
+	resultWrapper := ItemsNullDeduction(leftItems, rightItems)
 	if resultWrapper.IsApplicable {
 		return resultWrapper.Result
 	}
@@ -47,8 +50,8 @@ func ItemsPointerEquals(
 			return false
 		}
 
-		leftBytes, lError := misc.ToBytesOfAny(left)
-		rightBytes, rError := misc.ToBytesOfAny(right)
+		leftBytes, lError := anyto.Bytes(left)
+		rightBytes, rError := anyto.Bytes(right)
 
 		if isContinueOnBothItemParseError && lError != nil && rError != nil {
 			continue
@@ -58,7 +61,7 @@ func ItemsPointerEquals(
 			return false
 		}
 
-		if !misc.BytesEquals(leftBytes, rightBytes, 0) {
+		if !misc.IsBytesEquals(leftBytes, rightBytes, 0) {
 			return false
 		}
 	}

@@ -2,36 +2,33 @@ package isanyinternal
 
 import "gitlab.com/evatix-go/strhelper/internal/pkg/coreinternal"
 
-// isAnyPointersEqualBasedOnAddressDeduction compares leftItems and rightItems and
-// returns coreinternal.BoolResultWrapper
-//
-// Cases :
+// PointerNullDeduction compares leftItems and rightItems and returns coreinternal.BoolResultWrapper
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both pointers are same returns true.
 //  - If none of the conditions satisfied then returns coreinternal.NewBoolResultWrapperNotApplicable()
-func isAnyPointersEqualBasedOnAddressDeduction(
-	leftItems *[]*interface{},
-	rightItems *[]*interface{},
+func PointerNullDeduction(
+	left *interface{},
+	right *interface{},
 ) coreinternal.BoolResultWrapper {
 	// if pointer same
-	if leftItems == rightItems {
+	if left == right {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}
 
-	if leftItems == nil && rightItems == nil {
+	if left == nil && right == nil {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}
 
-	if leftItems == nil || rightItems == nil {
+	if left == nil || right == nil {
 		return coreinternal.NewBoolResultWrapperFalse()
 	}
 
-	if *leftItems == nil && *rightItems == nil {
+	if *left == nil && *right == nil {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}
 
-	if *leftItems == nil || *rightItems == nil {
+	if *left == nil || *right == nil {
 		return coreinternal.NewBoolResultWrapperFalse()
 	}
 

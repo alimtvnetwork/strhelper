@@ -1,4 +1,4 @@
-![Use Package logo](UseLogo)
+![CIMUX golang strhelper logo](https://gitlab.com/evatix-go/strhelper/uploads/12f1449174f417be0570627cf6e749ea/go-string-250.png)
 
 # Strings Extension Introduction (`strhelper`)
 
@@ -49,6 +49,17 @@ To set for Unix:
 Any other packages used
 
 ## Links
+
+* [Go Slice Tricks Cheat Sheet](https://ueokande.github.io/go-slice-tricks/)
+* [SliceTricks · golang/go Wiki](https://github.com/golang/go/wiki/SliceTricks)
+* [Go Cheat Sheet](https://gist.github.com/ikennaokpala/b839c00e0123374e0b58)
+* [The Go Programming Language Specification - The Go Programming Language](https://golang.org/ref/spec#Assignments)
+* [go reflect - How to find the type of an object in Go?](https://stackoverflow.com/questions/20170275/how-to-find-the-type-of-an-object-in-go)
+* [go - Can I compare variable types with .(type) in Golang?](https://stackoverflow.com/questions/34820469/can-i-compare-variable-types-with-type-in-golang)
+* [reflection - Check type of struct in Go](https://stackoverflow.com/questions/45067382/check-type-of-struct-in-go)
+* [Go - How can I check for type equality?](https://stackoverflow.com/questions/29444817/go-how-can-i-check-for-type-equality)
+* [How to create dynamic items with reflection on interface type by astaxie/goorm](https://github.com/astaxie/goorm/blob/d35780c0d3cefa6f6171add5a864e7948e7fee8b/goorm.go#L207)
+    * [struct to map function · astaxie/goorm](https://github.com/astaxie/goorm/blob/d35780c0d3cefa6f6171add5a864e7948e7fee8b/util.go#L111)
 
 ## Issues
 

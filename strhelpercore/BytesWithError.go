@@ -1,18 +1,19 @@
 package strhelpercore
 
 import (
-	"errors"
 	"fmt"
 
+	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
+	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
 type BytesWithError struct {
 	bytes        *[]byte
 	lines        *[]string
 	content      *string
-	errorWrapper ErrorWrapper
+	errorWrapper strerror.ErrorWrapper
 	bytesLength  int
 	stringLength *int
 	isWhitespace *bool
@@ -20,13 +21,13 @@ type BytesWithError struct {
 
 func NewBytesWithErrorOnlyError(err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: *NewErrorWrapperPtr(&err),
+		errorWrapper: *strerror.NewErrorWrapperPtr(&err),
 	}
 }
 
 func NewBytesWithErrorOnlyErrorPtr(err *error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: *NewErrorWrapperPtr(err),
+		errorWrapper: *strerror.NewErrorWrapperPtr(err),
 	}
 }
 
@@ -39,7 +40,7 @@ func NewBytesWithError(bytes *[]byte, err *error) *BytesWithError {
 
 	return &BytesWithError{
 		bytes:        bytes,
-		errorWrapper: *NewErrorWrapperPtr(err),
+		errorWrapper: *strerror.NewErrorWrapperPtr(err),
 		bytesLength:  length,
 	}
 }
@@ -50,12 +51,10 @@ func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 	length := 0
 
 	if any == nil {
-		newError := errors.New("given any object is nil/null, cannot be parsed to bytes")
-
-		return NewBytesWithErrorOnlyErrorPtr(&newError)
+		return NewBytesWithErrorOnlyErrorPtr(nil)
 	}
 
-	bytes, err := misc.ToBytesOfAny(any)
+	bytes, err := anyto.Bytes(any)
 
 	if bytes != nil && *bytes != nil {
 		length = len(*bytes)
@@ -63,7 +62,7 @@ func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 
 	return &BytesWithError{
 		bytes:        bytes,
-		errorWrapper: *NewErrorWrapper(err),
+		errorWrapper: strerror.NewErrorWrapper(err),
 		bytesLength:  length,
 	}
 }
@@ -97,7 +96,7 @@ func (bytesWithError *BytesWithError) StringLength() int {
 }
 
 // Error must be initialize have it or not. Then check Error().IsEmpty()
-func (bytesWithError *BytesWithError) Error() ErrorWrapper {
+func (bytesWithError *BytesWithError) Error() strerror.ErrorWrapper {
 	return bytesWithError.errorWrapper
 }
 
@@ -152,13 +151,13 @@ func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}, isPanicOnErro
 		return false
 	}
 
-	bytes, err := misc.ToBytesOfAny(any)
+	bytes, err := anyto.Bytes(any)
 
 	if err != nil && isPanicOnErrorParse {
 		panic(fmt.Sprintf("%s %s", "any parse failed:", err))
 	}
 
-	return misc.BytesEquals(
+	return misc.IsBytesEquals(
 		bytesWithError.bytes,
 		bytes,
 		0)
@@ -174,7 +173,7 @@ func (bytesWithError *BytesWithError) IsEqualBytes(bytes *[]byte) bool {
 		return false
 	}
 
-	return misc.BytesEquals(
+	return misc.IsBytesEquals(
 		bytesWithError.bytes,
 		bytes,
 		0)
@@ -198,7 +197,7 @@ func (bytesWithError *BytesWithError) IsEquals(another *BytesWithError) bool {
 		return false
 	}
 
-	return misc.BytesEquals(
+	return misc.IsBytesEquals(
 		bytesWithError.bytes,
 		another.bytes,
 		0)

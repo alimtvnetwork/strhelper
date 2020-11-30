@@ -11,7 +11,6 @@ import (
 
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	"gitlab.com/evatix-go/strhelper/remove"
@@ -354,7 +353,7 @@ func (wrapper *Wrapper) GetAsWrappersLock() *[]*swasync.StringWrapper {
 func (wrapper *Wrapper) ToBytesPtr() *[]byte {
 	if wrapper.bytes == nil || *wrapper.bytes == nil {
 		// Reference : https://bit.ly/2ITGTaU
-		bytes := misc.ToBytes(wrapper.lines)
+		bytes := lines.ToUnsafeBytes(wrapper.lines)
 
 		wrapper.bytes = bytes
 	}

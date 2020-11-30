@@ -10,6 +10,10 @@ var (
 	newLine        = NewLine
 	tab            = Tab
 	commaSpace     = CommaSpace
+	TrueSymbol     = true
+	FalseSymbol    = false
+	TrueSymbolPtr  = &TrueSymbol
+	FalseSymbolPtr = &FalseSymbol
 	TabPtr         = &tab
 	NewLinePtr     = &newLine
 	EmptyStringPtr = &emptyString

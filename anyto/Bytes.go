@@ -1,16 +1,40 @@
-package misc
+package anyto
 
 import (
 	"bytes"
 	"encoding/json"
+
+	"gitlab.com/evatix-go/strhelper/internal/pkg/reflectinternal"
 )
 
 // Returns:
 //  - nil : if @anything is nil.
 //  - *[]bytes : if anything exist and doesn't have any error from parsing json.NewEncoder(bytes.Buffer).Encode().
-func ToBytesOfAny(anything interface{}) (*[]byte, error) {
+func Bytes(anything interface{}) (*[]byte, error) {
 	if anything == nil {
 		return nil, nil
+	}
+
+	isBytes, allBytes := reflectinternal.IsBytesOrBytesPointer(anything)
+
+	if isBytes {
+		return allBytes, nil
+	}
+
+	isString, str := reflectinternal.IsString(anything)
+
+	if isString {
+		toBytes := []byte(str)
+
+		return &toBytes, nil
+	}
+
+	isByte, currentByte := reflectinternal.IsByte(anything)
+
+	if isByte {
+		toBytes := []byte{currentByte}
+
+		return &toBytes, nil
 	}
 
 	// Reference : https://stackoverflow.com/a/49946268

@@ -3,6 +3,7 @@ package strhelpercore
 import (
 	"sync"
 
+	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/internal/pkg/isanyinternal"
 )
 
@@ -197,9 +198,39 @@ func (anyItems *AnyItems) IsAnyItemsWithoutPointersEqualsLock(
 		isContinueOnBothItemParseError)
 }
 
-// ToBytesWithError creates BytesWithError pointer using *AnyItems.Items
+// ToBytesWithError creates BytesWithError pointer using *AnyItems.Items (no panic if nil)
 func (anyItems *AnyItems) ToBytesWithError() *BytesWithError {
+	if anyItems.IsNull() {
+		return NewBytesWithErrorOnlyError(nil)
+	}
+
 	return NewBytesWithErrorUsingAny(*anyItems.Items)
+}
+
+// ToBytesPtr creates []byte pointer using *AnyItems.Items
+func (anyItems *AnyItems) ToBytesPtr() *[]byte {
+	if anyItems.Items == nil || *anyItems.Items == nil {
+		return nil
+	}
+
+	bytes, err := anyto.Bytes(*anyItems.Items)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return bytes
+}
+
+// ToBytesWithError creates []byte pointer using *AnyItems.Items
+func (anyItems *AnyItems) ToBytes() []byte {
+	bytes := anyItems.ToBytesPtr()
+
+	if bytes != nil {
+		return *bytes
+	}
+
+	return nil
 }
 
 // ToBytesWithError creates BytesWithError pointer using *AnyItems.Items
