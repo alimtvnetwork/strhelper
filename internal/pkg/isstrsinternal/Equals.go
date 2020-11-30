@@ -1,4 +1,6 @@
-package misc
+package isstrsinternal
+
+import "strings"
 
 // Equals compares leftLines and rightLines and returns bool
 //  - If both nil returns true.
@@ -6,13 +8,14 @@ package misc
 //  - If both lengths are not same returns false.
 //  - If both pointers are same returns true.
 //  - If all the lines are equals as per the case sensitivity then returns true or else false.
-func BytesEquals(
-	leftBytes *[]byte,
-	rightBytes *[]byte,
+func Equals(
+	leftLines *[]string,
+	rightLines *[]string,
 	startsAt int,
+	isCaseSensitive bool,
 ) bool {
-	isLeftEmpty := EmptyBytes(leftBytes)
-	isRightEmpty := EmptyBytes(rightBytes)
+	isLeftEmpty := EmptyPtr(leftLines)
+	isRightEmpty := EmptyPtr(rightLines)
 
 	if isLeftEmpty == isRightEmpty && isLeftEmpty == true {
 		return true
@@ -30,13 +33,8 @@ func BytesEquals(
 		return false
 	}
 
-	// if both pointers are same
-	if leftBytes == rightBytes {
-		return true
-	}
-
-	leftLength := len(*leftBytes)
-	rightLength := len(*rightBytes)
+	leftLength := len(*leftLines)
+	rightLength := len(*rightLines)
 
 	if leftLength != rightLength {
 		return false
@@ -46,23 +44,50 @@ func BytesEquals(
 		panic("Start index has exceeded length or negative.")
 	}
 
-	return bytesEqual(
-		leftBytes,
-		rightBytes,
+	if isCaseSensitive {
+		return caseSensitiveEqual(
+			leftLines,
+			rightLines,
+			startsAt,
+		)
+	}
+
+	return caseInsensitiveEqual(
+		leftLines,
+		rightLines,
 		startsAt,
 	)
 }
 
-func bytesEqual(
-	leftBytes *[]byte,
-	rightBytes *[]byte,
+func caseSensitiveEqual(
+	leftLines *[]string,
+	rightLines *[]string,
 	startsAt int,
 ) bool {
-	leftLength := len(*leftBytes)
+	leftLength := len(*leftLines)
 
 	for ; startsAt < leftLength; startsAt++ {
-		left := (*leftBytes)[startsAt]
-		right := (*rightBytes)[startsAt]
+		left := (*leftLines)[startsAt]
+		right := (*rightLines)[startsAt]
+
+		if left != right {
+			return false
+		}
+	}
+
+	return true
+}
+
+func caseInsensitiveEqual(
+	leftLines *[]string,
+	rightLines *[]string,
+	startsAt int,
+) bool {
+	leftLength := len(*leftLines)
+
+	for ; startsAt < leftLength; startsAt++ {
+		left := strings.ToLower((*leftLines)[startsAt])
+		right := strings.ToLower((*rightLines)[startsAt])
 
 		if left != right {
 			return false

@@ -2,12 +2,12 @@ package isanyinternal
 
 import "gitlab.com/evatix-go/strhelper/internal/pkg/coreinternal"
 
-// EqualBasedOnAddressDeduction compares leftItems and rightItems and returns coreinternal.BoolResultWrapper
+// NullDeduction compares leftItems and rightItems and returns coreinternal.BoolResultWrapper
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both pointers are same returns true.
 //  - If none of the conditions satisfied then returns coreinternal.NewBoolResultWrapperNotApplicable()
-func EqualBasedOnAddressDeduction(
+func NullDeduction(
 	left interface{},
 	right interface{},
 ) coreinternal.BoolResultWrapper {

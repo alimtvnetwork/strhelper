@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/lines"
-	"gitlab.com/evatix-go/strhelper/strs"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
@@ -46,14 +46,14 @@ func main() {
 	fmt.Println(comparedResult4)
 	fmt.Println(strings.Compare("a", "a"))
 
-	leftBytes := strs.ToBytes(&leftUpto3)
-	rightBytes := strs.ToBytes(&rightLines)
+	leftBytes := lines.ToUnsafeBytes(&leftUpto3)
+	rightBytes := lines.ToUnsafeBytes(&rightLines)
 	comparedResult5 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
 
 	fmt.Println(comparedResult5)
 
-	leftBytes, _ = strs.ToBytesOfAny(leftUpto3)
-	rightBytes, _ = strs.ToBytesOfAny(rightLines)
+	leftBytes, _ = anyto.Bytes(leftUpto3)
+	rightBytes, _ = anyto.Bytes(rightLines)
 	comparedResult6 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
 
 	fmt.Println(comparedResult6)
@@ -64,7 +64,7 @@ func main() {
 		"Line 3",
 	}
 
-	leftBytes2, _ := strs.ToBytesOfAny(left2Lines)
+	leftBytes2, _ := anyto.Bytes(left2Lines)
 
 	comparedResult7 := isstrs.BytesEquals(leftBytes2, rightBytes, 0)
 	fmt.Println(comparedResult7)
