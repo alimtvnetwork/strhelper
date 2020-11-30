@@ -1,0 +1,50 @@
+package isstr
+
+import (
+	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/strconst"
+)
+
+// Results true if the search text contains anywhere in the text.
+//
+// Returns true
+//
+//  - if wholeText contains any where the search text from the index mentioned at startsAt.
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - startsAt cannot be negative
+//
+// For better performance use `...Ptr` version of the method.
+func Contains(
+	wholeText, containsSearch string,
+	startsAt int,
+	isCaseSensitive bool,
+) bool {
+	return index.OfPtr(
+		&wholeText,
+		&containsSearch,
+		startsAt,
+		isCaseSensitive) > strconst.InvalidNotFoundCase
+}
+
+// Results true if the search text contains anywhere in the text.
+//
+// Returns true
+//
+//  - if wholeText contains any where the search text from the index mentioned at startsAt.
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - startsAt cannot be negative
+func ContainsPtr(
+	wholeText, containsSearch *string,
+	startsAt int,
+	isCaseSensitive bool,
+) bool {
+	return index.OfPtr(
+		wholeText,
+		containsSearch,
+		startsAt,
+		isCaseSensitive) > strconst.InvalidNotFoundCase
+}

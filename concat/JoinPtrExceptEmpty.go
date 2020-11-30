@@ -3,19 +3,23 @@ package concat
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
+// Concatenates the strings / elements of to a single string using the @sep (separator).
+//
+// Skip nil or empty string in elements.
+//
+// @sep:
+//  - used to concat each strings / elements.
+//
 // Copied from golang library (reference : https://bit.ly/3oPHGdy).
-// Join concatenates the elements of its first argument to create a single string. The separator
-// string sep is placed between elements in the resulting string.
-// Skip empty or whitespace string in elements.
 func JoinPtrExceptEmpty(elements *[]string, sep *string) string {
 	elementsLength := len(*elements)
 
 	switch elementsLength {
 	case 0:
-		return constants.EmptyString
+		return strconst.EmptyString
 	case 1:
 		return (*elements)[0]
 	}
@@ -29,7 +33,7 @@ func JoinPtrExceptEmpty(elements *[]string, sep *string) string {
 	b.Grow(n)
 	b.WriteString((*elements)[0])
 	for _, s := range (*elements)[1:] {
-		if s == constants.EmptyString || len(s) == 0 {
+		if s == strconst.EmptyString || len(s) == 0 {
 			continue
 		}
 

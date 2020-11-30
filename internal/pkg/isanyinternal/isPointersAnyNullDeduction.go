@@ -1,0 +1,39 @@
+package isanyinternal
+
+import "gitlab.com/evatix-go/strhelper/internal/pkg/coreinternal"
+
+// isPointersAnyNullDeduction compares leftItems and rightItems and
+// returns coreinternal.BoolResultWrapper
+//
+// Cases :
+//  - If both nil returns true.
+//  - If one nil and another is not then returns false.
+//  - If both pointers are same returns true.
+//  - If none of the conditions satisfied then returns coreinternal.NewBoolResultWrapperNotApplicable()
+func isPointersAnyNullDeduction(
+	leftItems *[]*interface{},
+	rightItems *[]*interface{},
+) coreinternal.BoolResultWrapper {
+	// if pointer same
+	if leftItems == rightItems {
+		return coreinternal.NewBoolResultWrapperTrue()
+	}
+
+	if leftItems == nil && rightItems == nil {
+		return coreinternal.NewBoolResultWrapperTrue()
+	}
+
+	if leftItems == nil || rightItems == nil {
+		return coreinternal.NewBoolResultWrapperFalse()
+	}
+
+	if *leftItems == nil && *rightItems == nil {
+		return coreinternal.NewBoolResultWrapperTrue()
+	}
+
+	if *leftItems == nil || *rightItems == nil {
+		return coreinternal.NewBoolResultWrapperFalse()
+	}
+
+	return coreinternal.NewBoolResultWrapperNotApplicable()
+}

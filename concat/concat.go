@@ -3,9 +3,16 @@ package concat
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
+// Concat any objects to single string using sprintf format given constants.SprintValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -14,12 +21,18 @@ func AnyValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintValueFormat,
+		strconst.SprintValueFormat,
 		nil,
 		&contents)
 }
 
-// Concat any object to string, sprintf format given constants.SprintPropertyNameValueFormat
+// Concat any objects to single string using sprintf format given constants.SprintPropertyNameValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -28,12 +41,18 @@ func AnyNameValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintPropertyNameValueFormat,
+		strconst.SprintPropertyNameValueFormat,
 		nil,
 		&contents)
 }
 
-// Concat any object to string, sprintf format given constants.SprintFullPropertyNameValueFormat
+// Concat any objects to single string using sprintf format given constants.SprintFullPropertyNameValueFormat
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyFullNameValues(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -42,12 +61,18 @@ func AnyFullNameValues(
 	return AnyArrayOfInterfaces(
 		&separator,
 		isSkipEmptyOrNil,
-		constants.SprintFullPropertyNameValueFormat,
+		strconst.SprintFullPropertyNameValueFormat,
 		nil,
 		&contents)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to single string using it's sprintf format given
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func Anys(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -62,7 +87,13 @@ func Anys(
 		&contents)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to single string using it's sprintf format given
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each contents to string to single one.
 func AnyArrayOfInterfaces(
 	separator *string,
 	isSkipEmptyOrNil bool,
@@ -79,8 +110,8 @@ func AnyArrayOfInterfaces(
 
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
-	} else {
-		newLines = append(newLines, constants.NilString)
+	} else if isSkipEmptyOrNil == false {
+		newLines = append(newLines, strconst.NilString)
 	}
 
 	for _, content := range *contents {
@@ -94,7 +125,13 @@ func AnyArrayOfInterfaces(
 	return StringsArrayWithSeparator(nil, separator, isSkipEmptyOrNil, &newLines)
 }
 
-// Concat any object to string using it's sprintf format given
+// Concat any objects to string using compiler function.
+//
+// @isSkipEmptyOrNil
+//  - enabled : Skips singleContent or any contents in content if nil.
+//
+// @separator:
+//  - it is used to concat each lines. Whereas compiler function only compile the single interface to string only.
 func AnyArrayOfInterfacesUsingFunc(
 	separator *string,
 	isSkipEmptyOrNil bool,
@@ -111,8 +148,8 @@ func AnyArrayOfInterfacesUsingFunc(
 
 	if isSkipEmptyOrNil && len(firstLine) > 0 {
 		newLines = append(newLines, firstLine)
-	} else {
-		newLines = append(newLines, constants.NilString)
+	} else if isSkipEmptyOrNil == false {
+		newLines = append(newLines, strconst.NilString)
 	}
 
 	for _, content := range *contents {

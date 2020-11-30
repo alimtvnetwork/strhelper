@@ -3,7 +3,7 @@ package panicmsg
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/constants"
+	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Returns errorStart + msg + referenceStart + Var(variableName, printVal) + spaceParenthesisEnd
@@ -12,9 +12,9 @@ func SimpleValMsg(msg, variableName string, value interface{}) string {
 	var printVal string
 
 	if value == nil {
-		printVal = constants.NilString
+		printVal = strconst.NilString
 	} else {
-		printVal = fmt.Sprintf(constants.SprintValueFormat, value)
+		printVal = fmt.Sprintf(strconst.SprintValueFormat, value)
 	}
 
 	return errorStart + msg + referenceStart + Var(variableName, printVal) + spaceParenthesisEnd
