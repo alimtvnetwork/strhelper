@@ -3,8 +3,8 @@ package lines
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )

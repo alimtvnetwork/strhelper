@@ -2,8 +2,8 @@ package remove
 
 import (
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 

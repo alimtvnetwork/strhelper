@@ -3,8 +3,8 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/constants"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/constants"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 )
 
 // Returns the first index of the findingString in s

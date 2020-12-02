@@ -1,8 +1,8 @@
 package byteserror
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
+	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/parsingtype"
 	"gitlab.com/evatix-go/strhelper/strerror"
 )
