@@ -1,8 +1,8 @@
 package index
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/pkg/constants"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/constants"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 

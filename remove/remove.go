@@ -4,7 +4,7 @@ import (
 	"unicode"
 
 	"gitlab.com/evatix-go/strhelper/chars"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"

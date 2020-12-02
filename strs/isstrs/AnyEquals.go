@@ -1,7 +1,7 @@
 package isstrs
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isanyinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isanyinternal"
 )
 
 // AnyEquals compares leftItems and rightItems and returns bool

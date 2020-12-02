@@ -7,5 +7,5 @@ import (
 type PointerInfo struct {
 	IsPointer    bool
 	ReflectValue reflect.Value
-	Pointer      uintptr
+	Pointer      *uintptr
 }

@@ -1,6 +1,6 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/misc"
+import "gitlab.com/evatix-go/strhelper/internal/misc"
 
 type RegExWrappersCollection struct {
 	expressions *[]string

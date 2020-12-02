@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 

@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/whitespacesinternal"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
+	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
