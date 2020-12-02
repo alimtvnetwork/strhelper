@@ -3,7 +3,6 @@ package reflectinternal
 import (
 	"fmt"
 	"reflect"
-	"unsafe"
 )
 
 type ScanReport struct {
@@ -11,7 +10,6 @@ type ScanReport struct {
 	IndirectReflectionValue *reflect.Value
 	ReflectionType          reflect.Type
 	IndirectReflectionType  *reflect.Type
-	unsafePointer           *unsafe.ArbitraryType
 	VisitedTypes            *[]reflect.Type
 	FinalDeductedType       reflect.Type
 	IsPointer               bool
@@ -27,6 +25,7 @@ type ScanReport struct {
 	TypeName                string
 }
 
+// Example : https://play.golang.org/p/lHol_zbu4Pn
 func NewScanReport(any interface{}, maxTries int) ScanReport {
 	reflectValueOfAny := reflect.ValueOf(any)
 	kind := reflectValueOfAny.Kind()
@@ -48,7 +47,6 @@ func NewScanReport(any interface{}, maxTries int) ScanReport {
 			IndirectReflectionValue: indirectReflectValue,
 			ReflectionType:          reflectionType,
 			IndirectReflectionType:  iReflectType,
-			unsafePointer:           unsafe.Pointer(reflectValue.Pointer()),
 			VisitedTypes:            &visitedTypes,
 			FinalDeductedType:       finalReflectType,
 			IsPointer:               isPtr,
@@ -72,7 +70,6 @@ func NewScanReport(any interface{}, maxTries int) ScanReport {
 		IndirectReflectionValue: nil,
 		ReflectionType:          reflectionType,
 		IndirectReflectionType:  nil,
-		unsafePointer:           nil,
 		VisitedTypes:            &visitedTypes,
 		FinalDeductedType:       finalReflectType,
 		IsPointer:               isPtr,

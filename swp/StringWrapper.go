@@ -10,7 +10,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"

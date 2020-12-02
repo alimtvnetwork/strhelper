@@ -1,8 +1,8 @@
 package strsindex
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/strs"

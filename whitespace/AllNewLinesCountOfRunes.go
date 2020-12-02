@@ -1,6 +1,6 @@
 package whitespace
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+import "gitlab.com/evatix-go/strhelper/internal/panichelper"
 
 func AllNewLinesCountOfRunes(allRunes *[]rune, startsAt int) int {
 	if allRunes == nil || len(*allRunes) == 0 {

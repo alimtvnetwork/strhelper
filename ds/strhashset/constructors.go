@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"gitlab.com/evatix-go/strhelper/converters"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 )
 
 func NewEmpty() *Hashset {

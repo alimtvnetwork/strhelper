@@ -1,6 +1,6 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
+import "gitlab.com/evatix-go/strhelper/internal/isinternal"
 
 type SplitResult struct {
 	SplitPrev *string

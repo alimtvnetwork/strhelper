@@ -3,7 +3,7 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/constants"
+	"gitlab.com/evatix-go/strhelper/internal/constants"
 )
 
 // Returns the last index of the searchTerm in s
