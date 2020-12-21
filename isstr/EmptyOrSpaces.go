@@ -6,6 +6,6 @@ import (
 )
 
 // returns true if IsNullOrWhitespace(s)
-func BlankPtr(s *string) bool {
-	return s == nil || *s == strconst.EmptyString || whitespace.IsWhitespaces(s)
+func EmptyOrSpaces(s string) bool {
+	return s == strconst.EmptyString || whitespace.IsWhitespaces(&s)
 }

@@ -1,6 +1,10 @@
 package strswasync
 
-import "sync"
+import (
+	"sync"
+
+	"gitlab.com/evatix-go/strhelper/internal/misc"
+)
 
 func NewPtr(lines *[]string) *Wrapper {
 	return &Wrapper{
@@ -9,7 +13,7 @@ func NewPtr(lines *[]string) *Wrapper {
 		lowerLines:    nil,
 		upperLines:    nil,
 		Mutex:         sync.Mutex{},
-		length:        len(*lines),
+		length:        misc.LinesLength(lines),
 	}
 }
 
