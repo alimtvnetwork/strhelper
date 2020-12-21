@@ -12,7 +12,7 @@ import (
 // Compare returns similar to strings.Compare(...), all cumulated sum values of strings.Compare
 // Here it returns for multiple lines.
 //
-//  Having 0 doesn't confirm lines are equal. It can be use for sorting only.
+//  Having 0 doesn't confirm lines are equal. It can be only useful for sorting only ([][]str).
 //
 // Expression / Logic:
 //  - Takes each item in lines and compare using strings.Compare() and stores += strings.Compare()

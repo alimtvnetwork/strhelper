@@ -49,22 +49,6 @@ type StringWrapper struct {
 	lengthInBytes int
 }
 
-func New(stringInput *string) *StringWrapper {
-	return &StringWrapper{
-		content:             stringInput,
-		trimmedSpaceContent: nil,
-		lengthInBytes:       len(*stringInput),
-		isNullOrEmpty:       nil,
-		isEmptyOrWhitespace: nil,
-		uint8s:              nil,
-		bytes:               nil,
-		runes:               nil,
-		runesLength:         nil,
-		lowerRunes:          nil,
-		upperRunes:          nil,
-	}
-}
-
 func (stringWrapper *StringWrapper) Value() *string {
 	return stringWrapper.content
 }
