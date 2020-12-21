@@ -7,5 +7,5 @@ import (
 
 // returns true if IsNullOrWhitespace(s)
 func Blank(s string) bool {
-	return s == strconst.EmptyString || len(s) == 0 || whitespace.IsWhitespaces(&s)
+	return s == strconst.EmptyString || whitespace.IsWhitespaces(&s)
 }
