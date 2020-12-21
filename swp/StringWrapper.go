@@ -10,7 +10,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
@@ -47,22 +47,6 @@ type StringWrapper struct {
 	runesLength *int
 	// len(string) not the actual character size
 	lengthInBytes int
-}
-
-func New(stringInput *string) *StringWrapper {
-	return &StringWrapper{
-		content:             stringInput,
-		trimmedSpaceContent: nil,
-		lengthInBytes:       len(*stringInput),
-		isNullOrEmpty:       nil,
-		isEmptyOrWhitespace: nil,
-		uint8s:              nil,
-		bytes:               nil,
-		runes:               nil,
-		runesLength:         nil,
-		lowerRunes:          nil,
-		upperRunes:          nil,
-	}
 }
 
 func (stringWrapper *StringWrapper) Value() *string {

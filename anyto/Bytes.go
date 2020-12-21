@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/reflectinternal"
+	"gitlab.com/evatix-go/strhelper/internal/reflectinternal"
 )
 
 // Returns:

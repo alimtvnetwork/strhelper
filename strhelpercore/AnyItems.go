@@ -4,7 +4,7 @@ import (
 	"sync"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isanyinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isanyinternal"
 )
 
 type AnyItems struct {

@@ -7,5 +7,5 @@ import (
 
 // returns true if IsNullOrWhitespace(s)
 func BlankPtr(s *string) bool {
-	return s == nil || *s == strconst.EmptyString || len(*s) == 0 || whitespace.IsWhitespaces(s)
+	return s == nil || *s == strconst.EmptyString || whitespace.IsWhitespaces(s)
 }

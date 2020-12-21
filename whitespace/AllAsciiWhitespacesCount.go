@@ -1,6 +1,6 @@
 package whitespace
 
-import "gitlab.com/evatix-go/strhelper/internal/pkg/panichelper"
+import "gitlab.com/evatix-go/strhelper/internal/panichelper"
 
 // AllAsciiWhitespacesCount returns the whitespace (excluding unicode whitespaces) counts
 func AllAsciiWhitespacesCount(s *string, startsAt int) int {

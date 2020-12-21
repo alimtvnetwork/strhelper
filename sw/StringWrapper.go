@@ -25,24 +25,12 @@ type StringWrapper struct {
 	length     int
 }
 
-func New(str string) *StringWrapper {
-	stringWrapper := StringWrapper{
-		content:    &str,
-		runeLength: nil,
-		length:     len(str),
+func (stringWrapper *StringWrapper) NonNullText() string {
+	if stringWrapper.content == nil {
+		return ""
 	}
 
-	return &stringWrapper
-}
-
-func NewPtr(str *string) *StringWrapper {
-	stringWrapper := StringWrapper{
-		content:    str,
-		runeLength: nil,
-		length:     len(*str),
-	}
-
-	return &stringWrapper
+	return *stringWrapper.content
 }
 
 // use swp, it is optimized for performance.

@@ -5,9 +5,9 @@ import (
 
 	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/content"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
 
 // Changing data outside makes it non stable.

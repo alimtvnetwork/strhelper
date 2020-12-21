@@ -3,7 +3,7 @@ package strs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isstrsinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/strconst"
 )
 

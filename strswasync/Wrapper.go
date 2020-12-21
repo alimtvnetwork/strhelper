@@ -22,6 +22,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
+var emptyStrs []string
+
 // Refers to StringWrapperPointer Async alias as `swasync`
 //
 // Thread safety ensured.
@@ -69,12 +71,36 @@ func (wrapper *Wrapper) Value() *[]string {
 	return wrapper.lines
 }
 
+func (wrapper *Wrapper) NonNullValue() []string {
+	if wrapper.lines == nil {
+		return emptyStrs
+	}
+
+	return *wrapper.lines
+}
+
+func (wrapper *Wrapper) NonNullValuePtr() *[]string {
+	if wrapper.lines == nil {
+		return &emptyStrs
+	}
+
+	return wrapper.lines
+}
+
 func (wrapper *Wrapper) ValueWithoutPtr() []string {
 	return *wrapper.lines
 }
 
 func (wrapper *Wrapper) Length() int {
 	return wrapper.length
+}
+
+func LinesLength(lines *[]string) int {
+	if lines == nil {
+		return 0
+	}
+
+	return len(*lines)
 }
 
 func (wrapper *Wrapper) BytesLength() int {
@@ -765,6 +791,26 @@ func (wrapper *Wrapper) PrependAsString(
 		isSkipOnEmpty,
 		contents,
 		wrapper.lines)
+
+	return &combinedResult
+}
+
+// Wrapper.Lines() joined to single string using separator.
+func (wrapper *Wrapper) AsString(
+	separator string,
+	isSkipOnEmpty bool,
+) *string {
+	if isSkipOnEmpty {
+		combinedResult := concat.JoinPtrExceptEmpty(
+			wrapper.lines,
+			&separator)
+
+		return &combinedResult
+	}
+
+	combinedResult := concat.JoinPtr(
+		wrapper.lines,
+		&separator)
 
 	return &combinedResult
 }

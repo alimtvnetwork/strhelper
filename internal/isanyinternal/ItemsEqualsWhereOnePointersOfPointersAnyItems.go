@@ -2,10 +2,10 @@ package isanyinternal
 
 import (
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/misc"
+	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
 
-// PointersOfPointersAnyItemsEquals compares leftItems and rightItems and returns bool
+// ItemsEqualsWhereOnePointersOfPointersAnyItems compares leftItems and rightItems and returns bool
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both lengths are not same returns false.
@@ -16,15 +16,26 @@ import (
 //  - if true then if at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
-func PointersOfPointersAnyItemsEquals(
+func ItemsEqualsWhereOnePointersOfPointersAnyItems(
 	leftItems *[]*interface{},
-	rightItems *[]*interface{},
+	rightItems *[]interface{},
 	startsAt int,
 	isContinueOnBothItemParseError bool,
 ) bool {
-	resultWrapper := isPointersAnyNullDeduction(leftItems, rightItems)
-	if resultWrapper.IsApplicable {
-		return resultWrapper.Result
+	if leftItems == nil && rightItems == nil {
+		return true
+	}
+
+	if leftItems == nil || rightItems == nil {
+		return false
+	}
+
+	if *leftItems == nil && *rightItems == nil {
+		return true
+	}
+
+	if *leftItems == nil || *rightItems == nil {
+		return false
 	}
 
 	leftLength := len(*leftItems)
@@ -42,25 +53,12 @@ func PointersOfPointersAnyItemsEquals(
 		left := (*leftItems)[startsAt]
 		right := (*rightItems)[startsAt]
 
-		if left == nil && right == nil {
+		if (left == nil || *left == nil) && right == nil {
 			continue
 		}
 
-		if left == nil || right == nil {
+		if (left == nil || *left == nil) || right == nil {
 			return false
-		}
-
-		if *left == nil && *right == nil {
-			continue
-		}
-
-		if *left == nil || *right == nil {
-			return false
-		}
-
-		if left == right {
-			// same pointer then continue
-			continue
 		}
 
 		leftBytes, lError := anyto.Bytes(left)

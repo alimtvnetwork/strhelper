@@ -13,7 +13,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/internal/pkg/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
@@ -53,29 +53,20 @@ type StringWrapper struct {
 	lengthInBytes int
 }
 
-func New(stringInput *string) *StringWrapper {
-	return &StringWrapper{
-		content:             stringInput,
-		trimmedSpaceContent: nil,
-		lengthInBytes:       len(*stringInput),
-		isNullOrEmpty:       nil,
-		isEmptyOrWhitespace: nil,
-		uint8s:              nil,
-		bytes:               nil,
-		runes:               nil,
-		runesLength:         nil,
-		lowerRunes:          nil,
-		upperRunes:          nil,
-		Mutex:               sync.Mutex{},
-	}
-}
-
 func (stringWrapper *StringWrapper) Lock() {
 	stringWrapper.Mutex.Lock()
 }
 
 func (stringWrapper *StringWrapper) Unlock() {
 	stringWrapper.Mutex.Unlock()
+}
+
+func (stringWrapper *StringWrapper) NonNullText() string {
+	if stringWrapper.content == nil {
+		return ""
+	}
+
+	return *stringWrapper.content
 }
 
 func (stringWrapper *StringWrapper) Value() *string {

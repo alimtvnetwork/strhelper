@@ -96,10 +96,11 @@ func GetPointerInfo(any interface{}) PointerInfo {
 	isPtr := reflectValueOfAny.Kind() == reflect.Ptr
 
 	if isPtr {
+		ptr := reflectValueOfAny.Pointer()
 		return PointerInfo{
 			IsPointer:    isPtr,
 			ReflectValue: reflectValueOfAny,
-			Pointer:      reflectValueOfAny.Pointer(),
+			Pointer:      &ptr,
 		}
 	}
 
