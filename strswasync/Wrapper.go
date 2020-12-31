@@ -268,7 +268,9 @@ func (wrapper *Wrapper) ManyIndexesOfAllLock(
 
 func (wrapper *Wrapper) IsNullOrEmptyFirstItem() bool {
 	if wrapper.isNullOrEmptyFirstItem == nil {
-		isNullOrEmptyFirstItem := wrapper.IsNull() || (wrapper.length > 0 && (*wrapper.lines)[0] == "")
+		isNullOrEmptyFirstItem :=
+			wrapper.IsNull() ||
+			(wrapper.length > 0 && (*wrapper.lines)[0] == "")
 		wrapper.isNullOrEmptyFirstItem = &isNullOrEmptyFirstItem
 	}
 
@@ -349,7 +351,7 @@ func (wrapper *Wrapper) GetAsWrappers() *[]*swasync.StringWrapper {
 			wrappers[i] = swasync.New(&(*wrapper.lines)[i])
 		}
 
-		*wrapper.linesWrappers = wrappers
+		wrapper.linesWrappers = &wrappers
 	}
 
 	return wrapper.linesWrappers
