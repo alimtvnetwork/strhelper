@@ -25,6 +25,7 @@ func NewRegExWrappersCollectionUsingStringPointer(expressions *[]*string) *RegEx
 
 // AddExpression expensive operation, better to add all expression at New.
 func (regExWrappersCollection *RegExWrappersCollection) AddExpression(expression string) {
+	// This is correct, as the item is set on the New
 	*regExWrappersCollection.expressions = append(*regExWrappersCollection.expressions, expression)
 	length := len(*regExWrappersCollection.expressions)
 	regexes := regExWrappersCollection.Value()

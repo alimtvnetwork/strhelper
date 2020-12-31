@@ -331,7 +331,9 @@ func (stringWrapper *StringWrapper) ToBytes() []byte {
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
 	if stringWrapper.bytes == nil || *stringWrapper.bytes == nil {
-		*stringWrapper.bytes = []byte(*stringWrapper.content)
+		allBytes := []byte(*stringWrapper.content)
+
+		stringWrapper.bytes = &allBytes
 	}
 
 	return stringWrapper.bytes
@@ -347,7 +349,9 @@ func (stringWrapper *StringWrapper) ToRunes() []rune {
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
 	if (stringWrapper.runes == nil || *stringWrapper.runes == nil) && !stringWrapper.IsNull() {
-		*stringWrapper.runes = []rune(*stringWrapper.content)
+		runes := []rune(*stringWrapper.content)
+
+		stringWrapper.runes = &runes
 	}
 
 	return stringWrapper.runes

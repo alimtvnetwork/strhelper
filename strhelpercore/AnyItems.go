@@ -55,6 +55,7 @@ func (anyItems *AnyItems) LengthLock() int {
 
 // Add returns true upon add item.
 func (anyItems *AnyItems) Add(any interface{}, isSkipOnNil bool) bool {
+	// *anyItems.Items using this is correct as it is set on New or creation time.
 	if any != nil {
 		*anyItems.Items = append(*anyItems.Items, &any)
 

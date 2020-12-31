@@ -65,11 +65,13 @@ func (wrapper *Wrapper) IsNullOrEmpty() bool {
 // To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
 func (wrapper *Wrapper) IsNullOrEmptyOrWhitespaces() bool {
 	if wrapper.isWhitespace == nil {
-		// checking bytesLength == 0 is enough to prove empty string ""
-		// reference : https://play.golang.org/p/6vU5y92LKYg
-		*wrapper.isWhitespace = wrapper.bytes == nil ||
+		isWhitespace := wrapper.bytes == nil ||
 			wrapper.bytesLength == 0 ||
 			whitespacesinternal.IsAsciiWhitespacesBytes(wrapper.bytes)
+
+		// checking bytesLength == 0 is enough to prove empty string ""
+		// reference : https://play.golang.org/p/6vU5y92LKYg
+		wrapper.isWhitespace = &isWhitespace
 	}
 
 	return *wrapper.isWhitespace

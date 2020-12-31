@@ -117,11 +117,13 @@ func (bytesWithError *BytesWithError) IsNullOrEmpty() bool {
 // To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
 func (bytesWithError *BytesWithError) IsNullOrEmptyOrWhitespaces() bool {
 	if bytesWithError.isWhitespace == nil {
-		// checking bytesLength == 0 is enough to prove empty string ""
-		// reference : https://play.golang.org/p/6vU5y92LKYg
-		*bytesWithError.isWhitespace = bytesWithError.bytes == nil ||
+		isWhitespace := bytesWithError.bytes == nil ||
 			bytesWithError.bytesLength == 0 ||
 			whitespacesinternal.IsAsciiWhitespacesBytes(bytesWithError.bytes)
+
+		// checking bytesLength == 0 is enough to prove empty string ""
+		// reference : https://play.golang.org/p/6vU5y92LKYg
+		bytesWithError.isWhitespace = &isWhitespace
 	}
 
 	return *bytesWithError.isWhitespace
