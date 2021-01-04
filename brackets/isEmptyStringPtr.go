@@ -5,5 +5,5 @@ import (
 )
 
 func isEmptyStringPtr(str *string) bool {
-	return str == nil || *str == strconst.EmptyString || len(*str) == 0
+	return str == nil || *str == strconst.EmptyString || *str == ""
 }
