@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"gitlab.com/evatix-go/strhelper/whitespace"
 	"strings"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
@@ -69,4 +70,6 @@ func main() {
 	comparedResult7 := isstrs.BytesEquals(leftBytes2, rightBytes, 0)
 	fmt.Println(comparedResult7)
 
+	whitespaceTest := "testing o  '\t' "
+	fmt.Println(whitespace.AllWhitespaceIndexList(&whitespaceTest))
 }

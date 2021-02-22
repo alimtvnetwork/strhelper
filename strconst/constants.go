@@ -81,6 +81,7 @@ const (
 	FormFeedByte                      = '\f'
 	TabVByte                          = '\v'
 	MaxUnit8                          = 255
+	SpaceChar                         = ' '
 )
 
 var (

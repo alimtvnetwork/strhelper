@@ -173,3 +173,4 @@ func HasAllDefinedArray(strings *[]*string) bool {
 
 	return true
 }
+
