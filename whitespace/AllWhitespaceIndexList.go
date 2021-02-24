@@ -21,17 +21,16 @@ func AllWhitespaceIndexList(input *string) *map[rune]*[]int {
 		r = (inputRunes)[i]
 		if (r <= maxUnit8 && strconst.AsciiSpace[r] == 1) ||
 			(r > maxUnit8 && unicode.IsSpace(r)) {
-			listPtr, has := allWhitespaceList[r]
+			_, has := allWhitespaceList[r]
 
 			if !has {
 				// length/3 is a preliminary assumption for slice capacity
 				list := make([]int, 0, length/3)
-				list = append(list, i)
 				allWhitespaceList[r] = &list
 				foundAny = true
 			}
 
-			*listPtr = append(*listPtr, i)
+			*allWhitespaceList[r] = append(*allWhitespaceList[r], i)
 		}
 	}
 
