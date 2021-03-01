@@ -1,8 +1,9 @@
 package isstr
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Results true for starts with.
@@ -26,12 +27,12 @@ func StartsWithPtr(
 	searchLength := len(*startsWith)
 	wholeTextLength := len(*wholeText)
 
-	if searchLength == strconst.Zero {
-		return wholeTextLength == strconst.Zero && startsAt == strconst.Zero || wholeTextLength-1 >= startsAt
+	if searchLength == constants.Zero {
+		return wholeTextLength == constants.Zero && startsAt == constants.Zero || wholeTextLength-1 >= startsAt
 	}
 
-	if wholeTextLength == strconst.Zero {
-		return searchLength == strconst.Zero && startsAt == strconst.Zero
+	if wholeTextLength == constants.Zero {
+		return searchLength == constants.Zero && startsAt == constants.Zero
 	}
 
 	textLength := wholeTextLength - startsAt

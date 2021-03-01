@@ -1,7 +1,7 @@
 package strhelpercore
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 type RemoveRequest struct {
@@ -14,7 +14,7 @@ func (removeRequest *RemoveRequest) ToReplaceRequest() *ReplaceRequest {
 		Text: removeRequest.Text,
 		ReplaceIndividualRequest: &ReplaceIndividualRequest{
 			Search:          removeRequest.Search,
-			ReplaceWith:     strconst.EmptyString,
+			ReplaceWith:     constants.EmptyString,
 			StartsAt:        removeRequest.StartsAt,
 			HowManyReplace:  removeRequest.HowManyReplace,
 			IsCaseSensitive: removeRequest.IsCaseSensitive,

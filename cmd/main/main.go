@@ -2,8 +2,9 @@ package main
 
 import (
 	"fmt"
-	"gitlab.com/evatix-go/strhelper/whitespace"
 	"strings"
+
+	"gitlab.com/evatix-go/strhelper/whitespace"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/lines"
@@ -71,5 +72,5 @@ func main() {
 	fmt.Println(comparedResult7)
 
 	whitespaceTest := "testing o  \t \n\n\n "
-	fmt.Println((*whitespace.AllWhitespaceIndexList(&whitespaceTest))[' '])
+	fmt.Println((*whitespace.AllWhitespacesRuneIndexesMap(&whitespaceTest))['\t'])
 }

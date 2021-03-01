@@ -3,10 +3,11 @@ package remove
 import (
 	"unicode"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/replace"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -26,7 +27,7 @@ func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) s
 	return replace.GetPtr(
 		str,
 		removeStr,
-		strconst.EmptyStringPtr,
+		constants.EmptyStringPtr,
 		startsAt,
 		count,
 		isCaseSensitive)
@@ -36,7 +37,7 @@ func Get(str, removeStr string, startsAt, count int, isCaseSensitive bool) strin
 	return replace.GetPtr(
 		&str,
 		&removeStr,
-		strconst.EmptyStringPtr,
+		constants.EmptyStringPtr,
 		startsAt,
 		count,
 		isCaseSensitive)
@@ -76,7 +77,7 @@ func Whitespaces(str string, startsAt int) string {
 // Returns empty string if str is nil or empty.
 func WhitespacesPtr(str *string, startsAt int) string {
 	if str == nil || len(*str) == 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	length := len(*str)
@@ -114,7 +115,7 @@ func NewLines(str string, startsAt int) string {
 // FormFeed \f is also marked as newline here and will be removed from string if has any.
 func NewLinesPtr(str *string, startsAt int) string {
 	if str == nil || len(*str) == 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	length := len(*str)
@@ -179,7 +180,7 @@ func CharactersPtr(
 	isCaseSensitive bool,
 ) string {
 	if str == nil || len(*str) == 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	length := len(*str)

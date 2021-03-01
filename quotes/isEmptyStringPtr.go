@@ -1,9 +1,9 @@
 package quotes
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func isEmptyStringPtr(str *string) bool {
-	return str == nil || *str == strconst.EmptyString || len(*str) == 0
+	return str == nil || *str == constants.EmptyString || len(*str) == 0
 }

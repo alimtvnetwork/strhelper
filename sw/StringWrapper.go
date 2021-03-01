@@ -6,6 +6,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
@@ -14,7 +16,6 @@ import (
 	"gitlab.com/evatix-go/strhelper/padding"
 	"gitlab.com/evatix-go/strhelper/remove"
 	"gitlab.com/evatix-go/strhelper/replace"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
@@ -111,9 +112,7 @@ func (stringWrapper *StringWrapper) IsEquals(s string, isCaseSensitive bool) boo
 	}
 
 	// insensitive
-	lower := strings.ToLower(s)
-
-	return lower == stringWrapper.ToLower()
+	return strings.EqualFold(s, stringWrapper.Value())
 }
 
 // Returns true based on text compare case sensitive.
@@ -127,7 +126,7 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 
 // returns len(s) == 0 || s == ""
 func (stringWrapper *StringWrapper) IsEmpty() bool {
-	return stringWrapper.Length() == 0 || *stringWrapper.content == strconst.EmptyString
+	return stringWrapper.Length() == 0 || *stringWrapper.content == constants.EmptyString
 }
 
 // IsNull(s) || IsEmpty(s)
@@ -254,7 +253,7 @@ func (stringWrapper *StringWrapper) CreateRegularExpression() *regexp.Regexp {
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 	if !stringWrapper.HasIndex(index) {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	return int16(stringWrapper.Value()[index])
@@ -303,7 +302,7 @@ func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Bu
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
 	if !stringWrapper.HasIndex(index) {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	return stringWrapper.ToRunes()[index]
@@ -324,13 +323,13 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 
 // Better to use slice or builder for appending lines in a loop.
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) *StringWrapper {
-	return stringWrapper.Concatenates(strconst.NewLine, isSkipOnEmpty, &contents)
+	return stringWrapper.Concatenates(constants.NewLine, isSkipOnEmpty, &contents)
 }
 
 // Add the contents before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepend(contents ...string) *StringWrapper {
 	return stringWrapper.Prepends(
-		strconst.EmptyString,
+		constants.EmptyString,
 		false, // must add everything
 		&contents)
 }
@@ -338,7 +337,7 @@ func (stringWrapper *StringWrapper) Prepend(contents ...string) *StringWrapper {
 // Line is the separator for add the content before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) PrependLines(contents ...string) *StringWrapper {
 	return stringWrapper.Prepends(
-		strconst.NewLine,
+		constants.NewLine,
 		false, // must add everything
 		&contents)
 }
@@ -348,7 +347,7 @@ func (stringWrapper *StringWrapper) PrependLines(contents ...string) *StringWrap
 // StringWrapper.ValuePtr() + contents joined.
 func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 	return stringWrapper.Concatenates(
-		strconst.EmptyString,
+		constants.EmptyString,
 		false, // must add everything
 		&contents)
 }
@@ -357,14 +356,14 @@ func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 //
 // Windows (`\r\n`), unix (`\n`) - darwin/macos/linux
 func (stringWrapper *StringWrapper) GetLines() *[]string {
-	currentLines := strings.Split(*stringWrapper.content, strconst.NewLine)
+	currentLines := strings.Split(*stringWrapper.content, constants.NewLine)
 
 	return &currentLines
 }
 
 // GetLines splits by newline using unix Split `\n`
 func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
-	currentLines := strings.Split(*stringWrapper.content, strconst.NewLineUnix)
+	currentLines := strings.Split(*stringWrapper.content, constants.NewLineUnix)
 
 	return &currentLines
 }
@@ -799,7 +798,7 @@ func (stringWrapper *StringWrapper) IsContains(
 		stringWrapper.content,
 		search,
 		startsAt,
-		isCaseSensitive) > strconst.InvalidNotFoundCase
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }
 
 // Returns true if the search text contains any where in the text after the start index.
@@ -810,7 +809,7 @@ func (stringWrapper *StringWrapper) Has(search *string) bool {
 		stringWrapper.content,
 		search,
 		0,
-		true) > strconst.InvalidNotFoundCase
+		true) > constants.InvalidNotFoundCase
 }
 
 func (stringWrapper *StringWrapper) PadLeftWithSpace(width int) string {

@@ -1,7 +1,7 @@
 package strcompare
 
-import "gitlab.com/evatix-go/strhelper/strconst"
+import "gitlab.com/evatix-go/core/constants"
 
 const (
-	newLine = strconst.NewLineUnix
+	newLine = constants.NewLineUnix
 )

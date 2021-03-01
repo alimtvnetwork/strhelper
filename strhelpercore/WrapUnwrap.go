@@ -3,8 +3,9 @@ package strhelpercore
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // It is useful for generic wrap & unwrap tasks.
@@ -194,7 +195,7 @@ func (wrapUnwrap *WrapUnWrap) UnwrapPtr(input *string, isCaseSensitive bool) str
 // Where IsLeftFound if found as a starting word.
 // Where IsRightFound if found as an ending word.
 func (wrapUnwrap *WrapUnWrap) WrapStatus(input *string, isCaseSensitive bool) *WrapStatus {
-	if input == nil || *input == strconst.EmptyString {
+	if input == nil || *input == constants.EmptyString {
 		return &WrapStatus{
 			IsLeftFound:  false,
 			IsRightFound: false,

@@ -1,8 +1,9 @@
 package isstr
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 func Exists(
@@ -12,8 +13,8 @@ func Exists(
 	return index.Of(
 		s,
 		findingString,
-		strconst.Zero,
-		isCaseSensitive) > strconst.InvalidNotFoundCase
+		constants.Zero,
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }
 
 func ExistsPtr(
@@ -23,6 +24,6 @@ func ExistsPtr(
 	return index.OfPtr(
 		s,
 		findingString,
-		strconst.Zero,
-		isCaseSensitive) > strconst.InvalidNotFoundCase
+		constants.Zero,
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }

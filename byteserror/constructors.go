@@ -1,25 +1,26 @@
 package byteserror
 
 import (
+	"gitlab.com/evatix-go/errorwrapper/errnew"
+
 	"gitlab.com/evatix-go/strhelper/parsingtype"
-	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
-func NewError(err error, byteType parsingtype.ByteType) *Wrapper {
+func NewError(err error, byteType parsingtype.Variant) *Wrapper {
 	return &Wrapper{
-		errorWrapper: *strerror.NewErrorWrapperPtr(&err),
+		errorWrapper: errnew.ErrPtr(err),
 		byteType:     byteType,
 	}
 }
 
-func NewErrorPtr(err *error, byteType parsingtype.ByteType) *Wrapper {
+func NewErrorPtr(err *error, byteType parsingtype.Variant) *Wrapper {
 	return &Wrapper{
-		errorWrapper: *strerror.NewErrorWrapperPtr(err),
+		errorWrapper: errnew.ErrInPtr(err),
 		byteType:     byteType,
 	}
 }
 
-func NewPtr(bytes *[]byte, err *error, byteType parsingtype.ByteType) *Wrapper {
+func NewPtr(bytes *[]byte, err *error, byteType parsingtype.Variant) *Wrapper {
 	length := 0
 
 	if bytes != nil {
@@ -28,13 +29,13 @@ func NewPtr(bytes *[]byte, err *error, byteType parsingtype.ByteType) *Wrapper {
 
 	return &Wrapper{
 		bytes:        bytes,
-		errorWrapper: *strerror.NewErrorWrapperPtr(err),
+		errorWrapper: errnew.ErrInPtr(err),
 		bytesLength:  length,
 		byteType:     byteType,
 	}
 }
 
-func New(bytes *[]byte, err error, byteType parsingtype.ByteType) Wrapper {
+func New(bytes *[]byte, err error, byteType parsingtype.Variant) Wrapper {
 	length := 0
 
 	if bytes != nil {
@@ -43,24 +44,24 @@ func New(bytes *[]byte, err error, byteType parsingtype.ByteType) Wrapper {
 
 	return Wrapper{
 		bytes:        bytes,
-		errorWrapper: strerror.NewErrorWrapper(err),
+		errorWrapper: errnew.ErrPtr(err),
 		byteType:     byteType,
 		bytesLength:  length,
 	}
 }
 
 // NewNoError Creates new Wrapper
-func NewNoError(bytes *[]byte, byteType parsingtype.ByteType) *Wrapper {
+func NewNoError(bytes *[]byte, byteType parsingtype.Variant) *Wrapper {
 	return NewPtr(bytes, nil, byteType)
 }
 
-func EmptyPtr(byteType parsingtype.ByteType) *Wrapper {
+func EmptyPtr(byteType parsingtype.Variant) *Wrapper {
 	return &Wrapper{
 		byteType: byteType,
 	}
 }
 
-func Empty(byteType parsingtype.ByteType) Wrapper {
+func Empty(byteType parsingtype.Variant) Wrapper {
 	return Wrapper{
 		byteType: byteType,
 	}

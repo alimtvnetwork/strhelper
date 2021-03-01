@@ -3,7 +3,7 @@ package anyto
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func ValueBytesPtr(anything interface{}) *[]byte {
@@ -11,7 +11,7 @@ func ValueBytesPtr(anything interface{}) *[]byte {
 		return nil
 	}
 
-	allBytes := []byte(fmt.Sprintf(strconst.SprintValueFormat, anything))
+	allBytes := []byte(fmt.Sprintf(constants.SprintValueFormat, anything))
 
 	return &allBytes
 }

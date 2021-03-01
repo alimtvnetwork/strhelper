@@ -1,7 +1,7 @@
 package index
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns the last index of the findingString in s,
@@ -11,7 +11,7 @@ import (
 // Use Ptr version for performance
 func OfLast(s, findingString string, startsAt int, isCaseSensitive bool) int {
 	if s == findingString && startsAt == 0 {
-		return strconst.Zero
+		return constants.Zero
 	}
 
 	return OfLastPtr(

@@ -3,7 +3,7 @@ package concat
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Join concatenates the strings / elements of its first argument to a single string.
@@ -17,7 +17,7 @@ func JoinPtr(elements *[]string, sep *string) string {
 
 	switch elementsLength {
 	case 0:
-		return strconst.EmptyString
+		return constants.EmptyString
 	case 1:
 		return (*elements)[0]
 	}

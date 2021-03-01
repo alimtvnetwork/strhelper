@@ -1,8 +1,9 @@
 package isstr
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Results true if the search text contains anywhere in the text.
@@ -25,7 +26,7 @@ func Contains(
 		&wholeText,
 		&containsSearch,
 		startsAt,
-		isCaseSensitive) > strconst.InvalidNotFoundCase
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }
 
 // Results true if the search text contains anywhere in the text.
@@ -46,5 +47,5 @@ func ContainsPtr(
 		wholeText,
 		containsSearch,
 		startsAt,
-		isCaseSensitive) > strconst.InvalidNotFoundCase
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }

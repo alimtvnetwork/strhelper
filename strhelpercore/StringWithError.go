@@ -5,9 +5,10 @@ import (
 	"errors"
 	"fmt"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 type StringWithError struct {
@@ -127,14 +128,14 @@ func (stringWithError *StringWithError) IsNull() bool {
 
 func (stringWithError *StringWithError) IsNullOrEmpty() bool {
 	return stringWithError.content == nil ||
-		*stringWithError.content == strconst.EmptyString
+		*stringWithError.content == constants.EmptyString
 }
 
 // Returns true if nil or "" or all whitespaces (including unicode whitespaces)
 func (stringWithError *StringWithError) IsNullOrEmptyOrWhitespaces() bool {
 	if stringWithError.isWhitespace == nil {
 		isWhitespace := stringWithError.content == nil ||
-			*stringWithError.content == strconst.EmptyString
+			*stringWithError.content == constants.EmptyString
 
 		if !isWhitespace {
 			allRunes := stringWithError.ToRunesPtr()

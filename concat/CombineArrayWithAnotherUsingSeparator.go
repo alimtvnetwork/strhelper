@@ -1,7 +1,7 @@
 package concat
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Concatenates the (@preContents to a string using separator) with
@@ -44,11 +44,11 @@ func CombineArrayWithAnotherUsingSeparator(
 		postContentsCombined = JoinPtr(postContents, separator)
 	}
 
-	if preContentsCombined == strconst.EmptyString || len(preContentsCombined) == 0 {
+	if preContentsCombined == constants.EmptyString || len(preContentsCombined) == 0 {
 		return postContentsCombined
 	}
 
-	if postContentsCombined == strconst.EmptyString || len(postContentsCombined) == 0 {
+	if postContentsCombined == constants.EmptyString || len(postContentsCombined) == 0 {
 		return preContentsCombined
 	}
 

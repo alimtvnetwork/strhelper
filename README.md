@@ -10,8 +10,7 @@ Go Strings library additional methods, simplification of string modification and
 
 ### 2FA enabled, for linux
 
-`git clone 
-https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
+`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
 
 ### Prerequisites
 
@@ -29,7 +28,7 @@ https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@git
 - Update git to 2.29
 - Enable go modules. (Windows : `go env -w GO111MODULE=on`, Unix : `export GO111MODULE=on`)
 - Add `gitlab.com/evatix-go` to go env private
-  
+
 To set for Windows:
 
 `go env -w GOPRIVATE=[AddExistingOnes;]gitlab.com/evatix-go`
@@ -37,6 +36,16 @@ To set for Windows:
 To set for Unix:
 
 `expoort GOPRIVATE=[AddExistingOnes;]gitlab.com/evatix-go`
+
+## Build Fix
+
+```cmd
+go get gitlab.com/evatix-go/core
+go get gitlab.com/evatix-go/errorwrapper
+
+go mod download gitlab.com/evatix-go/core
+go mod download gitlab.com/evatix-go/errorwrapper
+```
 
 ## Why `strhelper?`
 

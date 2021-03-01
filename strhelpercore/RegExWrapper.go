@@ -3,15 +3,17 @@ package strhelpercore
 import (
 	"regexp"
 
+	"gitlab.com/evatix-go/errorwrapper"
+	"gitlab.com/evatix-go/errorwrapper/errnew"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
 type RegExWrapper struct {
 	index              int
 	request            *string
 	regex              *regexp.Regexp
-	errorWrapper       *strerror.ErrorWrapper
+	errorWrapper       *errorwrapper.Wrapper
 	regExResultWrapper *RegExResultWrapper
 }
 
@@ -52,7 +54,7 @@ func (regExWrapper *RegExWrapper) IsEqualsString(str *string) bool {
 }
 
 // Requires to compile regex to get the currentError
-func (regExWrapper *RegExWrapper) ErrorWrapper() *strerror.ErrorWrapper {
+func (regExWrapper *RegExWrapper) ErrorWrapper() *errorwrapper.Wrapper {
 	regExWrapper.initializeRegex()
 
 	return regExWrapper.errorWrapper
@@ -69,7 +71,7 @@ func (regExWrapper *RegExWrapper) initializeRegex() {
 	if regExWrapper.regex == nil && regExWrapper.errorWrapper == nil {
 		r, er := regexp.Compile(*regExWrapper.request)
 		regExWrapper.regex = r
-		errorWrapper := strerror.NewErrorWrapper(er)
+		errorWrapper := errnew.Err(er)
 		regExWrapper.errorWrapper = &errorWrapper
 	}
 }

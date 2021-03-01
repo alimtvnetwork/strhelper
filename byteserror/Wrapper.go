@@ -1,23 +1,24 @@
 package byteserror
 
 import (
+	"gitlab.com/evatix-go/errorwrapper"
+
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 	"gitlab.com/evatix-go/strhelper/parsingtype"
-	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
 type Wrapper struct {
 	bytes        *[]byte
 	content      *string
-	errorWrapper strerror.ErrorWrapper
-	byteType     parsingtype.ByteType
+	errorWrapper *errorwrapper.Wrapper
+	byteType     parsingtype.Variant
 	bytesLength  int
 	stringLength *int
 	isWhitespace *bool
 }
 
-func (wrapper *Wrapper) ByteType() parsingtype.ByteType {
+func (wrapper *Wrapper) ByteType() parsingtype.Variant {
 	return wrapper.byteType
 }
 
@@ -44,7 +45,7 @@ func (wrapper *Wrapper) StringLength() int {
 	return *wrapper.stringLength
 }
 
-func (wrapper *Wrapper) Error() strerror.ErrorWrapper {
+func (wrapper *Wrapper) ErrorWrapper() *errorwrapper.Wrapper {
 	return wrapper.errorWrapper
 }
 

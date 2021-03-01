@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/parsingtype"
 )
 
-func BytesOf(any interface{}, parsingType parsingtype.ByteType) (*[]byte, error) {
+func BytesOf(any interface{}, parsingType parsingtype.Variant) (*[]byte, error) {
 	if any == nil {
 		return nil, nil
 	}
@@ -25,6 +25,6 @@ func BytesOf(any interface{}, parsingType parsingtype.ByteType) (*[]byte, error)
 	}
 }
 
-func parsingBytesNotSupportMessage(parsingType parsingtype.ByteType) string {
+func parsingBytesNotSupportMessage(parsingType parsingtype.Variant) string {
 	return "Parsing type not support for bytes conversion. Requested parsing type : " + parsingType.String()
 }

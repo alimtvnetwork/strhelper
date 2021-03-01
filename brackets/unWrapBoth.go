@@ -1,7 +1,7 @@
 package brackets
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Assumption here, both brackets exists and s it not empty
@@ -10,7 +10,7 @@ func unWrapBoth(s *string) string {
 
 	if length == 2 {
 		// both are brackets only
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	return (*s)[1 : length-2]

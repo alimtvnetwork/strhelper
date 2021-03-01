@@ -3,8 +3,9 @@ package strs
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // GetNonEmptyPointerStrings returns new array without empty strings, skip whitespaces if isTrimSpace true
@@ -28,7 +29,7 @@ func GetNonEmptyPointerStrings(lines *[]*string, isTrimSpace bool) *[]string {
 			line2 = strings.TrimSpace(line2)
 		}
 
-		if line2 == strconst.EmptyString || len(line2) == 0 {
+		if line2 == constants.EmptyString || len(line2) == 0 {
 			continue
 		}
 

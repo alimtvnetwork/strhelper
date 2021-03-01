@@ -3,7 +3,8 @@ package lines
 import (
 	"sync"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
@@ -17,8 +18,8 @@ func Process(
 	args := strhelpercore.LineArgs{
 		Content: content,
 		Lines:   lines,
-		Index:   -1,                   // it will change per line
-		Line:    strconst.EmptyString, // it will change per line
+		Index:   -1,                    // it will change per line
+		Line:    constants.EmptyString, // it will change per line
 	}
 
 	for args.Index, args.Line = range *lines {

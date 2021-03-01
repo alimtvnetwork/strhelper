@@ -1,14 +1,14 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // runes nil results -1 regardless
 // Or else returns the index where the rune exist
 func IndexOfRune(runes *[]rune, searchingFor rune) int {
 	if runes == nil || len(*runes) == 0 {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	for index, currentRune := range *runes {
@@ -17,5 +17,5 @@ func IndexOfRune(runes *[]rune, searchingFor rune) int {
 		}
 	}
 
-	return strconst.InvalidNotFoundCase
+	return constants.InvalidNotFoundCase
 }

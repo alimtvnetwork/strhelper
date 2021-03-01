@@ -3,9 +3,10 @@ package strsindex
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strs"
 )
 
@@ -31,7 +32,7 @@ func OfAll(
 
 	length := len(*lines)
 
-	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
@@ -47,21 +48,21 @@ func OfAll(
 		sendingSearchTerm = &searchTermLowerCase
 	}
 
-	indexes := make([]int, strconst.Zero, length)
+	indexes := make([]int, constants.Zero, length)
 	foundIndex := Of(
 		sendingLines,
 		sendingSearchTerm,
 		startsAtIndex,
 		true)
 
-	if foundIndex > strconst.InvalidNotFoundCase {
+	if foundIndex > constants.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
 	}
 
 	var nextIndex int
 	lastIndex := length - 1
 
-	for foundIndex > strconst.InvalidNotFoundCase {
+	for foundIndex > constants.InvalidNotFoundCase {
 		nextIndex = foundIndex + 1
 		if nextIndex > lastIndex || (limits > -1 && len(indexes) >= limits) {
 			break
@@ -74,14 +75,14 @@ func OfAll(
 			nextIndex,
 			true)
 
-		if foundIndex > strconst.InvalidNotFoundCase {
+		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)
 		} else {
 			break
 		}
 	}
 
-	if len(indexes) == strconst.Zero {
+	if len(indexes) == constants.Zero {
 		return nil
 	}
 

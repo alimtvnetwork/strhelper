@@ -3,7 +3,7 @@ package panicmsg
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns msg + referenceStart + VarWithType(typeName, variableName, printVal) + spaceParenthesisEnd
@@ -12,7 +12,7 @@ func SimpleValMsgsUsingReferencesWithType(msg string, referenceValues *[]Referen
 	var printVal string
 
 	if referenceValues == nil || len(*referenceValues) == 0 {
-		printVal = strconst.NilString
+		printVal = constants.NilString
 	} else {
 		stringsArray := make([]string, len(*referenceValues))
 
@@ -22,7 +22,7 @@ func SimpleValMsgsUsingReferencesWithType(msg string, referenceValues *[]Referen
 
 		printVal = strings.Join(
 			stringsArray,
-			strconst.CommaSpace)
+			constants.CommaSpace)
 	}
 
 	return msg +

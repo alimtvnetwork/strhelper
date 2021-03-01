@@ -4,7 +4,8 @@ import (
 	"strings"
 	"sync"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/strswasync"
 )
 
@@ -126,7 +127,7 @@ func (result *Result) LeftText() *string {
 	}
 
 	if result.leftText == nil {
-		result.leftText = strconst.EmptyStringPtr
+		result.leftText = constants.EmptyStringPtr
 	}
 
 	return result.leftText
@@ -147,7 +148,7 @@ func (result *Result) RightText() *string {
 	}
 
 	if result.rightText == nil {
-		result.rightText = strconst.EmptyStringPtr
+		result.rightText = constants.EmptyStringPtr
 	}
 
 	return result.rightText

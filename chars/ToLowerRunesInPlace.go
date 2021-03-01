@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns lower case runes by modifying runes in place.
@@ -14,9 +14,9 @@ import (
 //  - if `inputs` is nil
 func ToLowerRunesInPlace(inputs *[]rune) *[]rune {
 	for index, r := range *inputs {
-		if r >= strconst.UpperCaseA && r <= strconst.UpperCaseZ {
+		if r >= constants.UpperCaseA && r <= constants.UpperCaseZ {
 			// in uppercase form, making it to lower case
-			(*inputs)[index] = r + strconst.LowerCase
+			(*inputs)[index] = r + constants.LowerCase
 		}
 	}
 

@@ -1,7 +1,7 @@
 package panicmsg
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns "Error : message reference ( variableName constants.SpaceColonSpace variableValue )"
@@ -9,7 +9,7 @@ func Msg(message, variableName, variableValue string) string {
 	return message +
 		referenceStart +
 		variableName +
-		strconst.SpaceColonSpace +
+		constants.SpaceColonSpace +
 		variableValue +
 		spaceParenthesisEnd
 }

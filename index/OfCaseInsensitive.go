@@ -3,23 +3,24 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/constants"
+	"gitlab.com/evatix-go/core/constants"
+
+	"gitlab.com/evatix-go/strhelper/internal/consts"
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // returns -1 on non found case
 // panics if any is nil
 func OfCaseInsensitive(s, findingString *string, startAt int) int {
 	if s == nil || findingString == nil {
-		panic(constants.SearchNullPanicMessage)
+		panic(consts.SearchNullPanicMessage)
 	}
 
 	length := len(*s)
 	wordLength := len(*findingString)
 
 	if wordLength > length {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	strLower := strings.ToLower(*s)
@@ -37,5 +38,5 @@ func OfCaseInsensitive(s, findingString *string, startAt int) int {
 		}
 	}
 
-	return strconst.InvalidNotFoundCase
+	return constants.InvalidNotFoundCase
 }

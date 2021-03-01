@@ -13,52 +13,52 @@ run-unix: create-bin copy-config-mac build linux-run
 run-ps: create-windows-bin win-copy-config build run-direct
 
 create-windows-bin:
-	if not exist "$(BinariesDirectory)" mkdir "$(BinariesDirectory)"
+    if not exist "$(BinariesDirectory)" mkdir "$(BinariesDirectory)"
 
 create-bin:
-	mkdir -p "$(BinariesDirectory)"
+    mkdir -p "$(BinariesDirectory)"
 
 ps-create-bin:
-	New-Item -ItemType Directory -Force -Path bin
+    New-Item -ItemType Directory -Force -Path bin
 
 copy-config:
-	cp -rfRT "$(ConfigDirectory)" "$(BinariesDirectory)/"
+    cp -rfRT "$(ConfigDirectory)" "$(BinariesDirectory)/"
 
 copy-config-mac:
-	cp -rf "$(ConfigDirectory)" "$(BinariesDirectory)/"
+    cp -rf "$(ConfigDirectory)" "$(BinariesDirectory)/"
 
 ps-copy-config:
-	COPY-ITEM "$(ConfigDirectory)/*.*" "./bin/" -Force
+    COPY-ITEM "$(ConfigDirectory)/*.*" "./bin/" -Force
 
 win-copy-config:
-	xcopy "$(ConfigDirectoryForWindows)" "$(WindowsBinariesDirectory)" /e /h /c /y /s
+    xcopy "$(ConfigDirectoryForWindows)" "$(WindowsBinariesDirectory)" /e /h /c /y /s
 
 build:
-	go build -o "$(BinariesDirectory)" "$(MainDirectory)/main.go"
+    go build -o "$(BinariesDirectory)" "$(MainDirectory)/main.go"
 
 run:
-	cd "$(BinariesDirectory)" && main
+    cd "$(BinariesDirectory)" && main
 
 run-direct:
-	"$(BinariesDirectory)/main"
+    "$(BinariesDirectory)/main"
 
 linux-run:
-	cd "$(BinariesDirectory)" && ./main
+    cd "$(BinariesDirectory)" && ./main
 
 run-tests:
-	cd tests && go test -v
-	
+    cd tests && go test -v
+
 cat-ssh:
-	cat ~/.ssh/id_rsa.pub
+    cat ~/.ssh/id_rsa.pub
 
 ssh-sample:
-	echo "ssh-keygen -t rsa -b 4096 -C 'Your email'"
-	
+    echo "ssh-keygen -t rsa -b 4096 -C 'Your email'"
+
 modify-authorized-keys:
-	sudo vim ~/.ssh/authorized_keys
-	
+    sudo vim ~/.ssh/authorized_keys
+
 git-clean-get:
-	git reset --hard
-	git clean -df
-	git status
-	git pull
+    git reset --hard
+    git clean -df
+    git status
+    git pull

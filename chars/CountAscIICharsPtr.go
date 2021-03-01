@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns the count number based on chars ([256]uint8 represents
@@ -18,7 +18,7 @@ func CountAscIICharsPtr(
 	startAt int,
 	isCaseSensitive bool,
 ) int {
-	if str == nil || *str == strconst.EmptyString || len(*str) == 0 {
+	if str == nil || *str == constants.EmptyString || len(*str) == 0 {
 		return 0
 	}
 

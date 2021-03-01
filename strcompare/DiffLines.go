@@ -93,12 +93,14 @@ func (diffLines *DiffLines) LinesEqual() LineEqual {
 		return *diffLines.linesEqual
 	}
 
-	var isSame, isSameIgnoringWhitespace = true, true
+	// TODO fix logic, double check the logic in future.
+	var isSame = true
 	var diffLine *DiffLine
 	for i := 0; i <= diffLines.Length; i++ {
 		diffLine = &(diffLines.Diffs)[i]
 		lineEqual := diffLine.LineEqual
 		if !lineEqual.IsSameIgnoringWhitespace {
+
 			diffLines.linesEqual = &lineEqual
 
 			break
@@ -112,7 +114,7 @@ func (diffLines *DiffLines) LinesEqual() LineEqual {
 	if diffLines.linesEqual == nil {
 		lineEqual := LineEqual{
 			IsSame:                   isSame,
-			IsSameIgnoringWhitespace: isSameIgnoringWhitespace,
+			IsSameIgnoringWhitespace: true,
 		}
 
 		diffLines.linesEqual = &lineEqual
