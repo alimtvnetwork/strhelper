@@ -1,6 +1,6 @@
 package parsingtype
 
-type ByteType uint8
+type Variant uint8
 
 var (
 	byteTypesStrings = []string{
@@ -9,7 +9,7 @@ var (
 )
 
 const (
-	Unknown ByteType = iota
+	Unknown Variant = iota
 	Unsafe
 	Encoding
 	JsonParsing
@@ -17,6 +17,6 @@ const (
 	AnyToFullStringBytes
 )
 
-func (byteType ByteType) String() string {
+func (byteType Variant) String() string {
 	return byteTypesStrings[byteType]
 }

@@ -1,7 +1,8 @@
 package substr
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/tostr"
 )
 
@@ -25,7 +26,7 @@ func SafeSubstringAtIndex(
 	}
 
 	if endsAtIndex-startsAtIndex <= 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	return str[startsAtIndex:endsAtIndex]

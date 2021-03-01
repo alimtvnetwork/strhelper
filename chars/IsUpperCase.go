@@ -1,10 +1,10 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func IsUpperCase(c uint8) bool {
-	return c >= strconst.UpperCaseA &&
-		c <= strconst.UpperCaseZ
+	return c >= constants.UpperCaseA &&
+		c <= constants.UpperCaseZ
 }

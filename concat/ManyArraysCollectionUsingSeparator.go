@@ -1,7 +1,7 @@
 package concat
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Concatenates the (@preContents to a string using separator) with
@@ -29,7 +29,7 @@ func ManyArraysCollectionUsingSeparator(
 	length := len(*manyArrays)
 
 	if *manyArrays == nil || length == 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	finalProcessedArray := make([]*string, 0, length+1)

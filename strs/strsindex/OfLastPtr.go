@@ -3,9 +3,10 @@ package strsindex
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // OfLastPtr returns the last index where the string first found, doesn't care about the rest of the items once found.
@@ -16,12 +17,12 @@ func OfLastPtr(
 	isCaseSensitive bool,
 ) int {
 	if isstrsinternal.EmptyPtr(lines) || searchTerm == nil {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	length := len(*lines)
 
-	if lastIndexIncreasedBy <= strconst.InvalidNotFoundCase || lastIndexIncreasedBy > length-1 {
+	if lastIndexIncreasedBy <= constants.InvalidNotFoundCase || lastIndexIncreasedBy > length-1 {
 		panichelper.LastIndexIncreasedByFailed(lastIndexIncreasedBy, length)
 	}
 
@@ -45,5 +46,5 @@ func OfLastPtr(
 		}
 	}
 
-	return strconst.InvalidNotFoundCase
+	return constants.InvalidNotFoundCase
 }

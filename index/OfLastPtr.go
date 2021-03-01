@@ -3,7 +3,7 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/constants"
+	"gitlab.com/evatix-go/strhelper/internal/consts"
 )
 
 // Returns the last index of the searchTerm in s
@@ -12,7 +12,7 @@ import (
 // If found returns the index from last, if not then returns -1
 func OfLastPtr(s, searchTerm *string, lastIndexIncreasedBy int, isCaseSensitive bool) int {
 	if s == nil || searchTerm == nil {
-		panic(constants.SearchNullPanicMessage)
+		panic(consts.SearchNullPanicMessage)
 	}
 
 	if isCaseSensitive && lastIndexIncreasedBy == 0 {

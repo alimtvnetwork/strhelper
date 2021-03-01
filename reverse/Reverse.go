@@ -1,7 +1,7 @@
 package reverse
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns empty string if str is nil or empty.
@@ -16,7 +16,7 @@ func Ptr(str *string) string {
 	length := len(*str)
 
 	if length == 0 {
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	runes := []rune(*str)

@@ -5,7 +5,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/parsingtype"
 )
 
-func BytesWrapperOf(any interface{}, parsingType parsingtype.ByteType) byteserror.Wrapper {
+func BytesWrapperOf(any interface{}, parsingType parsingtype.Variant) byteserror.Wrapper {
 	if any == nil {
 		return byteserror.Empty(parsingType)
 	}

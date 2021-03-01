@@ -270,7 +270,7 @@ func (wrapper *Wrapper) IsNullOrEmptyFirstItem() bool {
 	if wrapper.isNullOrEmptyFirstItem == nil {
 		isNullOrEmptyFirstItem :=
 			wrapper.IsNull() ||
-			(wrapper.length > 0 && (*wrapper.lines)[0] == "")
+				(wrapper.length > 0 && (*wrapper.lines)[0] == "")
 		wrapper.isNullOrEmptyFirstItem = &isNullOrEmptyFirstItem
 	}
 

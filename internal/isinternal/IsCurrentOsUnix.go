@@ -1,8 +1,8 @@
 package isinternal
 
-import "gitlab.com/evatix-go/strhelper/strconst"
+import "gitlab.com/evatix-go/core/constants"
 
 func IsCurrentOsUnix() bool {
 	//goland:noinspection ALL
-	return strconst.NewLine == strconst.NewLineUnix
+	return constants.NewLine == constants.NewLineUnix
 }

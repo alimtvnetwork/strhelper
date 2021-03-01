@@ -1,12 +1,13 @@
 package whitespace
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"unicode"
+
+	"gitlab.com/evatix-go/core/constants"
 )
 
-func AllWhitespaceIndexList(input *string) *map[rune]*[]int {
-	if input == nil || len(*input) == strconst.Zero {
+func AllWhitespacesRuneIndexesMap(input *string) *map[rune]*[]int {
+	if input == nil || len(*input) == constants.Zero {
 		return nil
 	}
 
@@ -19,7 +20,7 @@ func AllWhitespaceIndexList(input *string) *map[rune]*[]int {
 
 	for i := 0; i < length; i++ {
 		r = (inputRunes)[i]
-		if (r <= maxUnit8 && strconst.AsciiSpace[r] == 1) ||
+		if (r <= maxUnit8 && constants.AsciiSpace[r] == 1) ||
 			(r > maxUnit8 && unicode.IsSpace(r)) {
 			_, has := allWhitespaceList[r]
 

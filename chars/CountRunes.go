@@ -1,13 +1,13 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Counts and returns the count number based on findingRunes present in the str
 // Returns 0 if str is nil or empty string.
 func CountRunes(str *string, findingRunes *[]rune, startAt int, isCaseSensitive bool) int {
-	if str == nil || *str == strconst.EmptyString || len(*str) == 0 {
+	if str == nil || *str == constants.EmptyString || len(*str) == 0 {
 		return 0
 	}
 

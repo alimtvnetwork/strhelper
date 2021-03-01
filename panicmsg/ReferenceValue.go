@@ -3,7 +3,7 @@ package panicmsg
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 type ReferenceValue struct {
@@ -13,15 +13,15 @@ type ReferenceValue struct {
 
 func (referenceValue *ReferenceValue) String() string {
 	return (*referenceValue).VariableName +
-		strconst.SpaceColonSpace +
-		fmt.Sprintf(strconst.SprintValueFormat, (*referenceValue).Value)
+		constants.SpaceColonSpace +
+		fmt.Sprintf(constants.SprintValueFormat, (*referenceValue).Value)
 }
 
 func (referenceValue *ReferenceValue) TypeString() string {
 	return referenceValue.VariableName +
 		squareBracketStart +
-		fmt.Sprintf(strconst.SprintTypeFormat, referenceValue.Value) +
+		fmt.Sprintf(constants.SprintTypeFormat, referenceValue.Value) +
 		squareBracketEnd +
-		strconst.SpaceColonSpace +
-		fmt.Sprintf(strconst.SprintValueFormat, referenceValue.Value)
+		constants.SpaceColonSpace +
+		fmt.Sprintf(constants.SprintValueFormat, referenceValue.Value)
 }

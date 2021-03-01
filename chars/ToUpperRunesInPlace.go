@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns Upper case runes by modifying runes in place.
@@ -14,9 +14,9 @@ import (
 //  - if `inputs` is nil
 func ToUpperRunesInPlace(inputs *[]rune) *[]rune {
 	for index, r := range *inputs {
-		if r >= strconst.LowerCaseA && r <= strconst.LowerCaseZ {
+		if r >= constants.LowerCaseA && r <= constants.LowerCaseZ {
 			// in lower case form, making it to upper case
-			(*inputs)[index] = r + strconst.UpperCase
+			(*inputs)[index] = r + constants.UpperCase
 		}
 	}
 

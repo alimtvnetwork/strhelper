@@ -1,13 +1,13 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func ToUpper(c uint8) uint8 {
-	if c >= strconst.LowerCaseA &&
-		c <= strconst.LowerCaseZ {
-		return c + strconst.UpperCaseA - strconst.LowerCaseA
+	if c >= constants.LowerCaseA &&
+		c <= constants.LowerCaseZ {
+		return c + constants.UpperCaseA - constants.LowerCaseA
 	}
 
 	return c

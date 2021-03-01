@@ -1,10 +1,11 @@
 package remove
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Creates new lines where removeLinesHashSet items will not appear.
@@ -58,7 +59,7 @@ func ManyLines(
 	// no copy just points
 	linesRemainingParts := (*lines)[startsAt:]
 	linesRemainingToLower := misc.ToLowerStrings(&linesRemainingParts)
-	isCountUnset := count == strconst.InvalidNotFoundCase
+	isCountUnset := count == constants.InvalidNotFoundCase
 	var line string
 	index := 0
 	for ; startsAt < length; startsAt++ {
@@ -87,7 +88,7 @@ func finalRemoveResultsCaseSensitive(
 ) *[]string {
 	var line string
 
-	isCountUnset := count == strconst.InvalidNotFoundCase
+	isCountUnset := count == constants.InvalidNotFoundCase
 
 	for i := startsAt; i < length; i++ {
 		line = (*lines)[i]

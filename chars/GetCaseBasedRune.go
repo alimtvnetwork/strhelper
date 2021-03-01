@@ -3,7 +3,7 @@ package chars
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func GetCaseBasedRune(str *string, r rune, isCaseSensitive bool) *CaseBasedRunes {
@@ -11,7 +11,7 @@ func GetCaseBasedRune(str *string, r rune, isCaseSensitive bool) *CaseBasedRunes
 		r = ToLowerRune(r)
 	}
 
-	if str == nil || *str == strconst.EmptyString || len(*str) == 0 {
+	if str == nil || *str == constants.EmptyString || len(*str) == 0 {
 		return &CaseBasedRunes{
 			ToRunes:       nil,
 			ComparingRune: r,

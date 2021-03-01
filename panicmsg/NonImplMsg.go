@@ -1,7 +1,7 @@
 package panicmsg
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Not implemented message
@@ -9,8 +9,8 @@ import (
 // else returns constants.NotImplemented + " : [TODO] Will be solved at (" + url + ")"
 func NonImplMsg(url string) string {
 	if len(url) == 0 {
-		return strconst.NotImplemented
+		return constants.NotImplemented
 	}
 
-	return strconst.NotImplemented + " : [TODO] Will be solved at (" + url + ")"
+	return constants.NotImplemented + " : [TODO] Will be solved at (" + url + ")"
 }

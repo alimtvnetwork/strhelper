@@ -3,9 +3,10 @@ package lines
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
@@ -47,7 +48,7 @@ func Compare(
 	isLeftEmptyAndRightNot := isLeftEmpty == true && isRightEmpty == false
 
 	if isLeftEmptyAndRightNot {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	isRightEmptyAndLeftNot := isLeftEmpty == false && isRightEmpty == true
@@ -148,7 +149,7 @@ func simplifiedFinalCompareResult(
 	}
 
 	if resultSum < 0 {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	return resultSum

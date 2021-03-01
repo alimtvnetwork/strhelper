@@ -1,13 +1,13 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 func ToLowerRune(r rune) rune {
-	if r >= strconst.UpperCaseA &&
-		r <= strconst.UpperCaseZ {
-		lowerCaseRune := r + strconst.LowerCase
+	if r >= constants.UpperCaseA &&
+		r <= constants.UpperCaseZ {
+		lowerCaseRune := r + constants.LowerCase
 
 		return lowerCaseRune
 	}

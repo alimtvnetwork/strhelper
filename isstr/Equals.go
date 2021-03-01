@@ -10,8 +10,5 @@ func Equals(first, second string, isCaseSensitive bool) bool {
 	}
 
 	// insensitive
-	fLower := strings.ToLower(first)
-	sLower := strings.ToLower(second)
-
-	return fLower == sLower
+	return strings.EqualFold(first, second)
 }

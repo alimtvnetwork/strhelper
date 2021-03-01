@@ -3,7 +3,7 @@ package chars
 import (
 	"unicode"
 
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // *[256]uint8:
@@ -55,7 +55,9 @@ func (asciiCharacters *AsciiCharacters) IsAnyExists(chars ...uint8) bool {
 func (asciiCharacters *AsciiCharacters) IsAllCharsExistInStrings(strings ...*string) bool {
 	for _, str := range strings {
 		for _, r := range *str {
-			if r > strconst.MaxUnit8 || r <= strconst.MaxUnit8 && (*asciiCharacters.asciiChars)[r] == 0 {
+			if r > constants.MaxUnit8Rune ||
+				r <= constants.MaxUnit8Rune &&
+					(*asciiCharacters.asciiChars)[r] == 0 {
 				return false
 			}
 		}

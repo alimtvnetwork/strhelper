@@ -1,8 +1,9 @@
 package index
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strto"
 )
 
@@ -28,7 +29,7 @@ func OfAllPtr(
 
 	length := len(*content)
 
-	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
@@ -47,7 +48,7 @@ func OfAllPtr(
 		sendingSearchTerm = strto.LowerStrPtr(findingString)
 	}
 
-	indexes := make([]int, strconst.Zero, length)
+	indexes := make([]int, constants.Zero, length)
 
 	lastIndex := length - 1
 	foundIndex := OfPtr(
@@ -56,13 +57,13 @@ func OfAllPtr(
 		startsAtIndex,
 		true)
 
-	if foundIndex > strconst.InvalidNotFoundCase {
+	if foundIndex > constants.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
 	}
 
 	var nextIndex int
 
-	for foundIndex > strconst.InvalidNotFoundCase {
+	for foundIndex > constants.InvalidNotFoundCase {
 		nextIndex = foundIndex + 1
 		if nextIndex > lastIndex || (limits > -1 && len(indexes) >= limits) {
 			break
@@ -74,7 +75,7 @@ func OfAllPtr(
 			nextIndex,
 			true)
 
-		if foundIndex > strconst.InvalidNotFoundCase {
+		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)
 		} else {
 			// not found at any, will not continue
@@ -82,7 +83,7 @@ func OfAllPtr(
 		}
 	}
 
-	if len(indexes) == strconst.Zero {
+	if len(indexes) == constants.Zero {
 		return nil
 	}
 

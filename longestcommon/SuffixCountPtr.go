@@ -1,7 +1,7 @@
 package longestcommon
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Results count of suffix character matches. Where a, b can be at different lengths,
@@ -37,15 +37,15 @@ func SuffixCountPtr(
 	lenA := len(*a)
 	lenB := len(*b)
 
-	if lenA == strconst.Zero &&
-		((lenB == strconst.Zero && bothLastIndexReduceBy == strconst.Zero) ||
+	if lenA == constants.Zero &&
+		((lenB == constants.Zero && bothLastIndexReduceBy == constants.Zero) ||
 			lenB-1 >= bothLastIndexReduceBy) {
 		return 0
 	}
 
-	if lenB == strconst.Zero &&
-		lenA == strconst.Zero &&
-		bothLastIndexReduceBy == strconst.Zero {
+	if lenB == constants.Zero &&
+		lenA == constants.Zero &&
+		bothLastIndexReduceBy == constants.Zero {
 		return 0
 	}
 

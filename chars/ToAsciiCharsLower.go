@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Makes a new char to lower, doesn't modify the existing one.
@@ -17,9 +17,9 @@ func ToAsciiCharsLower(chars *[256]uint8) *[256]uint8 {
 		if (*chars)[i] == 1 {
 			char := uint8(i)
 
-			if char >= strconst.UpperCaseA &&
-				char <= strconst.UpperCaseZ {
-				char = char + strconst.LowerCase
+			if char >= constants.UpperCaseA &&
+				char <= constants.UpperCaseZ {
+				char = char + constants.LowerCase
 			}
 
 			newChars[i] = char

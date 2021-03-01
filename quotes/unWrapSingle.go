@@ -1,7 +1,7 @@
 package quotes
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Assumption here, s has single quotes and s it not empty
@@ -10,7 +10,7 @@ func unWrapSingle(s *string, isLeft bool) string {
 
 	if length == 1 {
 		// has quote only
-		return strconst.EmptyString
+		return constants.EmptyString
 	}
 
 	if isLeft {

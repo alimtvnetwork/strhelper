@@ -1,9 +1,10 @@
 package splits
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -27,7 +28,7 @@ func ManyWithDefaults(
 		&str,
 		&splitsBy,
 		0,
-		strconst.InvalidNotFoundCase,
+		constants.InvalidNotFoundCase,
 		true)
 }
 
@@ -111,7 +112,7 @@ func ManyPtr(
 	}
 
 	indexesAsKeyMap := allIndexes.GetIndexesMapWhereIndexAsKey()
-	possibleCapacity := len(*indexesAsKeyMap) + strconst.ArbitraryCapacity5
+	possibleCapacity := len(*indexesAsKeyMap) + constants.ArbitraryCapacity5
 	results := make([]*string, 0, possibleCapacity)
 	nonResults := make([]*string, 0, possibleCapacity)
 	splitResults := make([]*strhelpercore.SplitResult, 0, possibleCapacity)

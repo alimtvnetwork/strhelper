@@ -1,7 +1,7 @@
 package panicmsg
 
 import (
-	"gitlab.com/evatix-go/strhelper/strconst"
+	"gitlab.com/evatix-go/core/constants"
 )
 
 // Returns variableName + "[" + typeName + "]" + constants.SpaceColonSpace + value
@@ -10,6 +10,6 @@ func VarWithType(typeName, variableName, value string) string {
 		squareBracketStart +
 		typeName +
 		squareBracketEnd +
-		strconst.SpaceColonSpace +
+		constants.SpaceColonSpace +
 		value
 }

@@ -3,17 +3,19 @@ package strhelpercore
 import (
 	"fmt"
 
+	"gitlab.com/evatix-go/errorwrapper"
+	"gitlab.com/evatix-go/errorwrapper/errnew"
+
 	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
-	"gitlab.com/evatix-go/strhelper/strerror"
 )
 
 type BytesWithError struct {
 	bytes        *[]byte
 	lines        *[]string
 	content      *string
-	errorWrapper strerror.ErrorWrapper
+	errorWrapper *errorwrapper.Wrapper
 	bytesLength  int
 	stringLength *int
 	isWhitespace *bool
@@ -21,13 +23,13 @@ type BytesWithError struct {
 
 func NewBytesWithErrorOnlyError(err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: *strerror.NewErrorWrapperPtr(&err),
+		errorWrapper: errorwrapper.NewErrorPtr(err),
 	}
 }
 
 func NewBytesWithErrorOnlyErrorPtr(err *error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: *strerror.NewErrorWrapperPtr(err),
+		errorWrapper: errnew.ErrInPtr(err),
 	}
 }
 
@@ -40,7 +42,7 @@ func NewBytesWithError(bytes *[]byte, err *error) *BytesWithError {
 
 	return &BytesWithError{
 		bytes:        bytes,
-		errorWrapper: *strerror.NewErrorWrapperPtr(err),
+		errorWrapper: errnew.ErrInPtr(err),
 		bytesLength:  length,
 	}
 }
@@ -62,7 +64,7 @@ func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 
 	return &BytesWithError{
 		bytes:        bytes,
-		errorWrapper: strerror.NewErrorWrapper(err),
+		errorWrapper: errnew.ErrPtr(err),
 		bytesLength:  length,
 	}
 }
@@ -96,7 +98,7 @@ func (bytesWithError *BytesWithError) StringLength() int {
 }
 
 // Error must be initialize have it or not. Then check Error().IsEmpty()
-func (bytesWithError *BytesWithError) Error() strerror.ErrorWrapper {
+func (bytesWithError *BytesWithError) Error() *errorwrapper.Wrapper {
 	return bytesWithError.errorWrapper
 }
 

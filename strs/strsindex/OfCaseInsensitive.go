@@ -3,9 +3,10 @@ package strsindex
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 func OfCaseInsensitive(
@@ -14,12 +15,12 @@ func OfCaseInsensitive(
 	startsAtIndex int,
 ) int {
 	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	length := len(*lines)
 
-	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
@@ -31,5 +32,5 @@ func OfCaseInsensitive(
 		}
 	}
 
-	return strconst.InvalidNotFoundCase
+	return constants.InvalidNotFoundCase
 }

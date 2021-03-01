@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
@@ -18,7 +20,6 @@ import (
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/reverse"
 	"gitlab.com/evatix-go/strhelper/splits"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -184,7 +185,7 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 	if stringWrapper.isEmptyOrWhitespace == nil {
 		value := stringWrapper.content
-		isEmptyOrNull := value == nil || *value == strconst.EmptyString || stringWrapper.lengthInBytes == 0
+		isEmptyOrNull := value == nil || *value == constants.EmptyString || stringWrapper.lengthInBytes == 0
 		stringWrapper.isNullOrEmpty = &isEmptyOrNull
 		isEmptyOrWhitespace := isEmptyOrNull
 
@@ -576,7 +577,7 @@ func (stringWrapper *StringWrapper) String() string {
 // performance should be very slow, use direct access of str.
 func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 	if !stringWrapper.HasIndex(index) {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	return int16(stringWrapper.ValueWithoutPtr()[index])
@@ -587,7 +588,7 @@ func (stringWrapper *StringWrapper) GetSafeIndexAt(index int) int16 {
 // performance should be very slow, use direct access of stringWrapper.ToRunesPtr().
 func (stringWrapper *StringWrapper) GetSafeRuneIndexAt(index int) rune {
 	if !stringWrapper.HasIndex(index) {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	return stringWrapper.ToRunes()[index]
@@ -644,7 +645,7 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 // Add the contents before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
-		strconst.EmptyString,
+		constants.EmptyString,
 		false, // must add everything
 		&contents)
 }
@@ -652,7 +653,7 @@ func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 // Line is the separator for add the content before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
-		strconst.NewLine,
+		constants.NewLine,
 		false, // must add everything
 		&contents)
 }
@@ -733,7 +734,7 @@ func (stringWrapper *StringWrapper) PrependAsString(
 //
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...string) *StringWrapper {
-	return stringWrapper.Concatenates(strconst.NewLine, isSkipOnEmpty, &contents)
+	return stringWrapper.Concatenates(constants.NewLine, isSkipOnEmpty, &contents)
 }
 
 // Better to use slice or builder for appending or concatenating lines in a loop.
@@ -741,7 +742,7 @@ func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...
 // stringWrapper.content + separator + JoinAll(separator, stringWrappers)
 func (stringWrapper *StringWrapper) Concat(contents ...string) *StringWrapper {
 	return stringWrapper.Concatenates(
-		strconst.EmptyString,
+		constants.EmptyString,
 		false, // must add everything
 		&contents)
 }

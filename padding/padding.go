@@ -3,8 +3,9 @@ package padding
 import (
 	"strings"
 
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 func Pad(
@@ -55,25 +56,25 @@ func Right(str, padding *string, width int) string {
 }
 
 func Space(str *string, width int, isLeft, isRight bool) string {
-	return Pad(str, strconst.SpacePtr, width, isLeft, isRight)
+	return Pad(str, constants.SpacePtr, width, isLeft, isRight)
 }
 
 func SpaceLeft(str *string, width int) string {
-	return Left(str, strconst.SpacePtr, width)
+	return Left(str, constants.SpacePtr, width)
 }
 
 func SpaceRight(str *string, width int) string {
-	return Right(str, strconst.SpacePtr, width)
+	return Right(str, constants.SpacePtr, width)
 }
 
 func Tab(str *string, width int, isLeft, isRight bool) string {
-	return Pad(str, strconst.TabPtr, width, isLeft, isRight)
+	return Pad(str, constants.TabPtr, width, isLeft, isRight)
 }
 
 func TabLeft(str *string, width int) string {
-	return Left(str, strconst.TabPtr, width)
+	return Left(str, constants.TabPtr, width)
 }
 
 func TabRight(str *string, width int) string {
-	return Right(str, strconst.TabPtr, width)
+	return Right(str, constants.TabPtr, width)
 }

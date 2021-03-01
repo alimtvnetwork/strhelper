@@ -1,9 +1,10 @@
 package strsindex
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strconst"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/strs"
 )
@@ -36,7 +37,7 @@ func OfAllMany(
 
 	length := len(*lines)
 
-	if startsAtIndex <= strconst.InvalidNotFoundCase || startsAtIndex > length-1 {
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 

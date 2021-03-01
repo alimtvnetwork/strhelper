@@ -1,6 +1,10 @@
 package whitespacesinternal
 
-import "unicode"
+import (
+	"unicode"
+
+	"gitlab.com/evatix-go/core/constants"
+)
 
 // Returns true for if the contents are all whitespaces
 //  (including unicode whitespaces for only checking ascii use the ascii version a lot more faster)
@@ -20,7 +24,8 @@ func IsRunesWhitespaces(runes *[]rune) bool {
 	var r rune
 	for i := 0; i <= mid; i++ {
 		r = (*runes)[i]
-		if !((r <= maxUnit8 && asciiSpaces[r] == 1) || (r > maxUnit8 && unicode.IsSpace(r))) {
+		if !((r <= constants.MaxUnit8Rune && constants.AsciiSpace[r] == 1) ||
+			(r > constants.MaxUnit8Rune && unicode.IsSpace(r))) {
 			return false
 		}
 
@@ -32,7 +37,8 @@ func IsRunesWhitespaces(runes *[]rune) bool {
 		lastIndex = lastIndex - i
 		r = (*runes)[lastIndex]
 
-		if !((r <= maxUnit8 && asciiSpaces[r] == 1) || (r > maxUnit8 && unicode.IsSpace(r))) {
+		if !((r <= constants.MaxUnit8Rune && constants.AsciiSpace[r] == 1) ||
+			(r > constants.MaxUnit8Rune && unicode.IsSpace(r))) {
 			return false
 		}
 	}

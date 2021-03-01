@@ -1,8 +1,9 @@
 package isstr
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // Results true for ends with search text.
@@ -31,13 +32,13 @@ func EndsWithPtr(
 	searchLength := len(*search)
 	wholeTextLength := len(*wholeText)
 
-	if searchLength == strconst.Zero {
-		return (wholeTextLength == strconst.Zero && lastIndexIncreasedBy == strconst.Zero) ||
+	if searchLength == constants.Zero {
+		return (wholeTextLength == constants.Zero && lastIndexIncreasedBy == constants.Zero) ||
 			wholeTextLength-1 >= lastIndexIncreasedBy
 	}
 
-	if wholeTextLength == strconst.Zero {
-		return searchLength == strconst.Zero && lastIndexIncreasedBy == strconst.Zero
+	if wholeTextLength == constants.Zero {
+		return searchLength == constants.Zero && lastIndexIncreasedBy == constants.Zero
 	}
 
 	textLength := wholeTextLength - lastIndexIncreasedBy

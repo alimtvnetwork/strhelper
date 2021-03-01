@@ -1,8 +1,9 @@
 package index
 
 import (
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/internal/isinternal"
-	"gitlab.com/evatix-go/strhelper/strconst"
 )
 
 // returns -1 on non found case
@@ -12,7 +13,7 @@ func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int
 	wordLength := len(*findingString)
 
 	if wordLength > length {
-		return strconst.InvalidNotFoundCase
+		return constants.InvalidNotFoundCase
 	}
 
 	textLength := length - lastIndexIncreasedBy
@@ -29,5 +30,5 @@ func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int
 		}
 	}
 
-	return strconst.InvalidNotFoundCase
+	return constants.InvalidNotFoundCase
 }
