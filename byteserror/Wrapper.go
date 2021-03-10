@@ -1,6 +1,11 @@
 package byteserror
 
 import (
+	"encoding/json"
+
+	"gitlab.com/evatix-go/core/coredata/corejson"
+	"gitlab.com/evatix-go/core/defaulterr"
+	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/errorwrapper"
 
 	"gitlab.com/evatix-go/strhelper/internal/misc"
@@ -15,7 +20,7 @@ type Wrapper struct {
 	byteType     parsingtype.Variant
 	bytesLength  int
 	stringLength *int
-	isWhitespace *bool
+	isWhitespace issetter.Value
 }
 
 func (wrapper *Wrapper) ByteType() parsingtype.Variant {
@@ -65,17 +70,17 @@ func (wrapper *Wrapper) IsNullOrEmpty() bool {
 //
 // To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
 func (wrapper *Wrapper) IsNullOrEmptyOrWhitespaces() bool {
-	if wrapper.isWhitespace == nil {
+	if wrapper.isWhitespace.IsUninitialized() {
 		isWhitespace := wrapper.bytes == nil ||
 			wrapper.bytesLength == 0 ||
 			whitespacesinternal.IsAsciiWhitespacesBytes(wrapper.bytes)
 
 		// checking bytesLength == 0 is enough to prove empty string ""
 		// reference : https://play.golang.org/p/6vU5y92LKYg
-		wrapper.isWhitespace = &isWhitespace
+		wrapper.isWhitespace = issetter.GetBool(isWhitespace)
 	}
 
-	return *wrapper.isWhitespace
+	return wrapper.isWhitespace.IsTrue()
 }
 
 // IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
@@ -174,4 +179,106 @@ func (wrapper *Wrapper) StringPtr() *string {
 	}
 
 	return wrapper.content
+}
+
+func (wrapper *Wrapper) JsonModel() *WrapperDataModel {
+	return &WrapperDataModel{
+		Bytes:        wrapper.bytes,
+		ErrorWrapper: wrapper.errorWrapper,
+		ByteType:     wrapper.byteType,
+		BytesLength:  wrapper.bytesLength,
+		IsWhitespace: wrapper.isWhitespace,
+	}
+}
+
+func (wrapper *Wrapper) JsonModelAny() interface{} {
+	return wrapper.JsonModel()
+}
+
+func (wrapper *Wrapper) MarshalJSON() ([]byte, error) {
+	return json.Marshal(*wrapper.JsonModel())
+}
+
+func (wrapper *Wrapper) UnmarshalJSON(data []byte) error {
+	var dataModel WrapperDataModel
+	err := json.Unmarshal(data, &dataModel)
+
+	if err == nil {
+		wrapper.bytes = dataModel.Bytes
+		wrapper.errorWrapper = dataModel.ErrorWrapper
+		wrapper.byteType = dataModel.ByteType
+		wrapper.bytesLength = dataModel.BytesLength
+		wrapper.isWhitespace = dataModel.IsWhitespace
+	}
+
+	return err
+}
+
+//goland:noinspection GoLinterLocal
+func (wrapper *Wrapper) Json() *corejson.Result {
+	if wrapper.IsNullOrEmpty() {
+		return corejson.EmptyWithoutErrorPtr()
+	}
+
+	return corejson.NewFromAny(wrapper)
+}
+
+//goland:noinspection GoLinterLocal
+func (wrapper *Wrapper) ParseInjectUsingJson(
+	jsonResult *corejson.Result,
+) (*Wrapper, error) {
+	if jsonResult == nil || jsonResult.IsEmptyJsonBytes() {
+		return nil, defaulterr.UnMarshallingFailedDueToNilOrEmpty
+	}
+
+	err := json.Unmarshal(*jsonResult.Bytes, &wrapper)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return wrapper, nil
+}
+
+// Panic if error
+//goland:noinspection GoLinterLocal
+func (wrapper *Wrapper) ParseInjectUsingJsonMust(
+	jsonResult *corejson.Result,
+) *Wrapper {
+	newUsingJson, err :=
+		wrapper.ParseInjectUsingJson(jsonResult)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return newUsingJson
+}
+
+func (wrapper *Wrapper) JsonParseSelfInject(
+	jsonResult *corejson.Result,
+) error {
+	_, err := wrapper.ParseInjectUsingJson(
+		jsonResult,
+	)
+
+	return err
+}
+
+func (wrapper *Wrapper) AsJsoner() *corejson.Jsoner {
+	var jsoner corejson.Jsoner = wrapper
+
+	return &jsoner
+}
+
+func (wrapper *Wrapper) AsJsonParseSelfInjector() *corejson.ParseSelfInjector {
+	var jsonInjector corejson.ParseSelfInjector = wrapper
+
+	return &jsonInjector
+}
+
+func (wrapper *Wrapper) AsJsonMarshaller() *corejson.JsonMarshaller {
+	var jsonMarshaller corejson.JsonMarshaller = wrapper
+
+	return &jsonMarshaller
 }
