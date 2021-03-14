@@ -28,7 +28,6 @@ func isEndsWithInsensitiveInternal(
 
 	wholeLower := strings.ToLower(*wholeText)
 	searchLower := strings.ToLower(*search)
-
 	lastIndexIncreasedBy = 0
 
 	for ; lastIndexIncreasedBy < lenA && lastIndexIncreasedBy < lenB; lastIndexIncreasedBy++ {
