@@ -16,10 +16,10 @@ func OfLastCaseInsensitive(s, findingString *string, startsAt int) int {
 		panic(consts.SearchNullPanicMessage)
 	}
 
-	length := len(*s)
-	wordLength := len(*findingString)
+	wholeTextLength := len(*s)
+	searchTextLength := len(*findingString)
 
-	if wordLength > length {
+	if searchTextLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -34,17 +34,15 @@ func OfLastCaseInsensitive(s, findingString *string, startsAt int) int {
 	wholeTextLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
-	textLength := length - startsAt
-
-	for newStartIndex := startsAt; newStartIndex < textLength; newStartIndex++ {
-		if textLength-newStartIndex < wordLength {
+	for newStartIndex := startsAt; newStartIndex < wholeTextLength; newStartIndex++ {
+		if textLength-newStartIndex < searchTextLength {
 			// there is no need to check anymore
-			// exceeded word length and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
 		if isstrinternal.IsEndsWith(&wholeTextLower, &wordLower, newStartIndex) {
-			return length - newStartIndex - wordLength
+			return wholeTextLength - newStartIndex - searchTextLength
 		}
 	}
 

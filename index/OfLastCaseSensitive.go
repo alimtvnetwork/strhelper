@@ -8,7 +8,7 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int {
+func OfLastCaseSensitive(s, findingString *string, contentLengthDecreasedBy int) int {
 	wholeTextLength := len(*s)
 	searchTextLength := len(*findingString)
 
@@ -16,14 +16,28 @@ func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int
 		return constants.InvalidNotFoundCase
 	}
 
-	for newStartIndex := lastIndexIncreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
+	if s == findingString && contentLengthDecreasedBy == 0 {
+		return constants.Zero
+	}
+
+	if *s == *findingString && contentLengthDecreasedBy == 0 {
+		return constants.Zero
+	}
+
+	// it will normally go as OfIndex, 0.1.2.3...N
+	for newStartIndex := contentLengthDecreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
 		if wholeTextLength-newStartIndex < searchTextLength {
 			// there is no need to check anymore
 			// exceeded word wholeTextLength and not found case
 			break
 		}
 
-		if isstrinternal.IsEndsWith(s, findingString, newStartIndex) {
+		// here having newStartIndex = 1 will compare from last index - newStartIndex
+		if isstrinternal.IsEndsWithUsingLength(
+			s, findingString,
+			newStartIndex,
+			wholeTextLength,
+			searchTextLength) {
 			return wholeTextLength - newStartIndex - searchTextLength
 		}
 	}
