@@ -38,7 +38,8 @@ func TestOfAll(t *testing.T) {
 				isSame := corecompare.IntArrayPtr(actual, expected)
 
 				if !isSame {
-					log.Println("\n ==========Actual vs Expectation=============\nExpectations : ", expected)
+					header := "\n ==================Actual vs Expectation==================\nExpectations : "
+					log.Println(header, expected)
 					log.Println("Actual : ", actual)
 				}
 

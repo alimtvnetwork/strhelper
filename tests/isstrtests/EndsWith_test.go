@@ -24,8 +24,8 @@ func TestEndsWith(t *testing.T) {
 
 		testCase.SetActual(actual)
 
+		// Assert
 		Convey(testHeader, t, func() {
-			// Assert
 			Convey(coretests.GetAssertMessage(testCase, i), func() {
 				So(actual, ShouldEqual, testCase.Expected())
 			})
