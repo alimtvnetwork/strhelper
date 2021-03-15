@@ -16,7 +16,7 @@ import (
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
-func OfAllPtr(
+func OfLastAllPtr(
 	content *string,
 	findingString *string,
 	startsAtIndex int,
@@ -27,20 +27,20 @@ func OfAllPtr(
 		return nil
 	}
 
-	length := len(*content)
+	wholeTextLength := len(*content)
 	searchLength := len(*findingString)
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		panichelper.StartAtIndexFailed(startsAtIndex, length)
-	}
-
-	if searchLength > length-startsAtIndex {
+	if searchLength > wholeTextLength-startsAtIndex {
 		return nil
 	}
 
-	if length > 0 && searchLength == 0 {
-		return getAllIndexesFromTheStartIndexGiven(
-			length,
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > wholeTextLength-1 {
+		panichelper.StartAtIndexFailed(startsAtIndex, wholeTextLength)
+	}
+
+	if wholeTextLength > 0 && searchLength == 0 {
+		return getAllIndexesFromLastAndIndexGiven(
+			wholeTextLength,
 			startsAtIndex,
 			limits)
 	}
@@ -60,17 +60,28 @@ func OfAllPtr(
 		sendingSearchTerm = strto.LowerStrPtr(findingString)
 	}
 
+	// keep the default as best so that doesn't resize.
+	defaultCapacity := wholeTextLength
+
+	if wholeTextLength > constants.ArbitraryCapacity1000 {
+		defaultCapacity = constants.ArbitraryCapacity100
+	}
+
+	if wholeTextLength > constants.ArbitraryCapacity250 {
+		defaultCapacity = wholeTextLength / constants.ArbitraryCapacity10
+	}
+
 	indexes := make(
 		[]int,
 		constants.Zero,
-		length)
+		defaultCapacity)
 
-	lastIndex := length - 1
+	lastIndex := wholeTextLength - 1
 	foundIndex := ofCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
-		length,
+		wholeTextLength,
 		searchLength)
 
 	if foundIndex > constants.InvalidNotFoundCase {
@@ -89,7 +100,7 @@ func OfAllPtr(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,
-			length,
+			wholeTextLength,
 			searchLength)
 
 		if foundIndex > constants.InvalidNotFoundCase {
