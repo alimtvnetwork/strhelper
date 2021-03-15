@@ -1,9 +1,9 @@
 package index
 
 import (
-	"strings"
+	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // Returns the first index of the findingString in s
@@ -23,14 +23,22 @@ func ofUsingLengthPtr(
 	startsAt int,
 	wholeTextLength, searchTextLength int,
 ) int {
-	if startsAt == 0 {
-		return strings.Index(*s, *findingString)
+	if searchTextLength > wholeTextLength {
+		return constants.InvalidNotFoundCase
 	}
 
-	return indexinternal.OfCaseSensitiveUsingLength(
-		s,
-		findingString,
-		startsAt,
-		wholeTextLength,
-		searchTextLength)
+	for i := startsAt; i < wholeTextLength; i++ {
+		if wholeTextLength-i < searchTextLength {
+			// there is no need to check anymore
+			// exceeded word wholeTextLength and not found case
+			break
+		}
+
+		if isstrinternal.IsStartsWith(s, findingString, i) {
+			return i
+		}
+	}
+
+	return constants.InvalidNotFoundCase
+
 }

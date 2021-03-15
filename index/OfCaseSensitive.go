@@ -9,7 +9,7 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func OfCaseSensitive(s, findingString *string, startAt int) int {
+func OfCaseSensitive(s, findingString *string, startsAt int) int {
 	if s == nil || findingString == nil {
 		panic(consts.SearchNullPanicMessage)
 	}
@@ -21,7 +21,7 @@ func OfCaseSensitive(s, findingString *string, startAt int) int {
 		return constants.InvalidNotFoundCase
 	}
 
-	for i := startAt; i < wholeTextLength; i++ {
+	for i := startsAt; i < wholeTextLength; i++ {
 		if wholeTextLength-i < searchingLength {
 			// there is no need to check anymore
 			// exceeded word wholeTextLength and not found case

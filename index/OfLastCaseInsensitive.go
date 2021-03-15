@@ -11,7 +11,7 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseInsensitive(s, findingString *string, startAt int) int {
+func OfLastCaseInsensitive(s, findingString *string, startsAt int) int {
 	if s == nil || findingString == nil {
 		panic(consts.SearchNullPanicMessage)
 	}
@@ -23,20 +23,20 @@ func OfLastCaseInsensitive(s, findingString *string, startAt int) int {
 		return constants.InvalidNotFoundCase
 	}
 
-	if s == findingString && startAt == 0 {
+	if s == findingString && startsAt == 0 {
 		return constants.Zero
 	}
 
-	if *s == *findingString && startAt == 0 {
+	if *s == *findingString && startsAt == 0 {
 		return constants.Zero
 	}
 
 	wholeTextLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
-	textLength := length - startAt
+	textLength := length - startsAt
 
-	for newStartIndex := startAt; newStartIndex < textLength; newStartIndex++ {
+	for newStartIndex := startsAt; newStartIndex < textLength; newStartIndex++ {
 		if textLength-newStartIndex < wordLength {
 			// there is no need to check anymore
 			// exceeded word length and not found case

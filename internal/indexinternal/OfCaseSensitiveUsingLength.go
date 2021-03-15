@@ -10,10 +10,10 @@ import (
 // panics if any is nil
 func OfCaseSensitiveUsingLength(
 	s, findingString *string,
-	startAt int,
+	startsAt int,
 	wordLength, searchLength int,
 ) int {
-	for i := startAt; i < searchLength; i++ {
+	for i := startsAt; i < searchLength; i++ {
 		if searchLength-i < wordLength {
 			// there is no need to check anymore
 			// exceeded word searchLength and not found case
