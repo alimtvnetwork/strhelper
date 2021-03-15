@@ -25,14 +25,17 @@ func OfAllUsingRequestPtr(
 		return nil
 	}
 
-	length := len(*content)
+	wholeTextLength := len(*content)
 
-	if request.StartsAt <= constants.InvalidNotFoundCase || request.StartsAt > length-1 {
-		panichelper.StartAtIndexFailed(request.StartsAt, length)
+	if request.StartsAt <= constants.InvalidNotFoundCase || request.StartsAt > wholeTextLength-1 {
+		panichelper.StartAtIndexFailed(request.StartsAt, wholeTextLength)
 	}
 
-	if length > 0 && request.Search == "" {
-		return getAllIndexesFromTheStartIndexGiven(length, request.StartsAt)
+	if wholeTextLength > 0 && request.Search == "" {
+		return getAllIndexesFromTheStartIndexGiven(
+			wholeTextLength,
+			request.StartsAt,
+			request.Limits)
 	}
 
 	// making a copy of pointer only, not the object. copy of reference address
@@ -46,8 +49,22 @@ func OfAllUsingRequestPtr(
 		sendingSearchTerm = strto.LowerStrPtr(sendingSearchTerm)
 	}
 
-	indexes := make([]int, constants.Zero, length)
-	lastIndex := length - 1
+	// keep the default as best so that doesn't resize.
+	defaultCapacity := wholeTextLength
+
+	if wholeTextLength > constants.ArbitraryCapacity1000 {
+		defaultCapacity = constants.ArbitraryCapacity100
+	}
+
+	if wholeTextLength > constants.ArbitraryCapacity250 {
+		defaultCapacity = wholeTextLength / constants.ArbitraryCapacity10
+	}
+
+	indexes := make(
+		[]int,
+		constants.Zero,
+		defaultCapacity)
+	lastIndex := wholeTextLength - 1
 
 	sendingRequest := strhelpercore.SearchRequest{
 		Search:          *sendingSearchTerm,
@@ -57,8 +74,9 @@ func OfAllUsingRequestPtr(
 	}
 
 	searchIndividualRequest := strhelpercore.SearchIndividualRequest{
-		Text:          sendingContent,
-		SearchRequest: &sendingRequest,
+		Text:            sendingContent,
+		SearchRequest:   &sendingRequest,
+		WholeTextLength: wholeTextLength,
 	}
 
 	foundIndex := OfUsingRequestPtr(&searchIndividualRequest)

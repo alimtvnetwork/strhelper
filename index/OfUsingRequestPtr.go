@@ -29,7 +29,7 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 			"searchIndividualRequest.SearchRequest")
 	}
 
-	length := len(*searchIndividualRequest.Text)
+	length := searchIndividualRequest.WholeTextLength
 	searchRequest := searchIndividualRequest.SearchRequest
 
 	if searchRequest.StartsAt < 0 || length-1 < searchRequest.StartsAt {
@@ -45,10 +45,12 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 	}
 
 	if (*searchRequest).IsCaseSensitive {
-		return OfCaseSensitive(
+		return ofCaseSensitiveUsingLengthPtr(
 			searchIndividualRequest.Text,
 			&searchRequest.Search,
-			searchRequest.StartsAt)
+			searchRequest.StartsAt,
+			searchIndividualRequest.WholeTextLength,
+			len(searchRequest.Search))
 	}
 
 	return OfCaseInsensitive(

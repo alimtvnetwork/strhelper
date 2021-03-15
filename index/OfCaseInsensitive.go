@@ -16,24 +16,29 @@ func OfCaseInsensitive(s, findingString *string, startsAt int) int {
 		panic(consts.SearchNullPanicMessage)
 	}
 
-	length := len(*s)
-	wordLength := len(*findingString)
+	wholeTextLength := len(*s)
+	searchingLength := len(*findingString)
 
-	if wordLength > length {
+	if searchingLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
 	strLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
-	for i := startsAt; i < length; i++ {
-		if length-i < wordLength {
+	for i := startsAt; i < wholeTextLength; i++ {
+		if wholeTextLength-i < searchingLength {
 			// there is no need to check anymore
-			// exceeded word length and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
-		if isstrinternal.IsStartsWith(&strLower, &wordLower, i) {
+		if isstrinternal.IsStartsWithUsingLength(
+			&strLower,
+			&wordLower,
+			i,
+			wholeTextLength,
+			searchingLength) {
 			return i
 		}
 	}

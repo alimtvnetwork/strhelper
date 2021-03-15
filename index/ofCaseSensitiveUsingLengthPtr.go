@@ -12,21 +12,17 @@ import (
 //  - If text is found and nothing is invalid like (none is nil)
 //
 // Returns -1
-//  - When not found or invalid case.
+//  - When not found.
 //
 // Conditions (for panic):
-//  - s or search should NOT be nil.
+//  - s or search nil.
 //  - startsAt cannot be negative.
 //  - startsAt larger than the content length.
-func ofUsingLengthPtr(
+func ofCaseSensitiveUsingLengthPtr(
 	s, findingString *string,
 	startsAt int,
 	wholeTextLength, searchTextLength int,
 ) int {
-	if searchTextLength > wholeTextLength {
-		return constants.InvalidNotFoundCase
-	}
-
 	for i := startsAt; i < wholeTextLength; i++ {
 		if wholeTextLength-i < searchTextLength {
 			// there is no need to check anymore
@@ -45,5 +41,4 @@ func ofUsingLengthPtr(
 	}
 
 	return constants.InvalidNotFoundCase
-
 }

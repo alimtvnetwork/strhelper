@@ -34,6 +34,10 @@ func OfAllPtr(
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
+	if searchLength > length-startsAtIndex {
+		return nil
+	}
+
 	if length > 0 && searchLength == 0 {
 		return getAllIndexesFromTheStartIndexGiven(
 			length,
@@ -62,7 +66,7 @@ func OfAllPtr(
 		length)
 
 	lastIndex := length - 1
-	foundIndex := ofUsingLengthPtr(
+	foundIndex := ofCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
@@ -81,7 +85,7 @@ func OfAllPtr(
 			break
 		}
 
-		foundIndex = ofUsingLengthPtr(
+		foundIndex = ofCaseSensitiveUsingLengthPtr(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,
@@ -123,16 +127,20 @@ func OfLastAllPtr(
 		return nil
 	}
 
-	length := len(*content)
+	wholeTextLength := len(*content)
 	searchLength := len(*findingString)
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
-		panichelper.StartAtIndexFailed(startsAtIndex, length)
+	if searchLength > wholeTextLength-startsAtIndex {
+		return nil
 	}
 
-	if length > 0 && searchLength == 0 {
+	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > wholeTextLength-1 {
+		panichelper.StartAtIndexFailed(startsAtIndex, wholeTextLength)
+	}
+
+	if wholeTextLength > 0 && searchLength == 0 {
 		return getAllIndexesFromLastAndIndexGiven(
-			length,
+			wholeTextLength,
 			startsAtIndex,
 			limits)
 	}
@@ -152,17 +160,28 @@ func OfLastAllPtr(
 		sendingSearchTerm = strto.LowerStrPtr(findingString)
 	}
 
+	// keep the default as best so that doesn't resize.
+	defaultCapacity := wholeTextLength
+
+	if wholeTextLength > constants.ArbitraryCapacity1000 {
+		defaultCapacity = constants.ArbitraryCapacity100
+	}
+
+	if wholeTextLength > constants.ArbitraryCapacity250 {
+		defaultCapacity = wholeTextLength / constants.ArbitraryCapacity10
+	}
+
 	indexes := make(
 		[]int,
 		constants.Zero,
-		length)
+		defaultCapacity)
 
-	lastIndex := length - 1
-	foundIndex := ofUsingLengthPtr(
+	lastIndex := wholeTextLength - 1
+	foundIndex := ofCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
-		length,
+		wholeTextLength,
 		searchLength)
 
 	if foundIndex > constants.InvalidNotFoundCase {
@@ -177,11 +196,11 @@ func OfLastAllPtr(
 			break
 		}
 
-		foundIndex = ofUsingLengthPtr(
+		foundIndex = ofCaseSensitiveUsingLengthPtr(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,
-			length,
+			wholeTextLength,
 			searchLength)
 
 		if foundIndex > constants.InvalidNotFoundCase {

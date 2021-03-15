@@ -1,6 +1,7 @@
 package strhelpercore
 
 type SearchIndividualRequest struct {
-	Text          *string
-	SearchRequest *SearchRequest
+	Text            *string
+	SearchRequest   *SearchRequest
+	WholeTextLength int
 }

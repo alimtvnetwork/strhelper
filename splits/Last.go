@@ -5,13 +5,13 @@ import (
 
 	"gitlab.com/evatix-go/core"
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/errorwrapper/errtype"
 )
 
 func Last(s, separator string) *[]string {
 	if s == "" {
 		return core.EmptyStringsPtr()
 	}
-	strings.Split()
 	return LastByLimitPtr(
 		&s,
 		&separator,
@@ -47,19 +47,21 @@ func LastByLimitPtr(s, separator *string, take int) *[]string {
 		return core.EmptyStringsPtr()
 	}
 
-	limit := constants.ArbitraryCapacity5
+	// limit := constants.ArbitraryCapacity5
+	//
+	// if take > 0 {
+	// 	limit = take
+	// }
 
-	if take > 0 {
-		limit = take
-	}
+	panic(errtype.NotImplemented)
 
-	splitResults := make(
-		[]string,
-		0,
-		limit)
-
-	found := 0
-	for i := length - 1; i >= 0; i-- {
-
-	}
+	// splitResults := make(
+	// 	[]string,
+	// 	0,
+	// 	limit)
+	//
+	// found := 0
+	// for i := length - 1; i >= 0; i-- {
+	//
+	// }
 }
