@@ -43,7 +43,7 @@ func OfLastCaseInsensitive(s, findingString *string, startsAt int) int {
 			break
 		}
 
-		if isstrinternal.IsEndsWithInternal(&wholeTextLower, &wordLower, newStartIndex) {
+		if isstrinternal.IsEndsWith(&wholeTextLower, &wordLower, newStartIndex) {
 			return length - newStartIndex - wordLength
 		}
 	}

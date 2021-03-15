@@ -23,7 +23,7 @@ func ofLastCaseSensitiveUsingLength(
 			break
 		}
 
-		if isstrinternal.IsEndsWithInternal(s, findingString, newStartIndex) {
+		if isstrinternal.IsEndsWith(s, findingString, newStartIndex) {
 			return wholeTextLength - newStartIndex - searchLength
 		}
 	}

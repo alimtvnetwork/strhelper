@@ -25,7 +25,7 @@ func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int
 			break
 		}
 
-		if isstrinternal.IsEndsWithInternal(s, findingString, newStartIndex) {
+		if isstrinternal.IsEndsWith(s, findingString, newStartIndex) {
 			return length - newStartIndex - wordLength
 		}
 	}

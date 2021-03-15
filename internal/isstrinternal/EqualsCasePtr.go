@@ -20,13 +20,13 @@ func EqualsCasePtr(first, second *string, isCaseSensitive bool) bool {
 		return false
 	}
 
-	if isCaseSensitive {
-		return first == second || *first == *second
+	isEqualWithoutCase :=
+		first == second ||
+			*first == *second
+
+	if isEqualWithoutCase || isCaseSensitive {
+		return isEqualWithoutCase
 	}
 
-	// insensitive
-	fLower := strings.ToLower(*first)
-	sLower := strings.ToLower(*second)
-
-	return fLower == sLower
+	return strings.EqualFold(*first, *second)
 }

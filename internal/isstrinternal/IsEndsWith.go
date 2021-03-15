@@ -17,7 +17,7 @@ package isstrinternal
 // lastIndexIncreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
-func IsEndsWithInternal(
+func IsEndsWith(
 	wholeText, search *string,
 	lastIndexIncreasedBy int,
 ) bool {

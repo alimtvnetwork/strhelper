@@ -11,11 +11,11 @@ import (
 	"sync"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/osconsts"
 
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
@@ -279,7 +279,7 @@ func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
 
 	isRequiresSetting := stringWrapper.linesUnix == nil &&
 		!stringWrapper.IsNull()
-	isNewLineSameAsUnix := isstrinternal.IsCurrentOsUnix()
+	isNewLineSameAsUnix := osconsts.IsUnixGroup
 
 	if isRequiresSetting && isNewLineSameAsUnix {
 		// same no need to process
