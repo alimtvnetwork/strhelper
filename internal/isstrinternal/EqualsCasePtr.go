@@ -25,6 +25,7 @@ func EqualsCasePtr(first, second *string, isCaseSensitive bool) bool {
 			*first == *second
 
 	if isEqualWithoutCase || isCaseSensitive {
+		// regardless true
 		return isEqualWithoutCase
 	}
 

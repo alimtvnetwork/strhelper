@@ -34,7 +34,12 @@ func ofUsingLengthPtr(
 			break
 		}
 
-		if isstrinternal.IsStartsWith(s, findingString, i) {
+		if isstrinternal.IsStartsWithUsingLength(
+			s,
+			findingString,
+			i,
+			wholeTextLength,
+			searchTextLength) {
 			return i
 		}
 	}

@@ -1,24 +1,23 @@
 package index
 
-import (
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-)
+import "gitlab.com/evatix-go/strhelper/strhelpercore"
 
 // Find all the indexes for all the finding strings given.
 //
+// searchMap:
+//   - Key : What to search for
+//   - Value : Where starts at, usually 0 for default start.
 // limits:
 //  - How many indexes should we search for and then stop looking further.
 //  - `-1` means find all
-func OfAllMany(
+func OfAllManyMap(
 	content *string,
-	searchItems *[]string,
-	startsAt int,
+	searchMap *map[string]int,
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.IndexesResultSet {
-	searchRequestsMap := createDefaultSearchRequestsMap(
-		searchItems,
-		startsAt,
+	searchRequestsMap := createSearchRequestsMap(
+		searchMap,
 		limits,
 		isCaseSensitive)
 
