@@ -9,24 +9,22 @@ import (
 // returns -1 on non found case
 // panics if any is nil
 func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int {
-	length := len(*s)
-	wordLength := len(*findingString)
+	wholeTextLength := len(*s)
+	searchTextLength := len(*findingString)
 
-	if wordLength > length {
+	if searchTextLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
-	textLength := length - lastIndexIncreasedBy
-
-	for newStartIndex := lastIndexIncreasedBy; newStartIndex < textLength; newStartIndex++ {
-		if textLength-newStartIndex < wordLength {
+	for newStartIndex := lastIndexIncreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
+		if wholeTextLength-newStartIndex < searchTextLength {
 			// there is no need to check anymore
-			// exceeded word length and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
 		if isstrinternal.IsEndsWith(s, findingString, newStartIndex) {
-			return length - newStartIndex - wordLength
+			return wholeTextLength - newStartIndex - searchTextLength
 		}
 	}
 
