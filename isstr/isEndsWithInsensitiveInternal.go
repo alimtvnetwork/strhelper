@@ -6,35 +6,35 @@ import "strings"
 //
 // Returns true
 //  - if wholeText starts from the last with search text comparison.
-//  - if lastIndexIncreasedBy mentioned then last len(wholeText)-lastIndexIncreasedBy
+//  - if contentLengthDecreasedBy mentioned then last len(wholeText)-contentLengthDecreasedBy
 //
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
-//  - lastIndexIncreasedBy cannot be negative
+//  - contentLengthDecreasedBy cannot be negative
 //
 // Warning:
 //  - This doesn't do the quick exit, based on if search length > whole text length.
 //      (Assumptions are it is already made before the call)
 //
-// lastIndexIncreasedBy:
+// contentLengthDecreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func isEndsWithInsensitiveInternal(
 	wholeText, search *string,
-	lastIndexIncreasedBy int,
+	contentLengthDecreasedBy int,
 ) bool {
-	lenA := len(*wholeText) - lastIndexIncreasedBy
+	lenA := len(*wholeText) - contentLengthDecreasedBy
 	lenB := len(*search)
 
 	wholeLower := strings.ToLower(*wholeText)
 	searchLower := strings.ToLower(*search)
-	lastIndexIncreasedBy = 0
+	contentLengthDecreasedBy = 0
 
-	for ; lastIndexIncreasedBy < lenA && lastIndexIncreasedBy < lenB; lastIndexIncreasedBy++ {
-		if wholeLower[lenA-1-lastIndexIncreasedBy] != searchLower[lenB-1-lastIndexIncreasedBy] {
+	for ; contentLengthDecreasedBy < lenA && contentLengthDecreasedBy < lenB; contentLengthDecreasedBy++ {
+		if wholeLower[lenA-1-contentLengthDecreasedBy] != searchLower[lenB-1-contentLengthDecreasedBy] {
 			break
 		}
 	}
 
-	return lastIndexIncreasedBy == lenB
+	return contentLengthDecreasedBy == lenB
 }

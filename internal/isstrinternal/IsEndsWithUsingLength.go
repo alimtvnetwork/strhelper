@@ -4,22 +4,22 @@ package isstrinternal
 //
 // Returns true
 //  - if wholeText starts from the last with search text comparison.
-//  - if lastIndexIncreasedBy mentioned then last len(wholeText)-lastIndexIncreasedBy
+//  - if contentLengthDecreasedBy mentioned then last len(wholeText)-contentLengthDecreasedBy
 //
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
-//  - lastIndexIncreasedBy cannot be negative
+//  - contentLengthDecreasedBy cannot be negative
 //
 // Warning:
 //  - This doesn't do the quick exit, based on if search length > whole text length.
 //      (Assumptions are it is already made before the call)
 //
-// lastIndexIncreasedBy:
+// contentLengthDecreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func IsEndsWithUsingLength(
 	wholeText, search *string,
-	lastIndexIncreasedBy int,
+	contentLengthDecreasedBy int,
 	wholeTextLength,
 	searchTextLength int,
 ) bool {
@@ -27,8 +27,8 @@ func IsEndsWithUsingLength(
 	lastIndexWholeText := wholeTextLength - 1
 	lastIndexSearchText := searchTextLength - 1
 
-	for ; lastIndexIncreasedBy < wholeTextLength && lastIndexIncreasedBy < searchTextLength; lastIndexIncreasedBy++ {
-		if (*wholeText)[lastIndexWholeText-lastIndexIncreasedBy] != (*search)[lastIndexSearchText-incrementing] {
+	for ; contentLengthDecreasedBy < wholeTextLength && contentLengthDecreasedBy < searchTextLength; contentLengthDecreasedBy++ {
+		if (*wholeText)[lastIndexWholeText-contentLengthDecreasedBy] != (*search)[lastIndexSearchText-incrementing] {
 			break
 		}
 

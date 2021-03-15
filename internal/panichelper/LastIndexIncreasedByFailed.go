@@ -2,12 +2,12 @@ package panichelper
 
 import "gitlab.com/evatix-go/strhelper/panicmsg"
 
-func LastIndexIncreasedByFailed(lastIndexIncreasedBy, contentLength int) {
+func LastIndexIncreasedByFailed(contentLengthDecreasedBy, contentLength int) {
 	message := panicmsg.SimpleValMsgsWithType(
-		"lastIndexIncreasedBy cannot be negative or more than the length of content.",
+		"contentLengthDecreasedBy cannot be negative or more than the length of content.",
 		panicmsg.ReferenceValue{
-			VariableName: "lastIndexIncreasedBy",
-			Value:        lastIndexIncreasedBy,
+			VariableName: "contentLengthDecreasedBy",
+			Value:        contentLengthDecreasedBy,
 		},
 		panicmsg.ReferenceValue{
 			VariableName: "contentLength",

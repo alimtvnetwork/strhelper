@@ -10,13 +10,13 @@ import (
 // panics if any is nil
 func ofLastCaseSensitiveUsingLength(
 	s, findingString *string,
-	lastIndexIncreasedBy int,
+	contentLengthDecreasedBy int,
 	wholeTextLength, searchLength int,
 ) int {
 	textLength :=
-		wholeTextLength - lastIndexIncreasedBy
+		wholeTextLength - contentLengthDecreasedBy
 
-	for newStartIndex := lastIndexIncreasedBy; newStartIndex < textLength; newStartIndex++ {
+	for newStartIndex := contentLengthDecreasedBy; newStartIndex < textLength; newStartIndex++ {
 		if textLength-newStartIndex < searchLength {
 			// there is no need to check anymore
 			// exceeded word wholeTextLength and not found case

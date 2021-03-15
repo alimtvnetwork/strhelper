@@ -11,18 +11,18 @@ import (
 // Returns true
 //
 //  - if wholeText starts from the last with search text comparison.
-//  - if lastIndexIncreasedBy mentioned then last len(wholeText)-lastIndexIncreasedBy
+//  - if contentLengthDecreasedBy mentioned then last len(wholeText)-contentLengthDecreasedBy
 //
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
-//  - lastIndexIncreasedBy cannot be negative
+//  - contentLengthDecreasedBy cannot be negative
 //
-// lastIndexIncreasedBy:
+// contentLengthDecreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func EndsWithPtr(
 	wholeText, search *string,
-	lastIndexIncreasedBy int,
+	contentLengthDecreasedBy int,
 	isCaseSensitive bool,
 ) bool {
 	if wholeText == nil || search == nil {
@@ -33,15 +33,15 @@ func EndsWithPtr(
 	wholeTextLength := len(*wholeText)
 
 	if searchLength == constants.Zero {
-		return (wholeTextLength == constants.Zero && lastIndexIncreasedBy == constants.Zero) ||
-			wholeTextLength-1 >= lastIndexIncreasedBy
+		return (wholeTextLength == constants.Zero && contentLengthDecreasedBy == constants.Zero) ||
+			wholeTextLength-1 >= contentLengthDecreasedBy
 	}
 
 	if wholeTextLength == constants.Zero {
-		return searchLength == constants.Zero && lastIndexIncreasedBy == constants.Zero
+		return searchLength == constants.Zero && contentLengthDecreasedBy == constants.Zero
 	}
 
-	textLength := wholeTextLength - lastIndexIncreasedBy
+	textLength := wholeTextLength - contentLengthDecreasedBy
 	if searchLength > textLength {
 		return false
 	}
@@ -50,12 +50,12 @@ func EndsWithPtr(
 		return isstrinternal.IsEndsWith(
 			wholeText,
 			search,
-			lastIndexIncreasedBy)
+			contentLengthDecreasedBy)
 	}
 
 	// insensitive
 	return isEndsWithInsensitiveInternal(
 		wholeText,
 		search,
-		lastIndexIncreasedBy)
+		contentLengthDecreasedBy)
 }

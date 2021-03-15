@@ -13,7 +13,7 @@ import (
 func OfLastPtr(
 	lines *[]string,
 	searchTerm *string,
-	lastIndexIncreasedBy int,
+	contentLengthDecreasedBy int,
 	isCaseSensitive bool,
 ) int {
 	if isstrsinternal.EmptyPtr(lines) || searchTerm == nil {
@@ -22,14 +22,14 @@ func OfLastPtr(
 
 	length := len(*lines)
 
-	if lastIndexIncreasedBy <= constants.InvalidNotFoundCase || lastIndexIncreasedBy > length-1 {
-		panichelper.LastIndexIncreasedByFailed(lastIndexIncreasedBy, length)
+	if contentLengthDecreasedBy <= constants.InvalidNotFoundCase || contentLengthDecreasedBy > length-1 {
+		panichelper.LastIndexIncreasedByFailed(contentLengthDecreasedBy, length)
 	}
 
 	if !isCaseSensitive {
 		// insensitive
 		toLowerSearchTerm := strings.ToLower(*searchTerm)
-		index := length - lastIndexIncreasedBy
+		index := length - contentLengthDecreasedBy
 
 		for ; index >= 0; index-- {
 			if strings.ToLower((*lines)[index]) == toLowerSearchTerm {
@@ -38,7 +38,7 @@ func OfLastPtr(
 		}
 	}
 
-	index := length - lastIndexIncreasedBy
+	index := length - contentLengthDecreasedBy
 
 	for ; index >= 0; index-- {
 		if (*lines)[index] == *searchTerm {
