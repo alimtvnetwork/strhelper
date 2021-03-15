@@ -14,17 +14,17 @@ func OfCaseSensitive(s, findingString *string, startAt int) int {
 		panic(consts.SearchNullPanicMessage)
 	}
 
-	searchLength := len(*s)
-	wordLength := len(*findingString)
+	wholeTextLength := len(*s)
+	searchingLength := len(*findingString)
 
-	if wordLength > searchLength {
+	if searchingLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
-	for i := startAt; i < searchLength; i++ {
-		if searchLength-i < wordLength {
+	for i := startAt; i < wholeTextLength; i++ {
+		if wholeTextLength-i < searchingLength {
 			// there is no need to check anymore
-			// exceeded word searchLength and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
@@ -32,8 +32,8 @@ func OfCaseSensitive(s, findingString *string, startAt int) int {
 			s,
 			findingString,
 			i,
-			wordLength,
-			searchLength) {
+			wholeTextLength,
+			searchingLength) {
 			return i
 		}
 	}
