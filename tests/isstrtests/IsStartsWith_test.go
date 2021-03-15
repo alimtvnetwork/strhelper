@@ -1,4 +1,4 @@
-package tests
+package isstrtests
 
 import (
 	"testing"
@@ -10,13 +10,13 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers"
 )
 
-func TestIsEndsWith(t *testing.T) {
-	for i, testCase := range testwrappers.EndsWithTestCases {
+func TestIsStartsWith(t *testing.T) {
+	for i, testCase := range testwrappers.StartsWithTestCases {
 		// Arrange
 		testHeader := coretests.GetTestHeader(testCase)
 
 		// Act
-		actual := isstr.EndsWith(
+		actual := isstr.StartsWith(
 			testCase.WholeText,
 			testCase.Search,
 			testCase.StartsAt,
