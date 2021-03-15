@@ -6,6 +6,10 @@ import (
 )
 
 // Find all the indexes for all the finding strings given.
+//
+// Limit :
+//  - When -1 returns all
+//  - When 0 returns nil
 func OfAllManyMapPtr(
 	content *string,
 	searchRequestsMap *map[string]strhelpercore.SearchRequest,

@@ -8,7 +8,7 @@ import (
 //
 // limits:
 //  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all
+//  - `-1` means find all, 0 => nil
 func OfAllMany(
 	content *string,
 	searchItems *[]string,

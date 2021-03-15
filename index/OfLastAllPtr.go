@@ -11,7 +11,7 @@ import (
 //
 // @limits:
 //  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all
+//  - `-1` means find all, 0 => nil
 //
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
@@ -23,7 +23,7 @@ func OfLastAllPtr(
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	if content == nil || findingString == nil {
+	if content == nil || findingString == nil || limits == 0 {
 		return nil
 	}
 

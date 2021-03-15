@@ -5,15 +5,14 @@ import (
 )
 
 type GenericIndexOfTestWrapper struct {
-	Content                  string
-	SearchingContent         string
-	InitializedPosition      int
-	IsCaseSensitive          bool
-	IsPanicOnLengthDifferent bool
-	Limits                   int
-	funcName                 coretests.TestFuncName
-	expected                 int
-	actual                   interface{}
+	Content             string
+	SearchingContent    string
+	InitializedPosition int
+	IsCaseSensitive     bool
+	Limits              int
+	funcName            coretests.TestFuncName
+	expected            interface{}
+	actual              interface{}
 }
 
 func (compareTestWrapper *GenericIndexOfTestWrapper) Actual() interface{} {
@@ -34,4 +33,20 @@ func (compareTestWrapper *GenericIndexOfTestWrapper) Value() interface{} {
 
 func (compareTestWrapper *GenericIndexOfTestWrapper) Expected() interface{} {
 	return compareTestWrapper.expected
+}
+
+func (compareTestWrapper *GenericIndexOfTestWrapper) ExpectedAsIntArray() *[]int {
+	intArray, isOkay := compareTestWrapper.expected.(*[]int)
+
+	if isOkay {
+		return intArray
+	}
+
+	return nil
+}
+
+func (compareTestWrapper *GenericIndexOfTestWrapper) AsTestCaseMessenger() coretests.TestCaseMessenger {
+	var testCaseMessenger coretests.TestCaseMessenger = compareTestWrapper
+
+	return testCaseMessenger
 }

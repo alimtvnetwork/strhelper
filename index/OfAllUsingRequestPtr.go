@@ -12,7 +12,7 @@ import (
 //
 // @limits:
 //  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all
+//  - `-1` means find all, 0 => nil
 //
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
@@ -21,7 +21,7 @@ func OfAllUsingRequestPtr(
 	content *string,
 	request *strhelpercore.SearchRequest,
 ) *[]int {
-	if content == nil || request == nil {
+	if content == nil || request == nil || request.Limits == 0 {
 		return nil
 	}
 
