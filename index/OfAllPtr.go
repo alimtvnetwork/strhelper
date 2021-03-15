@@ -28,13 +28,20 @@ func OfAllPtr(
 	}
 
 	length := len(*content)
+	searchLength := len(*findingString)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
-	if length > 0 && *findingString == "" {
-		return getAllIndexesFromTheStartIndexGiven(length, startsAtIndex)
+	if length > 0 && searchLength == 0 {
+		return getAllIndexesFromTheStartIndexGiven(
+			length,
+			startsAtIndex)
+	}
+
+	if searchLength == 0 {
+		return nil
 	}
 
 	// making a copy of pointer only, not the object. copy of reference address
@@ -48,14 +55,18 @@ func OfAllPtr(
 		sendingSearchTerm = strto.LowerStrPtr(findingString)
 	}
 
-	indexes := make([]int, constants.Zero, length)
+	indexes := make(
+		[]int,
+		constants.Zero,
+		length)
 
 	lastIndex := length - 1
-	foundIndex := OfPtr(
+	foundIndex := ofUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
-		true)
+		length,
+		searchLength)
 
 	if foundIndex > constants.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
@@ -69,11 +80,12 @@ func OfAllPtr(
 			break
 		}
 
-		foundIndex = OfPtr(
+		foundIndex = ofUsingLengthPtr(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,
-			true)
+			length,
+			searchLength)
 
 		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)

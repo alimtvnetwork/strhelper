@@ -2,10 +2,6 @@ package whitespace
 
 import "gitlab.com/evatix-go/core/constants"
 
-const (
-	maxUnit8 = 255
-)
-
 var (
 	asciiSpaces = constants.AsciiSpace
 	// Reference :

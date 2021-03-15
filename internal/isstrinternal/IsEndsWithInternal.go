@@ -1,4 +1,4 @@
-package isinternal
+package isstrinternal
 
 // Results true for ends with search text. (case : Sensitive).
 //

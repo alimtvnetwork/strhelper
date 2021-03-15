@@ -5,7 +5,7 @@ import (
 
 	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/content"
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
@@ -281,7 +281,7 @@ func (contentWrapper *ContentWrapper) IsEqual(another *ContentWrapper) bool {
 
 	switch contentWrapper.contentType {
 	case content.String:
-		return isinternal.EqualsPtr(contentWrapper.StringPtr(), another.StringPtr())
+		return isstrinternal.EqualsPtr(contentWrapper.StringPtr(), another.StringPtr())
 	case content.Strings:
 		return isstrsinternal.Equals(contentWrapper.StringsPtr(), another.StringsPtr(), 0, true)
 	case content.Bytes:

@@ -5,7 +5,7 @@ import (
 
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // It is useful for generic wrap & unwrap tasks.
@@ -66,20 +66,20 @@ func (wrapUnwrap *WrapUnWrap) IsEquals(another *WrapUnWrap) bool {
 		return true
 	}
 
-	isStartWrapper := isinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.Start, another.Start)
+	isStartWrapper := isstrinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.Start, another.Start)
 
 	if isStartWrapper.IsApplicableWithFalse() {
 		return isStartWrapper.Result
 	}
 
-	isEndWrapper := isinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.End, another.End)
+	isEndWrapper := isstrinternal.PointerEqualBasedOnAddressDeduction(wrapUnwrap.End, another.End)
 
 	if isEndWrapper.IsApplicableWithFalse() {
 		return isEndWrapper.Result
 	}
 
-	return isinternal.EqualsPtr(wrapUnwrap.Start, another.Start) &&
-		isinternal.EqualsPtr(wrapUnwrap.End, another.End)
+	return isstrinternal.EqualsPtr(wrapUnwrap.Start, another.Start) &&
+		isstrinternal.EqualsPtr(wrapUnwrap.End, another.End)
 }
 
 // Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.

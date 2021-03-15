@@ -1,4 +1,4 @@
-package isinternal
+package isstrinternal
 
 // Results true for starts with (case : Sensitive).
 //
@@ -13,15 +13,14 @@ package isinternal
 // Warning:
 // - This doesn't do the quick exit, based on if search length > whole text length.
 // (Assumptions are it is already made before the call)
-func IsStartsWithInternal(
+func IsStartsWithUsingLength(
 	wholeText, search *string,
 	startsAt int,
+	wholeTextLength, searchLength int,
 ) bool {
-	lenA := len(*wholeText)
-	lenB := len(*search)
 	incrementing := 0
 
-	for ; startsAt < lenA && incrementing < lenB; startsAt++ {
+	for ; startsAt < wholeTextLength && incrementing < searchLength; startsAt++ {
 		if (*wholeText)[startsAt] != (*search)[incrementing] {
 			break
 		}
@@ -29,5 +28,5 @@ func IsStartsWithInternal(
 		incrementing++
 	}
 
-	return incrementing == lenB
+	return incrementing == searchLength
 }

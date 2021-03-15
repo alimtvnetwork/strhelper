@@ -1,4 +1,4 @@
-package isinternal
+package isstrinternal
 
 import "gitlab.com/evatix-go/strhelper/internal/coreinternal"
 

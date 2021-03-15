@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/consts"
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // returns -1 on non found case
@@ -33,7 +33,7 @@ func OfCaseInsensitive(s, findingString *string, startAt int) int {
 			break
 		}
 
-		if isinternal.IsStartsWithInternal(&strLower, &wordLower, i) {
+		if isstrinternal.IsStartsWith(&strLower, &wordLower, i) {
 			return i
 		}
 	}

@@ -1,6 +1,6 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/isinternal"
+import "gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 
 type SplitResult struct {
 	SplitPrev *string
@@ -25,20 +25,20 @@ func (splitResult *SplitResult) IsEquals(another *SplitResult) bool {
 		return true
 	}
 
-	isSplitPrevNull := isinternal.PointerEqualBasedOnAddressDeduction(splitResult.SplitPrev, another.SplitPrev)
+	isSplitPrevNull := isstrinternal.PointerEqualBasedOnAddressDeduction(splitResult.SplitPrev, another.SplitPrev)
 
 	if isSplitPrevNull.IsApplicableWithFalse() {
 		return false
 	}
 
-	isSeparatorNull := isinternal.PointerEqualBasedOnAddressDeduction(splitResult.Separator, another.Separator)
+	isSeparatorNull := isstrinternal.PointerEqualBasedOnAddressDeduction(splitResult.Separator, another.Separator)
 
 	if isSeparatorNull.IsApplicableWithFalse() {
 		return false
 	}
 
-	isSeparatorSame := isinternal.EqualsPtr(splitResult.Separator, another.Separator)
-	isSplitPrevSame := isinternal.EqualsPtr(splitResult.SplitPrev, another.SplitPrev)
+	isSeparatorSame := isstrinternal.EqualsPtr(splitResult.Separator, another.Separator)
+	isSplitPrevSame := isstrinternal.EqualsPtr(splitResult.SplitPrev, another.SplitPrev)
 
 	return isSeparatorSame && isSplitPrevSame
 }

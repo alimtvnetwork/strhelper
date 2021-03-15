@@ -1,13 +1,11 @@
-package isinternal
-
-import "strings"
+package isstrinternal
 
 // Returns :
 //  - true : if both nil.
 //  - false : if one nil and other not.
 //  - true : if both are equal based on case sensitivity.
 //goland:noinspection ALL
-func EqualsCasePtr(first, second *string, isCaseSensitive bool) bool {
+func EqualsPtr(first, second *string) bool {
 	if first == nil && second == nil {
 		return true
 	}
@@ -20,13 +18,5 @@ func EqualsCasePtr(first, second *string, isCaseSensitive bool) bool {
 		return false
 	}
 
-	if isCaseSensitive {
-		return first == second || *first == *second
-	}
-
-	// insensitive
-	fLower := strings.ToLower(*first)
-	sLower := strings.ToLower(*second)
-
-	return fLower == sLower
+	return first == second || *first == *second
 }

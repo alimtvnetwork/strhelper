@@ -3,7 +3,7 @@ package isstr
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // Results true for ends with search text.
@@ -47,7 +47,7 @@ func EndsWithPtr(
 	}
 
 	if isCaseSensitive {
-		return isinternal.IsEndsWithInternal(
+		return isstrinternal.IsEndsWithInternal(
 			wholeText,
 			search,
 			lastIndexIncreasedBy)

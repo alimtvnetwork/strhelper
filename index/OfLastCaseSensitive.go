@@ -3,7 +3,7 @@ package index
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // returns -1 on non found case
@@ -25,7 +25,7 @@ func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int
 			break
 		}
 
-		if isinternal.IsEndsWithInternal(s, findingString, newStartIndex) {
+		if isstrinternal.IsEndsWithInternal(s, findingString, newStartIndex) {
 			return length - newStartIndex - wordLength
 		}
 	}

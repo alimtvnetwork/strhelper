@@ -33,11 +33,15 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 	searchRequest := searchIndividualRequest.SearchRequest
 
 	if searchRequest.StartsAt < 0 || length-1 < searchRequest.StartsAt {
-		panichelper.StartAtIndexFailed(searchRequest.StartsAt, length)
+		panichelper.StartAtIndexFailed(
+			searchRequest.StartsAt,
+			length)
 	}
 
 	if searchRequest.IsCaseSensitive && searchRequest.StartsAt == 0 {
-		return strings.Index(*searchIndividualRequest.Text, searchRequest.Search)
+		return strings.Index(
+			*searchIndividualRequest.Text,
+			searchRequest.Search)
 	}
 
 	if (*searchRequest).IsCaseSensitive {
