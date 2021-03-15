@@ -1,11 +1,11 @@
 package index
 
-func getAllIndexesFromTheStartIndexGiven(
+func getAllIndexesFromLastAndIndexGiven(
 	length int,
-	startsAtIndex,
+	rightStartsAtIndex,
 	limit int,
 ) *[]int {
-	newArrayLength := length - startsAtIndex
+	newArrayLength := length - rightStartsAtIndex
 
 	if newArrayLength <= 0 {
 		return nil
@@ -23,9 +23,10 @@ func getAllIndexesFromTheStartIndexGiven(
 		return &finalIndexes
 	}
 
+	newStartAt := length - 1 - rightStartsAtIndex
 	index := 0
-	for ; startsAtIndex < newArrayLength; startsAtIndex++ {
-		finalIndexes[index] = startsAtIndex
+	for i := newStartAt; newArrayLength >= 0; newStartAt-- {
+		finalIndexes[index] = i
 		index++
 	}
 

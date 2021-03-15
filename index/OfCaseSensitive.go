@@ -29,8 +29,8 @@ func OfCaseSensitive(s, findingString *string, startAt int) int {
 		}
 
 		if isstrinternal.IsStartsWithUsingLength(
-			*s,
-			*findingString,
+			s,
+			findingString,
 			i,
 			wordLength,
 			searchLength) {

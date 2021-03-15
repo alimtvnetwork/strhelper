@@ -23,6 +23,14 @@ func OfLastCaseInsensitive(s, findingString *string, startAt int) int {
 		return constants.InvalidNotFoundCase
 	}
 
+	if s == findingString && startAt == 0 {
+		return constants.Zero
+	}
+
+	if *s == *findingString && startAt == 0 {
+		return constants.Zero
+	}
+
 	wholeTextLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
