@@ -27,7 +27,8 @@ func IsEndsWithUsingLength(
 	lastIndexWholeText := wholeTextLength - 1
 	lastIndexSearchText := searchTextLength - 1
 
-	for ; contentLengthDecreasedBy < wholeTextLength && contentLengthDecreasedBy < searchTextLength; contentLengthDecreasedBy++ {
+	for ; contentLengthDecreasedBy < wholeTextLength &&
+		contentLengthDecreasedBy < searchTextLength; contentLengthDecreasedBy++ {
 		if (*wholeText)[lastIndexWholeText-contentLengthDecreasedBy] != (*search)[lastIndexSearchText-incrementing] {
 			break
 		}

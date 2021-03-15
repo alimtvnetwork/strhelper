@@ -34,6 +34,7 @@ func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy in
 	wholeTextLower := strings.ToLower(*s)
 	wordLower := strings.ToLower(*findingString)
 
+	// it will normally go as OfIndex, 0.1.2.3...N
 	for newStartIndex := contentLengthDecreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
 		if wholeTextLength-newStartIndex < searchTextLength {
 			// there is no need to check anymore
@@ -41,7 +42,13 @@ func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy in
 			break
 		}
 
-		if isstrinternal.IsEndsWith(&wholeTextLower, &wordLower, newStartIndex) {
+		// here having newStartIndex = 1 will compare from last index - newStartIndex
+		if isstrinternal.IsEndsWithUsingLength(
+			&wholeTextLower,
+			&wordLower,
+			newStartIndex,
+			wholeTextLength,
+			searchTextLength) {
 			return wholeTextLength - newStartIndex - searchTextLength
 		}
 	}

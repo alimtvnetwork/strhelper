@@ -13,17 +13,20 @@ func ofLastCaseSensitiveUsingLength(
 	contentLengthDecreasedBy int,
 	wholeTextLength, searchLength int,
 ) int {
-	textLength :=
-		wholeTextLength - contentLengthDecreasedBy
-
-	for newStartIndex := contentLengthDecreasedBy; newStartIndex < textLength; newStartIndex++ {
-		if textLength-newStartIndex < searchLength {
+	// it will normally go as OfIndex, 0.1.2.3...N
+	for newStartIndex := contentLengthDecreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
+		if wholeTextLength-newStartIndex < searchLength {
 			// there is no need to check anymore
 			// exceeded word wholeTextLength and not found case
 			break
 		}
 
-		if isstrinternal.IsEndsWith(s, findingString, newStartIndex) {
+		// here having newStartIndex = 1 will compare from last index - newStartIndex
+		if isstrinternal.IsEndsWithUsingLength(
+			s, findingString,
+			newStartIndex,
+			wholeTextLength,
+			searchLength) {
 			return wholeTextLength - newStartIndex - searchLength
 		}
 	}

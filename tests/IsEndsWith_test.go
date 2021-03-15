@@ -4,16 +4,16 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
+	"gitlab.com/evatix-go/core/coretests"
 
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/tests/testscore"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers"
 )
 
 func TestIsEndsWith(t *testing.T) {
 	for i, testCase := range testwrappers.EndsWithTestCases {
 		// Arrange
-		testHeader := testscore.GetTestHeader(testCase)
+		testHeader := coretests.GetTestHeader(testCase)
 
 		// Act
 		actual := isstr.EndsWith(
@@ -26,7 +26,7 @@ func TestIsEndsWith(t *testing.T) {
 
 		Convey(testHeader, t, func() {
 			// Assert
-			Convey(testscore.GetAssertMessage(testCase, i), func() {
+			Convey(coretests.GetAssertMessage(testCase, i), func() {
 				So(actual, ShouldEqual, testCase.Expected())
 			})
 		})

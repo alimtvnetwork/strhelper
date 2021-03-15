@@ -27,6 +27,10 @@ func OfLastAllPtr(
 		return nil
 	}
 
+	if content == findingString && startsAtIndex == 0 {
+		return &[]int{0}
+	}
+
 	wholeTextLength := len(*content)
 	searchLength := len(*findingString)
 
@@ -77,7 +81,7 @@ func OfLastAllPtr(
 		defaultCapacity)
 
 	lastIndex := wholeTextLength - 1
-	foundIndex := ofCaseSensitiveUsingLengthPtr(
+	foundIndex := ofLastCaseSensitiveUsingLength(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
@@ -96,7 +100,7 @@ func OfLastAllPtr(
 			break
 		}
 
-		foundIndex = ofCaseSensitiveUsingLengthPtr(
+		foundIndex = ofLastCaseSensitiveUsingLength(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,

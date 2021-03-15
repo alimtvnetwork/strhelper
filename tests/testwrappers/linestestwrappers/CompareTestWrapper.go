@@ -1,7 +1,7 @@
 package linestestwrappers
 
 import (
-	"gitlab.com/evatix-go/strhelper/tests/testscore"
+	"gitlab.com/evatix-go/core/coretests"
 )
 
 type CompareTestWrapper struct {
@@ -10,7 +10,7 @@ type CompareTestWrapper struct {
 	StartsAt                 int
 	IsCaseSensitive          bool
 	IsPanicOnLengthDifferent bool
-	funcName                 testscore.TestFuncName
+	funcName                 coretests.TestFuncName
 	expected                 int
 	actual                   int
 }
