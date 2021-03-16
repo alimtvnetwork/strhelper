@@ -29,13 +29,13 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 			"searchIndividualRequest.SearchRequest")
 	}
 
-	length := searchIndividualRequest.WholeTextLength
+	wholeTextLength := searchIndividualRequest.WholeTextLength
 	searchRequest := searchIndividualRequest.SearchRequest
 
-	if searchRequest.StartsAt < 0 || length-1 < searchRequest.StartsAt {
+	if searchRequest.StartsAt < 0 || wholeTextLength-1 < searchRequest.StartsAt {
 		panichelper.StartAtIndexFailed(
 			searchRequest.StartsAt,
-			length)
+			wholeTextLength)
 	}
 
 	if searchRequest.IsCaseSensitive && searchRequest.StartsAt == 0 {
@@ -49,7 +49,7 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 			searchIndividualRequest.Text,
 			&searchRequest.Search,
 			searchRequest.StartsAt,
-			searchIndividualRequest.WholeTextLength,
+			wholeTextLength,
 			len(searchRequest.Search))
 	}
 

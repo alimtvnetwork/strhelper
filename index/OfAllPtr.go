@@ -29,6 +29,10 @@ func OfAllPtr(
 		return nil
 	}
 
+	if *content == *findingString && startsAtIndex == 0 {
+		return &[]int{constants.Zero}
+	}
+
 	length := len(*content)
 	searchLength := len(*findingString)
 

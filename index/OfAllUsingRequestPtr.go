@@ -25,6 +25,10 @@ func OfAllUsingRequestPtr(
 		return nil
 	}
 
+	if *content == request.Search && request.StartsAt == 0 {
+		return &[]int{constants.Zero}
+	}
+
 	wholeTextLength := len(*content)
 
 	if request.StartsAt <= constants.InvalidNotFoundCase || request.StartsAt > wholeTextLength-1 {

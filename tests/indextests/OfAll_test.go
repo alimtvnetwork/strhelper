@@ -13,8 +13,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/indextestwrappers"
 )
 
-func TestOfAll(t *testing.T) {
-	for i, testCase := range indextestwrappers.OfAllCases {
+func TestOfAllPtr(t *testing.T) {
+	for i, testCase := range indextestwrappers.OfAllPtrCases {
 		// Arrange
 		caseMessenger := testCase.AsTestCaseMessenger()
 		testHeader := coretests.GetTestHeader(
