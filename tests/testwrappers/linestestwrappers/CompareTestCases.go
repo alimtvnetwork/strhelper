@@ -4,7 +4,7 @@ import (
 	"strings"
 )
 
-var CompareTestCases = []CompareTestWrapper{
+var CompareTestCases = []Compare{
 	{
 		LeftLines: &[]string{
 			"Line 1",

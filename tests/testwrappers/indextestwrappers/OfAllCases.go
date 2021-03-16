@@ -2,7 +2,7 @@ package indextestwrappers
 
 import "gitlab.com/evatix-go/core/constants"
 
-var OfAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
+var OfAllPtrCasesPtr = &[]GenericIndexOf{
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
 		SearchingContent:    "[ab]",
