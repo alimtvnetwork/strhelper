@@ -1,5 +1,7 @@
 package index
 
+import "gitlab.com/evatix-go/core/constants"
+
 func getAllIndexesFromLastAndIndexGiven(
 	length int,
 	rightStartsAtIndex,
@@ -7,11 +9,11 @@ func getAllIndexesFromLastAndIndexGiven(
 ) *[]int {
 	newArrayLength := length - rightStartsAtIndex
 
-	if newArrayLength <= 0 {
+	if newArrayLength <= constants.Zero {
 		return nil
 	}
 
-	if limit > -1 && newArrayLength > limit {
+	if limit > constants.MinusOne && newArrayLength > limit {
 		newArrayLength = limit
 	}
 
@@ -19,13 +21,13 @@ func getAllIndexesFromLastAndIndexGiven(
 		[]int,
 		newArrayLength)
 
-	if newArrayLength == 0 {
+	if newArrayLength == constants.Zero {
 		return &finalIndexes
 	}
 
-	newStartAt := length - 1 - rightStartsAtIndex
+	newStartAt := newArrayLength - 1
 	index := 0
-	for i := newStartAt; newArrayLength >= 0; newStartAt-- {
+	for i := newStartAt; newStartAt >= constants.Zero; newStartAt-- {
 		finalIndexes[index] = i
 		index++
 	}

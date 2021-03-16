@@ -1,18 +1,20 @@
 package index
 
+import "gitlab.com/evatix-go/core/constants"
+
 func getAllIndexesFromTheStartIndexGiven(
 	length int,
 	startsAtIndex,
-	limit int,
+	limits int,
 ) *[]int {
 	newArrayLength := length - startsAtIndex
 
-	if newArrayLength <= 0 {
+	if newArrayLength <= 0 || limits == 0 {
 		return nil
 	}
 
-	if limit > -1 && newArrayLength > limit {
-		newArrayLength = limit
+	if limits > constants.MinusOne && newArrayLength > limits {
+		newArrayLength = limits
 	}
 
 	finalIndexes := make(
