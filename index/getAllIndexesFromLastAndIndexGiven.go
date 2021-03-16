@@ -27,7 +27,7 @@ func getAllIndexesFromLastAndIndexGiven(
 
 	newStartAt := newArrayLength - 1
 	index := 0
-	for i := newStartAt; newStartAt >= constants.Zero; newStartAt-- {
+	for i := newStartAt; i >= constants.Zero; i-- {
 		finalIndexes[index] = i
 		index++
 	}
