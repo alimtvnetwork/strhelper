@@ -20,12 +20,7 @@ var LastCases = &[]GenericSplit{
 		SearchingContent: "[ab]*",
 		Limits:           constants.MinusOne,
 		funcName:         last,
-		expected: &[]string{
-			"...found3",
-			"...found...2",
-			"found....1",
-			"",
-		},
+		expected:         &[]string{},
 	},
 	{
 		Content:          "[ab]found....1[ab]...found...2[ab]...found3[ab]",

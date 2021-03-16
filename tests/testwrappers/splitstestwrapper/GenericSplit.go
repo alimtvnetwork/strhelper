@@ -32,8 +32,8 @@ func (genericSplit *GenericSplit) Expected() interface{} {
 	return genericSplit.expected
 }
 
-func (genericSplit *GenericSplit) ExpectedAsIntArray() *[]int {
-	intArray, isOkay := genericSplit.expected.(*[]int)
+func (genericSplit *GenericSplit) ExpectedAsStringsArray() *[]string {
+	intArray, isOkay := genericSplit.expected.(*[]string)
 
 	if isOkay {
 		return intArray

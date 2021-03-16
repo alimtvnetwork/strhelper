@@ -48,20 +48,21 @@ func LastByLimitPtr(s, separator *string, limits int) *[]string {
 		return core.EmptyStringsPtr()
 	}
 
-	list := make([]string, len(*allFoundIndexes))
+	list := make([]string, len(*allFoundIndexes)+1)
 	splitIndex := 0
-
-	for i, index := range *allFoundIndexes {
+	incrementingIndex := 0
+	foundIndex := 0
+	for incrementingIndex, foundIndex = range *allFoundIndexes {
 		// "[ab]found....1[ab]...found...2[ab]...found3
 		// "...found3"
 		// "...found...2"
 		// "found....1"
-		splitIndex = index + searchTextLength + 1
-		word := (*s)[splitIndex:wholeTextLength]
-		wholeTextLength -= index - 1
-
-		list[i] = word
+		splitIndex = foundIndex + searchTextLength
+		list[incrementingIndex] = (*s)[splitIndex:wholeTextLength]
+		wholeTextLength = foundIndex
 	}
+
+	list[incrementingIndex+1] = (*s)[0:wholeTextLength]
 
 	return &list
 }
