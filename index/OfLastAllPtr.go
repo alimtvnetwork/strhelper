@@ -3,6 +3,7 @@ package index
 import (
 	"gitlab.com/evatix-go/core/constants"
 
+	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/strto"
 )
@@ -19,7 +20,7 @@ import (
 func OfLastAllPtr(
 	content *string,
 	findingString *string,
-	startsAtIndex int,
+	contentLengthDecreasedBy int,
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
@@ -27,25 +28,25 @@ func OfLastAllPtr(
 		return nil
 	}
 
-	if content == findingString && startsAtIndex == 0 {
+	if content == findingString && contentLengthDecreasedBy == 0 {
 		return &[]int{0}
 	}
 
 	wholeTextLength := len(*content)
 	searchLength := len(*findingString)
 
-	if searchLength > wholeTextLength-startsAtIndex {
+	if searchLength > wholeTextLength-contentLengthDecreasedBy {
 		return nil
 	}
 
-	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > wholeTextLength-1 {
-		panichelper.StartAtIndexFailed(startsAtIndex, wholeTextLength)
+	if contentLengthDecreasedBy <= constants.InvalidNotFoundCase || contentLengthDecreasedBy > wholeTextLength-1 {
+		panichelper.StartAtIndexFailed(contentLengthDecreasedBy, wholeTextLength)
 	}
 
 	if wholeTextLength > 0 && searchLength == 0 {
 		return getAllIndexesFromLastAndIndexGiven(
 			wholeTextLength,
-			startsAtIndex,
+			contentLengthDecreasedBy,
 			limits)
 	}
 
@@ -65,59 +66,13 @@ func OfLastAllPtr(
 	}
 
 	// keep the default as best so that doesn't resize.
-	defaultCapacity := wholeTextLength
 
-	if wholeTextLength > constants.ArbitraryCapacity1000 {
-		defaultCapacity = constants.ArbitraryCapacity100
-	}
-
-	if wholeTextLength > constants.ArbitraryCapacity250 {
-		defaultCapacity = wholeTextLength / constants.ArbitraryCapacity10
-	}
-
-	indexes := make(
-		[]int,
-		constants.Zero,
-		defaultCapacity)
-
-	lastIndex := wholeTextLength - 1
-	foundIndex := ofLastCaseSensitiveUsingLength(
+	return indexinternal.OfLastAllCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
-		startsAtIndex,
+		contentLengthDecreasedBy,
+		limits,
 		wholeTextLength,
-		searchLength)
-
-	if foundIndex > constants.InvalidNotFoundCase {
-		indexes = append(indexes, foundIndex)
-	}
-
-	var nextIndex int
-
-	for foundIndex > constants.InvalidNotFoundCase {
-		nextIndex = foundIndex + 1
-		if nextIndex > lastIndex || (limits > -1 && len(indexes) >= limits) {
-			break
-		}
-
-		foundIndex = ofLastCaseSensitiveUsingLength(
-			sendingContent,
-			sendingSearchTerm,
-			nextIndex,
-			wholeTextLength,
-			searchLength)
-
-		if foundIndex > constants.InvalidNotFoundCase {
-			indexes = append(indexes, foundIndex)
-		} else {
-			// not found at any, will not continue
-			break
-		}
-	}
-
-	if len(indexes) == constants.Zero {
-		return nil
-	}
-
-	return &indexes
+		searchLength,
+	)
 }

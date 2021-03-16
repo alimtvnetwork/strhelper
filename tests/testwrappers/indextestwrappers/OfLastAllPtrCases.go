@@ -10,7 +10,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 12, 16},
+		expected:            &[]int{16,12,0},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",

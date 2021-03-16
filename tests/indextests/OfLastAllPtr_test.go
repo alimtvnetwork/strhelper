@@ -37,8 +37,8 @@ func TestOfLastAllPtr(t *testing.T) {
 
 		testCase.SetActual(actual)
 
+		// Assert
 		convey.Convey(testHeader, t, func() {
-			// Assert
 			convey.Convey(coretests.GetAssertMessage(caseMessenger, i), func() {
 				isSame := corecompare.IntArrayPtr(actual, expected)
 
