@@ -27,8 +27,10 @@ func EndsWith(
 	lastIndexWholeText := lenA - 1
 	lastIndexSearchText := lenB - 1
 
-	for ; contentLengthDecreasedBy < lenA && contentLengthDecreasedBy < lenB; contentLengthDecreasedBy++ {
-		if (*wholeText)[lastIndexWholeText-contentLengthDecreasedBy] != (*search)[lastIndexSearchText-incrementing] {
+	for ; contentLengthDecreasedBy < lenA &&
+		incrementing < lenB; contentLengthDecreasedBy++ {
+		if (*wholeText)[lastIndexWholeText-contentLengthDecreasedBy] !=
+			(*search)[lastIndexSearchText-incrementing] {
 			break
 		}
 

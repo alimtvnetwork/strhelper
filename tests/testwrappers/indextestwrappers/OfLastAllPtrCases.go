@@ -10,7 +10,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{16,12,0},
+		expected:            &[]int{16, 12, 0},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -37,7 +37,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 12, 16},
+		expected:            &[]int{16, 12, 0},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -46,7 +46,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{12, 16},
+		expected:            &[]int{16, 12},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[ab]",
@@ -55,7 +55,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 4, 16, 20, 32},
+		expected:            &[]int{32, 20, 16, 4, 0},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[ab]",
@@ -64,7 +64,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              3,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 4, 16},
+		expected:            &[]int{16, 4, 0},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[Ab]",
@@ -73,7 +73,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{4, 16, 20, 32},
+		expected:            &[]int{32, 20, 16, 4},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -82,7 +82,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{4, 16, 20, 32},
+		expected:            &[]int{32, 20, 16, 4},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -127,7 +127,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 1, 2, 3, 4, 5},
+		expected:            &[]int{5, 4, 3, 2, 1, 0},
 	},
 	{
 		Content:             "abcdef",
@@ -136,7 +136,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              4,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 1, 2, 3},
+		expected:            &[]int{3, 2, 1, 0},
 	},
 	{
 		Content:             "abcdef",
@@ -145,7 +145,7 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            &[]int{0, 1, 2, 3, 4, 5},
+		expected:            &[]int{5, 4, 3, 2, 1, 0},
 	},
 	{
 		Content:             constants.EmptyString,
