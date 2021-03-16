@@ -42,7 +42,7 @@ func StartsWithPtr(
 	}
 
 	if isCaseSensitive {
-		return isstrinternal.IsStartsWith(
+		return isstrinternal.StartsWith(
 			wholeText,
 			startsWith,
 			startsAt)

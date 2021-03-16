@@ -22,7 +22,7 @@ func ofLastCaseSensitiveUsingLength(
 		}
 
 		// here having newStartIndex = 1 will compare from last index - newStartIndex
-		if isstrinternal.IsEndsWithUsingLength(
+		if isstrinternal.EndsWithUsingLength(
 			s, findingString,
 			newStartIndex,
 			wholeTextLength,

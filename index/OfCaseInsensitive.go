@@ -33,7 +33,7 @@ func OfCaseInsensitive(s, findingString *string, startsAt int) int {
 			break
 		}
 
-		if isstrinternal.IsStartsWithUsingLength(
+		if isstrinternal.StartsWithUsingLength(
 			&strLower,
 			&wordLower,
 			i,

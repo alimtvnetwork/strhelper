@@ -30,7 +30,7 @@ func ofCaseSensitiveUsingLengthPtr(
 			break
 		}
 
-		if isstrinternal.IsStartsWithUsingLength(
+		if isstrinternal.StartsWithUsingLength(
 			s,
 			findingString,
 			i,

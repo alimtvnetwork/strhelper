@@ -17,17 +17,18 @@ package isstrinternal
 // contentLengthDecreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
-func IsEndsWith(
+func EndsWithUsingLength(
 	wholeText, search *string,
 	contentLengthDecreasedBy int,
+	wholeTextLength,
+	searchTextLength int,
 ) bool {
-	lenA := len(*wholeText)
-	lenB := len(*search)
 	incrementing := 0
-	lastIndexWholeText := lenA - 1
-	lastIndexSearchText := lenB - 1
+	lastIndexWholeText := wholeTextLength - 1
+	lastIndexSearchText := searchTextLength - 1
 
-	for ; contentLengthDecreasedBy < lenA && contentLengthDecreasedBy < lenB; contentLengthDecreasedBy++ {
+	for ; contentLengthDecreasedBy < wholeTextLength &&
+		contentLengthDecreasedBy < searchTextLength; contentLengthDecreasedBy++ {
 		if (*wholeText)[lastIndexWholeText-contentLengthDecreasedBy] != (*search)[lastIndexSearchText-incrementing] {
 			break
 		}
@@ -35,5 +36,5 @@ func IsEndsWith(
 		incrementing++
 	}
 
-	return incrementing == lenB
+	return incrementing == searchTextLength
 }

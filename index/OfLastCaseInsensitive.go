@@ -43,7 +43,7 @@ func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy in
 		}
 
 		// here having newStartIndex = 1 will compare from last index - newStartIndex
-		if isstrinternal.IsEndsWithUsingLength(
+		if isstrinternal.EndsWithUsingLength(
 			&wholeTextLower,
 			&wordLower,
 			newStartIndex,

@@ -47,7 +47,7 @@ func EndsWithPtr(
 	}
 
 	if isCaseSensitive {
-		return isstrinternal.IsEndsWith(
+		return isstrinternal.EndsWith(
 			wholeText,
 			search,
 			contentLengthDecreasedBy)
