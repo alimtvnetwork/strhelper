@@ -38,7 +38,7 @@ func OfLastPtr(
 		}
 	}
 
-	index := length - contentLengthDecreasedBy
+	index := length - 1 - contentLengthDecreasedBy
 
 	for ; index >= 0; index-- {
 		if (*lines)[index] == *searchTerm {
