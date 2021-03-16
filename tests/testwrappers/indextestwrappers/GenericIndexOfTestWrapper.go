@@ -10,6 +10,7 @@ type GenericIndexOfTestWrapper struct {
 	InitializedPosition int
 	IsCaseSensitive     bool
 	Limits              int
+	HasPanic            bool
 	funcName            coretests.TestFuncName
 	expected            interface{}
 	actual              interface{}

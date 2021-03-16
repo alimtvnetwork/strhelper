@@ -2,7 +2,7 @@ package indextestwrappers
 
 import "gitlab.com/evatix-go/core/constants"
 
-var OfAllPtrCases = []GenericIndexOfTestWrapper{
+var OfAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
 		SearchingContent:    "[ab]",
@@ -10,7 +10,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 12, 16},
+		expected:            &[]int{0, 12, 16},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -37,7 +37,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 12, 16},
+		expected:            &[]int{0, 12, 16},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -55,7 +55,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 4, 16, 20, 32},
+		expected:            &[]int{0, 4, 16, 20, 32},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[ab]",
@@ -64,7 +64,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              3,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 4, 16},
+		expected:            &[]int{0, 4, 16},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[Ab]",
@@ -109,7 +109,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero},
+		expected:            &[]int{0},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -118,7 +118,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero},
+		expected:            &[]int{0},
 	},
 	{
 		Content:             "abcdef",
@@ -127,7 +127,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 1, 2, 3, 4, 5},
+		expected:            &[]int{0, 1, 2, 3, 4, 5},
 	},
 	{
 		Content:             "abcdef",
@@ -136,7 +136,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     false,
 		Limits:              4,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 1, 2, 3},
+		expected:            &[]int{0, 1, 2, 3},
 	},
 	{
 		Content:             "abcdef",
@@ -145,7 +145,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero, 1, 2, 3, 4, 5},
+		expected:            &[]int{0, 1, 2, 3, 4, 5},
 	},
 	{
 		Content:             constants.EmptyString,
@@ -154,7 +154,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{constants.Zero},
+		expected:            &[]int{0},
 	},
 	{
 		Content:             constants.EmptyString,
@@ -166,7 +166,7 @@ var OfAllPtrCases = []GenericIndexOfTestWrapper{
 		expected:            nil,
 	},
 	{
-		Content:             "a",
+		Content:             "ab",
 		SearchingContent:    "a",
 		InitializedPosition: 1,
 		IsCaseSensitive:     true,
