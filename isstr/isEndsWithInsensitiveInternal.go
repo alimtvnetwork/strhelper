@@ -33,7 +33,7 @@ func isEndsWithInsensitiveInternal(
 	lastIndexWholeText := lenA - 1
 	lastIndexSearchText := lenB - 1
 
-	for ; contentLengthDecreasedBy < lenA && contentLengthDecreasedBy < lenB; contentLengthDecreasedBy++ {
+	for ; contentLengthDecreasedBy < lenA && incrementing < lenB; contentLengthDecreasedBy++ {
 		if (wholeLower)[lastIndexWholeText-contentLengthDecreasedBy] != (searchLower)[lastIndexSearchText-incrementing] {
 			break
 		}

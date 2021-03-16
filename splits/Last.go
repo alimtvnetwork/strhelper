@@ -5,7 +5,8 @@ import (
 
 	"gitlab.com/evatix-go/core"
 	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/errorwrapper/errtype"
+
+	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
 )
 
 func Last(s, separator string) *[]string {
@@ -18,50 +19,49 @@ func Last(s, separator string) *[]string {
 		constants.MinusOne)
 }
 
-func LastByLimitPtr(s, separator *string, take int) *[]string {
-	if s == nil || *s == "" {
+func LastByLimitPtr(s, separator *string, limits int) *[]string {
+	if s == nil || *s == "" || separator == nil || limits == 0 {
 		return core.EmptyStringsPtr()
 	}
 
-	isSepEmpty :=
-		separator == nil ||
-			*separator == ""
+	isSepEmpty := *separator == ""
 
-	if isSepEmpty && take == constants.MinusOne {
+	if isSepEmpty && limits == constants.MinusOne {
 		emptySeparatorResults := strings.Split(*s, "")
 
 		return &emptySeparatorResults
 	}
 
-	if isSepEmpty {
-		// TODO every char in array
-		emptySeparatorResults := strings.Split(*s, "")
+	wholeTextLength := len(*s)
+	searchTextLength := len(*separator)
 
-		return &emptySeparatorResults
-	}
+	allFoundIndexes := indexinternal.
+		OfLastAllCaseSensitiveUsingLengthPtr(
+			s,
+			separator,
+			constants.Zero,
+			limits,
+			wholeTextLength,
+			searchTextLength)
 
-	length := len(*s)
-	separatorLength := len(*separator)
-
-	if separatorLength > length {
+	if allFoundIndexes == nil {
 		return core.EmptyStringsPtr()
 	}
 
-	// limit := constants.ArbitraryCapacity5
-	//
-	// if take > 0 {
-	// 	limit = take
-	// }
+	list := make([]string, len(*allFoundIndexes))
+	splitIndex := 0
 
-	panic(errtype.NotImplemented)
+	for i, index := range *allFoundIndexes {
+		// "[ab]found....1[ab]...found...2[ab]...found3
+		// "...found3"
+		// "...found...2"
+		// "found....1"
+		splitIndex = index + searchTextLength + 1
+		word := (*s)[splitIndex:wholeTextLength]
+		wholeTextLength -= index - 1
 
-	// splitResults := make(
-	// 	[]string,
-	// 	0,
-	// 	limit)
-	//
-	// found := 0
-	// for i := length - 1; i >= 0; i-- {
-	//
-	// }
+		list[i] = word
+	}
+
+	return &list
 }
