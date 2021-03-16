@@ -28,7 +28,7 @@ func OfLastAllPtr(
 		return nil
 	}
 
-	if content == findingString && contentLengthDecreasedBy == 0 {
+	if (content == findingString || *content == *findingString) && contentLengthDecreasedBy == 0 {
 		return &[]int{0}
 	}
 
