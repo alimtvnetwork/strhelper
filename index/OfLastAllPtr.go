@@ -40,7 +40,7 @@ func OfLastAllPtr(
 	}
 
 	if contentLengthDecreasedBy <= constants.InvalidNotFoundCase || contentLengthDecreasedBy > wholeTextLength-1 {
-		panichelper.StartAtIndexFailed(contentLengthDecreasedBy, wholeTextLength)
+		panichelper.ContentLengthDecreasedByFailed(contentLengthDecreasedBy, wholeTextLength)
 	}
 
 	if wholeTextLength > 0 && searchLength == 0 {
@@ -50,7 +50,7 @@ func OfLastAllPtr(
 			limits)
 	}
 
-	if searchLength == 0 {
+	if limits == 0 {
 		return nil
 	}
 
@@ -66,7 +66,6 @@ func OfLastAllPtr(
 	}
 
 	// keep the default as best so that doesn't resize.
-
 	return indexinternal.OfLastAllCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,

@@ -181,6 +181,6 @@ var OfLastAllPtrCasesPtr = &[]GenericIndexOfTestWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofLastAllPtr,
-		expected:            nil,
+		expected:            &[]int{0},
 	},
 }
