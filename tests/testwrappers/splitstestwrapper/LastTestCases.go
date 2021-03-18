@@ -127,7 +127,7 @@ var LastCases = &[]GenericSplit{
 		expected: &[]string{
 			"e",
 			"d",
-			"cba",
+			"abc",
 		},
 	},
 }

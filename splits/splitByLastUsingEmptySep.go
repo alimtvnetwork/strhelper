@@ -1,7 +1,5 @@
 package splits
 
-import "gitlab.com/evatix-go/core/constants"
-
 func splitByLastUsingEmptySep(
 	s *string,
 	limits int,
@@ -9,21 +7,25 @@ func splitByLastUsingEmptySep(
 	runes := []rune(*s)
 	runesLength := len(runes)
 	newLength := runesLength
+	var list []string = nil
 
 	if newLength > limits && limits > -1 {
 		newLength = limits
+		list = make([]string, newLength+1)
+	} else {
+		list = make([]string, runesLength)
 	}
-
-	list := make([]string, newLength+1)
 
 	index := 0
 	runesIndex := runesLength - 1
-	for ; runesIndex >= constants.Zero; runesIndex-- {
+	for ; index < newLength; index++ {
 		list[index] = string(runes[runesIndex])
-		index++
+		runesIndex--
 	}
 
-	list[index+1] = string(runes[0:runesIndex])
+	if runesIndex > -1 {
+		list[index] = string(runes[0 : runesIndex+1])
+	}
 
 	return &list
 }
