@@ -10,7 +10,7 @@ import (
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
-// limit (Default):
+// limit (defaultResult):
 //  - Given as `-1`
 //
 // splitStartsAt (default):
