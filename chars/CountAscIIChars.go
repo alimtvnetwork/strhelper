@@ -6,7 +6,8 @@ func CountAscIIChars(
 	str string,
 	chars *[256]uint8,
 	startsAt int,
-	isCaseSensitive bool) int {
+	isCaseSensitive bool,
+) int {
 	return CountAscIICharsPtr(
 		&str,
 		chars,
