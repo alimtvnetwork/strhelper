@@ -14,7 +14,7 @@ import (
 )
 
 func TestOfAllPtr(t *testing.T) {
-	for i, testCase := range *indextestwrappers.OfAllPtrCasesPtr {
+	for i, testCase := range indextestwrappers.OfAllPtrCasesPtr {
 		// Validate
 		if testCase.HasPanic {
 			// will not work with panic cases

@@ -13,7 +13,7 @@ import (
 )
 
 func TestOfLastAllPtr(t *testing.T) {
-	for i, testCase := range *indextestwrappers.OfLastAllPtrCasesPtr {
+	for i, testCase := range indextestwrappers.OfLastAllPtrCasesPtr {
 		// Validate
 		if testCase.HasPanic {
 			// will not work with panic cases

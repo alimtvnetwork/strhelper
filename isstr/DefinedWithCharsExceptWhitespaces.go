@@ -7,6 +7,6 @@ import (
 )
 
 // Has at least one character other than space or whitespace
-func DefinedWithCharsExceptSpaces(s string) bool {
+func DefinedWithCharsExceptWhitespaces(s string) bool {
 	return !(s == constants.EmptyString || len(s) == 0 || whitespace.IsWhitespaces(&s))
 }

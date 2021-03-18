@@ -7,6 +7,6 @@ import (
 )
 
 // returns true if IsNullOrWhitespace(s)
-func EmptyOrSpaces(s string) bool {
+func EmptyOrWhitespaces(s string) bool {
 	return s == constants.EmptyString || whitespace.IsWhitespaces(&s)
 }
