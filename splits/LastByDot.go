@@ -1,6 +1,8 @@
 package splits
 
-import "gitlab.com/evatix-go/core/constants"
+import (
+	"gitlab.com/evatix-go/core/constants"
+)
 
 func LastByDot(s string) *[]string {
 	if s == "" {
@@ -15,18 +17,6 @@ func LastByDot(s string) *[]string {
 }
 
 func LastByDotPtr(s *string) *[]string {
-	if s == nil || *s == "" {
-		return defaultResult()
-	}
-
-	return LastByLimitPtr(
-		s,
-		constants.DotPtr,
-		true,
-		constants.MinusOne)
-}
-
-func LastByRunes(s *string, runesMap *map[rune]bool) *[]string {
 	if s == nil || *s == "" {
 		return defaultResult()
 	}
