@@ -5,6 +5,7 @@ import "gitlab.com/evatix-go/core/coretests"
 type GenericSplit struct {
 	Content          string
 	SearchingContent string
+	IsCaseSensitive  bool
 	Limits           int
 	HasPanic         bool
 	funcName         coretests.TestFuncName

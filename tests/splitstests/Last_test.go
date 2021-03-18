@@ -30,6 +30,7 @@ func TestOfLast(t *testing.T) {
 		actual := splits.LastByLimitPtr(
 			&testCase.Content,
 			&testCase.SearchingContent,
+			testCase.IsCaseSensitive,
 			testCase.Limits,
 		)
 

@@ -1,12 +1,11 @@
 package splits
 
 import (
-	"strings"
-
 	"gitlab.com/evatix-go/core"
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
+	"gitlab.com/evatix-go/strhelper/strto"
 )
 
 func LastByLimitPtr(
@@ -24,18 +23,27 @@ func LastByLimitPtr(
 
 	isSepEmpty := *separator == constants.EmptyString
 
-	if isSepEmpty && limits == constants.MinusOne {
-		emptySeparatorResults := strings.Split(*s, constants.EmptyString)
+	if isSepEmpty {
+		emptySeparatorResults := splitByLastUsingEmptySep(s, limits)
 
-		return &emptySeparatorResults
+		return emptySeparatorResults
 	}
 
 	wholeTextLength := len(*s)
 	searchTextLength := len(*separator)
 
+	sendingContent := s
+	sendingSearchTerm := separator
+
+	if isCaseSensitive == false {
+		// insensitive
+		sendingContent = strto.LowerStrPtr(sendingContent)
+		sendingSearchTerm = strto.LowerStrPtr(separator)
+	}
+
 	allFoundIndexes := indexinternal.OfLastAllCaseSensitiveUsingLengthPtr(
-		s,
-		separator,
+		sendingContent,
+		sendingSearchTerm,
 		constants.Zero,
 		limits,
 		wholeTextLength,
