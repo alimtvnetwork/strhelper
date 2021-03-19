@@ -10,7 +10,7 @@ func IntoTwoFromLastCaseSensitive(s, separator *string) (left, right string) {
 		s,
 		separator,
 		true,
-		constants.One)
+		constants.Two)
 
 	length := len(*splits)
 

@@ -55,7 +55,7 @@ var LastTestCases = []GenericSplitWrapper{
 		Content:          "[ab]found....1[ab]...found...2[ab]...found3[ab]",
 		SearchingContent: "[ab]",
 		IsCaseSensitive:  true,
-		Limits:           2,
+		Limits:           3,
 		funcName:         last,
 		expected: &[]string{
 			"",
@@ -93,7 +93,7 @@ var LastTestCases = []GenericSplitWrapper{
 		Content:          "found 0[ab]found....1[ab]...found...2[ab]...found3[ab]found4",
 		SearchingContent: "[aB]",
 		IsCaseSensitive:  false,
-		Limits:           constants.One,
+		Limits:           constants.Two,
 		HasPanic:         false,
 		funcName:         last,
 		expected: &[]string{

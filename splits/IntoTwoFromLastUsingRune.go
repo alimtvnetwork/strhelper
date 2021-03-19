@@ -9,7 +9,7 @@ func IntoTwoFromLastUsingRune(s *string, splitRune rune) (left, right string) {
 	splits := LastByRune(
 		s,
 		splitRune,
-		constants.One)
+		constants.Two)
 
 	length := len(*splits)
 

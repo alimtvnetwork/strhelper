@@ -94,7 +94,20 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Content:          "found 0/found....1/...found...2/...found3/found4",
 		SearchingContent: '/',
 		IsCaseSensitive:  true,
-		Limits:           constants.One,
+		Limits:           constants.Three,
+		HasPanic:         false,
+		funcName:         lastByRune,
+		expected: &[]string{
+			"found4",
+			"...found3",
+			"found 0/found....1/...found...2",
+		},
+	},
+	{
+		Content:          "found 0/found....1/...found...2/...found3/found4",
+		SearchingContent: '/',
+		IsCaseSensitive:  true,
+		Limits:           constants.Two,
 		HasPanic:         false,
 		funcName:         lastByRune,
 		expected: &[]string{

@@ -8,9 +8,9 @@ import (
 )
 
 func IntoTwo(s, separator *string) (left, right string) {
-	splits := strings.SplitAfterN(
+	splits := strings.SplitN(
 		*s, *separator,
-		constants.One)
+		constants.Two)
 
 	length := len(splits)
 
@@ -26,7 +26,7 @@ func IntoTwoFromLast(s, separator *string, isCaseSensitive bool) (left, right st
 		s,
 		separator,
 		isCaseSensitive,
-		constants.One)
+		constants.Two)
 
 	length := len(*splits)
 
