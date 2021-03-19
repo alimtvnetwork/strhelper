@@ -45,12 +45,16 @@ func StartsWithPtr(
 		return isstrinternal.StartsWith(
 			wholeText,
 			startsWith,
-			startsAt)
+			startsAt,
+			wholeTextLength,
+			searchLength)
 	}
 
 	// insensitive
 	return isStartsWithInsensitiveInternal(
 		wholeText,
 		startsWith,
-		startsAt)
+		startsAt,
+		wholeTextLength,
+		searchLength)
 }

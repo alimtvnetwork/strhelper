@@ -47,15 +47,19 @@ func EndsWithPtr(
 	}
 
 	if isCaseSensitive {
-		return isstrinternal.EndsWith(
+		return isstrinternal.EndsWithUsingLength(
 			wholeText,
 			search,
-			contentLengthDecreasedBy)
+			contentLengthDecreasedBy,
+			wholeTextLength,
+			searchLength)
 	}
 
 	// insensitive
 	return isEndsWithInsensitiveInternal(
 		wholeText,
 		search,
-		contentLengthDecreasedBy)
+		contentLengthDecreasedBy,
+		wholeTextLength,
+		searchLength)
 }

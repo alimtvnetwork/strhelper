@@ -16,12 +16,11 @@ package isstrinternal
 func StartsWith(
 	wholeText, search *string,
 	startsAt int,
+	wholeTextLength, searchTextLength int,
 ) bool {
-	lenA := len(*wholeText)
-	lenB := len(*search)
 	incrementing := 0
 
-	for ; startsAt < lenA && incrementing < lenB; startsAt++ {
+	for ; startsAt < wholeTextLength && incrementing < searchTextLength; startsAt++ {
 		if (*wholeText)[startsAt] != (*search)[incrementing] {
 			break
 		}
@@ -29,5 +28,5 @@ func StartsWith(
 		incrementing++
 	}
 
-	return incrementing == lenB
+	return incrementing == searchTextLength
 }

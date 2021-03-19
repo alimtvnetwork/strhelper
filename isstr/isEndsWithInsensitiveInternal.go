@@ -22,18 +22,16 @@ import "strings"
 func isEndsWithInsensitiveInternal(
 	wholeText, search *string,
 	contentLengthDecreasedBy int,
+	wholeTextLength, searchTextLength int,
 ) bool {
-	lenA := len(*wholeText)
-	lenB := len(*search)
-
 	wholeLower := strings.ToLower(*wholeText)
 	searchLower := strings.ToLower(*search)
 
 	incrementing := 0
-	lastIndexWholeText := lenA - 1
-	lastIndexSearchText := lenB - 1
+	lastIndexWholeText := wholeTextLength - 1
+	lastIndexSearchText := searchTextLength - 1
 
-	for ; contentLengthDecreasedBy < lenA && incrementing < lenB; contentLengthDecreasedBy++ {
+	for ; contentLengthDecreasedBy < wholeTextLength && incrementing < searchTextLength; contentLengthDecreasedBy++ {
 		if (wholeLower)[lastIndexWholeText-contentLengthDecreasedBy] != (searchLower)[lastIndexSearchText-incrementing] {
 			break
 		}
@@ -41,5 +39,5 @@ func isEndsWithInsensitiveInternal(
 		incrementing++
 	}
 
-	return incrementing == lenB
+	return incrementing == searchTextLength
 }
