@@ -5,5 +5,5 @@ import (
 )
 
 const (
-	compare coretests.TestFuncName = "Compare"
+	compare coretests.TestFuncName = "CompareWrapper"
 )

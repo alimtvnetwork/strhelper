@@ -2,7 +2,7 @@ package splitstestwrapper
 
 import "gitlab.com/evatix-go/core/constants"
 
-var LastCases = []GenericSplit{
+var LastTestCases = []GenericSplitWrapper{
 	{
 		Content:          "[ab]found....1[ab]...found...2[ab]...found3",
 		SearchingContent: "[ab]",

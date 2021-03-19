@@ -2,7 +2,7 @@ package splitstestwrapper
 
 import "gitlab.com/evatix-go/core/constants"
 
-var LastByRunesCases = []LastByRunes{
+var LastByRunesCases = []LastByRunesWrapper{
 	{
 		Content: "\\found....1/...found...2/...found3",
 		SearchingContents: []rune{
