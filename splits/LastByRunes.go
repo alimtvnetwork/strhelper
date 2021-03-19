@@ -74,7 +74,8 @@ func LastByRunesMap(
 		curRune := runes[runesIndex]
 
 		if (*separatorRunesMap)[curRune] == true {
-			list = append(list,
+			list = append(
+				list,
 				(*s)[runesIndex+1:runesLength])
 			runesLength = runesIndex
 			limits--
@@ -86,8 +87,9 @@ func LastByRunesMap(
 	}
 
 	if runesLength > -1 {
-		list = append(list,
-			string(runes[0:runesIndex+1]))
+		list = append(
+			list,
+			string(runes[0:runesLength]))
 	}
 
 	return &list
