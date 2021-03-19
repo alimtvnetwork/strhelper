@@ -6,5 +6,6 @@ import (
 
 const (
 	last        coretests.TestFuncName = "Last"
-	lastByRunes coretests.TestFuncName = "LastByRunesWrapper"
+	lastByRunes coretests.TestFuncName = "LastByRunes"
+	lastByRune  coretests.TestFuncName = "LastByRune"
 )

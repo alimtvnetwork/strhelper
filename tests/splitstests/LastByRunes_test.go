@@ -13,7 +13,7 @@ import (
 )
 
 func TestOfLastByRunes(t *testing.T) {
-	for i, testCase := range splitstestwrapper.LastByRunesCases {
+	for i, testCase := range splitstestwrapper.LastByRunesTestCases {
 		// Validate
 		if testCase.HasPanic {
 			// will not work with panic cases

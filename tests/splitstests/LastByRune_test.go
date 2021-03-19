@@ -13,7 +13,7 @@ import (
 )
 
 func TestOfLastByRune(t *testing.T) {
-	for i, testCase := range splitstestwrapper.LastByRuneWrapper {
+	for i, testCase := range splitstestwrapper.LastByRuneTestCases {
 		// Validate
 		if testCase.HasPanic {
 			// will not work with panic cases
@@ -30,6 +30,7 @@ func TestOfLastByRune(t *testing.T) {
 		actual := splits.LastByRune(
 			&testCase.Content,
 			testCase.SearchingContent,
+			testCase.Limits,
 		)
 
 		testCase.SetActual(actual)
