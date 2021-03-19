@@ -68,16 +68,15 @@ func LastByRunesMap(
 		0,
 		defaultCapacity)
 	hasLimits := limits > -1
-	index := 0
 	runesIndex := runesLength - 1
 
 	for ; runesIndex >= constants.Zero; runesIndex-- {
 		curRune := runes[runesIndex]
 
 		if (*separatorRunesMap)[curRune] == true {
-			list[index] = (*s)[runesIndex:runesLength]
-			runesLength = index
-			index++
+			list = append(list,
+				(*s)[runesIndex+1:runesLength])
+			runesLength = runesIndex
 			limits--
 		}
 
@@ -86,8 +85,9 @@ func LastByRunesMap(
 		}
 	}
 
-	if runesLength > 0 {
-		list[index] = string(runes[0 : runesIndex+1])
+	if runesLength > -1 {
+		list = append(list,
+			string(runes[0:runesIndex+1]))
 	}
 
 	return &list
