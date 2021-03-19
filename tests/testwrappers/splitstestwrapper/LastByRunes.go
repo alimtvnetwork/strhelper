@@ -4,7 +4,7 @@ import "gitlab.com/evatix-go/core/coretests"
 
 type LastByRunes struct {
 	Content           string
-	SearchingContents []string
+	SearchingContents []rune
 	IsCaseSensitive   bool
 	Limits            int
 	HasPanic          bool

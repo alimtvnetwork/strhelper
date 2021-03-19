@@ -12,8 +12,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/splitstestwrapper"
 )
 
-func TestOfLast(t *testing.T) {
-	for i, testCase := range splitstestwrapper.LastCases {
+func TestOfLastByRunes(t *testing.T) {
+	for i, testCase := range splitstestwrapper.LastByRunesCases {
 		// Validate
 		if testCase.HasPanic {
 			// will not work with panic cases
@@ -27,11 +27,10 @@ func TestOfLast(t *testing.T) {
 		expected := testCase.ExpectedAsStringsArray()
 
 		// Act
-		actual := splits.LastByLimitPtr(
+		actual := splits.LastByRunes(
 			&testCase.Content,
-			&testCase.SearchingContent,
-			testCase.IsCaseSensitive,
 			testCase.Limits,
+			testCase.SearchingContents...,
 		)
 
 		testCase.SetActual(actual)

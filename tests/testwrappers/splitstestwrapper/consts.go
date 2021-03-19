@@ -5,5 +5,6 @@ import (
 )
 
 const (
-	last coretests.TestFuncName = "Last"
+	last        coretests.TestFuncName = "Last"
+	lastByRunes coretests.TestFuncName = "LastByRunes"
 )
