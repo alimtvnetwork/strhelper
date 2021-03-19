@@ -10,7 +10,7 @@ func splitByLastUsingEmptySep(
 	var list []string = nil
 
 	if newLength > limits && limits > -1 {
-		newLength = limits
+		newLength = limits - 1
 		list = make([]string, newLength+1)
 	} else {
 		list = make([]string, runesLength)

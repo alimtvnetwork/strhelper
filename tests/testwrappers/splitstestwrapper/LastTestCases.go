@@ -71,8 +71,7 @@ var LastTestCases = []GenericSplitWrapper{
 		funcName:         last,
 		expected: &[]string{
 			"found4",
-			"...found3",
-			"[ab]found....1[ab]...found...2",
+			"[ab]found....1[ab]...found...2[ab]...found3",
 		},
 	},
 	{
@@ -126,8 +125,7 @@ var LastTestCases = []GenericSplitWrapper{
 		funcName:         last,
 		expected: &[]string{
 			"e",
-			"d",
-			"abc",
+			"abcd",
 		},
 	},
 }

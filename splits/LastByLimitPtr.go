@@ -21,6 +21,10 @@ func LastByLimitPtr(
 		return &[]string{constants.EmptyString}
 	}
 
+	if limits == 1 {
+		return &[]string{*s}
+	}
+
 	isSepEmpty := *separator == constants.EmptyString
 
 	if isSepEmpty {
@@ -45,7 +49,7 @@ func LastByLimitPtr(
 		sendingContent,
 		sendingSearchTerm,
 		constants.Zero,
-		limits,
+		limits-1,
 		wholeTextLength,
 		searchTextLength)
 
