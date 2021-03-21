@@ -59,8 +59,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		funcName:         lastByRune,
 		expected: &[]string{
 			"",
-			"...found3",
-			"/found....1/...found...2",
+			"/found....1/...found...2/...found3",
 		},
 	},
 	{
@@ -71,8 +70,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		funcName:         lastByRune,
 		expected: &[]string{
 			"found4",
-			"...found3",
-			"/found....1/...found...2",
+			"/found....1/...found...2/...found3",
 		},
 	},
 	{

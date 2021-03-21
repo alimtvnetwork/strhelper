@@ -70,7 +70,7 @@ var LastByRunesTestCases = []LastByRunesWrapper{
 			'\\',
 		},
 		IsCaseSensitive: true,
-		Limits:          2,
+		Limits:          constants.Three,
 		funcName:        lastByRunes,
 		expected: &[]string{
 			"",
@@ -85,7 +85,7 @@ var LastByRunesTestCases = []LastByRunesWrapper{
 			'\\',
 		},
 		IsCaseSensitive: true,
-		Limits:          2,
+		Limits:          constants.Three,
 		funcName:        lastByRunes,
 		expected: &[]string{
 			"found4",
@@ -118,7 +118,7 @@ var LastByRunesTestCases = []LastByRunesWrapper{
 			'\\',
 		},
 		IsCaseSensitive: true,
-		Limits:          constants.One,
+		Limits:          constants.Two,
 		HasPanic:        false,
 		funcName:        lastByRunes,
 		expected: &[]string{

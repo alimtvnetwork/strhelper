@@ -7,9 +7,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/defaultcapacity"
 )
 
-func LastByRunesMap(
+func LastByRune(
 	s *string,
-	separatorRunesMap *map[rune]bool,
+	runeToSplit rune,
 	limits int,
 ) *[]string {
 	if s == nil || *s == "" {
@@ -20,10 +20,6 @@ func LastByRunesMap(
 		return core.EmptyStringsPtr()
 	}
 
-	if separatorRunesMap == nil || len(*separatorRunesMap) == 0 {
-		return defaultResultWithStr(s)
-	}
-
 	runes := []rune(*s)
 	runesLength := len(runes)
 	defaultCapacity := defaultcapacity.Get(runesLength, limits)
@@ -31,13 +27,11 @@ func LastByRunesMap(
 		[]string,
 		0,
 		defaultCapacity)
-	hasLimits := limits > -1
+	hasLimits := limits > constants.InvalidValue
 	runesIndex := runesLength - 1
 
 	for ; runesIndex >= constants.Zero; runesIndex-- {
-		curRune := runes[runesIndex]
-
-		if (*separatorRunesMap)[curRune] == true {
+		if runeToSplit == runes[runesIndex] {
 			list = append(
 				list,
 				(*s)[runesIndex+1:runesLength])
