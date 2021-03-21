@@ -13,7 +13,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/indextestwrappers"
 )
 
-func TestOfAllPtr(t *testing.T) {
+func Test_OfAllPtr(t *testing.T) {
 	for i, testCase := range indextestwrappers.OfAllPtrCasesPtr {
 		// Validate
 		if testCase.HasPanic {

@@ -12,7 +12,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/indextestwrappers"
 )
 
-func TestOfLastAllPtr(t *testing.T) {
+func Test_OfLastAllPtr(t *testing.T) {
 	for i, testCase := range indextestwrappers.OfLastAllPtrCasesPtr {
 		// Validate
 		if testCase.HasPanic {

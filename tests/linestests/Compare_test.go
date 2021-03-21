@@ -10,7 +10,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/linestestwrappers"
 )
 
-func TestCompare(t *testing.T) {
+func Test_Compare(t *testing.T) {
 	for i, testCase := range linestestwrappers.CompareTestCases {
 		// Arrange
 		testHeader := coretests.GetTestHeader(testCase)

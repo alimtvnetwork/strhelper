@@ -12,7 +12,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/splitstestwrapper"
 )
 
-func TestOfLastByRunes(t *testing.T) {
+func Test_LastByRunes(t *testing.T) {
 	for i, testCase := range splitstestwrapper.LastByRunesTestCases {
 		// Validate
 		if testCase.HasPanic {
