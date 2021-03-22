@@ -4,16 +4,16 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
+	"gitlab.com/evatix-go/core/coretests"
 
 	"gitlab.com/evatix-go/strhelper/lines"
-	"gitlab.com/evatix-go/strhelper/tests/testscore"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/linestestwrappers"
 )
 
-func TestCompare(t *testing.T) {
+func Test_Compare(t *testing.T) {
 	for i, testCase := range linestestwrappers.CompareTestCases {
 		// Arrange
-		testHeader := testscore.GetTestHeader(testCase)
+		testHeader := coretests.GetTestHeader(testCase)
 
 		// Act
 		actual := lines.Compare(
@@ -27,7 +27,7 @@ func TestCompare(t *testing.T) {
 
 		// Assert
 		Convey(testHeader, t, func() {
-			Convey(testscore.GetAssertMessage(testCase, i), func() {
+			Convey(coretests.GetAssertMessage(testCase, i), func() {
 				So(actual, ShouldEqual, testCase.Expected())
 			})
 		})

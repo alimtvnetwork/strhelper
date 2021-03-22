@@ -1,10 +1,12 @@
 package testwrappers
 
-import "gitlab.com/evatix-go/strhelper/tests/testscore"
+import (
+	"gitlab.com/evatix-go/core/coretests"
+)
 
 const (
-	isEndsWith   testscore.TestFuncName = "IsEndsWith"
-	isStartsWith testscore.TestFuncName = "IsStartsWith"
+	isEndsWith   coretests.TestFuncName = "IsEndsWith"
+	isStartsWith coretests.TestFuncName = "IsStartsWith"
 )
 
 type StartsOrEndsWithTestWrapper struct {
@@ -12,7 +14,7 @@ type StartsOrEndsWithTestWrapper struct {
 	Search          string
 	StartsAt        int
 	IsCaseSensitive bool
-	funcName        testscore.TestFuncName
+	funcName        coretests.TestFuncName
 	expected        bool
 	actual          bool
 }

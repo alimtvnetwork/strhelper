@@ -5,13 +5,13 @@ package isstr
 // Returns true
 //
 //  - if wholeText starts from the last with search text comparison.
-//  - if lastIndexIncreasedBy mentioned then last len(wholeText)-lastIndexIncreasedBy
+//  - if contentLengthDecreasedBy mentioned then last len(wholeText)-contentLengthDecreasedBy
 //
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
-//  - lastIndexIncreasedBy cannot be negative
+//  - contentLengthDecreasedBy cannot be negative
 //
-// lastIndexIncreasedBy:
+// contentLengthDecreasedBy:
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func EndsWith(

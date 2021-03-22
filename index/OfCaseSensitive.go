@@ -3,32 +3,37 @@ package index
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/consts"
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+	"gitlab.com/evatix-go/strhelper/internal/messages"
 )
 
 // returns -1 on non found case
 // panics if any is nil
-func OfCaseSensitive(s, findingString *string, startAt int) int {
+func OfCaseSensitive(s, findingString *string, startsAt int) int {
 	if s == nil || findingString == nil {
-		panic(consts.SearchNullPanicMessage)
+		panic(messages.SearchNullPanicMessage)
 	}
 
-	length := len(*s)
-	wordLength := len(*findingString)
+	wholeTextLength := len(*s)
+	searchingLength := len(*findingString)
 
-	if wordLength > length {
+	if searchingLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
-	for i := startAt; i < length; i++ {
-		if length-i < wordLength {
+	for i := startsAt; i < wholeTextLength; i++ {
+		if wholeTextLength-i < searchingLength {
 			// there is no need to check anymore
-			// exceeded word length and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
-		if isinternal.IsStartsWithInternal(s, findingString, i) {
+		if isstrinternal.StartsWithUsingLength(
+			s,
+			findingString,
+			i,
+			wholeTextLength,
+			searchingLength) {
 			return i
 		}
 	}

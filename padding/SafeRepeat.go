@@ -14,5 +14,9 @@ func SafeRepeat(padding *string, width int) string {
 		return constants.EmptyString
 	}
 
+	if width == 1 {
+		return *padding
+	}
+
 	return strings.Repeat(*padding, width)
 }

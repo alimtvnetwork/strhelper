@@ -8,11 +8,11 @@ import (
 	"strings"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/osconsts"
 
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
@@ -262,7 +262,7 @@ func (stringWrapper *StringWrapper) GetLines() *[]string {
 func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
 	isRequiresSetting := stringWrapper.linesUnix == nil &&
 		!stringWrapper.IsNull()
-	isNewLineSameAsUnix := isinternal.IsCurrentOsUnix()
+	isNewLineSameAsUnix := osconsts.IsUnixGroup
 
 	if isRequiresSetting && isNewLineSameAsUnix {
 		// same no need to process
@@ -1067,7 +1067,7 @@ func (stringWrapper *StringWrapper) Pad(width int, padding string, isLeft, isRig
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
-// limit :
+// limits :
 //  - number of times split will performed for all
 //  - if -1 then all split will occur
 //
@@ -1089,7 +1089,7 @@ func (stringWrapper *StringWrapper) MultiSplit(
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
-// limit :
+// limits :
 //  - number of times split will performed for all
 //  - if -1 then all split will occur
 //

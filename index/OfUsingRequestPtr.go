@@ -29,22 +29,28 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 			"searchIndividualRequest.SearchRequest")
 	}
 
-	length := len(*searchIndividualRequest.Text)
+	wholeTextLength := searchIndividualRequest.WholeTextLength
 	searchRequest := searchIndividualRequest.SearchRequest
 
-	if searchRequest.StartsAt < 0 || length-1 < searchRequest.StartsAt {
-		panichelper.StartAtIndexFailed(searchRequest.StartsAt, length)
+	if searchRequest.StartsAt < 0 || wholeTextLength-1 < searchRequest.StartsAt {
+		panichelper.StartAtIndexFailed(
+			searchRequest.StartsAt,
+			wholeTextLength)
 	}
 
 	if searchRequest.IsCaseSensitive && searchRequest.StartsAt == 0 {
-		return strings.Index(*searchIndividualRequest.Text, searchRequest.Search)
+		return strings.Index(
+			*searchIndividualRequest.Text,
+			searchRequest.Search)
 	}
 
 	if (*searchRequest).IsCaseSensitive {
-		return OfCaseSensitive(
+		return ofCaseSensitiveUsingLengthPtr(
 			searchIndividualRequest.Text,
 			&searchRequest.Search,
-			searchRequest.StartsAt)
+			searchRequest.StartsAt,
+			wholeTextLength,
+			len(searchRequest.Search))
 	}
 
 	return OfCaseInsensitive(

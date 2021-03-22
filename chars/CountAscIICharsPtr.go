@@ -15,7 +15,7 @@ import (
 func CountAscIICharsPtr(
 	str *string,
 	chars *[256]uint8,
-	startAt int,
+	startsAt int,
 	isCaseSensitive bool,
 ) int {
 	if str == nil || *str == constants.EmptyString || len(*str) == 0 {
@@ -26,11 +26,11 @@ func CountAscIICharsPtr(
 		return CountAsciiCharsSensitivePtr(
 			str,
 			chars,
-			startAt)
+			startsAt)
 	}
 
 	return CountAscIICharsInsensitivePtr(
 		str,
 		chars,
-		startAt)
+		startsAt)
 }
