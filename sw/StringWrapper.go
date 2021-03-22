@@ -747,7 +747,7 @@ func (stringWrapper *StringWrapper) LastIndexOfPtr(
 		isCaseSensitive)
 }
 
-// For better performance use isstr.IsStartsWithPtr
+// For better performance use isstr.StartsWithPtr
 func (stringWrapper *StringWrapper) IsStartsWith(
 	search string,
 	isCaseSensitive bool,

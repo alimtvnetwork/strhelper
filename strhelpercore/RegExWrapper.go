@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/errorwrapper"
 	"gitlab.com/evatix-go/errorwrapper/errnew"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 type RegExWrapper struct {
@@ -46,11 +46,11 @@ func (regExWrapper *RegExWrapper) IsEquals(another *RegExWrapper) bool {
 		return true
 	}
 
-	return isinternal.EqualsPtr(regExWrapper.request, another.request)
+	return isstrinternal.EqualsPtr(regExWrapper.request, another.request)
 }
 
 func (regExWrapper *RegExWrapper) IsEqualsString(str *string) bool {
-	return isinternal.EqualsPtr(regExWrapper.request, str)
+	return isstrinternal.EqualsPtr(regExWrapper.request, str)
 }
 
 // Requires to compile regex to get the currentError
