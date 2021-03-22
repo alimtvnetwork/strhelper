@@ -1,0 +1,43 @@
+package isstrinternal
+
+// Results true for ends with search text. (case : Sensitive).
+//
+// Returns true
+//  - if wholeText starts from the last with search text comparison.
+//  - if contentLengthDecreasedBy mentioned then last len(wholeText)-contentLengthDecreasedBy
+//
+// Conditions (Not Handled and Assumptions):
+//  - wholeText, search should NOT be nil.
+//  - contentLengthDecreasedBy cannot be negative
+//
+// Warning:
+//  - This doesn't do the quick exit, based on if search length > whole text length.
+//      (Assumptions are it is already made before the call)
+//
+// contentLengthDecreasedBy:
+//  - `2` represents len(wholeText)-2
+//  - `0` represents start comparison from the end for both of the text.
+func EndsWithUsingLength(
+	wholeText, search *string,
+	contentLengthDecreasedBy int,
+	wholeTextLength,
+	searchTextLength int,
+) bool {
+	incrementing := 0
+	lastIndexWholeText := wholeTextLength - 1
+	lastIndexSearchText := searchTextLength - 1
+	// accessing direct without pointer increases performance
+	wholeTextCopy := *wholeText
+	searchTextCopy := *search
+
+	for ; contentLengthDecreasedBy < wholeTextLength &&
+		incrementing < searchTextLength; contentLengthDecreasedBy++ {
+		if wholeTextCopy[lastIndexWholeText-contentLengthDecreasedBy] != searchTextCopy[lastIndexSearchText-incrementing] {
+			break
+		}
+
+		incrementing++
+	}
+
+	return incrementing == searchTextLength
+}

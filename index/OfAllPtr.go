@@ -11,7 +11,7 @@ import (
 //
 // @limits:
 //  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all
+//  - `-1` means find all, 0 => nil
 //
 // Results:
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
@@ -23,18 +23,36 @@ func OfAllPtr(
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	if content == nil || findingString == nil {
+	if content == nil ||
+		findingString == nil ||
+		limits == 0 {
 		return nil
 	}
 
+	if *content == *findingString && startsAtIndex == 0 {
+		return &[]int{constants.Zero}
+	}
+
 	length := len(*content)
+	searchLength := len(*findingString)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
-	if length > 0 && *findingString == "" {
-		return getAllIndexesFromTheStartIndexGiven(length, startsAtIndex)
+	if searchLength > length-startsAtIndex {
+		return nil
+	}
+
+	if length > 0 && searchLength == 0 {
+		return getAllIndexesFromTheStartIndexGiven(
+			length,
+			startsAtIndex,
+			limits)
+	}
+
+	if searchLength == 0 {
+		return nil
 	}
 
 	// making a copy of pointer only, not the object. copy of reference address
@@ -48,14 +66,18 @@ func OfAllPtr(
 		sendingSearchTerm = strto.LowerStrPtr(findingString)
 	}
 
-	indexes := make([]int, constants.Zero, length)
+	indexes := make(
+		[]int,
+		constants.Zero,
+		length)
 
 	lastIndex := length - 1
-	foundIndex := OfPtr(
+	foundIndex := ofCaseSensitiveUsingLengthPtr(
 		sendingContent,
 		sendingSearchTerm,
 		startsAtIndex,
-		true)
+		length,
+		searchLength)
 
 	if foundIndex > constants.InvalidNotFoundCase {
 		indexes = append(indexes, foundIndex)
@@ -69,11 +91,12 @@ func OfAllPtr(
 			break
 		}
 
-		foundIndex = OfPtr(
+		foundIndex = ofCaseSensitiveUsingLengthPtr(
 			sendingContent,
 			sendingSearchTerm,
 			nextIndex,
-			true)
+			length,
+			searchLength)
 
 		if foundIndex > constants.InvalidNotFoundCase {
 			indexes = append(indexes, foundIndex)

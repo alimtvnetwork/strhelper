@@ -3,30 +3,42 @@ package index
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseSensitive(s, findingString *string, lastIndexIncreasedBy int) int {
-	length := len(*s)
-	wordLength := len(*findingString)
+func OfLastCaseSensitive(s, findingString *string, contentLengthDecreasedBy int) int {
+	wholeTextLength := len(*s)
+	searchTextLength := len(*findingString)
 
-	if wordLength > length {
+	if searchTextLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
 	}
 
-	textLength := length - lastIndexIncreasedBy
+	if s == findingString && contentLengthDecreasedBy == 0 {
+		return constants.Zero
+	}
 
-	for newStartIndex := lastIndexIncreasedBy; newStartIndex < textLength; newStartIndex++ {
-		if textLength-newStartIndex < wordLength {
+	if *s == *findingString && contentLengthDecreasedBy == 0 {
+		return constants.Zero
+	}
+
+	// it will normally go as OfIndex, 0.1.2.3...N
+	for newStartIndex := contentLengthDecreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
+		if wholeTextLength-newStartIndex < searchTextLength {
 			// there is no need to check anymore
-			// exceeded word length and not found case
+			// exceeded word wholeTextLength and not found case
 			break
 		}
 
-		if isinternal.IsEndsWithInternal(s, findingString, newStartIndex) {
-			return length - newStartIndex - wordLength
+		// here having newStartIndex = 1 will compare from last index - newStartIndex
+		if isstrinternal.EndsWithUsingLength(
+			s, findingString,
+			newStartIndex,
+			wholeTextLength,
+			searchTextLength) {
+			return wholeTextLength - newStartIndex - searchTextLength
 		}
 	}
 

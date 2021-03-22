@@ -7,7 +7,7 @@ import (
 
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 )
 
@@ -247,7 +247,7 @@ func (stringWithError *StringWithError) IsEqualsCase(another *StringWithError, i
 		return false
 	}
 
-	return isinternal.EqualsCasePtr(
+	return isstrinternal.EqualsCasePtr(
 		stringWithError.StringPtr(),
 		another.StringPtr(),
 		isCaseSensitive)
@@ -275,7 +275,7 @@ func (stringWithError *StringWithError) IsStringCaseEquals(another *string, isCa
 		return false
 	}
 
-	return isinternal.EqualsCasePtr(
+	return isstrinternal.EqualsCasePtr(
 		stringWithError.StringPtr(),
 		another,
 		isCaseSensitive)

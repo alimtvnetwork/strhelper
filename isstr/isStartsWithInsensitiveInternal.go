@@ -19,21 +19,19 @@ func isStartsWithInsensitiveInternal(
 	wholeText *string,
 	startsWith *string,
 	startsAt int,
+	wholeTextLength, searchTextLength int,
 ) bool {
-	lenA := len(*wholeText)
-	lenB := len(*startsWith)
-
 	wholeLower := strings.ToLower(*wholeText)
 	startsWithLower := strings.ToLower(*startsWith)
 	incrementing := 0
 
-	for ; startsAt < lenA && incrementing < lenB; startsAt++ {
-		if (wholeLower)[startsAt] != (startsWithLower)[incrementing] {
+	for ; startsAt < wholeTextLength && incrementing < searchTextLength; startsAt++ {
+		if wholeLower[startsAt] != startsWithLower[incrementing] {
 			break
 		}
 
 		incrementing++
 	}
 
-	return incrementing == lenB
+	return incrementing == searchTextLength
 }

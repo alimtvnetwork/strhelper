@@ -6,14 +6,14 @@ import (
 
 // Counts and returns the count number based on findingRunes present in the str
 // Returns 0 if str is nil or empty string.
-func CountRunes(str *string, findingRunes *[]rune, startAt int, isCaseSensitive bool) int {
+func CountRunes(str *string, findingRunes *[]rune, startsAt int, isCaseSensitive bool) int {
 	if str == nil || *str == constants.EmptyString || len(*str) == 0 {
 		return 0
 	}
 
 	if isCaseSensitive {
-		return CountRunesSensitive(str, findingRunes, startAt)
+		return CountRunesSensitive(str, findingRunes, startsAt)
 	}
 
-	return CountRunesInsensitive(str, findingRunes, startAt)
+	return CountRunesInsensitive(str, findingRunes, startsAt)
 }

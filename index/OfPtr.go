@@ -3,7 +3,7 @@ package index
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/consts"
+	"gitlab.com/evatix-go/strhelper/internal/messages"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 )
 
@@ -21,7 +21,7 @@ import (
 //  - startsAt larger than the content length.
 func OfPtr(s, findingString *string, startsAt int, isCaseSensitive bool) int {
 	if s == nil || findingString == nil {
-		panic(consts.SearchNullPanicMessage)
+		panic(messages.SearchNullPanicMessage)
 	}
 
 	length := len(*s)

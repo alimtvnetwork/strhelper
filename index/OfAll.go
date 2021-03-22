@@ -7,7 +7,7 @@ package index
 //
 // @limits:
 //  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all
+//  - `-1` means find all, 0 => nil
 //
 // Conditions (for panic):
 //  - startsAt cannot be negative or greater than the length of text(s)
@@ -20,6 +20,10 @@ func OfAll(
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
+	if limits == 0 {
+		return nil
+	}
+
 	if content == findingString && startsAtIndex == 0 {
 		return &[]int{0}
 	}

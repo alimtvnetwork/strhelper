@@ -34,15 +34,15 @@ func GetAsyncAsPaged(
 	eachPageItems := int(math.Ceil(float64(length) / pages))
 
 	for pageIndex := 0; pageIndex < pagesInInt; pageIndex++ {
-		startAt := eachPageItems * pageIndex
-		endAt := startAt + eachPageItems
+		startsAt := eachPageItems * pageIndex
+		endAt := startsAt + eachPageItems
 
 		go GetAsyncWithRange(
 			&processedItems,
 			content,
 			allRawItems,
 			genericProcessor,
-			startAt,
+			startsAt,
 			endAt,
 			&wg)
 	}

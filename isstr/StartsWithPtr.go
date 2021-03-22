@@ -3,7 +3,7 @@ package isstr
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isinternal"
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
 // Results true for starts with.
@@ -42,15 +42,19 @@ func StartsWithPtr(
 	}
 
 	if isCaseSensitive {
-		return isinternal.IsStartsWithInternal(
+		return isstrinternal.StartsWith(
 			wholeText,
 			startsWith,
-			startsAt)
+			startsAt,
+			wholeTextLength,
+			searchLength)
 	}
 
 	// insensitive
 	return isStartsWithInsensitiveInternal(
 		wholeText,
 		startsWith,
-		startsAt)
+		startsAt,
+		wholeTextLength,
+		searchLength)
 }
