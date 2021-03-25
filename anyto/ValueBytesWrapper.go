@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"gitlab.com/evatix-go/strhelper/byteserror"
-	"gitlab.com/evatix-go/strhelper/parsingtype"
+	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
 func ValueBytesWrapper(anything interface{}) *byteserror.Wrapper {
@@ -14,5 +14,5 @@ func ValueBytesWrapper(anything interface{}) *byteserror.Wrapper {
 
 	allBytes := []byte(fmt.Sprintf("%v", anything))
 
-	return byteserror.NewNoError(&allBytes, parsingtype.AnyToValueStringBytes)
+	return byteserror.NewNoError(&allBytes, encodingbytetype.AnyToValueStringBytes)
 }
