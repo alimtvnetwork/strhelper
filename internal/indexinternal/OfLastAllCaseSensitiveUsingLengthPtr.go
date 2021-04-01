@@ -2,8 +2,8 @@ package indexinternal
 
 import (
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/defaultcapacity"
 
-	"gitlab.com/evatix-go/strhelper/internal/defaultcapacity"
 	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
@@ -18,7 +18,7 @@ func OfLastAllCaseSensitiveUsingLengthPtr(
 		return nil
 	}
 
-	defaultCapacity := defaultcapacity.Get(wholeTextLength, limits)
+	defaultCapacity := defaultcapacity.OfSplits(wholeTextLength, limits)
 	indexes := make([]int, 0, defaultCapacity)
 	hasLimit := limits > constants.InvalidValue
 	foundIndex := constants.InvalidNotFoundCase

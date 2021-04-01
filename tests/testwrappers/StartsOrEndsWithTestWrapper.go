@@ -4,11 +4,6 @@ import (
 	"gitlab.com/evatix-go/core/coretests"
 )
 
-const (
-	isEndsWith   coretests.TestFuncName = "IsEndsWith"
-	isStartsWith coretests.TestFuncName = "IsStartsWith"
-)
-
 type StartsOrEndsWithTestWrapper struct {
 	WholeText       string
 	Search          string

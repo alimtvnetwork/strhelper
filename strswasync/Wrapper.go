@@ -13,11 +13,11 @@ import (
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
-	"gitlab.com/evatix-go/strhelper/remove"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/strs"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 	"gitlab.com/evatix-go/strhelper/strs/strsindex"
+	"gitlab.com/evatix-go/strhelper/strsremove"
 	"gitlab.com/evatix-go/strhelper/swasync"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -755,7 +755,7 @@ func (wrapper *Wrapper) Prepends(
 	combinedResult := concat.ArraysOfArraysToArray(
 		isSkipEmptyOrNil,
 		skipFilter,
-		contents, // pre
+		contents,      // pre
 		wrapper.lines) // post
 
 	return combinedResult
@@ -827,7 +827,7 @@ func (wrapper *Wrapper) ConcatAsString(
 		&separator,
 		isSkipOnEmpty,
 		wrapper.lines, // pre
-		contents) // post
+		contents)      // post
 
 	return &combinedResult
 }
@@ -862,15 +862,15 @@ func (wrapper *Wrapper) Concatenates(
 // Creates new lines where removeStr will not appear.
 //
 // @count:
-// - `-1` meaning remove all.
-// - or else remove up to the given number only.
+// - `-1` meaning strsremove all.
+// - or else strsremove up to the given number only.
 func (wrapper *Wrapper) Remove(
 	removeString *string,
 	isCaseSensitive bool,
 	startsAt int,
 	count int,
 ) *[]string {
-	return remove.Lines(
+	return strsremove.Lines(
 		wrapper.lines,
 		removeString,
 		startsAt,
@@ -882,13 +882,13 @@ func (wrapper *Wrapper) Remove(
 // Creates new lines where removeStr will not appear.
 //
 // @count (default given):
-// - `-1` meaning remove all.
+// - `-1` meaning strsremove all.
 func (wrapper *Wrapper) RemoveAll(
 	removeString *string,
 	isCaseSensitive bool,
 	startsAt int,
 ) *[]string {
-	return remove.Lines(
+	return strsremove.Lines(
 		wrapper.lines,
 		removeString,
 		startsAt,
