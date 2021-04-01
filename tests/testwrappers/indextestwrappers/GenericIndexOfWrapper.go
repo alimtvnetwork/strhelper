@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/core/coretests"
 )
 
-type GenericIndexOf struct {
+type GenericIndexOfWrapper struct {
 	Content             string
 	SearchingContent    string
 	InitializedPosition int
@@ -16,27 +16,27 @@ type GenericIndexOf struct {
 	actual              interface{}
 }
 
-func (compareTestWrapper *GenericIndexOf) Actual() interface{} {
+func (compareTestWrapper *GenericIndexOfWrapper) Actual() interface{} {
 	return compareTestWrapper.actual
 }
 
-func (compareTestWrapper *GenericIndexOf) SetActual(actual interface{}) {
+func (compareTestWrapper *GenericIndexOfWrapper) SetActual(actual interface{}) {
 	compareTestWrapper.actual = actual
 }
 
-func (compareTestWrapper *GenericIndexOf) FuncName() string {
+func (compareTestWrapper *GenericIndexOfWrapper) FuncName() string {
 	return compareTestWrapper.funcName.Value()
 }
 
-func (compareTestWrapper *GenericIndexOf) Value() interface{} {
+func (compareTestWrapper *GenericIndexOfWrapper) Value() interface{} {
 	return compareTestWrapper
 }
 
-func (compareTestWrapper *GenericIndexOf) Expected() interface{} {
+func (compareTestWrapper *GenericIndexOfWrapper) Expected() interface{} {
 	return compareTestWrapper.expected
 }
 
-func (compareTestWrapper *GenericIndexOf) ExpectedAsIntArray() *[]int {
+func (compareTestWrapper *GenericIndexOfWrapper) ExpectedAsIntArray() *[]int {
 	intArray, isOkay := compareTestWrapper.expected.(*[]int)
 
 	if isOkay {
@@ -46,7 +46,7 @@ func (compareTestWrapper *GenericIndexOf) ExpectedAsIntArray() *[]int {
 	return nil
 }
 
-func (compareTestWrapper *GenericIndexOf) AsTestCaseMessenger() coretests.TestCaseMessenger {
+func (compareTestWrapper *GenericIndexOfWrapper) AsTestCaseMessenger() coretests.TestCaseMessenger {
 	var testCaseMessenger coretests.TestCaseMessenger = compareTestWrapper
 
 	return testCaseMessenger

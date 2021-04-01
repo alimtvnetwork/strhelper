@@ -1,4 +1,4 @@
-package remove
+package strsremove
 
 import (
 	"gitlab.com/evatix-go/core/constants"
@@ -15,12 +15,12 @@ import (
 // - or else remove up to the given number only.
 func ManyLines(
 	lines *[]string,
-	removeLinesHashSet *strhashset.Hashset,
+	removeLinesHashset *strhashset.Hashset,
 	startsAt,
 	count int,
 	isCaseSensitive bool,
 ) *[]string {
-	if removeLinesHashSet == nil || removeLinesHashSet.IsEmptySet() {
+	if removeLinesHashset == nil || removeLinesHashset.IsEmptySet() {
 		return lines
 	}
 
@@ -32,7 +32,7 @@ func ManyLines(
 	}
 
 	if startsAt == lengthMinusOne {
-		// nothing to remove
+		// nothing to strsremove
 		return lines
 	}
 
@@ -46,7 +46,7 @@ func ManyLines(
 		return finalRemoveResultsCaseSensitive(
 			lines,
 			&newLines,
-			removeLinesHashSet,
+			removeLinesHashset,
 			startsAt,
 			count,
 			length,
@@ -54,7 +54,7 @@ func ManyLines(
 	}
 
 	// insensitive
-	lowerRemoveMap := removeLinesHashSet.ToLowerSet()
+	lowerRemoveMap := removeLinesHashset.ToLowerSet()
 	// Reference : https://blog.golang.org/slices-intro | https://i.imgur.com/O3Hlmac.png
 	// no copy just points
 	linesRemainingParts := (*lines)[startsAt:]
@@ -76,30 +76,4 @@ func ManyLines(
 	}
 
 	return &newLines
-}
-
-func finalRemoveResultsCaseSensitive(
-	lines *[]string,
-	newLines *[]string,
-	removeLinesHashSet *strhashset.Hashset,
-	startsAt int,
-	count int,
-	length int,
-) *[]string {
-	var line string
-
-	isCountUnset := count == constants.InvalidNotFoundCase
-
-	for i := startsAt; i < length; i++ {
-		line = (*lines)[i]
-
-		if removeLinesHashSet.Has(line) && (isCountUnset || count > 0) {
-			count--
-			continue
-		}
-
-		*newLines = append(*newLines, line)
-	}
-
-	return newLines
 }

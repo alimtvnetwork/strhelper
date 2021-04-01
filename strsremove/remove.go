@@ -1,4 +1,4 @@
-package remove
+package strsremove
 
 import (
 	"unicode"
@@ -16,10 +16,10 @@ var (
 	asciiSpaceArray       = whitespace.GetAsciiSpaceArray()
 	asciiNewLinesArray    = whitespace.GetAsciiNewLinesArray()
 	commaRemoveAscIIArray = [256]uint8{
-		',': 1,
+		constants.CommaChar: constants.One,
 	}
 	hyphenRemoveAscIIArray = [256]uint8{
-		'-': 1,
+		constants.HyphenChar: constants.One,
 	}
 )
 

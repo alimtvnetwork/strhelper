@@ -14,9 +14,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/lines"
 	"gitlab.com/evatix-go/strhelper/padding"
-	"gitlab.com/evatix-go/strhelper/remove"
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strsremove"
 )
 
 // no caching
@@ -700,7 +700,7 @@ func (stringWrapper *StringWrapper) Remove(
 	startsAt int,
 	count int,
 ) string {
-	return remove.GetPtr(
+	return strsremove.GetPtr(
 		stringWrapper.content,
 		removeString,
 		startsAt,
@@ -714,7 +714,7 @@ func (stringWrapper *StringWrapper) RemoveAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return remove.GetPtr(
+	return strsremove.GetPtr(
 		stringWrapper.content,
 		removeString,
 		startsAt,

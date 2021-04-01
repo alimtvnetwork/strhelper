@@ -10,10 +10,10 @@ import (
 // Kept for internal use only.
 func indexOfForCaseInsensitiveInternal(lines *[]string, findingString *string, startsAtIndex int) int {
 	length := len(*lines)
-	findingStringToLower := strings.ToLower(*findingString)
+	findingStringCopy := *findingString
 
 	for i := startsAtIndex; i < length; i++ {
-		if strings.ToLower((*lines)[i]) == findingStringToLower {
+		if strings.EqualFold((*lines)[i], findingStringCopy) {
 			return i
 		}
 	}

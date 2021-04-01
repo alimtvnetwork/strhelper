@@ -3,8 +3,7 @@ package splits
 import (
 	"gitlab.com/evatix-go/core"
 	"gitlab.com/evatix-go/core/constants"
-
-	"gitlab.com/evatix-go/strhelper/internal/defaultcapacity"
+	"gitlab.com/evatix-go/core/defaultcapacity"
 )
 
 func LastByRunesMap(
@@ -26,7 +25,7 @@ func LastByRunesMap(
 
 	runes := []rune(*s)
 	runesLength := len(runes)
-	defaultCapacity := defaultcapacity.Get(runesLength, limits)
+	defaultCapacity := defaultcapacity.OfSplits(runesLength, limits)
 	list := make(
 		[]string,
 		0,
