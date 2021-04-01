@@ -2,22 +2,22 @@ package anyto
 
 import (
 	"gitlab.com/evatix-go/strhelper/byteserror"
-	"gitlab.com/evatix-go/strhelper/parsingtype"
+	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func BytesWrapperOf(any interface{}, parsingType parsingtype.Variant) byteserror.Wrapper {
+func BytesWrapperOf(any interface{}, parsingType encodingbytetype.Variant) byteserror.Wrapper {
 	if any == nil {
 		return byteserror.Empty(parsingType)
 	}
 
 	switch parsingType {
-	case parsingtype.Unknown, parsingtype.Encoding:
+	case encodingbytetype.Unknown, encodingbytetype.Encoding:
 		return BytesWrapper(any)
-	case parsingtype.Unsafe:
+	case encodingbytetype.Unsafe:
 		return UnSafeBytesWrapper(any)
-	case parsingtype.AnyToValueStringBytes:
+	case encodingbytetype.AnyToValueStringBytes:
 		return *ValueBytesWrapper(any)
-	case parsingtype.JsonParsing:
+	case encodingbytetype.JsonParsing:
 		return JsonBytesWrapper(any)
 	default:
 		panic(parsingBytesNotSupportMessage(parsingType))

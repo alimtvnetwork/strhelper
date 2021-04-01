@@ -4,13 +4,13 @@ import (
 	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/errorwrapper"
 
-	"gitlab.com/evatix-go/strhelper/parsingtype"
+	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
 type WrapperDataModel struct {
 	Bytes        *[]byte
 	ErrorWrapper *errorwrapper.Wrapper
-	ByteType     parsingtype.Variant
+	ByteType     encodingbytetype.Variant
 	BytesLength  int
 	IsWhitespace issetter.Value
 }

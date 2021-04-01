@@ -8,22 +8,22 @@ import (
 	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/errorwrapper"
 
+	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
-	"gitlab.com/evatix-go/strhelper/parsingtype"
 )
 
 type Wrapper struct {
 	bytes        *[]byte
 	content      *string
 	errorWrapper *errorwrapper.Wrapper
-	byteType     parsingtype.Variant
+	byteType     encodingbytetype.Variant
 	bytesLength  int
 	stringLength *int
 	isWhitespace issetter.Value
 }
 
-func (wrapper *Wrapper) ByteType() parsingtype.Variant {
+func (wrapper *Wrapper) ByteType() encodingbytetype.Variant {
 	return wrapper.byteType
 }
 
