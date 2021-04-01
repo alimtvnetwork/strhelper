@@ -1,12 +1,9 @@
 package indextests
 
 import (
-	"log"
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"gitlab.com/evatix-go/core/corecompare"
-
 	"gitlab.com/evatix-go/core/coretests"
 
 	"gitlab.com/evatix-go/strhelper/index"
@@ -38,18 +35,10 @@ func Test_OfAllPtr(t *testing.T) {
 
 		testCase.SetActual(actual)
 
+		// Assert
 		Convey(testHeader, t, func() {
-			// Assert
 			Convey(coretests.GetAssertMessage(caseMessenger, i), func() {
-				isSame := corecompare.IntArrayPtr(actual, expected)
-
-				if !isSame {
-					header := "\n ==================Actual vs Expectation==================\nExpectations : "
-					log.Println(header, expected)
-					log.Println("Actual : ", actual)
-				}
-
-				So(isSame, ShouldBeTrue)
+				So(actual, ShouldResemble, expected)
 			})
 		})
 	}

@@ -1,30 +1,30 @@
 package anyto
 
 import (
-	"gitlab.com/evatix-go/strhelper/parsingtype"
+	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func BytesOf(any interface{}, parsingType parsingtype.Variant) (*[]byte, error) {
+func BytesOf(any interface{}, parsingType encodingbytetype.Variant) (*[]byte, error) {
 	if any == nil {
 		return nil, nil
 	}
 
 	switch parsingType {
-	case parsingtype.Unknown, parsingtype.Encoding:
+	case encodingbytetype.Unknown, encodingbytetype.Encoding:
 		return Bytes(any)
-	case parsingtype.Unsafe:
+	case encodingbytetype.Unsafe:
 		return UnSafeBytes(any), nil
-	case parsingtype.AnyToValueStringBytes:
+	case encodingbytetype.AnyToValueStringBytes:
 		return ValueBytesPtr(any), nil
-	case parsingtype.AnyToFullStringBytes:
+	case encodingbytetype.AnyToFullStringBytes:
 		return FullValueBytesPtr(any), nil
-	case parsingtype.JsonParsing:
+	case encodingbytetype.JsonParsing:
 		return JsonBytes(any), nil
 	default:
 		panic(parsingBytesNotSupportMessage(parsingType))
 	}
 }
 
-func parsingBytesNotSupportMessage(parsingType parsingtype.Variant) string {
+func parsingBytesNotSupportMessage(parsingType encodingbytetype.Variant) string {
 	return "Parsing type not support for bytes conversion. Requested parsing type : " + parsingType.String()
 }

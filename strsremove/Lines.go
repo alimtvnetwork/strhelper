@@ -1,4 +1,4 @@
-package remove
+package strsremove
 
 import (
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"

@@ -1,5 +1,5 @@
 package strvalidator
 
-func HasNegativeStart(str *string) bool {
-	return !(str == nil || *str == "" || (*str)[0] != '-')
+func HasNegativeStart(str string) bool {
+	return !(str == "" || str[0] != '-')
 }

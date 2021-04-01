@@ -1,4 +1,4 @@
-package parsingtype
+package encodingbytetype
 
 type Variant uint8
 
