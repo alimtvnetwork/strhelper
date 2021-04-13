@@ -8,6 +8,13 @@ func GetBuilder(
 	sep string,
 	additionalLength int,
 ) strings.Builder {
+	if elements == nil {
+		var bEmpty strings.Builder
+		bEmpty.Grow(additionalLength)
+
+		return bEmpty
+	}
+
 	elementsNonPtr := *elements
 	elementsLength := len(elementsNonPtr)
 	n := len(sep) * (elementsLength - 1)
