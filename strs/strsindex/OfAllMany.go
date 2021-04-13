@@ -16,7 +16,7 @@ import (
 //  - `-1` means find all
 //
 // Results:
-//  - Invalid result can be nil if any (lines == nil || searchTerms == nil) results nil.
+//  - Invalid result can be nil if any lines == nil results nil.
 //  - If no indexes found returns nil.
 func OfAllMany(
 	lines *[]string,
@@ -60,22 +60,24 @@ func OfAllMany(
 	for _, searchTerm := range *sendingSearchTerms {
 		indexes := OfAll(
 			sendingLines,
-			&searchTerm,
+			searchTerm,
 			startsAtIndex,
 			limits,
 			true)
 
 		if indexes == nil || *indexes == nil {
 			indexesMap[searchTerm] = nil
+
 			continue
 		}
 
 		totalLength = len(*indexes)
 		indexesMap[searchTerm] = indexes
 		hasFoundAny = true
+		lastIndex := (*indexes)[totalLength-1]
 
-		if maxIndexFound < (*indexes)[totalLength-1] {
-			maxIndexFound = (*indexes)[totalLength-1]
+		if maxIndexFound < lastIndex {
+			maxIndexFound = lastIndex
 		}
 	}
 

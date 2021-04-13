@@ -34,11 +34,11 @@ func (line *Line) IsNullOrEmpty() bool {
 }
 
 func (line *Line) IsNullOrSpaces() bool {
-	return line.text == nil || *line.text == "" || whitespace.IsWhitespaces(line.text)
+	return line.text == nil || *line.text == "" || whitespace.IsWhitespaces(*line.text)
 }
 
 func (line *Line) IsNullOrAsciiSpaces() bool {
-	return line.text == nil || *line.text == "" || whitespace.IsAsciiWhitespaces(line.text)
+	return line.text == nil || *line.text == "" || whitespace.IsAsciiWhitespaces(*line.text)
 }
 
 func (line *Line) TrimmedLine() *string {

@@ -21,12 +21,12 @@ import (
 //  - If no indexes found returns nil.
 func OfAllPtrOfStr(
 	lines *[]*string,
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	if isstrsinternal.EmptyPtrStr(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtrStr(lines) {
 		return nil
 	}
 
@@ -44,8 +44,7 @@ func OfAllPtrOfStr(
 	if isCaseSensitive == false {
 		// insensitive
 		sendingLines = strs.ToLowerPtrStrings(lines)
-		searchTermLowerCase := strings.ToLower(*findingString)
-		sendingSearchTerm = &searchTermLowerCase
+		sendingSearchTerm = strings.ToLower(findingString)
 	}
 
 	indexes := make([]int, constants.Zero, length)

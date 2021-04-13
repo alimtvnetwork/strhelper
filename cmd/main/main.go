@@ -7,7 +7,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/whitespace"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/lines"
+	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
@@ -27,29 +27,29 @@ func main() {
 		"Line 3",
 	}
 
-	comparedResult := lines.Compare(&leftLines, &rightLines, 0, false, true)
+	comparedResult := strlines.Compare(&leftLines, &rightLines, 0, false, true)
 
 	fmt.Println(comparedResult)
 	fmt.Println(strings.Compare("a", ""))
 
-	comparedResult2 := lines.Compare(nil, &rightLines, 0, false, true)
+	comparedResult2 := strlines.Compare(nil, &rightLines, 0, false, true)
 
 	fmt.Println(comparedResult2)
 	fmt.Println(strings.Compare("", "a"))
 
-	comparedResult3 := lines.Compare(&leftLines, nil, 0, false, true)
+	comparedResult3 := strlines.Compare(&leftLines, nil, 0, false, true)
 
 	fmt.Println(comparedResult3)
 	fmt.Println(strings.Compare("a", ""))
 
 	leftUpto3 := leftLines[0:3]
-	comparedResult4 := lines.Compare(&leftUpto3, &rightLines, 1, false, true)
+	comparedResult4 := strlines.Compare(&leftUpto3, &rightLines, 1, false, true)
 
 	fmt.Println(comparedResult4)
 	fmt.Println(strings.Compare("a", "a"))
 
-	leftBytes := lines.ToUnsafeBytes(&leftUpto3)
-	rightBytes := lines.ToUnsafeBytes(&rightLines)
+	leftBytes := strlines.ToUnsafeBytes(&leftUpto3)
+	rightBytes := strlines.ToUnsafeBytes(&rightLines)
 	comparedResult5 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
 
 	fmt.Println(comparedResult5)

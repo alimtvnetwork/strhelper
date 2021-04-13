@@ -9,13 +9,13 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/chars"
-	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/lines"
 	"gitlab.com/evatix-go/strhelper/padding"
 	"gitlab.com/evatix-go/strhelper/replace"
+	"gitlab.com/evatix-go/strhelper/strconcat"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/strsremove"
 )
 
@@ -471,7 +471,7 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetLines()
 
-	return lines.Process(
+	return strlines.Process(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -483,7 +483,7 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetUnixLines()
 
-	return lines.Process(
+	return strlines.Process(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -495,7 +495,7 @@ func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetUnixLines()
 
-	return lines.ProcessAsync(
+	return strlines.ProcessAsync(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -543,9 +543,9 @@ func (stringWrapper *StringWrapper) Concatenates(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.StringsArrayWithSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.StringsArrayWithSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 
@@ -565,7 +565,7 @@ func (stringWrapper *StringWrapper) Concatenates(
 //  - If final string compiled string from contents is a whitespace then ignored.
 //
 // @separator:
-//  - used to concat each strings / elements.
+//  - used to strconcat each strings / elements.
 //
 // @Returns:
 //  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
@@ -579,9 +579,9 @@ func (stringWrapper *StringWrapper) Prepends(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 
@@ -601,7 +601,7 @@ func (stringWrapper *StringWrapper) Prepends(
 //  - If final string compiled string from contents is a whitespace then ignored.
 //
 // @separator:
-//  - used to concat each strings / elements.
+//  - used to strconcat each strings / elements.
 //
 // @Returns:
 //  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
@@ -615,9 +615,9 @@ func (stringWrapper *StringWrapper) PrependAsString(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *string {
-	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 

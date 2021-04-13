@@ -1,5 +1,7 @@
 package whitespace
 
 const (
-	maxUnit8 = 255
+	maxUnit8    = 255
+	doubleSpace = "  "
+	tripleSpace = "   "
 )

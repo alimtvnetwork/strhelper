@@ -7,6 +7,10 @@ import (
 )
 
 // Returns true if the findingString present in the array, if array is empty or nil then returns false.
-func Exists(lines *[]string, findingString *string, isCaseSensitive bool) bool {
-	return strsindex.Of(lines, findingString, 0, isCaseSensitive) > constants.InvalidNotFoundCase
+func Exists(lines *[]string, findingString string) bool {
+	return strsindex.Of(
+		lines,
+		findingString,
+		constants.Zero,
+		true) > constants.InvalidNotFoundCase
 }

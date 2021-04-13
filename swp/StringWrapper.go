@@ -11,15 +11,15 @@ import (
 	"gitlab.com/evatix-go/core/osconsts"
 
 	"gitlab.com/evatix-go/strhelper/chars"
-	"gitlab.com/evatix-go/strhelper/concat"
 	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/lines"
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
 	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/reverse"
 	"gitlab.com/evatix-go/strhelper/splits"
+	"gitlab.com/evatix-go/strhelper/strconcat"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/strsremove"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -250,7 +250,7 @@ func (stringWrapper *StringWrapper) TrimRight(cutSet string) *string {
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) GetLines() *[]string {
 	if stringWrapper.lines == nil && !stringWrapper.IsNull() {
-		stringWrapper.lines = lines.GetPtr(stringWrapper.content)
+		stringWrapper.lines = strlines.GetPtr(stringWrapper.content)
 	}
 
 	return stringWrapper.lines
@@ -271,7 +271,7 @@ func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
 
 	if isRequiresSetting && !isNewLineSameAsUnix {
 		// requires processing
-		linesUnix := lines.UnixGet(stringWrapper.content)
+		linesUnix := strlines.UnixGet(stringWrapper.content)
 		stringWrapper.linesUnix = &linesUnix
 	}
 
@@ -531,7 +531,7 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetLines()
 
-	return lines.Process(
+	return strlines.Process(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -543,7 +543,7 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetUnixLines()
 
-	return lines.Process(
+	return strlines.Process(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -555,7 +555,7 @@ func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 ) *[]*string {
 	allLines := stringWrapper.GetUnixLines()
 
-	return lines.ProcessAsync(
+	return strlines.ProcessAsync(
 		stringWrapper.content,
 		allLines,
 		&lineProcessor)
@@ -671,7 +671,7 @@ func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapp
 //  - If final string compiled string from contents is a whitespace then ignored.
 //
 // @separator:
-//  - used to concat each strings / elements.
+//  - used to strconcat each strings / elements.
 //
 // @Returns:
 //  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
@@ -685,9 +685,9 @@ func (stringWrapper *StringWrapper) Prepends(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 
@@ -707,7 +707,7 @@ func (stringWrapper *StringWrapper) Prepends(
 //  - If final string compiled string from contents is a whitespace then ignored.
 //
 // @separator:
-//  - used to concat each strings / elements.
+//  - used to strconcat each strings / elements.
 //
 // @Returns:
 //  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
@@ -721,9 +721,9 @@ func (stringWrapper *StringWrapper) PrependAsString(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *string {
-	combinedResult := concat.PrependArrayWithCurrentStringUsingSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.PrependArrayWithCurrentStringUsingSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 
@@ -764,7 +764,7 @@ func (stringWrapper *StringWrapper) ConcatWrappers(
 	return stringWrapper.ConcatPtrStr(
 		separator,
 		isSkipOnEmpty,
-		&strArray)
+		strArray)
 }
 
 // Better to use slice or builder for appending lines.
@@ -784,7 +784,7 @@ func (stringWrapper *StringWrapper) ConcatWrappersPointers(
 	return stringWrapper.ConcatPtrStr(
 		separator,
 		isSkipOnEmpty,
-		&strArray)
+		strArray)
 }
 
 // Better to use slice or builder for appending lines.
@@ -812,7 +812,7 @@ func (stringWrapper *StringWrapper) ConcatStrPointersWithSeparator(
 	return stringWrapper.ConcatPtrStr(
 		separator,
 		isSkipOnEmpty,
-		&contents)
+		contents)
 }
 
 // combine current wrapper strings + all given ones with given separator and returns as wrapper
@@ -823,9 +823,9 @@ func (stringWrapper *StringWrapper) Concatenates(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *StringWrapper {
-	combinedResult := concat.StringsArrayWithSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.StringsArrayWithSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 
@@ -836,11 +836,11 @@ func (stringWrapper *StringWrapper) Concatenates(
 func (stringWrapper *StringWrapper) ConcatPtrStr(
 	separator string,
 	isSkipOnEmpty bool,
-	contents *[]*string,
+	contents []*string,
 ) *StringWrapper {
-	combinedResult := concat.PtrStringsArrayWithSeparator(
-		stringWrapper.content,
-		&separator,
+	combinedResult := strconcat.PtrStringsArrayWithSeparator(
+		stringWrapper.String(),
+		separator,
 		isSkipOnEmpty,
 		contents)
 

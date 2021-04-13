@@ -12,11 +12,11 @@ import (
 // OfLastPtr returns the last index where the string first found, doesn't care about the rest of the items once found.
 func OfLastPtr(
 	lines *[]string,
-	searchTerm *string,
+	searchTerm string,
 	contentLengthDecreasedBy int,
 	isCaseSensitive bool,
 ) int {
-	if isstrsinternal.EmptyPtr(lines) || searchTerm == nil {
+	if isstrsinternal.EmptyPtr(lines) {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -26,22 +26,25 @@ func OfLastPtr(
 		panichelper.LastIndexIncreasedByFailed(contentLengthDecreasedBy, length)
 	}
 
+	linesNonPtr := *lines
+
 	if !isCaseSensitive {
 		// insensitive
-		toLowerSearchTerm := strings.ToLower(*searchTerm)
 		index := length - contentLengthDecreasedBy
 
 		for ; index >= 0; index-- {
-			if strings.ToLower((*lines)[index]) == toLowerSearchTerm {
+			if strings.EqualFold(linesNonPtr[index], searchTerm) {
 				return index
 			}
 		}
+
+		return constants.InvalidNotFoundCase
 	}
 
 	index := length - 1 - contentLengthDecreasedBy
 
 	for ; index >= 0; index-- {
-		if (*lines)[index] == *searchTerm {
+		if linesNonPtr[index] == searchTerm {
 			return index
 		}
 	}

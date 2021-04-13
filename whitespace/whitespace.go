@@ -6,7 +6,7 @@ import (
 
 // IsEmpty(s) || IsWhitespaces(&s)
 func IsNullOrWhitespace(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(s)
 }
 
 // Has at least one character any, returns true even if a whitespace
@@ -41,29 +41,29 @@ func IsDefinedWithCharsWithoutWhitespacesPtr(s *string) bool {
 
 // s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsNullOrWhitespacePtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(*s)
 }
 
 // returns true if IsNullOrWhitespace(s)
 func IsBlank(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(s)
 }
 
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsBlankPtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(*s)
 }
 
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankAscii(s string) bool {
-	return s == constants.EmptyString || len(s) == 0 || IsAsciiWhitespaces(&s)
+	return s == constants.EmptyString || len(s) == 0 || IsAsciiWhitespaces(s)
 }
 
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankAsciiPtr(s *string) bool {
-	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(s)
+	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(*s)
 }
 
 // returns true if Any of the strings is blanks thus empty or whitespace or nil
