@@ -60,7 +60,7 @@ func ManyPtr(
 		isIndexExist = isIndexExist && lastIndexOfSplit <= splitStartsAt
 		if isIndexExist {
 			word := (*str)[lastIndexOfSplit:splitStartsAt]
-			isEmptyWord = word == "" || whitespace.IsAsciiWhitespaces(&word)
+			isEmptyWord = word == "" || whitespace.IsAsciiWhitespaces(word)
 
 			splitResult := strhelpercore.SplitResult{
 				SplitPrev: &word,

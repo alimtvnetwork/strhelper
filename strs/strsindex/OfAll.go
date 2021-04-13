@@ -17,16 +17,16 @@ import (
 //  - `-1` means find all
 //
 // Results:
-//  - Invalid result can be nil if any (lines == nil || findingString == nil) results nil.
+//  - Invalid result can be nil if any lines == nil results nil.
 //  - If no indexes found returns nil.
 func OfAll(
 	lines *[]string,
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
 ) *[]int {
-	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtr(lines) {
 		return nil
 	}
 
@@ -44,8 +44,7 @@ func OfAll(
 	if isCaseSensitive == false {
 		// insensitive
 		sendingLines = strs.ToLowerStrings(lines)
-		searchTermLowerCase := strings.ToLower(*findingString)
-		sendingSearchTerm = &searchTermLowerCase
+		sendingSearchTerm = strings.ToLower(findingString)
 	}
 
 	indexes := make([]int, constants.Zero, length)

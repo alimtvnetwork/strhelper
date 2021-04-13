@@ -8,5 +8,5 @@ import (
 
 // returns true if IsNullOrWhitespace(s)
 func EmptyOrWhitespaces(s string) bool {
-	return s == constants.EmptyString || whitespace.IsWhitespaces(&s)
+	return s == constants.EmptyString || whitespace.IsWhitespaces(s)
 }

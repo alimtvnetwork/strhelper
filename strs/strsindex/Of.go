@@ -10,11 +10,11 @@ import (
 // Returns the index where the string first found, rest don't care
 func Of(
 	lines *[]string,
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	isCaseSensitive bool,
 ) int {
-	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtr(lines) {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -26,11 +26,11 @@ func Of(
 
 	if !isCaseSensitive {
 		// insensitive
-		return indexOfForCaseInsensitiveInternal(lines, findingString, startsAtIndex)
+		return indexOfForCaseInsensitiveInternal(lines, &findingString, startsAtIndex)
 	}
 
 	for i := startsAtIndex; i < length; i++ {
-		if (*lines)[i] == *findingString {
+		if (*lines)[i] == findingString {
 			return i
 		}
 	}

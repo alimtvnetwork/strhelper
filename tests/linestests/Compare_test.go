@@ -6,7 +6,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"gitlab.com/evatix-go/core/coretests"
 
-	"gitlab.com/evatix-go/strhelper/lines"
+	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/linestestwrappers"
 )
 
@@ -16,7 +16,7 @@ func Test_Compare(t *testing.T) {
 		testHeader := coretests.GetTestHeader(testCase)
 
 		// Act
-		actual := lines.Compare(
+		actual := strlines.Compare(
 			testCase.LeftLines,
 			testCase.RightLines,
 			testCase.StartsAt,

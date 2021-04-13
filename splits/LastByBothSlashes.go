@@ -6,6 +6,6 @@ func LastByBothSlashes(
 ) *[]string {
 	return LastByRunesMap(
 		s,
-		bothSlashesMap,
+		&bothSlashesMap,
 		limits)
 }

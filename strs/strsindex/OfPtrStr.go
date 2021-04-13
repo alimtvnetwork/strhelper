@@ -10,11 +10,11 @@ import (
 // Returns the index where the string first found, rest don't care
 func OfPtrStr(
 	lines *[]*string,
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	isCaseSensitive bool,
 ) int {
-	if isstrsinternal.EmptyPtrStr(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtrStr(lines) {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -32,8 +32,10 @@ func OfPtrStr(
 			startsAtIndex)
 	}
 
+	linesNonPtr := *lines
+
 	for ; startsAtIndex < length; startsAtIndex++ {
-		if *(*lines)[startsAtIndex] == *findingString {
+		if *linesNonPtr[startsAtIndex] == findingString {
 			return startsAtIndex
 		}
 	}

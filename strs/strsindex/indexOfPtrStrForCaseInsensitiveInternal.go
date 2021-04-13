@@ -8,12 +8,16 @@ import (
 
 // Assumptions are lines, findingString are check already not null or empty
 // Kept for internal use only.
-func indexOfPtrStrForCaseInsensitiveInternal(lines *[]*string, findingString *string, startsAtIndex int) int {
-	length := len(*lines)
-	findingStringToLower := strings.ToLower(*findingString)
+func indexOfPtrStrForCaseInsensitiveInternal(
+	lines *[]*string,
+	findingString string,
+	startsAtIndex int,
+) int {
+	linesNonPtr := *lines
+	length := len(linesNonPtr)
 
 	for ; startsAtIndex < length; startsAtIndex++ {
-		if strings.ToLower(*(*lines)[startsAtIndex]) == findingStringToLower {
+		if strings.EqualFold(*linesNonPtr[startsAtIndex], findingString) {
 			return startsAtIndex
 		}
 	}

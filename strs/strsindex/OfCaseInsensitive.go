@@ -11,10 +11,10 @@ import (
 
 func OfCaseInsensitive(
 	lines *[]string,
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 ) int {
-	if isstrsinternal.EmptyPtr(lines) || findingString == nil {
+	if isstrsinternal.EmptyPtr(lines) {
 		return constants.InvalidNotFoundCase
 	}
 
@@ -24,10 +24,10 @@ func OfCaseInsensitive(
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
 	}
 
-	findingStringToLower := strings.ToLower(*findingString)
+	linesNonPtr := *lines
 
 	for i := startsAtIndex; i < length; i++ {
-		if strings.ToLower((*lines)[i]) == findingStringToLower {
+		if strings.EqualFold(linesNonPtr[i], findingString) {
 			return i
 		}
 	}

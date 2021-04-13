@@ -9,11 +9,14 @@ import (
 	"strings"
 	"sync"
 
-	"gitlab.com/evatix-go/strhelper/concat"
+	"gitlab.com/evatix-go/core"
+	"gitlab.com/evatix-go/core/constants"
+
 	"gitlab.com/evatix-go/strhelper/ds/strhashset"
 	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/lines"
+	"gitlab.com/evatix-go/strhelper/strconcat"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/strs"
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 	"gitlab.com/evatix-go/strhelper/strs/strsindex"
@@ -21,8 +24,6 @@ import (
 	"gitlab.com/evatix-go/strhelper/swasync"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
-
-var emptyStrs []string
 
 // Refers to StringWrapperPointer Async alias as `swasync`
 //
@@ -34,6 +35,7 @@ var emptyStrs []string
 //  - Mostly used for cached data related. It is not used for in place line modifications.
 //  - Don't modify returned pointer object then this will give unpredictable results.
 //  - To modify, create a new one, use it as immutable object.
+//  - Unlike, corestr.Collection this Wrapper deals with static lines quick checking or something like this.
 type Wrapper struct {
 	lines                        *[]string
 	linesWrappers                *[]*swasync.StringWrapper
@@ -73,7 +75,7 @@ func (wrapper *Wrapper) Value() *[]string {
 
 func (wrapper *Wrapper) NonNullValue() []string {
 	if wrapper.lines == nil {
-		return emptyStrs
+		return *core.EmptyStringsPtr()
 	}
 
 	return *wrapper.lines
@@ -81,7 +83,7 @@ func (wrapper *Wrapper) NonNullValue() []string {
 
 func (wrapper *Wrapper) NonNullValuePtr() *[]string {
 	if wrapper.lines == nil {
-		return &emptyStrs
+		return core.EmptyStringsPtr()
 	}
 
 	return wrapper.lines
@@ -186,7 +188,7 @@ func (wrapper *Wrapper) IsAllEquals(
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil
 func (wrapper *Wrapper) IndexesOfAll(
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
@@ -209,7 +211,7 @@ func (wrapper *Wrapper) IndexesOfAll(
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil
 func (wrapper *Wrapper) IndexesOfAllLock(
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
@@ -287,11 +289,45 @@ func (wrapper *Wrapper) IsNullOrEmptyFirstItemLock() bool {
 func (wrapper *Wrapper) IsNullOrEmptyFirstItemWhitespace() bool {
 	if wrapper.isEmptyOrWhitespaceFirstItem == nil {
 		isEmptyOrWhitespaceFirstItem := wrapper.IsNullOrEmptyFirstItem() ||
-			(wrapper.length > 0 && whitespace.IsWhitespaces(&(*wrapper.lines)[0]))
+			(wrapper.length > 0 && whitespace.IsWhitespaces((*wrapper.lines)[0]))
 		wrapper.isEmptyOrWhitespaceFirstItem = &isEmptyOrWhitespaceFirstItem
 	}
 
 	return *wrapper.isEmptyOrWhitespaceFirstItem
+}
+
+func (wrapper *Wrapper) First() *string {
+	if wrapper.Length() == 0 {
+		return nil
+	}
+
+	return &(*wrapper.lines)[0]
+}
+
+func (wrapper *Wrapper) Last() *string {
+	length := wrapper.Length()
+	if length == 0 {
+		return nil
+	}
+
+	return &(*wrapper.lines)[length-1]
+}
+
+func (wrapper *Wrapper) FirstOrDefault() string {
+	if wrapper.Length() == 0 {
+		return constants.EmptyString
+	}
+
+	return (*wrapper.lines)[0]
+}
+
+func (wrapper *Wrapper) LastOrDefault() string {
+	length := wrapper.Length()
+	if length == 0 {
+		return constants.EmptyString
+	}
+
+	return (*wrapper.lines)[length-1]
 }
 
 func (wrapper *Wrapper) IsNullOrEmptyFirstItemWhitespaceLock() bool {
@@ -381,7 +417,7 @@ func (wrapper *Wrapper) GetAsWrappersLock() *[]*swasync.StringWrapper {
 func (wrapper *Wrapper) ToBytesPtr() *[]byte {
 	if wrapper.bytes == nil || *wrapper.bytes == nil {
 		// Reference : https://bit.ly/2ITGTaU
-		bytes := lines.ToUnsafeBytes(wrapper.lines)
+		bytes := strlines.ToUnsafeBytes(wrapper.lines)
 
 		wrapper.bytes = bytes
 	}
@@ -606,7 +642,9 @@ func (wrapper *Wrapper) LoopLines(
 ) *[]*string {
 	allLines := wrapper.lines
 
-	return lines.Process(
+	// content nil because we don't have any raw string.
+	// this content is only passed to the processor func.
+	return strlines.Process(
 		nil,
 		allLines,
 		&lineProcessor)
@@ -628,7 +666,9 @@ func (wrapper *Wrapper) LoopParallel(
 ) *[]*string {
 	allLines := wrapper.lines
 
-	return lines.ProcessAsync(
+	// content nil because we don't have any raw string.
+	// this content is only passed to the processor func.
+	return strlines.ProcessAsync(
 		nil,
 		allLines,
 		&lineProcessor)
@@ -640,7 +680,9 @@ func (wrapper *Wrapper) LoopParallelLock(
 ) *[]*string {
 	allLines := wrapper.lines
 
-	return lines.ProcessAsync(
+	// content nil because we don't have any raw string.
+	// this content is only passed to the processor func.
+	return strlines.ProcessAsync(
 		nil,
 		allLines,
 		&lineProcessor)
@@ -717,8 +759,8 @@ func (wrapper *Wrapper) HasLengthOf(length int) bool {
 // Warning :
 //  - It doesn't care about empty line or anything.
 //  - panic if str is nil.
-func (wrapper *Wrapper) Builder(separator *string, additionalGrowLength int) strings.Builder {
-	return concat.GetBuilder(wrapper.lines, separator, additionalGrowLength)
+func (wrapper *Wrapper) Builder(separator string, additionalGrowLength int) strings.Builder {
+	return strconcat.GetBuilder(wrapper.lines, separator, additionalGrowLength)
 }
 
 // Returns a new string builder contains text of wrapper.lines with separator and has a
@@ -727,10 +769,10 @@ func (wrapper *Wrapper) Builder(separator *string, additionalGrowLength int) str
 // Warning :
 //  - It doesn't care about empty line or anything.
 //  - panic if str is nil.
-func (wrapper *Wrapper) BuilderWithStr(separator *string, str *string, additionalGrowLength int) strings.Builder {
+func (wrapper *Wrapper) BuilderWithStr(separator string, str *string, additionalGrowLength int) strings.Builder {
 	length := len(*str)
-	builder := concat.GetBuilder(wrapper.lines, separator, additionalGrowLength+length)
-	builder.WriteString(*separator)
+	builder := strconcat.GetBuilder(wrapper.lines, separator, additionalGrowLength+length)
+	builder.WriteString(separator)
 	builder.WriteString(*str)
 
 	return builder
@@ -746,16 +788,16 @@ func (wrapper *Wrapper) Prepend(contents ...string) *[]string {
 
 // Prepends array @contents before @StringWrapper.Lines()
 //
-// Look for more details in concat.ArraysOfArraysToArray
+// Look for more details in strconcat.ArraysOfArraysToArray
 func (wrapper *Wrapper) Prepends(
 	isSkipEmptyOrNil bool,
 	skipFilter *strhashset.Hashset,
 	contents *[]string,
 ) *[]string {
-	combinedResult := concat.ArraysOfArraysToArray(
+	combinedResult := strconcat.ArraysOfArraysToArray(
 		isSkipEmptyOrNil,
 		skipFilter,
-		contents,      // pre
+		contents, // pre
 		wrapper.lines) // post
 
 	return combinedResult
@@ -774,7 +816,7 @@ func (wrapper *Wrapper) Prepends(
 //  - If final string compiled string from contents is a whitespace then ignored.
 //
 // @separator:
-//  - used to concat each strings / elements.
+//  - used to strconcat each strings / elements.
 //
 // @Returns:
 //  - @isSkipEmptyOrNil false , @combinedContents + separator + @StringWrapper.Value()
@@ -788,8 +830,8 @@ func (wrapper *Wrapper) PrependAsString(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *string {
-	combinedResult := concat.CombineArrayWithAnotherUsingSeparator(
-		&separator,
+	combinedResult := strconcat.CombineArrayWithAnotherUsingSeparator(
+		separator,
 		isSkipOnEmpty,
 		contents,
 		wrapper.lines)
@@ -803,16 +845,16 @@ func (wrapper *Wrapper) AsString(
 	isSkipOnEmpty bool,
 ) *string {
 	if isSkipOnEmpty {
-		combinedResult := concat.JoinPtrExceptEmpty(
+		combinedResult := strconcat.JoinPtrExceptEmpty(
 			wrapper.lines,
-			&separator)
+			separator)
 
 		return &combinedResult
 	}
 
-	combinedResult := concat.JoinPtr(
+	combinedResult := strconcat.JoinPtr(
 		wrapper.lines,
-		&separator)
+		separator)
 
 	return &combinedResult
 }
@@ -823,11 +865,11 @@ func (wrapper *Wrapper) ConcatAsString(
 	isSkipOnEmpty bool,
 	contents *[]string,
 ) *string {
-	combinedResult := concat.CombineArrayWithAnotherUsingSeparator(
-		&separator,
+	combinedResult := strconcat.CombineArrayWithAnotherUsingSeparator(
+		separator,
 		isSkipOnEmpty,
 		wrapper.lines, // pre
-		contents)      // post
+		contents) // post
 
 	return &combinedResult
 }
@@ -849,7 +891,7 @@ func (wrapper *Wrapper) Concatenates(
 	skipFilter *strhashset.Hashset,
 	contents *[]string,
 ) *[]string {
-	combinedResult := concat.ArraysOfArraysToArray(
+	combinedResult := strconcat.ArraysOfArraysToArray(
 		isSkipEmptyOrNil,
 		skipFilter,
 		wrapper.lines, // pre
@@ -904,7 +946,7 @@ func (wrapper *Wrapper) LastIndexOf(
 ) int {
 	return strsindex.OfLastPtr(
 		wrapper.lines,
-		&search,
+		search,
 		lastStartIndexReducedBy,
 		isCaseSensitive)
 }
@@ -915,7 +957,7 @@ func (wrapper *Wrapper) ReversePtr() *[]string {
 }
 
 func (wrapper *Wrapper) LastIndexOfPtr(
-	search *string,
+	search string,
 	lastStartIndexReducedBy int,
 	isCaseSensitive bool,
 ) int {
@@ -931,7 +973,7 @@ func (wrapper *Wrapper) LastIndexOfPtr(
 //
 // Use direct isstr.ContainsPtr will be faster
 func (wrapper *Wrapper) IsContains(
-	search *string,
+	search string,
 	isCaseSensitive bool,
 	startsAt int,
 ) bool {
@@ -945,7 +987,7 @@ func (wrapper *Wrapper) IsContains(
 // Has is alias of IsContains and returns true if the search text contains any where in the text after the start index.
 //
 // Use direct isstr.ContainsPtr will be faster
-func (wrapper *Wrapper) Has(search *string) bool {
+func (wrapper *Wrapper) Has(search string) bool {
 	return isstrs.Contains(
 		wrapper.lines,
 		search,
@@ -958,7 +1000,7 @@ func (wrapper *Wrapper) HasAll(searchTerms ...string) bool {
 	for _, searchTerm := range searchTerms {
 		if isstrs.Contains(
 			wrapper.lines,
-			&searchTerm,
+			searchTerm,
 			0,
 			true) == false {
 			// not found
@@ -975,7 +1017,7 @@ func (wrapper *Wrapper) HasAny(searchTerms ...string) bool {
 	for _, searchTerm := range searchTerms {
 		if isstrs.Contains(
 			wrapper.lines,
-			&searchTerm,
+			searchTerm,
 			0,
 			true) {
 			// any found

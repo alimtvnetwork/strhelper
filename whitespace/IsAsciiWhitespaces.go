@@ -1,5 +1,7 @@
 package whitespace
 
+import "gitlab.com/evatix-go/core/constants"
+
 // Returns true for ASCII spaces only. Returns false for unicode whitespaces.
 //
 // If there is any unicode space it will count as character and return false.
@@ -11,13 +13,19 @@ package whitespace
 //
 // References:
 //  - https://play.golang.org/p/78uFF8s-Dw1
-func IsAsciiWhitespaces(s *string) bool {
-	length := len(*s)
-	mid := length / 2 // 5/2 should return 2
+func IsAsciiWhitespaces(s string) bool {
+	if s == constants.EmptyString || s == doubleSpace || s == tripleSpace {
+		return true
+	}
+
+	length := len(s)
+	// 5/2 should return 2
+	mid := length / 2
 	lastIndex := length - 1
+
 	for i := 0; i <= mid; i++ {
-		char := (*s)[i]
-		if !(asciiSpaces[char] == 1) {
+		char := s[i]
+		if !(asciiSpaces[char] == constants.One) {
 			return false
 		}
 
@@ -27,9 +35,9 @@ func IsAsciiWhitespaces(s *string) bool {
 		}
 
 		lastIndex = lastIndex - i
-		char = (*s)[lastIndex]
+		char = s[lastIndex]
 
-		if !(asciiSpaces[char] == 1) {
+		if !(asciiSpaces[char] == constants.One) {
 			return false
 		}
 	}

@@ -13,9 +13,11 @@ import "unicode"
 // References:
 //  - https://play.golang.org/p/78uFF8s-Dw1
 func IsRunesWhitespaces(runes *[]rune) bool {
-	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)
+	// len(s) represents length in bytes so
+	// if there any unicode char it will not match with len(runes)
 	length := len(*runes)
-	mid := length / 2 // 5/2 should return 2
+	// 5/2 should return 2
+	mid := length / 2
 	lastIndex := length - 1
 	var r rune
 	for i := 0; i <= mid; i++ {
