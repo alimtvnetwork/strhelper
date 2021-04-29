@@ -265,20 +265,14 @@ func (wrapper *Wrapper) JsonParseSelfInject(
 	return err
 }
 
-func (wrapper *Wrapper) AsJsoner() *corejson.Jsoner {
-	var jsoner corejson.Jsoner = wrapper
-
-	return &jsoner
+func (wrapper *Wrapper) AsJsoner() corejson.Jsoner {
+	return wrapper
 }
 
-func (wrapper *Wrapper) AsJsonParseSelfInjector() *corejson.ParseSelfInjector {
-	var jsonInjector corejson.ParseSelfInjector = wrapper
-
-	return &jsonInjector
+func (wrapper *Wrapper) AsJsonParseSelfInjector() corejson.JsonParseSelfInjector {
+	return wrapper
 }
 
-func (wrapper *Wrapper) AsJsonMarshaller() *corejson.JsonMarshaller {
-	var jsonMarshaller corejson.JsonMarshaller = wrapper
-
-	return &jsonMarshaller
+func (wrapper *Wrapper) AsJsonMarshaller() corejson.JsonMarshaller {
+	return wrapper
 }
