@@ -7,9 +7,13 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/messages"
 )
 
-// returns -1 on non found case
+// OfCaseSensitive returns -1 on non found case
 // panics if any is nil
-func OfCaseSensitive(s, findingString *string, startsAt int) int {
+func OfCaseSensitive(
+	s,
+	findingString *string,
+	startsAt int,
+) int {
 	if s == nil || findingString == nil {
 		panic(messages.SearchNullPanicMessage)
 	}

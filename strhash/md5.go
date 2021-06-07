@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	// nil or empty string hash is same https://play.golang.org/p/cdq61I5eO2g
+	// EmptyMd5Hash nil or empty string hash is same https://play.golang.org/p/cdq61I5eO2g
 	EmptyMd5Hash       = md5.Sum([]byte(""))
 	EmptyMd5HashString = hex.EncodeToString(EmptyMd5Hash[:])
 )
