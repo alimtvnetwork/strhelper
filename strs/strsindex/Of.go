@@ -7,7 +7,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 )
 
-// Returns the index where the string first found, rest don't care
+// Of Returns the index where the string first found, rest don't care
 func Of(
 	lines *[]string,
 	findingString string,

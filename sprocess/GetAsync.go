@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-// Runs loop in async mode (in golang starts with go).
+// GetAsync Runs loop in async mode (in golang starts with go).
 //
 // It requires more memory to deal with parallel execution.
 //

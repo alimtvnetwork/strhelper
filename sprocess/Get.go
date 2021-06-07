@@ -1,4 +1,3 @@
-// Simple processor for generic line type.
 package sprocess
 
 import (
