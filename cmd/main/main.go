@@ -28,7 +28,7 @@ func main() {
 		"Line 3",
 	}
 
-	slice := strhelper.MergeSlices(&leftLines, &rightLines, &leftLines)
+	slice := strhelper.MergeSlice(leftLines, rightLines...)
 
 	fmt.Println(slice)
 
