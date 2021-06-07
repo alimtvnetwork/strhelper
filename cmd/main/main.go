@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"gitlab.com/evatix-go/strhelper"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
@@ -26,6 +27,10 @@ func main() {
 		"Line 2",
 		"Line 3",
 	}
+
+	slice := strhelper.MergeSlice(leftLines, rightLines...)
+
+	fmt.Println(slice)
 
 	comparedResult := strlines.Compare(&leftLines, &rightLines, 0, false, true)
 
