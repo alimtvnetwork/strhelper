@@ -7,9 +7,9 @@ import (
 	"gitlab.com/evatix-go/core/coreindexes"
 )
 
-func IntoTwo(s, separator string) (left, right string) {
+func IntoTwoPtr(s, separator *string) (left, right string) {
 	splits := strings.SplitN(
-		s, separator,
+		*s, *separator,
 		constants.Two)
 
 	length := len(splits)

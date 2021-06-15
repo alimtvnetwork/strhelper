@@ -2,7 +2,7 @@ package splits
 
 import "gitlab.com/evatix-go/strhelper/strhelpercore"
 
-// Multiple split occur from the given array of splits.
+// Many Multiple split occur from the given array of splits.
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //

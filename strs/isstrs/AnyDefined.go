@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/isstr"
 )
 
-// Returns:
+// AnyDefined Returns:
 //  - false : if @lines are nil.
 //  - true : if all @lines are defined (not whitespace or empty or nil)
 func AnyDefined(lines *[]string) bool {

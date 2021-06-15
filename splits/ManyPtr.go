@@ -9,7 +9,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
-// Multiple split occur from the given array of splits.
+// ManyPtr Multiple split occur from the given array of splits.
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //

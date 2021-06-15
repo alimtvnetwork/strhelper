@@ -71,7 +71,7 @@ func (anyItems *AnyItems) Add(any interface{}, isSkipOnNil bool) bool {
 	return false
 }
 
-// Add returns true upon add item.
+// AddPtr Add returns true upon add item.
 func (anyItems *AnyItems) AddPtr(anyPtr *interface{}, isSkipOnNil bool) bool {
 	if anyPtr != nil && *anyPtr != nil {
 		*anyItems.Items = append(*anyItems.Items, anyPtr)
@@ -88,7 +88,7 @@ func (anyItems *AnyItems) AddPtr(anyPtr *interface{}, isSkipOnNil bool) bool {
 	return false
 }
 
-// Add returns true upon add item.
+// AddPtrLock Add returns true upon add item.
 func (anyItems *AnyItems) AddPtrLock(anyPtr *interface{}, isSkipOnNil bool) bool {
 	anyItems.Lock()
 	defer anyItems.Unlock()
@@ -223,7 +223,7 @@ func (anyItems *AnyItems) ToBytesPtr() *[]byte {
 	return bytes
 }
 
-// ToBytesWithError creates []byte pointer using *AnyItems.Items
+// ToBytes ToBytesWithError creates []byte pointer using *AnyItems.Items
 func (anyItems *AnyItems) ToBytes() []byte {
 	bytes := anyItems.ToBytesPtr()
 
@@ -234,7 +234,7 @@ func (anyItems *AnyItems) ToBytes() []byte {
 	return nil
 }
 
-// ToBytesWithError creates BytesWithError pointer using *AnyItems.Items
+// ToBytesWithErrorLock ToBytesWithError creates BytesWithError pointer using *AnyItems.Items
 func (anyItems *AnyItems) ToBytesWithErrorLock() *BytesWithError {
 	anyItems.Lock()
 	defer anyItems.Unlock()

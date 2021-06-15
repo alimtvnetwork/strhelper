@@ -8,7 +8,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 )
 
-// It is useful for generic wrap & unwrap tasks.
+// WrapUnWrap It is useful for generic wrap & unwrap tasks.
 type WrapUnWrap struct {
 	// Represents left side
 	Start *string
@@ -16,7 +16,7 @@ type WrapUnWrap struct {
 	End *string
 }
 
-// @IsLeftFound:
+// WrapStatus @IsLeftFound:
 //  - Indicates whether WrapUnWrap.Start is present in the left side as a start word
 // @IsRightFound:
 //  - Indicates whether WrapUnWrap.End is present in the right side as an ending word
@@ -82,21 +82,21 @@ func (wrapUnwrap *WrapUnWrap) IsEquals(another *WrapUnWrap) bool {
 		isstrinternal.EqualsPtr(wrapUnwrap.End, another.End)
 }
 
-// Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.
+// Wrap Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.
 func (wrapUnwrap *WrapUnWrap) Wrap(input string) string {
 	wrapped := *wrapUnwrap.Start + input + *wrapUnwrap.End
 
 	return wrapped
 }
 
-// Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.
+// WrapPtr Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End without checking anything.
 func (wrapUnwrap *WrapUnWrap) WrapPtr(input *string) *string {
 	wrapped := *wrapUnwrap.Start + *input + *wrapUnwrap.End
 
 	return &wrapped
 }
 
-// Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End checking.
+// WrapByChecking Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End checking.
 //
 // Conditions:
 //  - if input start has WrapUnWrap.Start then skips adding for WrapUnWrap.Start.
@@ -106,7 +106,7 @@ func (wrapUnwrap *WrapUnWrap) WrapByChecking(input string, isCaseSensitive bool)
 	return *wrapUnwrap.WrapByCheckingPtr(&input, isCaseSensitive)
 }
 
-// Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End checking.
+// WrapByCheckingPtr Wraps the given input string with WrapUnWrap.Start & WrapUnWrap.End checking.
 //
 // Conditions:
 //  - if input start has WrapUnWrap.Start then skips adding for WrapUnWrap.Start.
@@ -136,28 +136,29 @@ func (wrapUnwrap *WrapUnWrap) WrapByCheckingPtr(input *string, isCaseSensitive b
 	return input
 }
 
-// returns true if input has WrapUnWrap.Start at the beginning and end contains end of WrapUnWrap.End
+// HasStartEndBoth returns true if input has
+// WrapUnWrap.Start at the beginning and end contains end of WrapUnWrap.End
 func (wrapUnwrap *WrapUnWrap) HasStartEndBoth(input *string, isCaseSensitive bool) bool {
 	status := wrapUnwrap.WrapStatus(input, isCaseSensitive)
 
 	return status.IsRightFound && status.IsLeftFound
 }
 
-// returns true if input has WrapUnWrap.Start at the beginning
+// HasStartAtBeginning returns true if input has WrapUnWrap.Start at the beginning
 func (wrapUnwrap *WrapUnWrap) HasStartAtBeginning(input *string, isCaseSensitive bool) bool {
 	status := wrapUnwrap.WrapStatus(input, isCaseSensitive)
 
 	return status.IsLeftFound
 }
 
-// returns true if input has WrapUnWrap.End at the end
+// HasEndAtEnding returns true if input has WrapUnWrap.End at the end
 func (wrapUnwrap *WrapUnWrap) HasEndAtEnding(input *string, isCaseSensitive bool) bool {
 	status := wrapUnwrap.WrapStatus(input, isCaseSensitive)
 
 	return status.IsLeftFound
 }
 
-// Checks first if the start exists on the left if so then unwraps it.
+// Unwrap Checks first if the start exists on the left if so then unwraps it.
 //
 // Checks if the end exists on the right if so then unwraps it.
 //
@@ -166,7 +167,7 @@ func (wrapUnwrap *WrapUnWrap) Unwrap(input string, isCaseSensitive bool) string 
 	return wrapUnwrap.UnwrapPtr(&input, isCaseSensitive)
 }
 
-// Checks first if the start exists on the left if so then unwraps it.
+// UnwrapPtr Checks first if the start exists on the left if so then unwraps it.
 //
 // Checks if the end exists on the right if so then unwraps it.
 //
@@ -190,7 +191,7 @@ func (wrapUnwrap *WrapUnWrap) UnwrapPtr(input *string, isCaseSensitive bool) str
 	return *input
 }
 
-// Returns WrapStatus contains found information of the wrapper start and end.
+// WrapStatus Returns WrapStatus contains found information of the wrapper start and end.
 //
 // Where IsLeftFound if found as a starting word.
 // Where IsRightFound if found as an ending word.
