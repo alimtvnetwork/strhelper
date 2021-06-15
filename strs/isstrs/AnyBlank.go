@@ -2,7 +2,7 @@ package isstrs
 
 import "gitlab.com/evatix-go/strhelper/isstr"
 
-// Returns:
+// AnyBlank Returns:
 //  - true : if @lines are nil.
 //  - true : if any line in lines is blank (whitespace or empty or nil)
 func AnyBlank(lines *[]string) bool {

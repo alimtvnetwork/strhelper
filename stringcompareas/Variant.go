@@ -12,6 +12,18 @@ const (
 	NotEqual
 )
 
+func (receiver *Variant) Name() string {
+	return basicEnumImpl.ToEnumString(receiver.ValueByte())
+}
+
+func (receiver *Variant) ToNumberString() string {
+	return basicEnumImpl.ToNumberString(receiver.ValueByte())
+}
+
+func (receiver *Variant) UnmarshallEnumToValue(jsonUnmarshallingValue []byte) (byte, error) {
+	return basicEnumImpl.UnmarshallEnumToValue(jsonUnmarshallingValue)
+}
+
 func (receiver *Variant) String() string {
 	return basicEnumImpl.ToEnumString(receiver.ValueByte())
 }
@@ -21,7 +33,7 @@ func (receiver *Variant) MarshalJSON() ([]byte, error) {
 }
 
 func (receiver *Variant) UnmarshalJSON(data []byte) error {
-	rawScriptType, err := basicEnumImpl.JsonBytesToValue(data)
+	rawScriptType, err := basicEnumImpl.UnmarshallEnumToValue(data)
 
 	if err != nil {
 		*receiver = Variant(rawScriptType)
@@ -52,6 +64,30 @@ func (receiver *Variant) RangesByte() []byte {
 
 func (receiver *Variant) IsLineCompareFunc() IsLineCompareFunc {
 	return rangesMap[*receiver]
+}
+
+func (receiver *Variant) IsCompareSuccess(
+	content, search string,
+	isCaseSensitive bool,
+) bool {
+	return receiver.IsLineCompareFunc()(
+		content,
+		search,
+		isCaseSensitive)
+}
+
+func (receiver *Variant) IsCompareSuccessCaseSensitive(content, search string) bool {
+	return receiver.IsLineCompareFunc()(
+		content,
+		search,
+		true)
+}
+
+func (receiver *Variant) IsCompareSuccessNonCaseSensitive(content, search string) bool {
+	return receiver.IsLineCompareFunc()(
+		content,
+		search,
+		false)
 }
 
 func (receiver *Variant) AsBasicByteEnumContractsBinder() coreinterface.BasicByteEnumContractsBinder {

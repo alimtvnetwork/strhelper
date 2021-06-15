@@ -7,16 +7,16 @@ import (
 	"gitlab.com/evatix-go/core/coreindexes"
 )
 
-func IntoTwo(s, separator string) (left, right string) {
+func IntoTwoTrimSpacePtr(s, separator *string) (left, right string) {
 	splits := strings.SplitN(
-		s, separator,
+		*s, *separator,
 		constants.Two)
 
 	length := len(splits)
-	first := splits[coreindexes.First]
+	first := strings.TrimSpace(splits[coreindexes.First])
 
 	if length == constants.Two {
-		return first, splits[coreindexes.Second]
+		return first, strings.TrimSpace(splits[coreindexes.Second])
 	}
 
 	return first, constants.EmptyString

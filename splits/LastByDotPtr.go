@@ -1,16 +1,14 @@
 package splits
 
-import (
-	"gitlab.com/evatix-go/core/constants"
-)
+import "gitlab.com/evatix-go/core/constants"
 
-func LastByDot(s string) *[]string {
-	if s == "" {
+func LastByDotPtr(s *string) *[]string {
+	if s == nil || *s == "" {
 		return defaultResult()
 	}
 
 	return LastByLimitPtr(
-		&s,
+		s,
 		constants.DotPtr,
 		true,
 		constants.MinusOne)

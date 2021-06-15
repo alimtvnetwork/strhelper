@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/core/osconsts"
 
 	"gitlab.com/evatix-go/strhelper/chars"
@@ -24,7 +25,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
-// Refers to StringWrapperPointer (swp)
+// StringWrapper Refers to StringWrapperPointer (swp)
 //
 // Thread safety NOT guaranteed
 //
@@ -34,8 +35,8 @@ type StringWrapper struct {
 	lowerContent        *string
 	upperContent        *string
 	trimmedSpaceContent *string
-	isNullOrEmpty       *bool
-	isEmptyOrWhitespace *bool
+	isNullOrEmpty       issetter.Value
+	isEmptyOrWhitespace issetter.Value
 	uint8s              *[]uint8
 	bytes               *[]byte
 	runes               *[]rune
@@ -170,7 +171,7 @@ func (stringWrapper *StringWrapper) ManyIndexesOfAll(
 		isCaseSensitive)
 }
 
-// Returns true based on text compare case sensitive.
+// IsSensitiveEquals Returns true based on text compare case sensitive.
 func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 	if s == nil {
 		return false
@@ -183,10 +184,10 @@ func (stringWrapper *StringWrapper) IsSensitiveEquals(s *string) bool {
 //
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
-	if stringWrapper.isEmptyOrWhitespace == nil {
+	if stringWrapper.isEmptyOrWhitespace.IsUninitialized() {
 		value := stringWrapper.content
 		isEmptyOrNull := value == nil || *value == constants.EmptyString || stringWrapper.lengthInBytes == 0
-		stringWrapper.isNullOrEmpty = &isEmptyOrNull
+		stringWrapper.isNullOrEmpty = issetter.GetBool(isEmptyOrNull)
 		isEmptyOrWhitespace := isEmptyOrNull
 
 		if isEmptyOrNull == false {
@@ -194,13 +195,13 @@ func (stringWrapper *StringWrapper) IsNullOrEmpty() bool {
 			isEmptyOrWhitespace = whitespace.IsRunesWhitespaces(allRunes)
 		}
 
-		stringWrapper.isEmptyOrWhitespace = &isEmptyOrWhitespace
+		stringWrapper.isEmptyOrWhitespace = issetter.GetBool(isEmptyOrWhitespace)
 	}
 
-	return *stringWrapper.isNullOrEmpty
+	return stringWrapper.isNullOrEmpty.IsTrue()
 }
 
-// IsNull(s) || IsNullOrEmpty(s)
+// IsNull IsNull(s) || IsNullOrEmpty(s)
 func (stringWrapper *StringWrapper) IsNull() bool {
 	return stringWrapper.content == nil
 }
@@ -209,7 +210,7 @@ func (stringWrapper *StringWrapper) IsNull() bool {
 //
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) IsNullOrWhitespace() bool {
-	return stringWrapper.IsNullOrEmpty() || *stringWrapper.isEmptyOrWhitespace
+	return stringWrapper.IsNullOrEmpty() || stringWrapper.isEmptyOrWhitespace.IsTrue()
 }
 
 // Trimmed space string (use caching, doesn't run multiple times)
@@ -256,7 +257,7 @@ func (stringWrapper *StringWrapper) GetLines() *[]string {
 	return stringWrapper.lines
 }
 
-// GetLines splits by newline using unix Split `\n`
+// GetUnixLines splits by newline using unix Split `\n`
 //
 // Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) GetUnixLines() *[]string {
@@ -306,7 +307,7 @@ func (stringWrapper *StringWrapper) GetUnixLinesAsWrappers() *[]*StringWrapper {
 	return &wrappers
 }
 
-// get uint8 array
+// ToUInt8s get uint8 array
 func (stringWrapper *StringWrapper) ToUInt8s() []uint8 {
 	return *stringWrapper.ToUInt8sPtr()
 }
@@ -322,14 +323,15 @@ func (stringWrapper *StringWrapper) ToUInt8sPtr() *[]uint8 {
 	return stringWrapper.uint8s
 }
 
-// get bytes array
+// ToBytes get bytes array
 func (stringWrapper *StringWrapper) ToBytes() []byte {
 	return *stringWrapper.ToBytesPtr()
 }
 
-// get bytes array ptr
+// ToBytesPtr get bytes array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel
+// programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
 	if stringWrapper.bytes == nil || *stringWrapper.bytes == nil {
 		allBytes := []byte(*stringWrapper.content)
@@ -340,14 +342,15 @@ func (stringWrapper *StringWrapper) ToBytesPtr() *[]byte {
 	return stringWrapper.bytes
 }
 
-// get rune array
+// ToRunes get rune array
 func (stringWrapper *StringWrapper) ToRunes() []rune {
 	return *stringWrapper.ToRunesPtr()
 }
 
-// get rune array ptr
+// ToRunesPtr get rune array ptr
 //
-// Thread safety is NOT guaranteed, for parallel programming use swasync.StringWrapper pointer for async mode.
+// Thread safety is NOT guaranteed, for parallel
+// programming use swasync.StringWrapper pointer for async mode.
 func (stringWrapper *StringWrapper) ToRunesPtr() *[]rune {
 	if (stringWrapper.runes == nil || *stringWrapper.runes == nil) && !stringWrapper.IsNull() {
 		runes := []rune(*stringWrapper.content)
@@ -382,17 +385,17 @@ func (stringWrapper *StringWrapper) ToUpperRunesPtr() *[]rune {
 	return stringWrapper.upperRunes
 }
 
-// returns true if IsNullOrWhitespace(s)
+// IsBlank returns true if IsNullOrWhitespace(s)
 func (stringWrapper *StringWrapper) IsBlank() bool {
 	return stringWrapper.IsNullOrWhitespace()
 }
 
-// Has at least one character other than space or whitespace
+// HasCharacter Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) HasCharacter() bool {
 	return !stringWrapper.IsNullOrWhitespace()
 }
 
-// Has at least one character other than space or whitespace
+// IsDefined Has at least one character other than space or whitespace
 func (stringWrapper *StringWrapper) IsDefined() bool {
 	return !stringWrapper.IsNullOrWhitespace()
 }
@@ -437,17 +440,17 @@ func (stringWrapper *StringWrapper) ToLowerWrapper() StringWrapper {
 	return *stringWrapper.ToLowerWrapperPtr()
 }
 
-// Returns strings to upper case as StringWrapper
+// ToUpperWrapper Returns strings to upper case as StringWrapper
 func (stringWrapper *StringWrapper) ToUpperWrapper() StringWrapper {
 	return *stringWrapper.ToUpperWrapperPtr()
 }
 
-// Returns strings to upper case as StringWrapper
+// ToUpperWrapperPtr Returns strings to upper case as StringWrapper
 func (stringWrapper *StringWrapper) ToUpperWrapperPtr() *StringWrapper {
 	return New(stringWrapper.ToUpperPtr())
 }
 
-// Returns character at the given index, if not exist then panic.
+// At Returns character at the given index, if not exist then panic.
 //
 // Slower than direct access
 //
@@ -456,7 +459,7 @@ func (stringWrapper *StringWrapper) At(index int) uint8 {
 	return stringWrapper.ToUInt8s()[index]
 }
 
-// Loops through all the rune characters
+// LoopRunes Loops through all the rune characters
 //
 // Slower than direct access
 func (stringWrapper *StringWrapper) LoopRunes(
@@ -479,7 +482,7 @@ func (stringWrapper *StringWrapper) LoopRunes(
 	return &newStrings
 }
 
-// Loops through all the rune characters
+// LoopRunesToGetAnys Loops through all the rune characters
 //
 // Slower than direct access
 func (stringWrapper *StringWrapper) LoopRunesToGetAnys(
@@ -502,7 +505,7 @@ func (stringWrapper *StringWrapper) LoopRunesToGetAnys(
 	return &results
 }
 
-// Loops through all the rune characters
+// LoopRunesToGetRunes Loops through all the rune characters
 //
 // Slower than direct access
 func (stringWrapper *StringWrapper) LoopRunesToGetRunes(
@@ -525,7 +528,7 @@ func (stringWrapper *StringWrapper) LoopRunesToGetRunes(
 	return &newRunes
 }
 
-// Loops through all the lines.
+// LoopLinesToStringArray Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
@@ -537,7 +540,7 @@ func (stringWrapper *StringWrapper) LoopLinesToStringArray(
 		&lineProcessor)
 }
 
-// Loops through all the lines.
+// LoopUnixLinesToStringArray Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
@@ -549,7 +552,7 @@ func (stringWrapper *StringWrapper) LoopUnixLinesToStringArray(
 		&lineProcessor)
 }
 
-// Loops through all the lines.
+// LoopParallelUnixLinesToStringArray Loops through all the lines.
 func (stringWrapper *StringWrapper) LoopParallelUnixLinesToStringArray(
 	lineProcessor strhelpercore.LineProcessor,
 ) *[]*string {
@@ -608,17 +611,17 @@ func (stringWrapper *StringWrapper) IsEqualAtIndex(
 	return chars.IsMatchCaseInsensitive(valueAt, char)
 }
 
-// stringWrapper.BytesLength()-1 >= index
+// HasIndex stringWrapper.BytesLength()-1 >= index
 func (stringWrapper *StringWrapper) HasIndex(index int) bool {
 	return stringWrapper.BytesLength()-1 >= index
 }
 
-// stringWrapper.Length()-1 >= index
+// HasRuneIndex stringWrapper.Length()-1 >= index
 func (stringWrapper *StringWrapper) HasRuneIndex(index int) bool {
 	return stringWrapper.Length()-1 >= index
 }
 
-// Returns a new string builder contains text of stringWrapper and has a
+// Builder Returns a new string builder contains text of stringWrapper and has a
 // growth = stringWrapper.lengthInBytes + additionalGrowLength
 func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Builder {
 	builder := strings.Builder{}
@@ -629,7 +632,7 @@ func (stringWrapper *StringWrapper) Builder(additionalGrowLength int) strings.Bu
 	return builder
 }
 
-// Returns a new string builder contains text of stringWrapper + str and has a
+// BuilderWithStr Returns a new string builder contains text of stringWrapper + str and has a
 // growth = stringWrapper.lengthInBytes + additionalGrowLength + len(str)
 func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLength int) strings.Builder {
 	builder := strings.Builder{}
@@ -642,7 +645,7 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 	return builder
 }
 
-// Add the contents before the content of StringWrapper.Value()
+// Prepend Add the contents before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
 		constants.EmptyString,
@@ -650,7 +653,7 @@ func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 		&contents)
 }
 
-// Line is the separator for add the content before the content of StringWrapper.Value()
+// PrependLines Line is the separator for add the content before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) PrependLines(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
 		constants.NewLine,
@@ -832,7 +835,7 @@ func (stringWrapper *StringWrapper) Concatenates(
 	return New(&combinedResult)
 }
 
-// combine current wrapper strings + all given ones with given separator and returns as wrapper
+// ConcatPtrStr combine current wrapper strings + all given ones with given separator and returns as wrapper
 func (stringWrapper *StringWrapper) ConcatPtrStr(
 	separator string,
 	isSkipOnEmpty bool,
@@ -866,7 +869,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	return New(&replacedText)
 }
 
-// For better performance use Ptr version.
+// Replace For better performance use Ptr version.
 func (stringWrapper *StringWrapper) Replace(
 	search,
 	replaceText string,
@@ -1004,7 +1007,7 @@ func (stringWrapper *StringWrapper) LastIndexOfPtr(
 		isCaseSensitive)
 }
 
-// For better performance use isstr.StartsWithPtr
+// IsStartsWith For better performance use isstr.StartsWithPtr
 func (stringWrapper *StringWrapper) IsStartsWith(
 	search string,
 	isCaseSensitive bool,
@@ -1017,7 +1020,7 @@ func (stringWrapper *StringWrapper) IsStartsWith(
 		isCaseSensitive)
 }
 
-// Use direct isstr.EndsWithPtr will be faster
+// IsEndsWith Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWith(
 	endsWith string,
 	isCaseSensitive bool,
@@ -1030,7 +1033,7 @@ func (stringWrapper *StringWrapper) IsEndsWith(
 		isCaseSensitive)
 }
 
-// Use direct isstr.EndsWithPtr will be faster
+// IsEndsWithPtr Use direct isstr.EndsWithPtr will be faster
 func (stringWrapper *StringWrapper) IsEndsWithPtr(
 	endsWith *string,
 	isCaseSensitive bool,

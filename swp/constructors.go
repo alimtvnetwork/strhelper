@@ -11,8 +11,6 @@ func New(stringInput *string) *StringWrapper {
 		content:             stringInput,
 		trimmedSpaceContent: nil,
 		lengthInBytes:       length,
-		isNullOrEmpty:       nil,
-		isEmptyOrWhitespace: nil,
 		uint8s:              nil,
 		bytes:               nil,
 		runes:               nil,

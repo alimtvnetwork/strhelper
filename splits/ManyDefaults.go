@@ -2,7 +2,7 @@ package splits
 
 import "gitlab.com/evatix-go/strhelper/strhelpercore"
 
-// ManyDefaultsPtr Multiple split occur from the given array of splits.
+// ManyDefaults Multiple split occur from the given array of splits.
 //
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
@@ -12,12 +12,12 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 //  - Given as `0`
 // isCaseSensitive (default):
 //  - true
-func ManyDefaultsPtr(
-	str *string,
+func ManyDefaults(
+	str string,
 	splitsBy ...string,
 ) *strhelpercore.SplitResultOverview {
 	return ManyPtr(
-		str,
+		&str,
 		&splitsBy,
 		0,
 		-1,

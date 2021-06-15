@@ -27,7 +27,7 @@ func Test_LastByRune(t *testing.T) {
 		expected := testCase.ExpectedAsStringsArray()
 
 		// Act
-		actual := splits.LastByRune(
+		actual := splits.LastByRunePtr(
 			&testCase.Content,
 			testCase.SearchingContent,
 			testCase.Limits,

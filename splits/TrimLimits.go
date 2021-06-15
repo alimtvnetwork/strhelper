@@ -2,6 +2,7 @@ package splits
 
 import "strings"
 
+// TrimLimits first splits by the separator and then trim each line by trimCutter and up to the limit given
 func TrimLimits(
 	s, sep string,
 	trimCutter string,

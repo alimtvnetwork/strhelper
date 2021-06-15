@@ -2,7 +2,7 @@ package isstrs
 
 import "gitlab.com/evatix-go/strhelper/isstr"
 
-// Returns:
+// AllDefined Returns:
 //  - false : if @lines are nil.
 //  - true : if all defined (NOT whitespace or empty or nil)
 func AllDefined(lines *[]string) bool {

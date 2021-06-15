@@ -2,12 +2,12 @@ package splits
 
 import "gitlab.com/evatix-go/core/constants"
 
-func LastByForwardSlash(
-	s string,
+func LastByForwardSlashPtr(
+	s *string,
 	limits int,
 ) *[]string {
 	return LastByRunePtr(
-		&s,
+		s,
 		constants.ForwardRune,
 		limits)
 }
