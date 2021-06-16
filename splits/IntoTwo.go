@@ -21,5 +21,3 @@ func IntoTwo(s, separator string) (left, right string) {
 
 	return first, constants.EmptyString
 }
-
-

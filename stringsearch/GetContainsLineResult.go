@@ -4,7 +4,6 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-
 func GetContainsLineResult(
 	contentsLines []string,
 	substrSearchLine string,
@@ -17,4 +16,3 @@ func GetContainsLineResult(
 		&contentsLines,
 		substrSearchLine)
 }
-
