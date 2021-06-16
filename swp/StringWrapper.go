@@ -645,7 +645,7 @@ func (stringWrapper *StringWrapper) BuilderWithStr(str *string, additionalGrowLe
 	return builder
 }
 
-// Prepend Add the contents before the content of StringWrapper.Value()
+// Prepend AddFoundOnly the contents before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
 		constants.EmptyString,
