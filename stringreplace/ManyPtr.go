@@ -1,23 +1,6 @@
-package replace
+package stringreplace
 
-import (
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-)
-
-func Many(
-	text string,
-	searchReplaceMap map[string]string,
-	startsAt int,
-	howManyReplace int,
-	isCaseSensitive bool,
-) string {
-	return ManyPtr(
-		&text,
-		&searchReplaceMap,
-		startsAt,
-		howManyReplace,
-		isCaseSensitive)
-}
+import "gitlab.com/evatix-go/strhelper/strhelpercore"
 
 func ManyPtr(
 	text *string,
@@ -45,16 +28,4 @@ func ManyPtr(
 	return ManyUsingRequests(
 		text,
 		&searchReplaceRequestMap)
-}
-
-func ManyUsingRequests(
-	text *string,
-	searchReplaceMap *map[string]strhelpercore.ReplaceIndividualRequest,
-) string {
-	request := strhelpercore.ReplaceRequestMultiple{
-		Text:             text,
-		SearchReplaceMap: searchReplaceMap,
-	}
-
-	return replaceMultipleInternalPtr(&request)
 }

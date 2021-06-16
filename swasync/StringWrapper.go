@@ -20,10 +20,10 @@ import (
 	"gitlab.com/evatix-go/strhelper/strlines"
 
 	padding2 "gitlab.com/evatix-go/strhelper/padding"
-	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/reverse"
 	"gitlab.com/evatix-go/strhelper/splits"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringreplace"
 	"gitlab.com/evatix-go/strhelper/strsremove"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -884,7 +884,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) *StringWrapper {
-	replacedText := replace.GetPtr(
+	replacedText := stringreplace.GetPtr(
 		stringWrapper.content,
 		searchingWrapper.content,
 		replacingWrapper.content,
@@ -904,7 +904,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -921,7 +921,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) *string {
-	replacedText := replace.GetPtr(
+	replacedText := stringreplace.GetPtr(
 		stringWrapper.content,
 		search,
 		replaceText,
@@ -939,7 +939,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -982,7 +982,7 @@ func (stringWrapper *StringWrapper) ReplaceMultiple(
 	searchReplaceMap *map[string]string,
 	startsAt int,
 ) string {
-	return replace.ManyPtr(
+	return stringreplace.ManyPtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,
@@ -997,7 +997,7 @@ func (stringWrapper *StringWrapper) ReplaceMultipleCase(
 	limits int,
 	isCaseSensitive bool,
 ) string {
-	return replace.ManyPtr(
+	return stringreplace.ManyPtr(
 		stringWrapper.content,
 		searchReplaceMap,
 		startsAt,

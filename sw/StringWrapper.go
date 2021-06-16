@@ -12,9 +12,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/padding"
-	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/strconcat"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringreplace"
 	"gitlab.com/evatix-go/strhelper/strlines"
 	"gitlab.com/evatix-go/strhelper/strsremove"
 )
@@ -631,7 +631,7 @@ func (stringWrapper *StringWrapper) ReplaceWrapper(
 	startsAt int,
 	replaceCount int,
 ) *StringWrapper {
-	replacedText := replace.GetPtr(
+	replacedText := stringreplace.GetPtr(
 		stringWrapper.content,
 		searchingWrapper.ValuePtr(),
 		replacingWrapper.ValuePtr(),
@@ -651,7 +651,7 @@ func (stringWrapper *StringWrapper) Replace(
 	startsAt int,
 	replaceCount int,
 ) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,
@@ -668,7 +668,7 @@ func (stringWrapper *StringWrapper) ReplacePtr(
 	replaceCount int,
 	isCaseSensitive bool,
 ) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		stringWrapper.content,
 		search,
 		replaceText,
@@ -684,7 +684,7 @@ func (stringWrapper *StringWrapper) ReplaceAll(
 	isCaseSensitive bool,
 	startsAt int,
 ) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		stringWrapper.content,
 		&search,
 		&replaceText,

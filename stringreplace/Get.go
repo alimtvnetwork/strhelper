@@ -1,21 +1,21 @@
-package replace
+package stringreplace
 
 import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-func GetPtr(
+func Get(
 	text, search,
-	replaceWith *string,
+	replaceWith string,
 	startsAt,
 	howManyReplace int,
 	isCaseSensitive bool,
 ) string {
 	request := strhelpercore.ReplaceRequest{
-		Text: text,
+		Text: &text,
 		ReplaceIndividualRequest: &strhelpercore.ReplaceIndividualRequest{
-			Search:          *search,
-			ReplaceWith:     *replaceWith,
+			Search:          search,
+			ReplaceWith:     replaceWith,
 			StartsAt:        startsAt,
 			HowManyReplace:  howManyReplace,
 			IsCaseSensitive: isCaseSensitive,

@@ -1,4 +1,4 @@
-package replace
+package stringreplace
 
 import (
 	"strings"

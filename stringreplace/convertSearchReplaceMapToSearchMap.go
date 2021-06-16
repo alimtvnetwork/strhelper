@@ -1,4 +1,4 @@
-package replace
+package stringreplace
 
 import "gitlab.com/evatix-go/strhelper/strhelpercore"
 

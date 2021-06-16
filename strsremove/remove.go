@@ -7,8 +7,8 @@ import (
 
 	"gitlab.com/evatix-go/strhelper/chars"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/replace"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringreplace"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
@@ -24,7 +24,7 @@ var (
 )
 
 func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		str,
 		removeStr,
 		constants.EmptyStringPtr,
@@ -34,7 +34,7 @@ func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) s
 }
 
 func Get(str, removeStr string, startsAt, count int, isCaseSensitive bool) string {
-	return replace.GetPtr(
+	return stringreplace.GetPtr(
 		&str,
 		&removeStr,
 		constants.EmptyStringPtr,
@@ -50,7 +50,7 @@ func UsingRequest(request *strhelpercore.RemoveRequest) string {
 
 	replaceRequest := request.ToReplaceRequest()
 
-	return replace.UsingReplaceRequest(replaceRequest)
+	return stringreplace.UsingReplaceRequest(replaceRequest)
 }
 
 func All(str, removeStr string) string {
