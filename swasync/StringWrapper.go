@@ -675,7 +675,7 @@ func (stringWrapper *StringWrapper) AppendLines(isSkipOnEmpty bool, contents ...
 	return stringWrapper.Concatenates(constants.NewLine, isSkipOnEmpty, &contents)
 }
 
-// Add the contents before the content of StringWrapper.Value()
+// AddFoundOnly the contents before the content of StringWrapper.Value()
 func (stringWrapper *StringWrapper) Prepend(contents ...string) StringWrapper {
 	return *stringWrapper.Prepends(
 		constants.EmptyString,

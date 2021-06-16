@@ -29,7 +29,7 @@ func getContainsLineResultsMapUsingCompareFunc(
 				IsFound:    true,
 			}
 
-			currentMap.Add(result)
+			currentMap.AddFoundOnly(result)
 		}
 	}
 

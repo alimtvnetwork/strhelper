@@ -778,7 +778,7 @@ func (wrapper *Wrapper) BuilderWithStr(separator string, str *string, additional
 	return builder
 }
 
-// Add the @contents before the content of Wrapper.Lines()
+// AddFoundOnly the @contents before the content of Wrapper.Lines()
 func (wrapper *Wrapper) Prepend(contents ...string) *[]string {
 	return wrapper.Prepends(
 		true,

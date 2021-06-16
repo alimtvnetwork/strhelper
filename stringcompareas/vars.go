@@ -28,7 +28,7 @@ var (
 	}
 
 	basicEnumImpl = enumimpl.
-			NewBasicByteUsingIndexedSlice(stringRanges[:])
+		NewBasicByteUsingIndexedSlice(stringRanges[:])
 
 	RangesInvalidError = errnew.NewPtr(
 		errtype.OutOfRangeValue,

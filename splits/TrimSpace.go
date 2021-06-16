@@ -1,6 +1,8 @@
 package splits
 
-import "strings"
+import (
+	"strings"
+)
 
 // TrimSpace first splits by the separator and then trim each line by space
 func TrimSpace(s, sep string) *[]string {

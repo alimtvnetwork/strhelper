@@ -14,7 +14,7 @@ func GetFirstMissingElements(
 	findElements []string,
 ) *corestr.ValueStatus {
 	if len(slice) == 0 || len(findElements) == 0 {
-		return InvalidValueStatus(messages.SliceOrFindingElementsAreNilOrEmpty)
+		return corestr.InvalidValueStatus(messages.SliceOrFindingElementsAreNilOrEmpty)
 	}
 
 	hashset := *converters.StringsToMap(&slice)
@@ -34,5 +34,5 @@ func GetFirstMissingElements(
 		}
 	}
 
-	return InvalidValueStatus(messages.SliceOrFindingElementsAreNilOrEmpty)
+	return corestr.InvalidValueStatus(messages.SliceOrFindingElementsAreNilOrEmpty)
 }

@@ -1,16 +1,15 @@
 package stringsearch
 
 import (
-	"regexp"
-
 	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/defaultcapacity"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringcompareas"
 )
 
-func GetContainsLineResultsByRegex(
+func GetContainsLineResultsByFuncPtr(
 	contentsLines *[]string,
-	regexp *regexp.Regexp,
+	isLineContainsFunc stringcompareas.IsLineContainsFunc,
 ) *strhelpercore.StringResultsMap {
 	length := corestr.LengthOfStrings(contentsLines)
 
@@ -22,7 +21,7 @@ func GetContainsLineResultsByRegex(
 	currentMap := strhelpercore.NewStringResultsMap(capacity)
 
 	for index, currentLine := range *contentsLines {
-		if regexp.MatchString(currentLine) {
+		if isLineContainsFunc(index, currentLine) {
 			result := &strhelpercore.StringResult{
 				FoundIndex: index,
 				Line:       currentLine,

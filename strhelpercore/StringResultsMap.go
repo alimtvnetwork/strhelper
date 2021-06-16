@@ -49,7 +49,7 @@ func (receiver *StringResultsMap) LastIndex() int {
 	return receiver.Length() - 1
 }
 
-func (receiver *StringResultsMap) Add(result *StringResult) *StringResultsMap {
+func (receiver *StringResultsMap) AddFoundOnly(result *StringResult) *StringResultsMap {
 	if result == nil || result.FoundIndex > constants.InvalidNotFoundCase {
 		return receiver
 	}
@@ -65,11 +65,12 @@ func (receiver *StringResultsMap) HasIndex(index int) bool {
 	return has
 }
 
+// Strings found strings
 func (receiver *StringResultsMap) Strings() []string {
 	collection := corestr.NewCollection(receiver.Length())
 
 	for _, result := range *receiver.items {
-		collection.Add(result.String())
+		collection.Add(result.Line)
 	}
 
 	return collection.ListStrings()
@@ -77,6 +78,16 @@ func (receiver *StringResultsMap) Strings() []string {
 
 func (receiver *StringResultsMap) ListStrings() []string {
 	return receiver.Strings()
+}
+
+func (receiver *StringResultsMap) ListStringResults() []StringResult {
+	slice := make([]StringResult, receiver.Length())
+
+	for _, result := range *receiver.items {
+		slice = append(slice, *result)
+	}
+
+	return slice
 }
 
 func (receiver *StringResultsMap) Items() *map[int]*StringResult {
