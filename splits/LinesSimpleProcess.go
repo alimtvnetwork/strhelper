@@ -26,4 +26,3 @@ func LinesSimpleProcess(
 
 	return slice
 }
-
