@@ -6,13 +6,15 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
-func SimpleMany(
+// SimpleManySplitsBy Remove as per removes then splits by the given separator
+func SimpleManySplitsBy(
 	content string,
+	splitsBy string,
 	removeRequests ...string,
-) string {
+) []string {
 	for _, remove := range removeRequests {
 		content = strings.ReplaceAll(content, remove, constants.EmptyString)
 	}
 
-	return content
+	return strings.Split(content, splitsBy)
 }
