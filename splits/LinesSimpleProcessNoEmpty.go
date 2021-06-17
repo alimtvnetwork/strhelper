@@ -14,19 +14,8 @@ func LinesSimpleProcessNoEmpty(
 	s string,
 	lineProcessor func(lineIn string) (lineOut string),
 ) []string {
-
 	splitsLines := strings.Split(s, constants.NewLineUnix)
 	slice := stringslice.Make(constants.Zero, len(splitsLines))
 
-	for _, lineIn := range splitsLines {
-		lineOut := lineProcessor(lineIn)
-
-		if lineOut == constants.EmptyString {
-			continue
-		}
-
-		slice = append(slice, lineOut)
-	}
-
-	return slice
+	return stringslice.LinesSimpleProcessNoEmpty(slice, lineProcessor)
 }

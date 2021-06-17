@@ -15,7 +15,7 @@ func IntoTwoPtr(s, separator *string) (left, right string) {
 	length := len(splits)
 	first := splits[coreindexes.First]
 
-	if length ==ExpectingLengthOfIntoTwoSplits {
+	if length == ExpectingLengthOfIntoTwoSplits {
 		return first, splits[coreindexes.Second]
 	}
 
