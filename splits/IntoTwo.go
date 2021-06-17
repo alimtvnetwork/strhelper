@@ -10,12 +10,12 @@ import (
 func IntoTwo(s, separator string) (left, right string) {
 	splits := strings.SplitN(
 		s, separator,
-		constants.Two)
+		ExpectingLengthOfIntoTwoSplits)
 
 	length := len(splits)
 	first := splits[coreindexes.First]
 
-	if length == constants.Two {
+	if length == ExpectingLengthOfIntoTwoSplits {
 		return first, splits[coreindexes.Second]
 	}
 

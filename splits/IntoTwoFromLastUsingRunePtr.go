@@ -9,12 +9,12 @@ func IntoTwoFromLastUsingRunePtr(s *string, splitRune rune) (left, right string)
 	splits := LastByRunePtr(
 		s,
 		splitRune,
-		constants.Two)
+		ExpectingLengthOfIntoTwoSplits)
 
 	length := len(*splits)
 	first := (*splits)[coreindexes.First]
 
-	if length == constants.Two {
+	if length == ExpectingLengthOfIntoTwoSplits {
 		return (*splits)[coreindexes.Second], first
 	}
 

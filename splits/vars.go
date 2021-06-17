@@ -7,4 +7,6 @@ var (
 		constants.ForwardRune:  true,
 		constants.BackwardRune: true,
 	}
+
+	ExpectingLengthOfIntoTwoSplits = constants.Two
 )

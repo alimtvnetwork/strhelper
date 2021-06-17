@@ -7,8 +7,8 @@ import (
 	"gitlab.com/evatix-go/core/defaultcapacity"
 )
 
-// GetElementsByRegExMatch returns the lines which matches with the regex given
-func GetElementsByRegExMatch(
+// GetElementsNonMatchingByRegEx returns the lines which doesn't meet with regex requirements
+func GetElementsNonMatchingByRegEx(
 	contentsLines []string,
 	regexp *regexp.Regexp,
 ) []string {
@@ -20,7 +20,7 @@ func GetElementsByRegExMatch(
 		defaultcapacity.OfSearch(len(contentsLines)))
 
 	for _, currentLine := range contentsLines {
-		if regexp.MatchString(currentLine) {
+		if !regexp.MatchString(currentLine) {
 			slice = append(slice, currentLine)
 		}
 	}

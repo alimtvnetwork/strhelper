@@ -10,12 +10,12 @@ func IntoTwoFromLastCaseSensitive(s, separator *string) (left, right string) {
 		s,
 		separator,
 		true,
-		constants.Two)
+		ExpectingLengthOfIntoTwoSplits)
 
 	length := len(*splits)
 	first := (*splits)[coreindexes.First]
 
-	if length == constants.Two {
+	if length == ExpectingLengthOfIntoTwoSplits {
 		return (*splits)[coreindexes.Second], first
 	}
 

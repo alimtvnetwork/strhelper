@@ -12,12 +12,12 @@ func IntoTwoFromLastTrimSpacePtr(s, separator *string, isCaseSensitive bool) (le
 		s,
 		separator,
 		isCaseSensitive,
-		constants.Two)
+		ExpectingLengthOfIntoTwoSplits)
 
 	length := len(*splits)
 	first := strings.TrimSpace((*splits)[coreindexes.First])
 
-	if length == constants.Two {
+	if length == ExpectingLengthOfIntoTwoSplits {
 		return strings.TrimSpace((*splits)[coreindexes.Second]), first
 	}
 
