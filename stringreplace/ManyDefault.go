@@ -1,16 +1,15 @@
 package stringreplace
 
-func Many(
+import "gitlab.com/evatix-go/core/constants"
+
+func ManyDefault(
 	text string,
 	searchReplaceMap map[string]string,
-	startsAt int,
-	howManyReplace int, // -1 all
-	isCaseSensitive bool,
 ) string {
 	return ManyPtr(
 		&text,
 		&searchReplaceMap,
-		startsAt,
-		howManyReplace,
-		isCaseSensitive)
+		constants.Zero,
+		constants.TakeAllMinusOne,
+		true)
 }
