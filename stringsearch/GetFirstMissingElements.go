@@ -24,7 +24,7 @@ func GetFirstMissingElements(
 
 		if !has {
 			return &corestr.ValueStatus{
-				ValueValid: &corestr.ValueValid{
+				ValueValid: &corestr.ValidValue{
 					Value:   element,
 					IsValid: true,
 					Message: constants.EmptyString,
