@@ -1,8 +1,8 @@
 package stringsearch
 
 import (
+	"gitlab.com/evatix-go/core/enums/stringcompareas"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringcompareas"
 )
 
 func GetContainsLineResultsMapByCompareMethod(

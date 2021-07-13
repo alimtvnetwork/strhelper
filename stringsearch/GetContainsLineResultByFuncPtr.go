@@ -3,12 +3,11 @@ package stringsearch
 import (
 	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringcompareas"
 )
 
 func GetContainsLineResultByFuncPtr(
 	contentsLines *[]string,
-	isLineContainsFunc stringcompareas.IsLineContainsFunc,
+	isLineContainsFunc IsLineContainsFunc,
 ) *strhelpercore.StringResult {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()

@@ -4,12 +4,11 @@ import (
 	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/defaultcapacity"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringcompareas"
 )
 
 func GetContainsLineResultsByFuncPtr(
 	contentsLines *[]string,
-	isLineContainsFunc stringcompareas.IsLineContainsFunc,
+	isLineContainsFunc IsLineContainsFunc,
 ) *strhelpercore.StringResultsMap {
 	length := corestr.LengthOfStrings(contentsLines)
 
