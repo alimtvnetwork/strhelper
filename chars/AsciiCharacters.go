@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
-// *[256]uint8:
+// AsciiCharacters *[256]uint8:
 //  - represents all ASCII characters in a simple array format,
 //      only existing ones which are passed will be marked with 1.
 type AsciiCharacters struct {
@@ -22,7 +22,7 @@ func NewAsciiCharacters(chars *[256]uint8) AsciiCharacters {
 	return AsciiCharacters{asciiChars: chars}
 }
 
-// only set if rune < 255
+// SetRune only set if rune < 255
 func (asciiCharacters *AsciiCharacters) SetRune(char rune) {
 	if char <= unicode.MaxLatin1 {
 		// only set if rune < 255
