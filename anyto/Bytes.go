@@ -7,7 +7,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/reflectinternal"
 )
 
-// Returns:
+// Bytes Returns:
 //  - nil : if @anything is nil.
 //  - *[]bytes : if anything exist and doesn't have any error from parsing json.NewEncoder(bytes.Buffer).Encode().
 func Bytes(anything interface{}) (*[]byte, error) {

@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 )
 
-// Equals compares leftLines and rightLines and returns bool
+// BytesEquals compares leftLines and rightLines and returns bool
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both lengths are not same returns false.
@@ -18,17 +18,17 @@ func BytesEquals(
 	isLeftEmpty := EmptyBytes(leftBytes)
 	isRightEmpty := EmptyBytes(rightBytes)
 
-	if isLeftEmpty == isRightEmpty && isLeftEmpty == true {
+	if isLeftEmpty == isRightEmpty && isLeftEmpty {
 		return true
 	}
 
-	isLeftEmptyAndRightNot := isLeftEmpty == true && isRightEmpty == false
+	isLeftEmptyAndRightNot := isLeftEmpty && !isRightEmpty
 
 	if isLeftEmptyAndRightNot {
 		return false
 	}
 
-	isRightEmptyAndLeftNot := isLeftEmpty == false && isRightEmpty == true
+	isRightEmptyAndLeftNot := !isLeftEmpty && isRightEmpty
 
 	if isRightEmptyAndLeftNot {
 		return false
