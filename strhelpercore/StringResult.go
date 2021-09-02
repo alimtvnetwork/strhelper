@@ -19,6 +19,6 @@ func InvalidStringResult() *StringResult {
 	}
 }
 
-func (receiver *StringResult) String() string {
-	return converters.AnyToString(*receiver)
+func (it *StringResult) String() string {
+	return converters.AnyToValueString(*it)
 }

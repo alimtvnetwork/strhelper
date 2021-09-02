@@ -2,7 +2,6 @@ package isstr
 
 import (
 	"gitlab.com/evatix-go/core/constants"
-
 	"gitlab.com/evatix-go/strhelper/index"
 )
 
@@ -15,16 +14,14 @@ import (
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
 //  - startsAt cannot be negative
-//
-// For better performance use `...Ptr` version of the method.
-func Contains(
-	wholeText, containsSearch string,
+func ContainsPtr(
+	wholeText, containsSearch *string,
 	startsAt int,
 	isCaseSensitive bool,
 ) bool {
 	return index.OfPtr(
-		&wholeText,
-		&containsSearch,
+		wholeText,
+		containsSearch,
 		startsAt,
 		isCaseSensitive) > constants.InvalidNotFoundCase
 }

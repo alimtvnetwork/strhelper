@@ -8,5 +8,5 @@ import (
 
 // CharacterExceptWhitespaces Has at least one character other than space or whitespace
 func CharacterExceptWhitespaces(s string) bool {
-	return !(s == constants.EmptyString || len(s) == 0 || whitespace.IsNullOrWhitespacePtr(&s))
+	return !(s == constants.EmptyString || whitespace.IsNullOrWhitespacePtr(&s))
 }

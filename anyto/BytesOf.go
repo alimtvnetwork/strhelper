@@ -1,6 +1,7 @@
 package anyto
 
 import (
+	"gitlab.com/evatix-go/core/msgtype"
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
@@ -21,7 +22,8 @@ func BytesOf(any interface{}, parsingType encodingbytetype.Variant) (*[]byte, er
 	case encodingbytetype.JsonParsing:
 		return JsonBytes(any), nil
 	default:
-		panic(parsingBytesNotSupportMessage(parsingType))
+		return nil, msgtype.NotSupported.Error(
+			parsingBytesNotSupportMessage(parsingType), any)
 	}
 }
 

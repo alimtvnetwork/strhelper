@@ -2,7 +2,7 @@ package whitespace
 
 import "gitlab.com/evatix-go/core/constants"
 
-// Returns true for if the contents are all whitespaces
+// IsWhitespaces Returns true for if the contents are all whitespaces
 //  (including unicode whitespaces for only checking ascii use the ascii version a lot more faster)
 //
 // Checks from start and end if any valid char found returns immediately.

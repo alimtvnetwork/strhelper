@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
-// Has at least one character other than space or whitespace
+// CharacterExceptWhitespacesPtr Has at least one character other than space or whitespace
 func CharacterExceptWhitespacesPtr(s *string) bool {
-	return !(s == nil || *s == constants.EmptyString || len(*s) == 0 || whitespace.IsNullOrWhitespacePtr(s))
+	return !(s == nil || *s == constants.EmptyString || whitespace.IsNullOrWhitespacePtr(s))
 }
