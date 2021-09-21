@@ -7,7 +7,7 @@ func convertSearchReplaceMapToSearchMap(
 ) *map[string]strhelpercore.SearchRequest {
 	newMap := make(map[string]strhelpercore.SearchRequest, len(*searchReplaceMap))
 
-	for key, replaceRequest := range * searchReplaceMap {
+	for key, replaceRequest := range *searchReplaceMap {
 		newMap[key] = strhelpercore.SearchRequest{
 			Search:          replaceRequest.Search,
 			StartsAt:        replaceRequest.StartsAt,

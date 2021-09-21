@@ -797,7 +797,7 @@ func (wrapper *Wrapper) Prepends(
 	combinedResult := strconcat.ArraysOfArraysToArray(
 		isSkipEmptyOrNil,
 		skipFilter,
-		contents, // pre
+		contents,      // pre
 		wrapper.lines) // post
 
 	return combinedResult
@@ -869,7 +869,7 @@ func (wrapper *Wrapper) ConcatAsString(
 		separator,
 		isSkipOnEmpty,
 		wrapper.lines, // pre
-		contents) // post
+		contents)      // post
 
 	return &combinedResult
 }
