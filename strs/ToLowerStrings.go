@@ -10,16 +10,16 @@ import "strings"
 //
 // Invalid case (returns nil)
 //  - if inputs == nil
-func ToLowerStrings(inputs *[]string) *[]string {
+func ToLowerStrings(inputs []string) []string {
 	if inputs == nil {
 		return nil
 	}
 
-	newStrings := make([]string, len(*inputs))
+	newStrings := make([]string, len(inputs))
 
-	for index, str := range *inputs {
+	for index, str := range inputs {
 		newStrings[index] = strings.ToLower(str)
 	}
 
-	return &newStrings
+	return newStrings
 }

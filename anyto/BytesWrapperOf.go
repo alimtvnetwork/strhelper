@@ -5,9 +5,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func BytesWrapperOf(any interface{}, parsingType encodingbytetype.Variant) byteserror.Wrapper {
+func BytesWrapperOf(any interface{}, parsingType encodingbytetype.Variant) *byteserror.Wrapper {
 	if any == nil {
-		return byteserror.Empty(parsingType)
+		return byteserror.EmptyPtr(parsingType)
 	}
 
 	switch parsingType {
@@ -16,7 +16,7 @@ func BytesWrapperOf(any interface{}, parsingType encodingbytetype.Variant) bytes
 	case encodingbytetype.Unsafe:
 		return UnSafeBytesWrapper(any)
 	case encodingbytetype.AnyToValueStringBytes:
-		return *ValueBytesWrapper(any)
+		return ValueBytesWrapper(any)
 	case encodingbytetype.JsonParsing:
 		return JsonBytesWrapper(any)
 	default:

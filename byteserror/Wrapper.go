@@ -1,135 +1,144 @@
 package byteserror
 
 import (
+	"bytes"
 	"encoding/json"
 
+	"gitlab.com/evatix-go/core/constants"
 	"gitlab.com/evatix-go/core/coredata/corejson"
+	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/errorwrapper"
 
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 )
 
 type Wrapper struct {
-	bytes        *[]byte
-	content      *string
+	bytes        []byte
+	content      corestr.SimpleStringOnce
 	errorWrapper *errorwrapper.Wrapper
 	byteType     encodingbytetype.Variant
 	bytesLength  int
-	stringLength *int
+	stringLength *int // todo fix , ptr
 	isWhitespace issetter.Value
 }
 
-func (wrapper *Wrapper) ByteType() encodingbytetype.Variant {
-	return wrapper.byteType
-}
-
-// ContentAsString represents the pointer to optimize memory copying.
-//
-// Warning:
-//  - Returns cached value from a field. Expects no modification in data.
-//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
-//  - Reviewer should check the mutation of the pointers.
-func (wrapper *Wrapper) ContentAsString() *string {
-	return wrapper.StringPtr()
-}
-
-func (wrapper *Wrapper) BytesLength() int {
-	return wrapper.bytesLength
-}
-
-func (wrapper *Wrapper) StringLength() int {
-	if wrapper.stringLength == nil {
-		length := len(*wrapper.StringPtr())
-		wrapper.stringLength = &length
+func (it *Wrapper) Content() string {
+	if it.content.IsInitialized() {
+		return it.content.Value()
 	}
 
-	return *wrapper.stringLength
+	return it.content.GetPlusSetOnUninitializedFunc(it.String)
 }
 
-func (wrapper *Wrapper) ErrorWrapper() *errorwrapper.Wrapper {
-	return wrapper.errorWrapper
+func (it *Wrapper) ByteType() encodingbytetype.Variant {
+	return it.byteType
 }
 
-func (wrapper *Wrapper) IsNull() bool {
-	return wrapper.bytes == nil
+func (it *Wrapper) BytesLength() int {
+	if it == nil {
+		return 0
+	}
+
+	return it.bytesLength
 }
 
-func (wrapper *Wrapper) IsNullOrEmpty() bool {
+func (it *Wrapper) StringLength() int {
+	if it == nil {
+		return 0
+	}
+
+	if it.stringLength == nil {
+		length := len(it.Content())
+		it.stringLength = &length
+	}
+
+	return *it.stringLength
+}
+
+func (it *Wrapper) ErrorWrapper() *errorwrapper.Wrapper {
+	return it.errorWrapper
+}
+
+func (it *Wrapper) IsNull() bool {
+	return it.bytes == nil
+}
+
+func (it *Wrapper) IsNullOrEmpty() bool {
+	if it == nil {
+		return true
+	}
+
 	// checking bytesLength == 0 is enough to prove empty string ""
 	// reference : https://play.golang.org/p/6vU5y92LKYg
-	return wrapper.bytes == nil ||
-		wrapper.bytesLength == 0
+	return it.bytes == nil ||
+		it.bytesLength == 0
 }
 
 // IsNullOrEmptyOrWhitespaces returns true if nil or "" or all whitespaces
 // (excluding unicode whitespaces, only limited to ASCII spaces)
 //
 // To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
-func (wrapper *Wrapper) IsNullOrEmptyOrWhitespaces() bool {
-	if wrapper.isWhitespace.IsUninitialized() {
-		isWhitespace := wrapper.bytes == nil ||
-			wrapper.bytesLength == 0 ||
-			whitespacesinternal.IsAsciiWhitespacesBytes(wrapper.bytes)
+func (it *Wrapper) IsNullOrEmptyOrWhitespaces() bool {
+	if it.isWhitespace.IsUninitialized() {
+		isWhitespace := it.bytes == nil ||
+			it.bytesLength == 0 ||
+			whitespacesinternal.IsAsciiWhitespacesBytes(it.bytes)
 
 		// checking bytesLength == 0 is enough to prove empty string ""
 		// reference : https://play.golang.org/p/6vU5y92LKYg
-		wrapper.isWhitespace = issetter.GetBool(isWhitespace)
+		it.isWhitespace = issetter.GetBool(isWhitespace)
 	}
 
-	return wrapper.isWhitespace.IsTrue()
+	return it.isWhitespace.IsTrue()
 }
 
 // IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
-func (wrapper *Wrapper) IsDefined() bool {
-	return wrapper.errorWrapper.IsEmpty() && !wrapper.IsNullOrEmptyOrWhitespaces()
+func (it *Wrapper) IsDefined() bool {
+	return it.BytesLength() > 0 && it.errorWrapper.IsEmpty() && !it.IsNullOrEmptyOrWhitespaces()
 }
 
 // HasValidCharacters returns true meaning has at least one characters other than whitespace (Ascii only)
-func (wrapper *Wrapper) HasValidCharacters() bool {
-	return !wrapper.IsNullOrEmptyOrWhitespaces()
+func (it *Wrapper) HasValidCharacters() bool {
+	return !it.IsNullOrEmptyOrWhitespaces()
 }
 
-func (wrapper *Wrapper) IsEqualBytes(bytes *[]byte) bool {
-	if wrapper.IsNull() && bytes == nil {
+func (it *Wrapper) IsEqualBytes(rawBytes []byte) bool {
+	if it == nil && rawBytes == nil {
 		return true
 	}
 
-	// both are not nil confirmed, so if any nil returns false.
-	if bytes == nil || wrapper.IsNull() {
-		return false
+	if it.IsNull() && rawBytes == nil {
+		return true
 	}
 
-	return misc.IsBytesEquals(
-		wrapper.bytes,
-		bytes,
-		0)
+	return bytes.Equal(
+		it.bytes,
+		rawBytes)
 }
 
-func (wrapper *Wrapper) IsEquals(another *Wrapper) bool {
+func (it *Wrapper) IsEquals(another *Wrapper) bool {
 	if another == nil {
 		return false
 	}
 
 	// same pointer
-	if wrapper == another {
+	if it == another {
 		return true
 	}
 
-	if wrapper.IsNullOrEmpty() == another.IsNullOrEmpty() {
+	if it.IsNullOrEmpty() == another.IsNullOrEmpty() {
 		return true
 	}
 
-	if wrapper.BytesLength() != another.BytesLength() {
+	if it.BytesLength() != another.BytesLength() {
 		return false
 	}
 
-	return misc.IsBytesEquals(
-		wrapper.bytes,
-		another.bytes,
-		0)
+	return bytes.Equal(
+		it.bytes,
+		another.bytes)
 }
 
 // Bytes represents the pointer to optimize memory copying.
@@ -138,8 +147,8 @@ func (wrapper *Wrapper) IsEquals(another *Wrapper) bool {
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (wrapper *Wrapper) Bytes() *[]byte {
-	return wrapper.bytes
+func (it *Wrapper) Bytes() []byte {
+	return it.bytes
 }
 
 // Value represents the pointer to optimize memory copying.
@@ -148,100 +157,80 @@ func (wrapper *Wrapper) Bytes() *[]byte {
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (wrapper *Wrapper) Value() *[]byte {
-	return wrapper.bytes
+func (it *Wrapper) Value() []byte {
+	return it.bytes
 }
 
 // note: that it makes a copy of the content so use it wisely
-func (wrapper *Wrapper) ValueWithoutPtr() []byte {
-	return *wrapper.bytes
-}
-
-// note: that it makes a copy of the content so use it wisely
-func (wrapper *Wrapper) String() string {
-	return *wrapper.StringPtr()
-}
-
-// StringPtr is an expensive operation, it creates new memory using string(*wrapper.bytes)
-// However, it does it at once, so calling it 3 times will only create once and cached result will be returned.
-//
-// StringPtr represents the pointer to optimize memory copying.
-//
-// Warning:
-//  - Returns cached value from a field. Expects no modification in data.
-//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
-//  - Reviewer should check the mutation of the pointers.
-func (wrapper *Wrapper) StringPtr() *string {
-	if wrapper.content == nil && wrapper.bytes != nil {
-		newString := string(*wrapper.bytes)
-		wrapper.content = &newString
+func (it *Wrapper) String() string {
+	if it == nil {
+		return constants.EmptyString
 	}
 
-	return wrapper.content
+	return string(it.bytes)
 }
 
-func (wrapper *Wrapper) JsonModel() *WrapperDataModel {
+func (it *Wrapper) JsonModel() *WrapperDataModel {
 	return &WrapperDataModel{
-		Bytes:        wrapper.bytes,
-		ErrorWrapper: wrapper.errorWrapper,
-		ByteType:     wrapper.byteType,
-		BytesLength:  wrapper.bytesLength,
-		IsWhitespace: wrapper.isWhitespace,
+		Bytes:        it.bytes,
+		ErrorWrapper: it.errorWrapper,
+		ByteType:     it.byteType,
+		BytesLength:  it.bytesLength,
+		IsWhitespace: it.isWhitespace,
 	}
 }
 
-func (wrapper *Wrapper) JsonModelAny() interface{} {
-	return wrapper.JsonModel()
+func (it *Wrapper) JsonModelAny() interface{} {
+	return it.JsonModel()
 }
 
-func (wrapper *Wrapper) MarshalJSON() ([]byte, error) {
-	return json.Marshal(*wrapper.JsonModel())
+func (it *Wrapper) MarshalJSON() ([]byte, error) {
+	return json.Marshal(*it.JsonModel())
 }
 
-func (wrapper *Wrapper) UnmarshalJSON(data []byte) error {
+func (it *Wrapper) UnmarshalJSON(data []byte) error {
 	var dataModel WrapperDataModel
 	err := json.Unmarshal(data, &dataModel)
 
 	if err == nil {
-		wrapper.bytes = dataModel.Bytes
-		wrapper.errorWrapper = dataModel.ErrorWrapper
-		wrapper.byteType = dataModel.ByteType
-		wrapper.bytesLength = dataModel.BytesLength
-		wrapper.isWhitespace = dataModel.IsWhitespace
+		it.bytes = dataModel.Bytes
+		it.errorWrapper = dataModel.ErrorWrapper
+		it.byteType = dataModel.ByteType
+		it.bytesLength = dataModel.BytesLength
+		it.isWhitespace = dataModel.IsWhitespace
 	}
 
 	return err
 }
 
-//goland:noinspection GoLinterLocal
-func (wrapper *Wrapper) Json() *corejson.Result {
-	if wrapper.IsNullOrEmpty() {
-		return corejson.EmptyWithoutErrorPtr()
-	}
+func (it Wrapper) Json() corejson.Result {
+	return corejson.NewFromAny(it)
+}
 
-	return corejson.NewFromAny(wrapper)
+func (it Wrapper) JsonPtr() *corejson.Result {
+	return corejson.NewFromAnyPtr(it)
 }
 
 //goland:noinspection GoLinterLocal
-func (wrapper *Wrapper) ParseInjectUsingJson(
+func (it *Wrapper) ParseInjectUsingJson(
 	jsonResult *corejson.Result,
 ) (*Wrapper, error) {
-	err := jsonResult.Unmarshal(&wrapper)
+	err := jsonResult.Unmarshal(&it)
 
 	if err != nil {
 		return nil, err
 	}
 
-	return wrapper, nil
+	return it, nil
 }
 
 // Panic if error
 //goland:noinspection GoLinterLocal
-func (wrapper *Wrapper) ParseInjectUsingJsonMust(
+func (it *Wrapper) ParseInjectUsingJsonMust(
 	jsonResult *corejson.Result,
 ) *Wrapper {
 	newUsingJson, err :=
-		wrapper.ParseInjectUsingJson(jsonResult)
+		it.ParseInjectUsingJson(jsonResult)
 
 	if err != nil {
 		panic(err)
@@ -250,24 +239,24 @@ func (wrapper *Wrapper) ParseInjectUsingJsonMust(
 	return newUsingJson
 }
 
-func (wrapper *Wrapper) JsonParseSelfInject(
+func (it *Wrapper) JsonParseSelfInject(
 	jsonResult *corejson.Result,
 ) error {
-	_, err := wrapper.ParseInjectUsingJson(
+	_, err := it.ParseInjectUsingJson(
 		jsonResult,
 	)
 
 	return err
 }
 
-func (wrapper *Wrapper) AsJsoner() corejson.Jsoner {
-	return wrapper
+func (it *Wrapper) AsJsoner() corejson.Jsoner {
+	return it
 }
 
-func (wrapper *Wrapper) AsJsonParseSelfInjector() corejson.JsonParseSelfInjector {
-	return wrapper
+func (it *Wrapper) AsJsonParseSelfInjector() corejson.JsonParseSelfInjector {
+	return it
 }
 
-func (wrapper *Wrapper) AsJsonMarshaller() corejson.JsonMarshaller {
-	return wrapper
+func (it *Wrapper) AsJsonMarshaller() corejson.JsonMarshaller {
+	return it
 }

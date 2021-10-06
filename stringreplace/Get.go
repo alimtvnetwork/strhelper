@@ -12,7 +12,7 @@ func Get(
 	isCaseSensitive bool,
 ) string {
 	request := strhelpercore.ReplaceRequest{
-		Text: &text,
+		Text: text,
 		ReplaceIndividualRequest: &strhelpercore.ReplaceIndividualRequest{
 			Search:          search,
 			ReplaceWith:     replaceWith,

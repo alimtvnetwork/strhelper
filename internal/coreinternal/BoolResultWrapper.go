@@ -1,5 +1,8 @@
 package coreinternal
 
+// BoolResultWrapper
+//
+// TODO move to core.
 // Some functions usages two return values, one is the result, another if the function condition satisfied.
 // Data size example : https://play.golang.org/p/gbVsdr3DB6I
 type BoolResultWrapper struct {
@@ -11,11 +14,23 @@ type BoolResultWrapper struct {
 	IsApplicable bool
 }
 
+func (it *BoolResultWrapper) IsApplicableWithTrue() bool {
+	return it.IsApplicable && it.Result
+}
+
+func (it *BoolResultWrapper) IsApplicableWithFalse() bool {
+	return it.IsApplicable && !it.Result
+}
+
+// NewBoolResultWrapperFalse
+//
 // NewBoolResultWrapper returns new {Result: false, IsApplicable: true}
 func NewBoolResultWrapperFalse() BoolResultWrapper {
 	return BoolResultWrapper{Result: false, IsApplicable: true}
 }
 
+// NewBoolResultWrapperTrue
+//
 // NewBoolResultWrapper returns new {Result: true, IsApplicable: true}
 func NewBoolResultWrapperTrue() BoolResultWrapper {
 	return BoolResultWrapper{Result: true, IsApplicable: true}
@@ -28,12 +43,4 @@ func NewBoolResultWrapper(result bool) BoolResultWrapper {
 
 func NewBoolResultWrapperNotApplicable() BoolResultWrapper {
 	return BoolResultWrapper{Result: false, IsApplicable: false}
-}
-
-func (boolResultWrapper *BoolResultWrapper) IsApplicableWithTrue() bool {
-	return boolResultWrapper.IsApplicable && boolResultWrapper.Result
-}
-
-func (boolResultWrapper *BoolResultWrapper) IsApplicableWithFalse() bool {
-	return boolResultWrapper.IsApplicable && !boolResultWrapper.Result
 }

@@ -7,26 +7,26 @@ import (
 )
 
 func finalRemoveResultsCaseSensitive(
-	lines *[]string,
-	newLines *[]string,
+	lines []string,
+	newLines []string,
 	removeLinesHashset *strhashset.Hashset,
 	startsAt int,
 	count int,
 	length int,
-) *[]string {
+) []string {
 	var line string
 
 	isCountUnset := count == constants.InvalidNotFoundCase
 
 	for i := startsAt; i < length; i++ {
-		line = (*lines)[i]
+		line = lines[i]
 
 		if removeLinesHashset.Has(line) && (isCountUnset || count > 0) {
 			count--
 			continue
 		}
 
-		*newLines = append(*newLines, line)
+		newLines = append(newLines, line)
 	}
 
 	return newLines

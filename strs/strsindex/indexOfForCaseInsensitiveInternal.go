@@ -8,12 +8,14 @@ import (
 
 // Assumptions are lines, findingString are check already not null or empty
 // Kept for internal use only.
-func indexOfForCaseInsensitiveInternal(lines *[]string, findingString *string, startsAtIndex int) int {
-	length := len(*lines)
-	findingStringCopy := *findingString
-
+func indexOfForCaseInsensitiveInternal(
+	lines []string,
+	findingString string,
+	startsAtIndex int,
+) int {
+	length := len(lines)
 	for i := startsAtIndex; i < length; i++ {
-		if strings.EqualFold((*lines)[i], findingStringCopy) {
+		if strings.EqualFold(lines[i], findingString) {
 			return i
 		}
 	}

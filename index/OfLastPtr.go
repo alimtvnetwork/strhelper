@@ -2,8 +2,6 @@ package index
 
 import (
 	"strings"
-
-	"gitlab.com/evatix-go/strhelper/internal/messages"
 )
 
 // Returns the last index of the searchTerm in s
@@ -11,16 +9,12 @@ import (
 // contentLengthDecreasedBy cannot be negative
 // If found returns the index from last, if not then returns -1
 func OfLastPtr(
-	s, searchTerm *string,
+	s, searchTerm string,
 	contentLengthDecreasedBy int,
 	isCaseSensitive bool,
 ) int {
-	if s == nil || searchTerm == nil {
-		panic(messages.SearchNullPanicMessage)
-	}
-
 	if isCaseSensitive && contentLengthDecreasedBy == 0 {
-		return strings.LastIndex(*s, *searchTerm)
+		return strings.LastIndex(s, searchTerm)
 	}
 
 	if isCaseSensitive {

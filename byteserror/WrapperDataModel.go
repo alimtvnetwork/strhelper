@@ -8,7 +8,7 @@ import (
 )
 
 type WrapperDataModel struct {
-	Bytes        *[]byte
+	Bytes        []byte
 	ErrorWrapper *errorwrapper.Wrapper
 	ByteType     encodingbytetype.Variant
 	BytesLength  int

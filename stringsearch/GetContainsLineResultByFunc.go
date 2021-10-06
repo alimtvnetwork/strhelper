@@ -13,6 +13,6 @@ func GetContainsLineResultByFunc(
 	}
 
 	return GetContainsLineResultByFuncPtr(
-		&contentsLines,
+		contentsLines,
 		isLineContainsFunc)
 }

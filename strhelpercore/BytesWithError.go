@@ -1,144 +1,161 @@
 package strhelpercore
 
 import (
+	"bytes"
 	"fmt"
 
+	"gitlab.com/evatix-go/core/codestack"
+	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/coredata/coredynamic"
+	"gitlab.com/evatix-go/core/coredata/corestr"
+	"gitlab.com/evatix-go/core/issetter"
 	"gitlab.com/evatix-go/errorwrapper"
 	"gitlab.com/evatix-go/errorwrapper/errnew"
+	"gitlab.com/evatix-go/errorwrapper/errtype"
 
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 )
 
 type BytesWithError struct {
-	bytes        *[]byte
-	lines        *[]string
-	content      *string
+	bytes        []byte
+	lines        []string
+	content      corestr.SimpleStringOnce
 	errorWrapper *errorwrapper.Wrapper
 	bytesLength  int
-	stringLength *int
-	isWhitespace *bool
+	stringLength *int // todo fix not ptr
+	isWhitespace issetter.Value
 }
 
 func NewBytesWithErrorOnlyError(err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: errorwrapper.NewErrorPtr(err),
+		errorWrapper: errorwrapper.NewErrorPtr(codestack.Skip1, err),
 	}
 }
 
-func NewBytesWithErrorOnlyErrorPtr(err *error) *BytesWithError {
+func NewBytesWithError(errType errtype.Variation, err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: errnew.ErrInPtr(err),
+		errorWrapper: errorwrapper.NewUsingErrorPtr(
+			codestack.Skip1,
+			errType,
+			err),
 	}
 }
 
-func NewBytesWithError(bytes *[]byte, err *error) *BytesWithError {
-	length := 0
-
-	if bytes != nil {
-		length = len(*bytes)
-	}
-
+func NewBytesWithErrorWrapper(errWrapper *errorwrapper.Wrapper) *BytesWithError {
 	return &BytesWithError{
-		bytes:        bytes,
-		errorWrapper: errnew.ErrInPtr(err),
-		bytesLength:  length,
+		errorWrapper: errWrapper,
 	}
 }
 
 // NewBytesWithErrorUsingAny converts interface object using encoder
 // If any is still, still it creates BytesWithError with errorWrapper details and nil contents.
 func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
-	length := 0
-
 	if any == nil {
-		return NewBytesWithErrorOnlyErrorPtr(nil)
+		return NewBytesWithErrorWrapper(
+			errnew.NullUsingStackSkip(
+				codestack.Skip1,
+				"has issues with BytesWithError",
+				any))
 	}
 
-	bytes, err := anyto.Bytes(any)
-
-	if bytes != nil && *bytes != nil {
-		length = len(*bytes)
-	}
+	rawBytes, err := anyto.Bytes(any)
+	errWp := errnew.ErrorWithMessagesPtrUsingStackSkip(
+		codestack.Skip1,
+		errtype.ConversionFailed,
+		err,
+		coredynamic.TypeName(any))
 
 	return &BytesWithError{
-		bytes:        bytes,
-		errorWrapper: errnew.ErrPtr(err),
-		bytesLength:  length,
+		bytes:        rawBytes,
+		errorWrapper: errWp,
+		bytesLength:  len(rawBytes),
 	}
 }
 
 // NewBytesWithNoError Creates new BytesWithError
-func NewBytesWithNoError(bytes *[]byte) *BytesWithError {
-	return NewBytesWithError(bytes, nil)
+func NewBytesWithNoError(bytes []byte) *BytesWithError {
+	return &BytesWithError{
+		bytes:        bytes,
+		errorWrapper: nil,
+		bytesLength:  len(bytes),
+	}
 }
 
-// ContentAsString represents the pointer to optimize memory copying.
+// Content represents the pointer to optimize memory copying.
 //
 // Warning:
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (bytesWithError *BytesWithError) ContentAsString() *string {
-	return bytesWithError.StringPtr()
-}
-
-func (bytesWithError *BytesWithError) BytesLength() int {
-	return bytesWithError.bytesLength
-}
-
-func (bytesWithError *BytesWithError) StringLength() int {
-	if bytesWithError.stringLength == nil {
-		length := len(*bytesWithError.StringPtr())
-		bytesWithError.stringLength = &length
+func (it *BytesWithError) Content() string {
+	if it.content.IsInitialized() {
+		return it.content.Value()
 	}
 
-	return *bytesWithError.stringLength
+	return it.
+		content.
+		GetPlusSetOnUninitialized(
+			it.String())
 }
 
-// Error must be initialize have it or not. Then check Error().IsEmpty()
-func (bytesWithError *BytesWithError) Error() *errorwrapper.Wrapper {
-	return bytesWithError.errorWrapper
+func (it *BytesWithError) BytesLength() int {
+	return it.bytesLength
 }
 
-func (bytesWithError *BytesWithError) IsNull() bool {
-	return bytesWithError.bytes == nil
+func (it *BytesWithError) StringLength() int {
+	if it.stringLength == nil {
+		length := len([]rune(it.Content()))
+		it.stringLength = &length
+	}
+
+	return *it.stringLength
 }
 
-func (bytesWithError *BytesWithError) IsNullOrEmpty() bool {
+// Error must be initialize have it or not. Then check Error().IsExpressionEmpty()
+func (it *BytesWithError) Error() *errorwrapper.Wrapper {
+	return it.errorWrapper
+}
+
+func (it *BytesWithError) IsNull() bool {
+	return it.bytes == nil
+}
+
+func (it *BytesWithError) IsNullOrEmpty() bool {
 	// checking bytesLength == 0 is enough to prove empty string ""
 	// reference : https://play.golang.org/p/6vU5y92LKYg
-	return bytesWithError.bytes == nil ||
-		bytesWithError.bytesLength == 0
+	return it.bytes == nil ||
+		it.bytesLength == 0
 }
 
 // IsNullOrEmptyOrWhitespaces returns true if nil or "" or all whitespaces
 // (excluding unicode whitespaces, only limited to ASCII spaces)
 //
 // To check unicode whitespace, Get the String() then use whitespace.IsWhitespaces(...)
-func (bytesWithError *BytesWithError) IsNullOrEmptyOrWhitespaces() bool {
-	if bytesWithError.isWhitespace == nil {
-		isWhitespace := bytesWithError.bytes == nil ||
-			bytesWithError.bytesLength == 0 ||
-			whitespacesinternal.IsAsciiWhitespacesBytes(bytesWithError.bytes)
-
-		// checking bytesLength == 0 is enough to prove empty string ""
-		// reference : https://play.golang.org/p/6vU5y92LKYg
-		bytesWithError.isWhitespace = &isWhitespace
+func (it *BytesWithError) IsNullOrEmptyOrWhitespaces() bool {
+	if it.isWhitespace.IsInitBoolean() {
+		return it.isWhitespace.IsTrue()
 	}
 
-	return *bytesWithError.isWhitespace
+	isWhitespace := it.bytes == nil ||
+		it.bytesLength == 0 ||
+		whitespacesinternal.IsAsciiWhitespacesBytes(it.bytes)
+
+	// checking bytesLength == 0 is enough to prove empty string ""
+	// reference : https://play.golang.org/p/6vU5y92LKYg
+	it.isWhitespace = issetter.GetBool(isWhitespace)
+
+	return it.isWhitespace.IsTrue()
 }
 
 // IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
-func (bytesWithError *BytesWithError) IsDefined() bool {
-	return bytesWithError.errorWrapper.IsEmpty() && !bytesWithError.IsNullOrEmptyOrWhitespaces()
+func (it *BytesWithError) IsDefined() bool {
+	return it.errorWrapper.IsEmpty() && !it.IsNullOrEmptyOrWhitespaces()
 }
 
 // HasValidCharacters returns true meaning has at least one characters other than whitespace (Ascii only)
-func (bytesWithError *BytesWithError) HasValidCharacters() bool {
-	return !bytesWithError.IsNullOrEmptyOrWhitespaces()
+func (it *BytesWithError) HasValidCharacters() bool {
+	return !it.IsNullOrEmptyOrWhitespaces()
 }
 
 // IsEqualAny returns true if bytes contents are same as the any converted bytes contents
@@ -146,8 +163,10 @@ func (bytesWithError *BytesWithError) HasValidCharacters() bool {
 // Steps :
 //  - converts any using the same method as NewBytesWithErrorUsingAny / encoder to bytes (strs.ToBytesOfAny(any))
 //  - then compare with bytes
-func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}, isPanicOnErrorParse bool) bool {
-	if bytesWithError.IsNull() && any == nil {
+func (it *BytesWithError) IsEqualsAny(
+	any interface{}, isPanicOnErrorParse bool,
+) bool {
+	if it.IsNull() && any == nil {
 		return true
 	}
 
@@ -155,56 +174,47 @@ func (bytesWithError *BytesWithError) IsEqualsAny(any interface{}, isPanicOnErro
 		return false
 	}
 
-	bytes, err := anyto.Bytes(any)
+	allBytes, err := anyto.Bytes(any)
 
 	if err != nil && isPanicOnErrorParse {
 		panic(fmt.Sprintf("%s %s", "any parse failed:", err))
 	}
 
-	return misc.IsBytesEquals(
-		bytesWithError.bytes,
-		bytes,
-		0)
+	return bytes.Equal(allBytes, it.bytes)
 }
 
-func (bytesWithError *BytesWithError) IsEqualBytes(bytes *[]byte) bool {
-	if bytesWithError.IsNull() && bytes == nil {
+func (it *BytesWithError) IsEqualBytes(anotherRawBytes []byte) bool {
+	if it.IsNull() && anotherRawBytes == nil {
 		return true
 	}
 
 	// both are not nil confirmed, so if any nil returns false.
-	if bytes == nil || bytesWithError.IsNull() {
+	if anotherRawBytes == nil || it.IsNull() {
 		return false
 	}
 
-	return misc.IsBytesEquals(
-		bytesWithError.bytes,
-		bytes,
-		0)
+	return bytes.Equal(it.bytes, anotherRawBytes)
 }
 
-func (bytesWithError *BytesWithError) IsEquals(another *BytesWithError) bool {
+func (it *BytesWithError) IsEquals(another *BytesWithError) bool {
 	if another == nil {
 		return false
 	}
 
 	// same pointer
-	if bytesWithError == another {
+	if it == another {
 		return true
 	}
 
-	if bytesWithError.IsNullOrEmpty() == another.IsNullOrEmpty() {
+	if it.IsNullOrEmpty() == another.IsNullOrEmpty() {
 		return true
 	}
 
-	if bytesWithError.BytesLength() != another.BytesLength() {
+	if it.BytesLength() != another.BytesLength() {
 		return false
 	}
 
-	return misc.IsBytesEquals(
-		bytesWithError.bytes,
-		another.bytes,
-		0)
+	return bytes.Equal(it.bytes, another.bytes)
 }
 
 // Bytes represents the pointer to optimize memory copying.
@@ -213,8 +223,8 @@ func (bytesWithError *BytesWithError) IsEquals(another *BytesWithError) bool {
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (bytesWithError *BytesWithError) Bytes() *[]byte {
-	return bytesWithError.bytes
+func (it *BytesWithError) Bytes() []byte {
+	return it.bytes
 }
 
 // Value represents the pointer to optimize memory copying.
@@ -223,34 +233,19 @@ func (bytesWithError *BytesWithError) Bytes() *[]byte {
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (bytesWithError *BytesWithError) Value() *[]byte {
-	return bytesWithError.bytes
+func (it *BytesWithError) Value() []byte {
+	return it.bytes
+}
+
+func (it *BytesWithError) ValueWithoutPtr() []byte {
+	return it.bytes
 }
 
 // note: that it makes a copy of the content so use it wisely
-func (bytesWithError *BytesWithError) ValueWithoutPtr() []byte {
-	return *bytesWithError.bytes
-}
-
-// note: that it makes a copy of the content so use it wisely
-func (bytesWithError *BytesWithError) String() string {
-	return *bytesWithError.StringPtr()
-}
-
-// StringPtr is an expensive operation, it creates new memory using string(*bytesWithError.bytes)
-// However, it does it at once, so calling it 3 times will only create once and cached result will be returned.
-//
-// StringPtr represents the pointer to optimize memory copying.
-//
-// Warning:
-//  - Returns cached value from a field. Expects no modification in data.
-//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
-//  - Reviewer should check the mutation of the pointers.
-func (bytesWithError *BytesWithError) StringPtr() *string {
-	if bytesWithError.content == nil && bytesWithError.bytes != nil {
-		newString := string(*bytesWithError.bytes)
-		bytesWithError.content = &newString
+func (it *BytesWithError) String() string {
+	if it.bytesLength == 0 {
+		return constants.EmptyString
 	}
 
-	return bytesWithError.content
+	return string(it.bytes)
 }

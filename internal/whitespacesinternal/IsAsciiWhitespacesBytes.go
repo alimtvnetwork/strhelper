@@ -13,12 +13,12 @@ import "gitlab.com/evatix-go/core/constants"
 //
 // References:
 //  - https://play.golang.org/p/78uFF8s-Dw1
-func IsAsciiWhitespacesBytes(bytes *[]byte) bool {
-	length := len(*bytes)
+func IsAsciiWhitespacesBytes(bytes []byte) bool {
+	length := len(bytes)
 	mid := length / 2 // 5/2 should return 2
 	lastIndex := length - 1
 	for i := 0; i <= mid; i++ {
-		char := (*bytes)[i]
+		char := (bytes)[i]
 		if !(constants.AsciiSpace[char] == 1) {
 			return false
 		}
@@ -29,7 +29,7 @@ func IsAsciiWhitespacesBytes(bytes *[]byte) bool {
 		}
 
 		lastIndex = lastIndex - i
-		char = (*bytes)[lastIndex]
+		char = bytes[lastIndex]
 
 		if !(constants.AsciiSpace[char] == 1) {
 			return false

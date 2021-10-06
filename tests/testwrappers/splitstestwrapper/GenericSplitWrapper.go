@@ -33,8 +33,8 @@ func (genericSplitWrapper *GenericSplitWrapper) Expected() interface{} {
 	return genericSplitWrapper.expected
 }
 
-func (genericSplitWrapper *GenericSplitWrapper) ExpectedAsStringsArray() *[]string {
-	intArray, isOkay := genericSplitWrapper.expected.(*[]string)
+func (genericSplitWrapper *GenericSplitWrapper) ExpectedAsStringsArray() []string {
+	intArray, isOkay := genericSplitWrapper.expected.([]string)
 
 	if isOkay {
 		return intArray

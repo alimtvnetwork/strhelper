@@ -1,6 +1,6 @@
 package strhelpercore
 
 type ReplaceRequest struct {
-	Text *string
+	Text string
 	*ReplaceIndividualRequest
 }

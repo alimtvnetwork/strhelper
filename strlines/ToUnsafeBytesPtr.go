@@ -9,7 +9,7 @@ import "unsafe"
 //  - https://play.golang.org/p/cGpfXgZ3ZeC
 // Expression:
 //  - return (*[]byte)(unsafe.Pointer(strlines))
-func ToUnsafeBytes(lines *[]string) *[]byte {
+func ToUnsafeBytesPtr(lines *[]string) *[]byte {
 	if lines == nil || *lines == nil {
 		return nil
 	}

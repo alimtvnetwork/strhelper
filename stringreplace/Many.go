@@ -8,8 +8,8 @@ func Many(
 	isCaseSensitive bool,
 ) string {
 	return ManyPtr(
-		&text,
-		&searchReplaceMap,
+		text,
+		searchReplaceMap,
 		startsAt,
 		howManyReplace,
 		isCaseSensitive)

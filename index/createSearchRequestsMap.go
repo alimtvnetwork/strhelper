@@ -9,17 +9,17 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 //  - How many indexes should we search for and then stop looking further.
 //  - `-1` means find all
 func createSearchRequestsMap(
-	searchMap *map[string]int,
+	searchMap map[string]int,
 	limits int,
 	isCaseSensitive bool,
-) *map[string]strhelpercore.SearchRequest {
-	if searchMap == nil || len(*searchMap) == 0 {
+) map[string]strhelpercore.SearchRequest {
+	if searchMap == nil || len(searchMap) == 0 {
 		return nil
 	}
 
-	searchRequestsMap := make(map[string]strhelpercore.SearchRequest, len(*searchMap))
+	searchRequestsMap := make(map[string]strhelpercore.SearchRequest, len(searchMap))
 
-	for key, startsAt := range *searchMap {
+	for key, startsAt := range searchMap {
 		searchRequestsMap[key] = strhelpercore.SearchRequest{
 			Search:          key,
 			StartsAt:        startsAt,
@@ -28,7 +28,7 @@ func createSearchRequestsMap(
 		}
 	}
 
-	return &searchRequestsMap
+	return searchRequestsMap
 }
 
 // limits:
@@ -39,7 +39,7 @@ func createDefaultSearchRequestsMap(
 	startsAt int,
 	limits int,
 	isCaseSensitive bool,
-) *map[string]strhelpercore.SearchRequest {
+) map[string]strhelpercore.SearchRequest {
 	if searchItems == nil || len(*searchItems) == 0 {
 		return nil
 	}
@@ -55,5 +55,5 @@ func createDefaultSearchRequestsMap(
 		}
 	}
 
-	return &searchRequestsMap
+	return searchRequestsMap
 }

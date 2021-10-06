@@ -1,74 +1,76 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/misc"
-
 type SplitResultOverview struct {
-	Results                 *[]*string
-	NonEmptyResults         *[]*string
-	SplitResults            *[]*SplitResult
-	NonEmptySplitResults    *[]*SplitResult
-	resultsLength           *int
+	Results                 []string
+	NonEmptyResults         []string
+	SplitResults            []*SplitResult
+	NonEmptySplitResults    []*SplitResult
+	resultsLength           *int // todo optimize to non ptr
 	nonEmptyResultsLength   *int
 	regExWrappersCollection *RegExWrappersCollection
 	IsEmptyResult           bool
 }
 
 // ResultsToRegexMap returns Results to regular expressions map
-func (splitResultOverview *SplitResultOverview) ResultsToRegexMap() *map[string]*RegExWrapper {
-	splitResultOverview.initializeRegExWrappersCollection()
+func (it *SplitResultOverview) ResultsToRegexMap() map[string]*RegExWrapper {
+	it.initializeRegExWrappersCollection()
 
-	return splitResultOverview.regExWrappersCollection.RegexesMap()
+	return it.regExWrappersCollection.RegexesMap()
 }
 
-func (splitResultOverview *SplitResultOverview) initializeRegExWrappersCollection() {
-	if splitResultOverview.regExWrappersCollection == nil {
-		splitResultOverview.regExWrappersCollection =
-			NewRegExWrappersCollectionUsingStringPointer(splitResultOverview.Results)
+func (it *SplitResultOverview) initializeRegExWrappersCollection() {
+	if it.regExWrappersCollection == nil {
+		it.regExWrappersCollection =
+			NewRegExWrappersCollection(it.Results...)
 	}
 }
 
 // ResultsToRegexArray returns Results to regular expressions array
-func (splitResultOverview *SplitResultOverview) ResultsToRegexArray() *[]*RegExWrapper {
-	splitResultOverview.initializeRegExWrappersCollection()
+func (it *SplitResultOverview) ResultsToRegexArray() []*RegExWrapper {
+	it.initializeRegExWrappersCollection()
 
-	return splitResultOverview.regExWrappersCollection.Value()
+	return it.regExWrappersCollection.Value()
 }
 
-// Returns the cached length of Results
-func (splitResultOverview *SplitResultOverview) ResultsLength() int {
-	if splitResultOverview.resultsLength == nil {
-		length := len(*splitResultOverview.Results)
-		splitResultOverview.resultsLength = &length
+// ResultsLength Returns the cached length of Results
+func (it *SplitResultOverview) ResultsLength() int {
+	if it.resultsLength != nil {
+		return *it.resultsLength
 	}
 
-	return *splitResultOverview.resultsLength
-}
-
-// Returns the cached length of NonEmptyResults
-func (splitResultOverview *SplitResultOverview) NonEmptyResultsLength() int {
-	if splitResultOverview.nonEmptyResultsLength == nil {
-		length := len(*splitResultOverview.NonEmptyResults)
-		splitResultOverview.nonEmptyResultsLength = &length
+	if it.resultsLength == nil {
+		length := len(it.Results)
+		it.resultsLength = &length
 	}
 
-	return *splitResultOverview.nonEmptyResultsLength
+	return *it.resultsLength
 }
 
-// Returns Results from *[]*string to *[]string
-func (splitResultOverview *SplitResultOverview) ToSimpleArray() *[]string {
-	return misc.ConvertPointerStringsToStrings(splitResultOverview.Results)
+// NonEmptyResultsLength  Returns the cached length of NonEmptyResults
+func (it *SplitResultOverview) NonEmptyResultsLength() int {
+	if it.nonEmptyResultsLength == nil {
+		length := len(it.NonEmptyResults)
+		it.nonEmptyResultsLength = &length
+	}
+
+	return *it.nonEmptyResultsLength
 }
 
-// Returns NonEmptyResults *[]*string to *[]string
-func (splitResultOverview *SplitResultOverview) NonEmptyToSimpleArray() *[]string {
-	return misc.ConvertPointerStringsToStrings(splitResultOverview.NonEmptyResults)
+// ToSimpleArray Returns Results from *[]*string to *[]string
+func (it *SplitResultOverview) ToSimpleArray() []string {
+	return it.Results
 }
 
-func NewEmptySplitResultOverview(str *string) *SplitResultOverview {
-	strArray := []*string{str}
+// NonEmptyToSimpleArray Returns NonEmptyResults *[]*string to *[]string
+func (it *SplitResultOverview) NonEmptyToSimpleArray() []string {
+	return it.NonEmptyResults
+}
+
+func NewEmptySplitResultOverview(str string) *SplitResultOverview {
+	strArray := []string{str}
 
 	return &SplitResultOverview{
-		Results:       &strArray,
+		Results:       strArray,
 		SplitResults:  nil,
 		IsEmptyResult: true,
 	}

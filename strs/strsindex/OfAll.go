@@ -20,17 +20,17 @@ import (
 //  - Invalid result can be nil if any lines == nil results nil.
 //  - If no indexes found returns nil.
 func OfAll(
-	lines *[]string,
+	lines []string,
 	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
-) *[]int {
-	if isstrsinternal.EmptyPtr(lines) {
+) []int {
+	if isstrsinternal.Empty(lines) {
 		return nil
 	}
 
-	length := len(*lines)
+	length := len(lines)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
@@ -85,5 +85,5 @@ func OfAll(
 		return nil
 	}
 
-	return &indexes
+	return indexes
 }

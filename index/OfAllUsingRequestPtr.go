@@ -1,6 +1,8 @@
 package index
 
 import (
+	"strings"
+
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
@@ -18,18 +20,18 @@ import (
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
 func OfAllUsingRequestPtr(
-	content *string,
+	content string,
 	request *strhelpercore.SearchRequest,
-) *[]int {
-	if content == nil || request == nil || request.Limits == 0 {
+) []int {
+	if request == nil || request.Limits == 0 {
 		return nil
 	}
 
-	if *content == request.Search && request.StartsAt == 0 {
-		return &[]int{constants.Zero}
+	if content == request.Search && request.StartsAt == 0 {
+		return []int{constants.Zero}
 	}
 
-	wholeTextLength := len(*content)
+	wholeTextLength := len(content)
 
 	if request.StartsAt <= constants.InvalidNotFoundCase || request.StartsAt > wholeTextLength-1 {
 		panichelper.StartAtIndexFailed(request.StartsAt, wholeTextLength)
@@ -49,7 +51,7 @@ func OfAllUsingRequestPtr(
 
 	if request.IsCaseSensitive == false {
 		// insensitive
-		sendingContent = strto.LowerStrPtr(sendingContent)
+		sendingContent = strings.ToLower(sendingContent)
 		sendingSearchTerm = strto.LowerStrPtr(sendingSearchTerm)
 	}
 
@@ -79,7 +81,7 @@ func OfAllUsingRequestPtr(
 
 	searchIndividualRequest := strhelpercore.SearchIndividualRequest{
 		Text:            sendingContent,
-		SearchRequest:   &sendingRequest,
+		SearchRequest:   sendingRequest,
 		WholeTextLength: wholeTextLength,
 	}
 
@@ -112,5 +114,5 @@ func OfAllUsingRequestPtr(
 		return nil
 	}
 
-	return &indexes
+	return indexes
 }

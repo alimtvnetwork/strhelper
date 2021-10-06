@@ -1,11 +1,12 @@
 package isanyinternal
 
 import (
+	"bytes"
+
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
 
-// PointersOfPointersAnyItemsEquals compares leftItems and rightItems and returns bool
+// Equals compares leftItems and rightItems and returns bool
 //  - If both nil returns true.
 //  - If one nil and another is not then returns false.
 //  - If both lengths are not same returns false.
@@ -16,9 +17,9 @@ import (
 //  - if true then if at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
-func PointersOfPointersAnyItemsEquals(
-	leftItems *[]*interface{},
-	rightItems *[]*interface{},
+func Equals(
+	leftItems []interface{},
+	rightItems []interface{},
 	startsAt int,
 	isContinueOnBothItemParseError bool,
 ) bool {
@@ -27,8 +28,8 @@ func PointersOfPointersAnyItemsEquals(
 		return resultWrapper.Result
 	}
 
-	leftLength := len(*leftItems)
-	rightLength := len(*rightItems)
+	leftLength := len(leftItems)
+	rightLength := len(rightItems)
 
 	if leftLength != rightLength {
 		return false
@@ -39,22 +40,14 @@ func PointersOfPointersAnyItemsEquals(
 	}
 
 	for ; startsAt < leftLength; startsAt++ {
-		left := (*leftItems)[startsAt]
-		right := (*rightItems)[startsAt]
+		left := leftItems[startsAt]
+		right := rightItems[startsAt]
 
 		if left == nil && right == nil {
 			continue
 		}
 
 		if left == nil || right == nil {
-			return false
-		}
-
-		if *left == nil && *right == nil {
-			continue
-		}
-
-		if *left == nil || *right == nil {
 			return false
 		}
 
@@ -74,7 +67,7 @@ func PointersOfPointersAnyItemsEquals(
 			return false
 		}
 
-		if !misc.IsBytesEquals(leftBytes, rightBytes, 0) {
+		if !bytes.Equal(leftBytes, rightBytes) {
 			return false
 		}
 	}

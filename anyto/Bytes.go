@@ -10,7 +10,7 @@ import (
 // Bytes Returns:
 //  - nil : if @anything is nil.
 //  - *[]bytes : if anything exist and doesn't have any error from parsing json.NewEncoder(bytes.Buffer).Encode().
-func Bytes(anything interface{}) (*[]byte, error) {
+func Bytes(anything interface{}) ([]byte, error) {
 	if anything == nil {
 		return nil, nil
 	}
@@ -26,7 +26,7 @@ func Bytes(anything interface{}) (*[]byte, error) {
 	if isString {
 		toBytes := []byte(str)
 
-		return &toBytes, nil
+		return toBytes, nil
 	}
 
 	isByte, currentByte := reflectinternal.IsByte(anything)
@@ -34,7 +34,7 @@ func Bytes(anything interface{}) (*[]byte, error) {
 	if isByte {
 		toBytes := []byte{currentByte}
 
-		return &toBytes, nil
+		return toBytes, nil
 	}
 
 	// Reference : https://stackoverflow.com/a/49946268
@@ -49,7 +49,7 @@ func Bytes(anything interface{}) (*[]byte, error) {
 	currentBytes := reqBodyBytes.Bytes()
 
 	if currentBytes != nil {
-		return &currentBytes, nil
+		return currentBytes, nil
 	}
 
 	return nil, nil

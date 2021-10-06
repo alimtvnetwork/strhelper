@@ -6,14 +6,14 @@ import (
 )
 
 func IsSliceAsHashsetContains(
-	sliceAsHashset *[]string,
+	sliceAsHashset []string,
 	containsLine string,
 ) bool {
 	if corestr.LengthOfStrings(sliceAsHashset) == 0 {
 		return false
 	}
 
-	hashset := *converters.StringsToMap(sliceAsHashset)
+	hashset := *converters.StringsToMap(&sliceAsHashset)
 	_, has := hashset[containsLine]
 
 	return has

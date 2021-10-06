@@ -16,12 +16,12 @@ func SimpleAnyHash(any interface{}) int64 {
 		panic(err)
 	}
 
-	var length = int64(len(*allBytes))
+	var length = int64(len(allBytes))
 	mid := length / 2
 	var sum = length + mid
 
 	var bInt, index int64
-	for i, b := range *allBytes {
+	for i, b := range allBytes {
 		bInt = int64(b)
 		index = int64(i)
 		sum += int64(i) + bInt - mid - (index | bInt) + (bInt & mid)

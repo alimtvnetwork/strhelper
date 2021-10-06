@@ -8,14 +8,14 @@ import (
 )
 
 func GetContainsLineResultPtr(
-	contentsLines *[]string,
+	contentsLines []string,
 	substrSearchLine string,
 ) *strhelpercore.StringResult {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if strings.Contains(currentLine, substrSearchLine) {
 			return &strhelpercore.StringResult{
 				FoundIndex: index,

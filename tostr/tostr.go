@@ -1,10 +1,10 @@
 package tostr
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/coredata/corejson"
 
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
@@ -60,23 +60,23 @@ func Any(any interface{}) string {
 	return fmt.Sprintf(constants.SprintValueFormat, any)
 }
 
-func AnyToJsonStrWithErrorPtr(any *interface{}) *strhelpercore.StringWithError {
-	jsonBytes, er := json.Marshal(any)
+func AnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
+	jsonResult := corejson.NewFromAny(any)
 
-	if er != nil {
-		return strhelpercore.NewStringWithErrorOnlyError(&er)
+	if jsonResult.HasError() {
+		return strhelpercore.NewStringWithErrorOnlyError(jsonResult.MeaningfulError())
 	}
 
-	jsonStr := string(jsonBytes)
-
-	return strhelpercore.NewStringWithNoError(&jsonStr)
+	return strhelpercore.NewStringWithNoError(jsonResult.JsonString())
 }
 
+// Json
+//
 // if nil then empty string.
 func Json(any interface{}) string {
 	jsonResult := AnyToJsonStrWithErrorPtr(&any)
 
-	jsonResult.HasError()
+	jsonResult.HandleError()
 
-	return *jsonResult.Value()
+	return jsonResult.Value()
 }

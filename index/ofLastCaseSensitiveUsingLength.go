@@ -9,7 +9,7 @@ import (
 // returns -1 on non found case
 // panics if any is nil
 func ofLastCaseSensitiveUsingLength(
-	s, findingString *string,
+	s, findingString string,
 	contentLengthDecreasedBy int,
 	wholeTextLength, searchLength int,
 ) int {

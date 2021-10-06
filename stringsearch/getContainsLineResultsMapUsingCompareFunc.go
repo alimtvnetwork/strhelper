@@ -9,7 +9,7 @@ import (
 
 func getContainsLineResultsMapUsingCompareFunc(
 	isLineCompareFunc stringcompareas.IsLineCompareFunc,
-	contentsLines *[]string,
+	contentsLines []string,
 	line string,
 	isCaseSensitive bool,
 ) *strhelpercore.StringResultsMap {
@@ -21,7 +21,7 @@ func getContainsLineResultsMapUsingCompareFunc(
 	capacity := defaultcapacity.OfSearch(length)
 	currentMap := strhelpercore.NewStringResultsMap(capacity)
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if isLineCompareFunc(currentLine, line, isCaseSensitive) {
 			result := &strhelpercore.StringResult{
 				FoundIndex: index,

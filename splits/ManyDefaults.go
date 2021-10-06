@@ -17,8 +17,8 @@ func ManyDefaults(
 	splitsBy ...string,
 ) *strhelpercore.SplitResultOverview {
 	return ManyPtr(
-		&str,
-		&splitsBy,
+		str,
+		splitsBy,
 		0,
 		-1,
 		true)

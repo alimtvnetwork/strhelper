@@ -5,18 +5,18 @@ import (
 	"gitlab.com/evatix-go/core/coreindexes"
 )
 
-func IntoTwoFromLastCaseSensitive(s, separator *string) (left, right string) {
+func IntoTwoFromLastCaseSensitive(s, separator string) (left, right string) {
 	splits := LastByLimitPtr(
 		s,
 		separator,
 		true,
 		ExpectingLengthOfIntoTwoSplits)
 
-	length := len(*splits)
-	first := (*splits)[coreindexes.First]
+	length := len(splits)
+	first := splits[coreindexes.First]
 
 	if length == ExpectingLengthOfIntoTwoSplits {
-		return (*splits)[coreindexes.Second], first
+		return splits[coreindexes.Second], first
 	}
 
 	return constants.EmptyString, first

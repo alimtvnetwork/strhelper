@@ -25,9 +25,9 @@ func Test_OfAllPtr(t *testing.T) {
 		expected := testCase.ExpectedAsIntArray()
 
 		// Act
-		actual := index.OfAllPtr(
-			&testCase.Content,
-			&testCase.SearchingContent,
+		actual := index.OfAll(
+			testCase.Content,
+			testCase.SearchingContent,
 			testCase.InitializedPosition,
 			testCase.Limits,
 			testCase.IsCaseSensitive,

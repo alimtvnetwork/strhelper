@@ -9,7 +9,7 @@ import (
 
 func getContainsLineResultsUsingCompareFunc(
 	isLineCompareFunc stringcompareas.IsLineCompareFunc,
-	contentsLines *[]string,
+	contentsLines []string,
 	line string,
 	isCaseSensitive bool,
 ) *strhelpercore.StringResult {
@@ -21,7 +21,7 @@ func getContainsLineResultsUsingCompareFunc(
 		}
 	}
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if isLineCompareFunc(currentLine, line, isCaseSensitive) {
 			return &strhelpercore.StringResult{
 				FoundIndex: index,

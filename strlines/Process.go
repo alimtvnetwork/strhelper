@@ -9,11 +9,11 @@ import (
 )
 
 func Process(
-	content *string,
-	lines *[]string,
-	lineProcessor *strhelpercore.LineProcessor,
-) *[]*string {
-	newStrings := make([]*string, len(*lines))
+	content string,
+	lines []string,
+	lineProcessor strhelpercore.LineProcessor,
+) []string {
+	newStrings := make([]string, len(lines))
 
 	args := strhelpercore.LineArgs{
 		Content: content,
@@ -22,22 +22,22 @@ func Process(
 		Line:    constants.EmptyString, // it will change per line
 	}
 
-	for args.Index, args.Line = range *lines {
-		newStrings[args.Index] = (*lineProcessor)(&args)
+	for args.Index, args.Line = range lines {
+		newStrings[args.Index] = lineProcessor(&args)
 	}
 
-	return &newStrings
+	return newStrings
 }
 
 func parallelProcessFunc(
-	processedStrings *[]*string,
-	lineProcessor *strhelpercore.LineProcessor,
+	processedStrings []string,
+	lineProcessor strhelpercore.LineProcessor,
 	args *strhelpercore.LineArgs,
 	wg *sync.WaitGroup,
 ) {
 	// example : https://bit.ly/3lLndEF
 	defer wg.Done()
-	(*processedStrings)[(*args).Index] = (*lineProcessor)(args)
+	processedStrings[args.Index] = lineProcessor(args)
 }
 
 // Runs loop in async mode (in golang starts with go).
@@ -46,16 +46,16 @@ func parallelProcessFunc(
 //
 // Sometimes it is faster for large collection in async, memory is cheap than idle cpu.
 func ProcessAsync(
-	content *string,
-	lines *[]string,
-	lineProcessor *strhelpercore.LineProcessor,
-) *[]*string {
-	length := len(*lines)
-	newStrings := make([]*string, length)
+	content string,
+	lines []string,
+	lineProcessor strhelpercore.LineProcessor,
+) []string {
+	length := len(lines)
+	newStrings := make([]string, length)
 	var wg sync.WaitGroup
 	wg.Add(length)
 
-	for index, line := range *lines {
+	for index, line := range lines {
 		args := strhelpercore.LineArgs{
 			Content: content,
 			Lines:   lines,
@@ -64,7 +64,7 @@ func ProcessAsync(
 		}
 
 		go parallelProcessFunc(
-			&newStrings,
+			newStrings,
 			lineProcessor,
 			&args,
 			&wg)
@@ -72,5 +72,5 @@ func ProcessAsync(
 
 	wg.Wait()
 
-	return &newStrings
+	return newStrings
 }

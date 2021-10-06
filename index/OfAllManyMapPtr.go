@@ -1,6 +1,8 @@
 package index
 
 import (
+	"strings"
+
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/strto"
 )
@@ -11,32 +13,28 @@ import (
 //  - When -1 returns all
 //  - When 0 returns nil
 func OfAllManyMapPtr(
-	content *string,
-	searchRequestsMap *map[string]strhelpercore.SearchRequest,
+	content string,
+	searchRequestsMap map[string]strhelpercore.SearchRequest,
 ) *strhelpercore.IndexesResultSet {
-	if content == nil || searchRequestsMap == nil {
-		return strhelpercore.NewEmptyIndexesResultSet()
-	}
-
-	searchingItemsLength := len(*searchRequestsMap)
+	searchingItemsLength := len(searchRequestsMap)
 
 	if searchingItemsLength == 0 {
 		return strhelpercore.NewEmptyIndexesResultSet()
 	}
 
-	indexesMap := make(map[string]*[]int, searchingItemsLength)
+	indexesMap := make(map[string][]int, searchingItemsLength)
 	var hasFoundAny bool
 	var lastIndex, maxIndexFound, lastIndexValue int
 	maxIndexFound = -1
 
 	// making a copy of pointer only, not the object. copy of reference address
 	// reference : https://play.golang.org/p/r65MrCg86YH
-	var lowerCaseContent, sendingContent *string
+	var lowerCaseContent, sendingContent string
 	if hasAnyInsensitiveCase(searchRequestsMap) {
-		lowerCaseContent = strto.LowerStrPtr(content)
+		lowerCaseContent = strings.ToLower(content)
 	}
 
-	for key, searchRequest := range *searchRequestsMap {
+	for key, searchRequest := range searchRequestsMap {
 		sendingContent = content
 
 		if searchRequest.IsCaseSensitive == false {
@@ -50,15 +48,15 @@ func OfAllManyMapPtr(
 			sendingContent,
 			&searchRequest)
 
-		if indexes == nil || *indexes == nil {
+		if len(indexes) == 0 {
 			indexesMap[key] = nil
 			continue
 		}
 
-		lastIndex = len(*indexes) - 1
+		lastIndex = len(indexes) - 1
 		indexesMap[key] = indexes
 		hasFoundAny = true
-		lastIndexValue = (*indexes)[lastIndex]
+		lastIndexValue = indexes[lastIndex]
 
 		if maxIndexFound < lastIndexValue {
 			maxIndexFound = lastIndexValue
@@ -66,7 +64,7 @@ func OfAllManyMapPtr(
 	}
 
 	return strhelpercore.NewIndexesResultSet(
-		&indexesMap,
+		indexesMap,
 		hasFoundAny,
 		maxIndexFound)
 }

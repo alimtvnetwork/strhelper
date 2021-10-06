@@ -11,55 +11,55 @@ const (
 )
 
 type Hashset struct {
-	hashset       *map[string]bool
+	hashset       map[string]bool
 	hasMapUpdated bool
-	cachedList    *[]string
+	cachedList    []string
 	length        int
 	isEmptySet    bool
 	sync.Mutex
 }
 
-func (hashset *Hashset) IsEmptySet() bool {
-	if hashset.hasMapUpdated {
-		hashset.isEmptySet = len(*hashset.hashset) == 0
+func (it *Hashset) IsEmptySet() bool {
+	if it.hasMapUpdated {
+		it.isEmptySet = len(it.hashset) == 0
 	}
 
-	return hashset.isEmptySet
+	return it.isEmptySet
 }
 
-func (hashset *Hashset) Lock() {
-	hashset.Mutex.Lock()
+func (it *Hashset) Lock() {
+	it.Mutex.Lock()
 	fmt.Println("locked")
 }
 
-func (hashset *Hashset) Unlock() {
-	hashset.Mutex.Unlock()
+func (it *Hashset) Unlock() {
+	it.Mutex.Unlock()
 	// TODO remove msg.
 	fmt.Println("unlocked")
 }
 
-func (hashset *Hashset) Add(key string) {
-	(*hashset.hashset)[key] = true
-	hashset.hasMapUpdated = true
+func (it *Hashset) Add(key string) {
+	it.hashset[key] = true
+	it.hasMapUpdated = true
 }
 
-func (hashset *Hashset) AddWithLock(key string) {
-	hashset.Lock()
-	defer hashset.Unlock()
+func (it *Hashset) AddWithLock(key string) {
+	it.Lock()
+	defer it.Unlock()
 
-	(*hashset.hashset)[key] = true
-	hashset.hasMapUpdated = true
+	it.hashset[key] = true
+	it.hasMapUpdated = true
 }
 
-func (hashset *Hashset) Has(key string) bool {
-	isSet, isFound := (*hashset.hashset)[key]
+func (it *Hashset) Has(key string) bool {
+	isSet, isFound := it.hashset[key]
 
 	return isFound && isSet
 }
 
-func (hashset *Hashset) HasAll(keys ...string) bool {
+func (it *Hashset) HasAll(keys ...string) bool {
 	for _, key := range keys {
-		isSet, isFound := (*hashset.hashset)[key]
+		isSet, isFound := it.hashset[key]
 
 		if !(isFound && isSet) {
 			// not found
@@ -71,9 +71,9 @@ func (hashset *Hashset) HasAll(keys ...string) bool {
 	return true
 }
 
-func (hashset *Hashset) HasAny(keys ...string) bool {
+func (it *Hashset) HasAny(keys ...string) bool {
 	for _, key := range keys {
-		isSet, isFound := (*hashset.hashset)[key]
+		isSet, isFound := it.hashset[key]
 
 		if isFound && isSet {
 			// any found
@@ -85,83 +85,83 @@ func (hashset *Hashset) HasAny(keys ...string) bool {
 	return false
 }
 
-func (hashset *Hashset) HasWithLock(key string) bool {
-	hashset.Lock()
-	defer hashset.Unlock()
+func (it *Hashset) HasWithLock(key string) bool {
+	it.Lock()
+	defer it.Unlock()
 
-	isSet, isFound := (*hashset.hashset)[key]
+	isSet, isFound := it.hashset[key]
 
 	return isFound && isSet
 }
 
-func (hashset *Hashset) UnsetWithLock(key string) {
-	hashset.Lock()
-	defer hashset.Unlock()
+func (it *Hashset) UnsetWithLock(key string) {
+	it.Lock()
+	defer it.Unlock()
 
-	(*hashset.hashset)[key] = false
-	hashset.hasMapUpdated = true
+	it.hashset[key] = false
+	it.hasMapUpdated = true
 }
 
-func (hashset *Hashset) List() *[]string {
-	if hashset.hasMapUpdated || hashset.cachedList == nil {
-		hashset.setCached()
+func (it *Hashset) List() []string {
+	if it.hasMapUpdated || it.cachedList == nil {
+		it.setCached()
 	}
 
-	return hashset.cachedList
+	return it.cachedList
 }
 
-func (hashset *Hashset) ListWithLock() *[]string {
-	hashset.Lock()
-	defer hashset.Unlock()
+func (it *Hashset) ListWithLock() []string {
+	it.Lock()
+	defer it.Unlock()
 
-	return hashset.List()
+	return it.List()
 }
 
-func (hashset *Hashset) setCached() {
-	length := hashset.Length()
+func (it *Hashset) setCached() {
+	length := it.Length()
 	list := make([]string, length)
 
 	i := 0
 
-	for key, isEnabled := range *hashset.hashset {
+	for key, isEnabled := range it.hashset {
 		if isEnabled {
 			list[i] = key
 		}
 	}
 
-	hashset.hasMapUpdated = false
-	hashset.cachedList = &list
+	it.hasMapUpdated = false
+	it.cachedList = list
 }
 
 // Create a new hashset with all lower strings
-func (hashset *Hashset) ToLowerSet() *Hashset {
-	newMap := make(map[string]bool, hashset.Length())
+func (it *Hashset) ToLowerSet() *Hashset {
+	newMap := make(map[string]bool, it.Length())
 
 	var toLower string
-	for key, isEnabled := range *hashset.hashset {
+	for key, isEnabled := range it.hashset {
 		toLower = strings.ToLower(key)
 		newMap[toLower] = isEnabled
 	}
 
-	return NewUsingMap(&newMap)
+	return NewUsingMap(newMap)
 }
 
-func (hashset *Hashset) Length() int {
-	if hashset.hasMapUpdated {
-		hashset.length = len(*hashset.hashset)
+func (it *Hashset) Length() int {
+	if it.hasMapUpdated {
+		it.length = len(it.hashset)
 	}
 
-	return hashset.length
+	return it.length
 }
 
-func (hashset *Hashset) Remove(key string) {
-	delete(*hashset.hashset, key)
-	hashset.hasMapUpdated = true
+func (it *Hashset) Remove(key string) {
+	delete(it.hashset, key)
+	it.hasMapUpdated = true
 }
 
-func (hashset *Hashset) RemoveWithLock(key string) {
-	hashset.Lock()
-	defer hashset.Unlock()
+func (it *Hashset) RemoveWithLock(key string) {
+	it.Lock()
+	defer it.Unlock()
 
-	hashset.Remove(key)
+	it.Remove(key)
 }

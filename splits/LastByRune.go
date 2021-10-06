@@ -4,9 +4,9 @@ func LastByRune(
 	s string,
 	runeToSplit rune,
 	limits int,
-) *[]string {
+) []string {
 	return LastByRunePtr(
-		&s,
+		s,
 		runeToSplit,
 		limits)
 }

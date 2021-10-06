@@ -14,16 +14,14 @@ package isstrinternal
 // - This doesn't do the quick exit, based on if search length > whole text length.
 // (Assumptions are it is already made before the call)
 func StartsWithUsingLength(
-	wholeText, search *string,
+	wholeText, search string,
 	startsAt int,
 	wholeTextLength, searchLength int,
 ) bool {
 	incrementing := 0
-	wholeTextCopy := *wholeText
-	searchTextCopy := *search
 
 	for ; startsAt < wholeTextLength && incrementing < searchLength; startsAt++ {
-		if wholeTextCopy[startsAt] != searchTextCopy[incrementing] {
+		if wholeText[startsAt] != search[incrementing] {
 			break
 		}
 

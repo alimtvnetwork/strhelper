@@ -52,7 +52,7 @@ func Sha256Any(any interface{}) []byte {
 		return EmptySha256Hash
 	}
 
-	return internalSha256.Sum(*allBytes)
+	return internalSha256.Sum(allBytes)
 }
 
 // Returns EmptySha256HashString on nil any or.
@@ -69,6 +69,6 @@ func Sha256AnyToString(any interface{}) string {
 		return EmptySha256HashString
 	}
 
-	hash := internalSha256.Sum(*allBytes)
+	hash := internalSha256.Sum(allBytes)
 	return hex.EncodeToString(hash[:])
 }

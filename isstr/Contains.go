@@ -22,9 +22,9 @@ func Contains(
 	startsAt int,
 	isCaseSensitive bool,
 ) bool {
-	return index.OfPtr(
-		&wholeText,
-		&containsSearch,
+	return index.Of(
+		wholeText,
+		containsSearch,
 		startsAt,
 		isCaseSensitive) > constants.InvalidNotFoundCase
 }

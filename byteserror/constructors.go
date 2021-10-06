@@ -1,58 +1,48 @@
 package byteserror
 
 import (
+	"gitlab.com/evatix-go/core/codestack"
+	"gitlab.com/evatix-go/errorwrapper"
 	"gitlab.com/evatix-go/errorwrapper/errnew"
+	"gitlab.com/evatix-go/errorwrapper/errtype"
 
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func NewError(err error, byteType encodingbytetype.Variant) *Wrapper {
+func NewErrorPtr(
+	byteType encodingbytetype.Variant,
+	errType errtype.Variation,
+	err error,
+) *Wrapper {
 	return &Wrapper{
-		errorWrapper: errnew.ErrPtr(err),
-		byteType:     byteType,
+		errorWrapper: errnew.NewPtrUsingStackSkip(
+			codestack.Skip1,
+			errType,
+			err),
+		byteType: byteType,
 	}
 }
 
-func NewErrorPtr(err *error, byteType encodingbytetype.Variant) *Wrapper {
-	return &Wrapper{
-		errorWrapper: errnew.ErrInPtr(err),
-		byteType:     byteType,
-	}
-}
-
-func NewPtr(bytes *[]byte, err *error, byteType encodingbytetype.Variant) *Wrapper {
-	length := 0
-
-	if bytes != nil {
-		length = len(*bytes)
-	}
+func NewPtr(
+	byteType encodingbytetype.Variant,
+	bytes []byte,
+	errWrapper *errorwrapper.Wrapper,
+) *Wrapper {
+	length := len(bytes)
 
 	return &Wrapper{
 		bytes:        bytes,
-		errorWrapper: errnew.ErrInPtr(err),
+		errorWrapper: errWrapper,
 		bytesLength:  length,
 		byteType:     byteType,
 	}
 }
 
-func New(bytes *[]byte, err error, byteType encodingbytetype.Variant) Wrapper {
-	length := 0
-
-	if bytes != nil {
-		length = len(*bytes)
-	}
-
-	return Wrapper{
-		bytes:        bytes,
-		errorWrapper: errnew.ErrPtr(err),
-		byteType:     byteType,
-		bytesLength:  length,
-	}
-}
-
+// NewNoErrorPtr
+//
 // NewNoError Creates new Wrapper
-func NewNoError(bytes *[]byte, byteType encodingbytetype.Variant) *Wrapper {
-	return NewPtr(bytes, nil, byteType)
+func NewNoErrorPtr(byteType encodingbytetype.Variant, allBytes []byte) *Wrapper {
+	return NewPtr(byteType, allBytes, nil)
 }
 
 func EmptyPtr(byteType encodingbytetype.Variant) *Wrapper {

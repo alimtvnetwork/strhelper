@@ -2,7 +2,7 @@ package anyto
 
 import "encoding/json"
 
-func JsonBytes(any interface{}) *[]byte {
+func JsonBytes(any interface{}) []byte {
 	if any == nil {
 		return nil
 	}
@@ -10,12 +10,8 @@ func JsonBytes(any interface{}) *[]byte {
 	jsonBytes, err := json.Marshal(any)
 
 	if err != nil {
-		panic(err)
+		return []byte{}
 	}
 
-	if jsonBytes != nil {
-		return &jsonBytes
-	}
-
-	return nil
+	return jsonBytes
 }

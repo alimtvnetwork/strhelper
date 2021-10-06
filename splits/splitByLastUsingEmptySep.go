@@ -1,10 +1,10 @@
 package splits
 
 func splitByLastUsingEmptySep(
-	s *string,
+	s string,
 	limits int,
-) *[]string {
-	runes := []rune(*s)
+) []string {
+	runes := []rune(s)
 	runesLength := len(runes)
 	newLength := runesLength
 	var list []string = nil
@@ -27,5 +27,5 @@ func splitByLastUsingEmptySep(
 		list[index] = string(runes[0 : runesIndex+1])
 	}
 
-	return &list
+	return list
 }

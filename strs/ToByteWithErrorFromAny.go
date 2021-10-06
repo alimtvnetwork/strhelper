@@ -29,7 +29,7 @@ func ToByteWithErrorFromAny(anything interface{}) *strhelpercore.BytesWithError 
 	currentBytes := reqBodyBytes.Bytes()
 
 	if currentBytes != nil {
-		return strhelpercore.NewBytesWithNoError(&currentBytes)
+		return strhelpercore.NewBytesWithNoError(currentBytes)
 	}
 
 	return strhelpercore.NewBytesWithNoError(nil)
