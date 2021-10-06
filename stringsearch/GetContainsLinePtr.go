@@ -11,14 +11,14 @@ import (
 //
 // Returns the first item that contains the substring.
 func GetContainsLinePtr(
-	contentsLines *[]string,
+	contentsLines []string,
 	searchSubStringLine string,
 ) (foundLine string) {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return constants.EmptyString
 	}
 
-	for _, currentLine := range *contentsLines {
+	for _, currentLine := range contentsLines {
 		if strings.Contains(currentLine, searchSubStringLine) {
 			return currentLine
 		}

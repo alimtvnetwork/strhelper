@@ -14,5 +14,7 @@ func ValueBytesWrapper(anything interface{}) *byteserror.Wrapper {
 
 	allBytes := []byte(fmt.Sprintf("%v", anything))
 
-	return byteserror.NewNoError(&allBytes, encodingbytetype.AnyToValueStringBytes)
+	return byteserror.NewNoErrorPtr(
+		encodingbytetype.AnyToValueStringBytes,
+		allBytes)
 }

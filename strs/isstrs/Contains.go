@@ -9,6 +9,15 @@ import (
 // if array is empty or nil then returns false.
 //
 // One can use Exists similar to contains has less arguments
-func Contains(lines *[]string, findingString string, startsAt int, isCaseSensitive bool) bool {
-	return strsindex.Of(lines, findingString, startsAt, isCaseSensitive) > constants.InvalidNotFoundCase
+func Contains(
+	lines []string,
+	findingString string,
+	startsAt int,
+	isCaseSensitive bool,
+) bool {
+	return strsindex.Of(
+		lines,
+		findingString,
+		startsAt,
+		isCaseSensitive) > constants.InvalidNotFoundCase
 }

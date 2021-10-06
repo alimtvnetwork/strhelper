@@ -48,6 +48,6 @@ func Md5HashAnyToString(any interface{}) string {
 		return EmptyMd5HashString
 	}
 
-	hash := md5.Sum(*allBytes)
+	hash := md5.Sum(allBytes)
 	return hex.EncodeToString(hash[:])
 }

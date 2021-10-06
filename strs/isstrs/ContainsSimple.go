@@ -6,12 +6,12 @@ import "gitlab.com/evatix-go/core/coredata/corestr"
 // if array is empty or nil then returns false.
 //
 // One can use Exists similar to contains has less arguments
-func ContainsSimple(lines *[]string, line string) bool {
+func ContainsSimple(lines []string, line string) bool {
 	if corestr.LengthOfStrings(lines) == 0 {
 		return false
 	}
 
-	for _, sliceItem := range *lines {
+	for _, sliceItem := range lines {
 		if line == sliceItem {
 			return true
 		}

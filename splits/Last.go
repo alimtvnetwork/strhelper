@@ -4,14 +4,14 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
-func Last(s, separator string) *[]string {
+func Last(s, separator string) []string {
 	if s == constants.EmptyString {
-		return defaultResult()
+		return []string{""}
 	}
 
 	return LastByLimitPtr(
-		&s,
-		&separator,
+		s,
+		separator,
 		true,
-		constants.MinusOne)
+		constants.TakeAllMinusOne)
 }

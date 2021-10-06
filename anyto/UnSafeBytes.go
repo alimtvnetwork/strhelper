@@ -1,35 +1,11 @@
 package anyto
 
-import (
-	"unsafe"
+func UnSafeBytes(any interface{}) []byte {
+	rawBytes := UnSafeBytesPtr(any)
 
-	"gitlab.com/evatix-go/strhelper/internal/reflectinternal"
-)
-
-func UnSafeBytes(any interface{}) *[]byte {
-	if any == nil {
-		return nil
+	if rawBytes == nil || *rawBytes == nil {
+		return []byte{}
 	}
 
-	isBytes, allBytes := reflectinternal.IsBytesOrBytesPointer(any)
-
-	if isBytes {
-		return allBytes
-	}
-
-	pointerInfo := reflectinternal.GetPointerInfo(&any)
-
-	if pointerInfo.IsPointer {
-		//goland:noinspection GoVetUnsafePointer
-		return (*[]byte)(unsafe.Pointer(pointerInfo.Pointer))
-	}
-
-	pointerInfo = reflectinternal.GetPointerInfo(&any)
-
-	if pointerInfo.IsPointer {
-		//goland:noinspection ALL
-		return (*[]byte)(unsafe.Pointer(pointerInfo.Pointer))
-	}
-
-	return nil
+	return *rawBytes
 }

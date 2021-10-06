@@ -8,14 +8,14 @@ import (
 )
 
 func GetContainsLineResultByRegex(
-	contentsLines *[]string,
+	contentsLines []string,
 	regexp *regexp.Regexp,
 ) *strhelpercore.StringResult {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if regexp.MatchString(currentLine) {
 			return &strhelpercore.StringResult{
 				FoundIndex: index,

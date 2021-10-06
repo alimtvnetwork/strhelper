@@ -23,11 +23,11 @@ var (
 	}
 )
 
-func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) string {
+func GetPtr(str, removeStr string, startsAt, count int, isCaseSensitive bool) string {
 	return stringreplace.GetPtr(
 		str,
 		removeStr,
-		constants.EmptyStringPtr,
+		constants.EmptyString,
 		startsAt,
 		count,
 		isCaseSensitive)
@@ -35,9 +35,9 @@ func GetPtr(str, removeStr *string, startsAt, count int, isCaseSensitive bool) s
 
 func Get(str, removeStr string, startsAt, count int, isCaseSensitive bool) string {
 	return stringreplace.GetPtr(
-		&str,
-		&removeStr,
-		constants.EmptyStringPtr,
+		str,
+		removeStr,
+		constants.EmptyString,
 		startsAt,
 		count,
 		isCaseSensitive)
@@ -54,27 +54,23 @@ func UsingRequest(request *strhelpercore.RemoveRequest) string {
 }
 
 func All(str, removeStr string) string {
-	return GetPtr(&str, &removeStr, 0, -1, true)
-}
-
-func AllPtr(str, removeStr *string) string {
 	return GetPtr(str, removeStr, 0, -1, true)
 }
 
 func AllWithCase(str, removeStr string, isCaseSensitive bool) string {
-	return GetPtr(&str, &removeStr, 0, -1, isCaseSensitive)
-}
-
-func AllWithCasePtr(str, removeStr *string, isCaseSensitive bool) string {
 	return GetPtr(str, removeStr, 0, -1, isCaseSensitive)
 }
 
-// Returns empty string if str is nil or empty.
+func AllWithCasePtr(str, removeStr string, isCaseSensitive bool) string {
+	return GetPtr(str, removeStr, 0, -1, isCaseSensitive)
+}
+
+// Whitespaces Returns empty string if str is nil or empty.
 func Whitespaces(str string, startsAt int) string {
 	return WhitespacesPtr(&str, startsAt)
 }
 
-// Returns empty string if str is nil or empty.
+// WhitespacesPtr Returns empty string if str is nil or empty.
 func WhitespacesPtr(str *string, startsAt int) string {
 	if str == nil || len(*str) == 0 {
 		return constants.EmptyString

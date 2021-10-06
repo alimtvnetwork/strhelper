@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"strings"
 
@@ -60,15 +61,15 @@ func main() {
 	fmt.Println(comparedResult4)
 	fmt.Println(strings.Compare("a", "a"))
 
-	leftBytes := strlines.ToUnsafeBytes(&leftUpto3)
-	rightBytes := strlines.ToUnsafeBytes(&rightLines)
+	leftBytes := strlines.ToUnsafeBytesPtr(&leftUpto3)
+	rightBytes := strlines.ToUnsafeBytesPtr(&rightLines)
 	comparedResult5 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
 
 	fmt.Println(comparedResult5)
 
-	leftBytes, _ = anyto.Bytes(leftUpto3)
-	rightBytes, _ = anyto.Bytes(rightLines)
-	comparedResult6 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
+	leftBytes2, _ := anyto.Bytes(leftUpto3)
+	rightBytes2, _ := anyto.Bytes(rightLines)
+	comparedResult6 := bytes.Equal(leftBytes2, rightBytes2)
 
 	fmt.Println(comparedResult6)
 
@@ -78,9 +79,9 @@ func main() {
 		"Line 3",
 	}
 
-	leftBytes2, _ := anyto.Bytes(left2Lines)
+	leftBytes3, _ := anyto.Bytes(left2Lines)
 
-	comparedResult7 := isstrs.BytesEquals(leftBytes2, rightBytes, 0)
+	comparedResult7 := bytes.Equal(leftBytes3, *rightBytes)
 	fmt.Println(comparedResult7)
 
 	whitespaceTest := "testing o  \t \n\n\n "

@@ -11,14 +11,9 @@ import "gitlab.com/evatix-go/strhelper/internal/coreinternal"
 //  - If both pointers are same returns true.
 //  - If none of the conditions satisfied then returns coreinternal.NewBoolResultWrapperNotApplicable()
 func isPointersAnyNullDeduction(
-	leftItems *[]*interface{},
-	rightItems *[]*interface{},
+	leftItems []interface{},
+	rightItems []interface{},
 ) coreinternal.BoolResultWrapper {
-	// if pointer same
-	if leftItems == rightItems {
-		return coreinternal.NewBoolResultWrapperTrue()
-	}
-
 	if leftItems == nil && rightItems == nil {
 		return coreinternal.NewBoolResultWrapperTrue()
 	}
@@ -27,12 +22,9 @@ func isPointersAnyNullDeduction(
 		return coreinternal.NewBoolResultWrapperFalse()
 	}
 
-	if *leftItems == nil && *rightItems == nil {
+	// if pointer same
+	if &leftItems == &rightItems {
 		return coreinternal.NewBoolResultWrapperTrue()
-	}
-
-	if *leftItems == nil || *rightItems == nil {
-		return coreinternal.NewBoolResultWrapperFalse()
 	}
 
 	return coreinternal.NewBoolResultWrapperNotApplicable()

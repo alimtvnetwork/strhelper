@@ -4,15 +4,17 @@ import (
 	"sync"
 )
 
+// IndexesResultSet
+//
 // Search term with indexes where found.
 type IndexesResultSet struct {
 	// Key : Search term
 	//
 	// Values : Indexes where the search terms are found.
-	StringKeyAsIndexesMap *map[string]*[]int
+	StringKeyAsIndexesMap map[string][]int
 	// represents the last index where search key is possible
 	LastIndexFound  int
-	indexAsKeysMap  *map[int]string
+	indexAsKeysMap  map[int]string
 	hasResult       bool
 	isEmptySet      bool
 	totalFound      *int
@@ -20,28 +22,28 @@ type IndexesResultSet struct {
 	sync.Mutex
 }
 
-func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKeyWithLock() *map[int]string {
+func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKeyWithLock() map[int]string {
 	indexesResultSet.indexesKeyMutex.Lock()
 	defer indexesResultSet.indexesKeyMutex.Unlock()
 
 	return indexesResultSet.GetIndexesMapWhereIndexAsKey()
 }
 
-func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKey() *map[int]string {
+func (indexesResultSet *IndexesResultSet) GetIndexesMapWhereIndexAsKey() map[int]string {
 	if indexesResultSet.hasResult && indexesResultSet.indexAsKeysMap == nil {
 		indexAsKeyMap := make(map[int]string, indexesResultSet.CountOfAllFoundIndexes())
 		length := 0
-		for key, indexes := range *indexesResultSet.StringKeyAsIndexesMap {
-			length = len(*indexes)
+		for key, indexes := range indexesResultSet.StringKeyAsIndexesMap {
+			length = len(indexes)
 
 			if length > 0 {
-				for _, valueIndex := range *indexes {
+				for _, valueIndex := range indexes {
 					indexAsKeyMap[valueIndex] = key
 				}
 			}
 		}
 
-		indexesResultSet.indexAsKeysMap = &indexAsKeyMap
+		indexesResultSet.indexAsKeysMap = indexAsKeyMap
 	}
 
 	return indexesResultSet.indexAsKeysMap
@@ -58,8 +60,8 @@ func (indexesResultSet *IndexesResultSet) CountOfAllFoundIndexes() int {
 	length := 0
 	if indexesResultSet.totalFound == nil {
 		counter := 0
-		for _, values := range *indexesResultSet.StringKeyAsIndexesMap {
-			length = len(*values)
+		for _, values := range indexesResultSet.StringKeyAsIndexesMap {
+			length = len(values)
 			if length > 0 {
 				counter += length
 			}
@@ -72,20 +74,20 @@ func (indexesResultSet *IndexesResultSet) CountOfAllFoundIndexes() int {
 }
 
 func (indexesResultSet *IndexesResultSet) HasResultBy(key string) bool {
-	results, has := (*indexesResultSet.StringKeyAsIndexesMap)[key]
+	results, has := (indexesResultSet.StringKeyAsIndexesMap)[key]
 
-	if has && len(*results) > 0 {
+	if has && len(results) > 0 {
 		return true
 	}
 
 	return false
 }
 
-// Returns indexes if exists or else returns nil.
-func (indexesResultSet *IndexesResultSet) GetIndexes(key string) *[]int {
-	results, has := (*indexesResultSet.StringKeyAsIndexesMap)[key]
+// GetIndexes Returns indexes if exists or else returns nil.
+func (indexesResultSet *IndexesResultSet) GetIndexes(key string) []int {
+	results, has := (indexesResultSet.StringKeyAsIndexesMap)[key]
 
-	if has && len(*results) > 0 {
+	if has && len(results) > 0 {
 		return results
 	}
 
@@ -116,7 +118,7 @@ func (indexesResultSet *IndexesResultSet) IsEmpty() bool {
 }
 
 func NewIndexesResultSet(
-	indexesMap *map[string]*[]int,
+	indexesMap map[string][]int,
 	hasFoundAny bool,
 	maxIndexWhereFound int,
 ) *IndexesResultSet {

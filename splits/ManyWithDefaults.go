@@ -22,8 +22,8 @@ func ManyWithDefaults(
 	splitsBy ...string,
 ) *strhelpercore.SplitResultOverview {
 	return ManyPtr(
-		&str,
-		&splitsBy,
+		str,
+		splitsBy,
 		0,
 		constants.InvalidNotFoundCase,
 		true)

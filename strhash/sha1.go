@@ -53,7 +53,7 @@ func Sha1Any(any interface{}) []byte {
 		return EmptySha1Hash
 	}
 
-	return internalSha1.Sum(*allBytes)
+	return internalSha1.Sum(allBytes)
 }
 
 // Returns EmptySha1HashString on nil any or.
@@ -70,6 +70,6 @@ func Sha1AnyToString(any interface{}) string {
 		return EmptySha1HashString
 	}
 
-	hash := internalSha1.Sum(*allBytes)
+	hash := internalSha1.Sum(allBytes)
 	return hex.EncodeToString(hash[:])
 }

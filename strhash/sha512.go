@@ -52,7 +52,7 @@ func Sha512Any(any interface{}) []byte {
 		return EmptySha512Hash
 	}
 
-	return internalSha512.Sum(*allBytes)
+	return internalSha512.Sum(allBytes)
 }
 
 // Returns EmptySha512HashString on nil any or.
@@ -69,6 +69,6 @@ func Sha512AnyToString(any interface{}) string {
 		return EmptySha512HashString
 	}
 
-	hash := internalSha512.Sum(*allBytes)
+	hash := internalSha512.Sum(allBytes)
 	return hex.EncodeToString(hash[:])
 }

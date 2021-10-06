@@ -1,11 +1,12 @@
 package index
 
 import (
+	"strings"
+
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strto"
 )
 
 // Returns all indexes where findingString is found.
@@ -18,29 +19,31 @@ import (
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
 func OfLastAllPtr(
-	content *string,
-	findingString *string,
+	content,
+	findingString string,
 	contentLengthDecreasedBy int,
 	limits int,
 	isCaseSensitive bool,
-) *[]int {
-	if content == nil || findingString == nil || limits == 0 {
+) []int {
+	if limits == 0 {
 		return nil
 	}
 
-	if (content == findingString || *content == *findingString) && contentLengthDecreasedBy == 0 {
-		return &[]int{0}
+	if content == findingString && contentLengthDecreasedBy == 0 {
+		return []int{0}
 	}
 
-	wholeTextLength := len(*content)
-	searchLength := len(*findingString)
+	wholeTextLength := len(content)
+	searchLength := len(findingString)
 
 	if searchLength > wholeTextLength-contentLengthDecreasedBy {
 		return nil
 	}
 
 	if contentLengthDecreasedBy <= constants.InvalidNotFoundCase || contentLengthDecreasedBy > wholeTextLength-1 {
-		panichelper.ContentLengthDecreasedByFailed(contentLengthDecreasedBy, wholeTextLength)
+		panichelper.ContentLengthDecreasedByFailed(
+			contentLengthDecreasedBy,
+			wholeTextLength)
 	}
 
 	if wholeTextLength > 0 && searchLength == 0 {
@@ -61,8 +64,8 @@ func OfLastAllPtr(
 
 	if isCaseSensitive == false {
 		// insensitive
-		sendingContent = strto.LowerStrPtr(sendingContent)
-		sendingSearchTerm = strto.LowerStrPtr(findingString)
+		sendingContent = strings.ToLower(sendingContent)
+		sendingSearchTerm = strings.ToLower(findingString)
 	}
 
 	// keep the default as best so that doesn't resize.

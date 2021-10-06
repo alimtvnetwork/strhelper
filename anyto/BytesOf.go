@@ -1,11 +1,12 @@
 package anyto
 
 import (
+	"gitlab.com/evatix-go/core/coredata/corejson"
 	"gitlab.com/evatix-go/core/msgtype"
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func BytesOf(any interface{}, parsingType encodingbytetype.Variant) (*[]byte, error) {
+func BytesOf(parsingType encodingbytetype.Variant, any interface{}) ([]byte, error) {
 	if any == nil {
 		return nil, nil
 	}
@@ -16,11 +17,13 @@ func BytesOf(any interface{}, parsingType encodingbytetype.Variant) (*[]byte, er
 	case encodingbytetype.Unsafe:
 		return UnSafeBytes(any), nil
 	case encodingbytetype.AnyToValueStringBytes:
-		return ValueBytesPtr(any), nil
+		return ValueBytes(any), nil
 	case encodingbytetype.AnyToFullStringBytes:
-		return FullValueBytesPtr(any), nil
+		return FullValueBytes(any), nil
 	case encodingbytetype.JsonParsing:
-		return JsonBytes(any), nil
+		jsonResult := corejson.NewFromAny(any)
+
+		return jsonResult.Bytes, jsonResult.MeaningfulError()
 	default:
 		return nil, msgtype.NotSupported.Error(
 			parsingBytesNotSupportMessage(parsingType), any)

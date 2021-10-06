@@ -1,16 +1,21 @@
 package stringreplace
 
 import (
+	"gitlab.com/evatix-go/core/constants"
 	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
 func replaceMultipleInternalPtr(request *strhelpercore.ReplaceRequestMultiple) string {
-	if len(*request.SearchReplaceMap) == 0 {
-		return *request.Text
+	if request == nil {
+		return constants.EmptyString
 	}
 
-	if *request.Text == "" {
+	if len(request.SearchReplaceMap) == 0 {
+		return request.Text
+	}
+
+	if request.Text == "" {
 		return emptyReplaceResultUsingRequestMultiple(request)
 	}
 
@@ -22,15 +27,15 @@ func replaceMultipleInternalPtr(request *strhelpercore.ReplaceRequestMultiple) s
 
 	if indexesResultSet.IsEmpty() {
 		// returns as is
-		return *request.Text
+		return request.Text
 	}
 
-	textLength := len(*request.Text)
+	textLength := len(request.Text)
 	replaceCount := indexesResultSet.CountOfAllFoundIndexes()
 
 	// not found case
 	if replaceCount == 0 {
-		return *request.Text
+		return request.Text
 	}
 
 	// all length calculation
@@ -50,15 +55,15 @@ func getCompiledReplaceMultiple(
 	request *strhelpercore.ReplaceRequestMultiple,
 	textLength int,
 	changeInLengthNewString int,
-	indexesAsKeyMap *map[int]string,
+	indexesAsKeyMap map[int]string,
 ) string {
 	chars := make([]byte, textLength+changeInLengthNewString)
 	wordIndex := 0
 	for i := 0; i < textLength; i++ {
-		searchStr, isIndexExist := (*indexesAsKeyMap)[i]
+		searchStr, isIndexExist := (indexesAsKeyMap)[i]
 
 		if isIndexExist {
-			replaceRequest := (*request.SearchReplaceMap)[searchStr]
+			replaceRequest := request.SearchReplaceMap[searchStr]
 
 			if replaceRequest.ShouldReplace() {
 				// too many nesting
@@ -67,13 +72,13 @@ func getCompiledReplaceMultiple(
 				wordIndex += copy(chars[wordIndex:], replaceRequest.ReplaceWith)
 				i += len(searchStr) - 1 // we should skip the search text since already replaced.
 				replaceRequest.ReplaceCountDecrease()
-				(*request.SearchReplaceMap)[searchStr] = replaceRequest
+				request.SearchReplaceMap[searchStr] = replaceRequest
 				continue
 			}
 		}
 
 		// not found existing, keep as is
-		chars[wordIndex] = (*(*request).Text)[i]
+		chars[wordIndex] = request.Text[i]
 		wordIndex++
 	}
 
@@ -89,12 +94,12 @@ func getChangeInNewLengthAndReplaceCountUpdate(
 ) int {
 	changeInLengthNewString := 0
 
-	for searchKey, indexes := range *indexesResultSet.StringKeyAsIndexesMap {
-		replaceIndividualRequest := (*request.SearchReplaceMap)[searchKey]
+	for searchKey, indexes := range indexesResultSet.StringKeyAsIndexesMap {
+		replaceIndividualRequest := (request.SearchReplaceMap)[searchKey]
 		replaceStr := replaceIndividualRequest.ReplaceWith
-		replaceCount := len(*indexes)
+		replaceCount := len(indexes)
 		replaceIndividualRequest.SetReplaceCount(replaceCount)
-		(*request.SearchReplaceMap)[searchKey] = replaceIndividualRequest
+		(request.SearchReplaceMap)[searchKey] = replaceIndividualRequest
 		changeInLengthNewString += replaceCount * (len(replaceStr) - len(searchKey))
 	}
 
@@ -102,11 +107,11 @@ func getChangeInNewLengthAndReplaceCountUpdate(
 }
 
 func emptyReplaceResultUsingRequestMultiple(request *strhelpercore.ReplaceRequestMultiple) string {
-	result, hasAny := (*request.SearchReplaceMap)[*request.Text]
+	result, hasAny := request.SearchReplaceMap[request.Text]
 
 	if hasAny {
 		return result.ReplaceWith
 	}
 
-	return *request.Text
+	return request.Text
 }

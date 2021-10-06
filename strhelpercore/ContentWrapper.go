@@ -283,7 +283,7 @@ func (contentWrapper *ContentWrapper) IsEqual(another *ContentWrapper) bool {
 	case content.String:
 		return isstrinternal.EqualsPtr(contentWrapper.StringPtr(), another.StringPtr())
 	case content.Strings:
-		return isstrsinternal.Equals(contentWrapper.StringsPtr(), another.StringsPtr(), 0, true)
+		return isstrsinternal.EqualsPtr(contentWrapper.StringsPtr(), another.StringsPtr(), 0, true)
 	case content.Bytes:
 		return misc.IsBytesEquals(contentWrapper.BytesPtr(), another.BytesPtr(), 0)
 	case content.AnyItems:
@@ -304,25 +304,27 @@ func (contentWrapper *ContentWrapper) extractToBytes() []byte {
 	case content.Bytes:
 		return contentWrapper.Bytes()
 	case content.AnyItems:
-		return contentWrapper.anyItems.ToBytes()
+		rawBytes, err := contentWrapper.anyItems.ToBytes()
+
+		if err != nil {
+			panic(err)
+		}
+
+		return rawBytes
 	default:
 		panic(contentWrapper.notSupportedMessage())
 	}
 }
 
 func (contentWrapper *ContentWrapper) stringsToBytes() []byte {
-	strs := contentWrapper.Strings()
-	strsToBytes, err := anyto.Bytes(strs)
+	stringItems := contentWrapper.Strings()
+	stringsBytes, err := anyto.Bytes(stringItems)
 
 	if err != nil {
 		panic(err)
 	}
 
-	if strsToBytes != nil {
-		return *strsToBytes
-	}
-
-	return nil
+	return stringsBytes
 }
 
 func (contentWrapper *ContentWrapper) ValueToBytesPtr() *[]byte {
@@ -447,7 +449,7 @@ func (contentWrapper *ContentWrapper) extractToBytesWithError() *BytesWithError 
 		return bytesWithError
 	}
 
-	toBytes := contentWrapper.ValueToBytesPtr()
+	toBytes := contentWrapper.ValueToBytes()
 
 	return NewBytesWithNoError(toBytes)
 }

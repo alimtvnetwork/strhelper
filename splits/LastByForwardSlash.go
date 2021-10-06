@@ -5,9 +5,9 @@ import "gitlab.com/evatix-go/core/constants"
 func LastByForwardSlash(
 	s string,
 	limits int,
-) *[]string {
+) []string {
 	return LastByRunePtr(
-		&s,
+		s,
 		constants.ForwardRune,
 		limits)
 }

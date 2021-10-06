@@ -1,88 +1,88 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/misc"
+import (
+	"gitlab.com/evatix-go/core/issetter"
+)
 
 type RegExWrappersCollection struct {
-	expressions *[]string
-	regexesMap  *map[string]*RegExWrapper
-	regexes     *[]*RegExWrapper
-	hasAnyError *bool
+	expressions []string
+	regexesMap  map[string]*RegExWrapper
+	regexes     []*RegExWrapper
+	hasAnyError issetter.Value
 }
 
-func NewRegExWrappersCollection(expressions *[]string) *RegExWrappersCollection {
+func NewRegExWrappersCollection(expressions ...string) *RegExWrappersCollection {
 	return &RegExWrappersCollection{
 		expressions: expressions,
 	}
 }
 
-func NewRegExWrappersCollectionUsingStringPointer(expressions *[]*string) *RegExWrappersCollection {
-	parsableExpression := misc.ConvertPointerStringsToStrings(expressions)
-
-	return &RegExWrappersCollection{
-		expressions: parsableExpression,
-	}
-}
-
 // AddExpression expensive operation, better to add all expression at New.
-func (regExWrappersCollection *RegExWrappersCollection) AddExpression(expression string) {
+func (it *RegExWrappersCollection) AddExpression(expression string) {
 	// This is correct, as the item is set on the New
-	*regExWrappersCollection.expressions = append(*regExWrappersCollection.expressions, expression)
-	length := len(*regExWrappersCollection.expressions)
-	regexes := regExWrappersCollection.Value()
-	regexWrapper := NewRegExWrapper(length-1, &expression)
-	*regexes = append(*regexes, regexWrapper)
-	(*regExWrappersCollection.regexesMap)[expression] = regexWrapper
+	it.expressions = append(
+		it.expressions,
+		expression)
+	length := len(it.expressions)
+	regexes := it.Value()
+	regexWrapper := NewRegExWrapper(length-1, expression)
+	regexes = append(regexes, regexWrapper)
+	it.regexesMap[expression] = regexWrapper
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) Expressions() *[]string {
-	return regExWrappersCollection.expressions
+func (it *RegExWrappersCollection) Expressions() []string {
+	return it.expressions
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) Regexes() *[]*RegExWrapper {
-	return regExWrappersCollection.Value()
+func (it *RegExWrappersCollection) Regexes() []*RegExWrapper {
+	return it.Value()
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) IsEmpty() bool {
-	return regExWrappersCollection.expressions == nil || len(*regExWrappersCollection.expressions) == 0
+func (it *RegExWrappersCollection) IsExpressionEmpty() bool {
+	return it.ExpressionLength() == 0
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) IsDefined() bool {
-	return !(regExWrappersCollection.expressions == nil || len(*regExWrappersCollection.expressions) == 0)
+func (it *RegExWrappersCollection) IsExpressionDefined() bool {
+	return it.ExpressionLength() > 0
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) Length() int {
-	return len(*regExWrappersCollection.expressions)
+func (it *RegExWrappersCollection) ExpressionLength() int {
+	if it == nil || it.expressions == nil {
+		return 0
+	}
+
+	return len(it.expressions)
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) IsEquals(
+func (it *RegExWrappersCollection) IsEquals(
 	anotherRegExCollection *RegExWrappersCollection,
 ) bool {
-	if anotherRegExCollection == nil {
-		return false
-	}
-
-	if anotherRegExCollection.IsEmpty() && regExWrappersCollection.IsEmpty() {
+	if anotherRegExCollection == nil && it == nil {
 		return true
 	}
 
-	if anotherRegExCollection.IsEmpty() || regExWrappersCollection.IsEmpty() {
+	if anotherRegExCollection == nil || it == nil {
 		return false
 	}
 
-	if anotherRegExCollection.Length() != regExWrappersCollection.Length() {
+	if anotherRegExCollection == it {
+		return true
+	}
+
+	if anotherRegExCollection.IsExpressionEmpty() && it.IsExpressionEmpty() {
+		return true
+	}
+
+	if anotherRegExCollection.IsExpressionEmpty() || it.IsExpressionEmpty() {
 		return false
 	}
 
-	for i, regExWrapper := range *anotherRegExCollection.regexes {
-		current := (*regExWrappersCollection.regexes)[i]
+	if anotherRegExCollection.ExpressionLength() != it.ExpressionLength() {
+		return false
+	}
 
-		if regExWrapper == nil && current == nil {
-			continue
-		}
-
-		if regExWrapper == nil || current == nil {
-			return false
-		}
+	for i, regExWrapper := range anotherRegExCollection.regexes {
+		current := it.regexes[i]
 
 		if !current.IsEquals(regExWrapper) {
 			return false
@@ -92,35 +92,45 @@ func (regExWrappersCollection *RegExWrappersCollection) IsEquals(
 	return true
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) Value() *[]*RegExWrapper {
-	if regExWrappersCollection.regexes == nil && regExWrappersCollection.IsDefined() {
-		length := regExWrappersCollection.Length()
+func (it *RegExWrappersCollection) Value() []*RegExWrapper {
+	if it.regexes == nil && it.IsExpressionDefined() {
+		length := it.ExpressionLength()
 		regexes := make([]*RegExWrapper, length, length*2)
 
 		for i := 0; i < length; i++ {
-			valueAt := (*regExWrappersCollection.expressions)[i]
-			regexes[i] = NewRegExWrapper(i, &valueAt)
+			valueAt := it.expressions[i]
+			regexes[i] = NewRegExWrapper(i, valueAt)
 		}
 
-		regExWrappersCollection.regexes = &regexes
+		it.regexes = regexes
 	}
 
-	return regExWrappersCollection.regexes
+	return it.regexes
 }
 
-func (regExWrappersCollection *RegExWrappersCollection) RegexesMap() *map[string]*RegExWrapper {
-	if regExWrappersCollection.regexesMap == nil && regExWrappersCollection.IsDefined() {
-		length := regExWrappersCollection.Length()
-		regexes := regExWrappersCollection.Value()
+func (it *RegExWrappersCollection) RegexesMap() map[string]*RegExWrapper {
+	if it == nil {
+		return nil
+	}
+
+	if it.regexesMap != nil {
+		return it.regexesMap
+	}
+
+	if it.IsExpressionDefined() {
+		length := it.ExpressionLength()
+		regexes := it.Value()
 		regexesMap := make(map[string]*RegExWrapper, length)
 
 		for i := 0; i < length; i++ {
-			valueAt := (*regExWrappersCollection.expressions)[i]
-			regexesMap[valueAt] = (*regexes)[i]
+			valueAt := it.expressions[i]
+			regexesMap[valueAt] = regexes[i]
 		}
 
-		regExWrappersCollection.regexesMap = &regexesMap
+		it.regexesMap = regexesMap
+	} else {
+		it.regexesMap = map[string]*RegExWrapper{}
 	}
 
-	return regExWrappersCollection.regexesMap
+	return it.regexesMap
 }

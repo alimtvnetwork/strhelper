@@ -6,13 +6,13 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 //  - How many indexes should we search for and then stop looking further.
 //  - `-1` means find all
 func createSearchRequest(
-	findingString *string,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.SearchRequest {
 	return &strhelpercore.SearchRequest{
-		Search:          *findingString,
+		Search:          findingString,
 		StartsAt:        startsAtIndex,
 		Limits:          limits,
 		IsCaseSensitive: isCaseSensitive,

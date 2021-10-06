@@ -111,8 +111,10 @@ func GetPointerInfo(any interface{}) PointerInfo {
 	}
 }
 
+// IsBytesOrBytesPointer
+//
 // Examples : https://play.golang.org/p/9XUt9Jf11WG | https://play.golang.org/p/oMAxxSzAP7F
-func IsBytesOrBytesPointer(any interface{}) (isBytes bool, bytesPtr *[]byte) {
+func IsBytesOrBytesPointer(any interface{}) (isBytes bool, bytesPtr []byte) {
 	reflectValueOfAny := reflect.ValueOf(any)
 	isPtr := reflectValueOfAny.Kind() == reflect.Ptr
 
@@ -122,7 +124,11 @@ func IsBytesOrBytesPointer(any interface{}) (isBytes bool, bytesPtr *[]byte) {
 		if indirectType == Uint8sType && indirectType.Kind() == reflect.Slice {
 			bytes := (*[]byte)(unsafe.Pointer(reflectValueOfAny.Pointer()))
 
-			return true, bytes
+			if bytes == nil {
+				return true, nil
+			}
+
+			return true, *bytes
 		}
 	}
 
@@ -131,7 +137,7 @@ func IsBytesOrBytesPointer(any interface{}) (isBytes bool, bytesPtr *[]byte) {
 		bytes := reflectValueOfAny.Bytes()
 
 		if bytes != nil {
-			return true, &bytes
+			return true, bytes
 		}
 	}
 

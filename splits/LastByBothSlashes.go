@@ -1,11 +1,11 @@
 package splits
 
 func LastByBothSlashes(
-	s *string,
+	s string,
 	limits int,
-) *[]string {
+) []string {
 	return LastByRunesMap(
 		s,
-		&bothSlashesMap,
+		bothSlashesMap,
 		limits)
 }

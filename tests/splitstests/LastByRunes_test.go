@@ -28,7 +28,7 @@ func Test_LastByRunes(t *testing.T) {
 
 		// Act
 		actual := splits.LastByRunes(
-			&testCase.Content,
+			testCase.Content,
 			testCase.Limits,
 			testCase.SearchingContents...,
 		)

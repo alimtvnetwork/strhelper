@@ -6,14 +6,14 @@ import (
 )
 
 func GetEqualLineResult(
-	contentsLines *[]string,
+	contentsLines []string,
 	line string,
 ) *strhelpercore.StringResult {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if currentLine == line {
 			return &strhelpercore.StringResult{
 				FoundIndex: index,

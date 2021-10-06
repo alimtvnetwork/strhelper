@@ -1,6 +1,9 @@
 package splits
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import (
+	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/strhelper/strhelpercore"
+)
 
 // ManyDefaultsPtr Multiple split occur from the given array of splits.
 //
@@ -13,13 +16,13 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 // isCaseSensitive (default):
 //  - true
 func ManyDefaultsPtr(
-	str *string,
+	str string,
 	splitsBy ...string,
 ) *strhelpercore.SplitResultOverview {
 	return ManyPtr(
 		str,
-		&splitsBy,
+		splitsBy,
 		0,
-		-1,
+		constants.TakeAllMinusOne,
 		true)
 }

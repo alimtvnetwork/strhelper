@@ -24,8 +24,14 @@ func Of(s, findingString string, startsAt int, isCaseSensitive bool) int {
 	}
 
 	if isCaseSensitive {
-		return OfCaseSensitive(&s, &findingString, startsAt)
+		return OfCaseSensitive(
+			s,
+			findingString,
+			startsAt)
 	}
 
-	return OfCaseInsensitive(&s, &findingString, startsAt)
+	return OfCaseInsensitive(
+		s,
+		findingString,
+		startsAt)
 }

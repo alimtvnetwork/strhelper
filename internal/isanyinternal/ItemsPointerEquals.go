@@ -1,8 +1,9 @@
 package isanyinternal
 
 import (
+	"bytes"
+
 	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
 
 // ItemsPointerEquals compares leftItems and rightItems and returns bool
@@ -61,7 +62,7 @@ func ItemsPointerEquals(
 			return false
 		}
 
-		if !misc.IsBytesEquals(leftBytes, rightBytes, 0) {
+		if !bytes.Equal(leftBytes, rightBytes) {
 			return false
 		}
 	}

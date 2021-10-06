@@ -6,14 +6,14 @@ import (
 )
 
 func GetContainsLineResultByFuncPtr(
-	contentsLines *[]string,
+	contentsLines []string,
 	isLineContainsFunc IsLineContainsFunc,
 ) *strhelpercore.StringResult {
 	if corestr.LengthOfStrings(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if isLineContainsFunc(index, currentLine) {
 			return &strhelpercore.StringResult{
 				FoundIndex: index,

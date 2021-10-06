@@ -3,7 +3,6 @@ package strsindex
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
 	"gitlab.com/evatix-go/strhelper/internal/panichelper"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/strs"
@@ -19,23 +18,23 @@ import (
 //  - Invalid result can be nil if any lines == nil results nil.
 //  - If no indexes found returns nil.
 func OfAllMany(
-	lines *[]string,
-	searchTerms *[]string,
+	lines []string,
+	searchTerms []string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.IndexesResultSet {
-	if isstrsinternal.EmptyPtr(lines) || isstrsinternal.EmptyPtr(searchTerms) {
+	if len(lines) == 0 || len(searchTerms) == 0 {
 		return nil
 	}
 
-	searchingItemsLength := len(*searchTerms)
+	searchingItemsLength := len(searchTerms)
 
 	if searchingItemsLength == 0 {
 		return strhelpercore.NewEmptyIndexesResultSet()
 	}
 
-	length := len(*lines)
+	length := len(lines)
 
 	if startsAtIndex <= constants.InvalidNotFoundCase || startsAtIndex > length-1 {
 		panichelper.StartAtIndexFailed(startsAtIndex, length)
@@ -52,12 +51,12 @@ func OfAllMany(
 		sendingSearchTerms = strs.ToLowerStrings(searchTerms)
 	}
 
-	indexesMap := make(map[string]*[]int, searchingItemsLength)
+	indexesMap := make(map[string][]int, searchingItemsLength)
 	var hasFoundAny bool
 	var totalLength, maxIndexFound int
 	maxIndexFound = -1
 
-	for _, searchTerm := range *sendingSearchTerms {
+	for _, searchTerm := range sendingSearchTerms {
 		indexes := OfAll(
 			sendingLines,
 			searchTerm,
@@ -65,16 +64,16 @@ func OfAllMany(
 			limits,
 			true)
 
-		if indexes == nil || *indexes == nil {
+		if len(indexes) == 0 {
 			indexesMap[searchTerm] = nil
 
 			continue
 		}
 
-		totalLength = len(*indexes)
+		totalLength = len(indexes)
 		indexesMap[searchTerm] = indexes
 		hasFoundAny = true
-		lastIndex := (*indexes)[totalLength-1]
+		lastIndex := indexes[totalLength-1]
 
 		if maxIndexFound < lastIndex {
 			maxIndexFound = lastIndex
@@ -82,7 +81,7 @@ func OfAllMany(
 	}
 
 	return strhelpercore.NewIndexesResultSet(
-		&indexesMap,
+		indexesMap,
 		hasFoundAny,
 		maxIndexFound)
 }

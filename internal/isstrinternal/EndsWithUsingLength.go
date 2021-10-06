@@ -18,7 +18,7 @@ package isstrinternal
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func EndsWithUsingLength(
-	wholeText, search *string,
+	wholeText, search string,
 	contentLengthDecreasedBy int,
 	wholeTextLength,
 	searchTextLength int,
@@ -27,12 +27,9 @@ func EndsWithUsingLength(
 	lastIndexWholeText := wholeTextLength - 1
 	lastIndexSearchText := searchTextLength - 1
 	// accessing direct without pointer increases performance
-	wholeTextCopy := *wholeText
-	searchTextCopy := *search
-
 	for ; contentLengthDecreasedBy < wholeTextLength &&
 		incrementing < searchTextLength; contentLengthDecreasedBy++ {
-		if wholeTextCopy[lastIndexWholeText-contentLengthDecreasedBy] != searchTextCopy[lastIndexSearchText-incrementing] {
+		if wholeText[lastIndexWholeText-contentLengthDecreasedBy] != search[lastIndexSearchText-incrementing] {
 			break
 		}
 

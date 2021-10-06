@@ -12,28 +12,28 @@ package index
 //  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
 //  - If no indexes found returns nil.
 func OfAllAsKeyMap(
-	content *string,
-	findingString *string,
+	content,
+	findingString string,
 	startsAtIndex int,
 	limits int,
 	isCaseSensitive bool,
-) *map[int]bool {
-	indexes := OfAllPtr(
+) map[int]bool {
+	indexes := OfAll(
 		content,
 		findingString,
 		startsAtIndex,
 		limits,
 		isCaseSensitive)
 
-	if indexes == nil || *indexes == nil || limits == 0 {
+	if len(indexes) == 0 || limits == 0 {
 		return nil
 	}
 
-	resultingMap := make(map[int]bool, len(*indexes))
+	resultingMap := make(map[int]bool, len(indexes))
 
-	for _, valueIndex := range *indexes {
+	for _, valueIndex := range indexes {
 		resultingMap[valueIndex] = true
 	}
 
-	return &resultingMap
+	return resultingMap
 }

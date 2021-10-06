@@ -1,29 +1,21 @@
 package splits
 
-import (
-	"gitlab.com/evatix-go/core"
-)
-
 func LastByRunes(
-	s *string,
+	s string,
 	limits int,
 	runes ...rune,
-) *[]string {
-	if s == nil || *s == "" {
+) []string {
+	if s == "" {
 		return defaultResult()
 	}
 
 	if limits == 0 {
-		return core.EmptyStringsPtr()
-	}
-
-	if runes == nil {
-		return defaultResultWithStr(s)
+		return []string{}
 	}
 
 	length := len(runes)
 	if length == 0 {
-		return defaultResultWithStr(s)
+		return []string{s}
 	}
 
 	runesMap := make(
@@ -35,6 +27,6 @@ func LastByRunes(
 
 	return LastByRunesMap(
 		s,
-		&runesMap,
+		runesMap,
 		limits)
 }

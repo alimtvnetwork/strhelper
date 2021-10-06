@@ -19,7 +19,7 @@ import (
 //  - startsAt cannot be negative.
 //  - startsAt larger than the content length.
 func ofCaseSensitiveUsingLengthPtr(
-	s, findingString *string,
+	s, findingString string,
 	startsAt int,
 	wholeTextLength, searchTextLength int,
 ) int {

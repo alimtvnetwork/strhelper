@@ -6,7 +6,7 @@ func getAllIndexesFromTheStartIndexGiven(
 	length int,
 	startsAtIndex,
 	limits int,
-) *[]int {
+) []int {
 	newArrayLength := length - startsAtIndex
 
 	if newArrayLength <= 0 || limits == 0 {
@@ -22,7 +22,7 @@ func getAllIndexesFromTheStartIndexGiven(
 		newArrayLength)
 
 	if newArrayLength == 0 {
-		return &finalIndexes
+		return finalIndexes
 	}
 
 	index := 0
@@ -31,5 +31,5 @@ func getAllIndexesFromTheStartIndexGiven(
 		index++
 	}
 
-	return &finalIndexes
+	return finalIndexes
 }

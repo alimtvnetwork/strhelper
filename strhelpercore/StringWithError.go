@@ -6,34 +6,30 @@ import (
 	"fmt"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/issetter"
 
 	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
 	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
 )
 
 type StringWithError struct {
-	content      *string
-	bytes        *[]byte
-	runes        *[]rune
-	error        *error
+	content      string
+	bytes        []byte
+	runes        []rune
+	error        error
 	bytesLength  int
 	runeLength   *int
-	isWhitespace *bool
+	isWhitespace issetter.Value
 }
 
-func NewStringWithErrorOnlyError(err *error) *StringWithError {
+func NewStringWithErrorOnlyError(err error) *StringWithError {
 	return &StringWithError{
-		content: nil,
-		error:   err,
+		error: err,
 	}
 }
 
-func NewStringWithError(str *string, err *error) *StringWithError {
-	length := 0
-
-	if str != nil {
-		length = len(*str)
-	}
+func NewStringWithError(str string, err error) *StringWithError {
+	length := len(str)
 
 	return &StringWithError{
 		content:     str,
@@ -42,38 +38,32 @@ func NewStringWithError(str *string, err *error) *StringWithError {
 	}
 }
 
-func NewStringWithNoError(str *string) *StringWithError {
-	length := 0
-
-	if str != nil {
-		length = len(*str)
-	}
+func NewStringWithNoError(str string) *StringWithError {
+	length := len(str)
 
 	return &StringWithError{
 		content:     str,
-		error:       nil,
 		bytesLength: length,
 	}
 }
 
-// ToBytesPtr represents the pointer to optimize memory copying.
+// ToBytes represents the pointer to optimize memory copying.
 //
 // Warning:
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (stringWithError *StringWithError) ToBytesPtr() *[]byte {
-	if stringWithError.bytes != nil {
-		return stringWithError.bytes
+func (it *StringWithError) ToBytes() []byte {
+	if it.bytes != nil {
+		return it.bytes
 	}
 
-	bytes := []byte(*stringWithError.content)
-	stringWithError.bytes = &bytes
+	it.bytes = []byte(it.content)
 
-	return stringWithError.bytes
+	return it.bytes
 }
 
-// Returns len(ToRunesPtr()) cached version. If once runeLength generated then it will not generate again.
+// Returns len(ToRunes()) cached version. If once runeLength generated then it will not generate again.
 //
 // If don't care about unicode then use len(str) which is BytesLength
 // Note :
@@ -81,14 +71,16 @@ func (stringWithError *StringWithError) ToBytesPtr() *[]byte {
 //  - Yields accurate characters length regardless of unicode.
 //  - As there is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str))
 //  - Example : https://play.golang.org/p/78uFF8s-Dw1
-func (stringWithError *StringWithError) Length() int {
-	if stringWithError.runeLength == nil {
-		allRunes := stringWithError.ToRunesPtr()
-		runesLength := len(*allRunes)
-		stringWithError.runeLength = &runesLength
+func (it *StringWithError) Length() int {
+	if it.runeLength != nil {
+		return *it.runeLength
 	}
 
-	return *stringWithError.runeLength
+	allRunes := it.ToRunes()
+	runesLength := len(allRunes)
+	it.runeLength = &runesLength
+
+	return *it.runeLength
 }
 
 // There is a difference between length in bytes (doesn't represent proper unicode chars) and
@@ -103,180 +95,168 @@ func (stringWithError *StringWithError) Length() int {
 //  - Doesn't yield accurate characters length of unicode characters but only ascii.
 //  - There is a difference between len(str) and utf8.RuneCountInString(str) or len([]rune(str)).
 //  - Example : https://play.golang.org/p/78uFF8s-Dw1
-func (stringWithError *StringWithError) BytesLength() int {
-	return stringWithError.bytesLength
+func (it *StringWithError) BytesLength() int {
+	return it.bytesLength
 }
 
-// ToRunesPtr represents the pointer to optimize memory copying.
+// ToRunes represents the pointer to optimize memory copying.
 //
 // Warning:
 //  - Returns cached value from a field. Expects no modification in data.
 //  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 //  - Reviewer should check the mutation of the pointers.
-func (stringWithError *StringWithError) ToRunesPtr() *[]rune {
-	if stringWithError.runes == nil {
-		allRunes := []rune(*stringWithError.content)
-		stringWithError.runes = &allRunes
+func (it *StringWithError) ToRunes() []rune {
+	if it.runes == nil {
+		it.runes = []rune(it.content)
 	}
 
-	return stringWithError.runes
+	return it.runes
 }
 
-func (stringWithError *StringWithError) IsNull() bool {
-	return stringWithError.content == nil
+func (it *StringWithError) IsNull() bool {
+	return it == nil
 }
 
-func (stringWithError *StringWithError) IsNullOrEmpty() bool {
-	return stringWithError.content == nil ||
-		*stringWithError.content == constants.EmptyString
+func (it *StringWithError) IsNullOrEmpty() bool {
+	return it == nil ||
+		it.content == constants.EmptyString
 }
 
+// IsNullOrEmptyOrWhitespaces
+//
 // Returns true if nil or "" or all whitespaces (including unicode whitespaces)
-func (stringWithError *StringWithError) IsNullOrEmptyOrWhitespaces() bool {
-	if stringWithError.isWhitespace == nil {
-		isWhitespace := stringWithError.content == nil ||
-			*stringWithError.content == constants.EmptyString
-
-		if !isWhitespace {
-			allRunes := stringWithError.ToRunesPtr()
-			isWhitespace = whitespacesinternal.IsRunesWhitespaces(allRunes)
-		}
-
-		stringWithError.isWhitespace = &isWhitespace
+func (it *StringWithError) IsNullOrEmptyOrWhitespaces() bool {
+	if it.isWhitespace.IsInitBoolean() {
+		return it.isWhitespace.IsTrue()
 	}
 
-	return *stringWithError.isWhitespace
+	isWhitespace := it.IsNullOrEmpty()
+
+	if !isWhitespace {
+		allRunes := it.ToRunes()
+		isWhitespace = whitespacesinternal.IsRunesWhitespaces(allRunes)
+	}
+
+	it.isWhitespace = issetter.GetBool(isWhitespace)
+
+	return it.isWhitespace.IsTrue()
 }
 
+// IsDefined
+//
 // Returns true if no currentError and has at least one characters other than whitespace
-func (stringWithError *StringWithError) IsDefined() bool {
-	return stringWithError.IsErrorEmpty() && !stringWithError.IsNullOrEmptyOrWhitespaces()
+func (it *StringWithError) IsDefined() bool {
+	return it.IsErrorEmpty() && !it.IsNullOrEmptyOrWhitespaces()
 }
 
+// HasValidCharacters
+//
 // Returns true meaning has at least one characters other than whitespace
-func (stringWithError *StringWithError) HasValidCharacters() bool {
-	return !stringWithError.IsNullOrEmptyOrWhitespaces()
+func (it *StringWithError) HasValidCharacters() bool {
+	return !it.IsNullOrEmptyOrWhitespaces()
 }
 
-func (stringWithError *StringWithError) Error() *error {
-	return stringWithError.error
+func (it *StringWithError) Error() error {
+	return it.error
 }
 
-func (stringWithError *StringWithError) IsErrorEmpty() bool {
-	return stringWithError.error == nil
+func (it *StringWithError) IsErrorEmpty() bool {
+	return it.error == nil
 }
 
-func (stringWithError *StringWithError) HasError() bool {
-	return stringWithError.error != nil
+func (it *StringWithError) HasError() bool {
+	return it.error != nil
 }
 
+// HandleError
+//
 // Only call panic if has currentError
-func (stringWithError *StringWithError) HandleError() {
-	if !stringWithError.HasError() {
+func (it *StringWithError) HandleError() {
+	if !it.HasError() {
 		return
 	}
 
-	message := fmt.Sprintf("%#v", *stringWithError.error)
+	message := fmt.Sprintf("%#v", it.error)
 
 	panic(message)
 }
 
+// HandleErrorWithMsg
+//
 // Only call panic if has currentError
-func (stringWithError *StringWithError) HandleErrorWithMsg(newMessage string) {
-	if !stringWithError.HasError() {
+func (it *StringWithError) HandleErrorWithMsg(newMessage string) {
+	if !it.HasError() {
 		return
 	}
 
-	message := fmt.Sprintf("%s %#v", newMessage, *stringWithError.error)
+	message := fmt.Sprintf("%s %#v", newMessage, it.error)
 
 	panic(message)
 }
 
-func (stringWithError *StringWithError) Value() *string {
-	return stringWithError.content
+func (it *StringWithError) Value() string {
+	return it.content
 }
 
+// UnmarshalStringAt usages json unmarshal to convert to object
+func (it *StringWithError) UnmarshalStringAt(result interface{}) error {
+	return json.Unmarshal(it.ToBytes(), result)
+}
+
+// String
+//
 // note: that it makes a copy of the content so use it wisely
-func (stringWithError *StringWithError) ValueWithoutPtr() string {
-	return *stringWithError.content
+func (it *StringWithError) String() string {
+	return it.content
 }
 
-// ToType usages json unmarshal to convert to object
-func (stringWithError *StringWithError) ToType(result *interface{}) error {
-	return json.Unmarshal(*stringWithError.ToBytesPtr(), result)
-}
-
-// note: that it makes a copy of the content so use it wisely
-func (stringWithError *StringWithError) String() string {
-	return *stringWithError.content
-}
-
-func (stringWithError *StringWithError) ToByesWithError() *BytesWithError {
-	if stringWithError.IsNull() {
+func (it *StringWithError) ToByesWithError() *BytesWithError {
+	if it.IsNull() {
 		err := errors.New("content has nil string pointer and nothing to add")
 
 		return NewBytesWithErrorOnlyError(err)
 	}
 
-	return NewBytesWithNoError(stringWithError.ToBytesPtr())
+	return NewBytesWithNoError(it.ToBytes())
 }
 
-func (stringWithError *StringWithError) StringPtr() *string {
-	return stringWithError.content
+func (it *StringWithError) IsEquals(another *StringWithError) bool {
+	return it.IsEqualsCase(true, another)
 }
 
-func (stringWithError *StringWithError) IsEquals(another *StringWithError) bool {
-	return stringWithError.IsEqualsCase(another, true)
-}
-
-func (stringWithError *StringWithError) IsEqualsCase(another *StringWithError, isCaseSensitive bool) bool {
+func (it *StringWithError) IsEqualsCase(isCaseSensitive bool, another *StringWithError) bool {
 	if another == nil {
 		return false
 	}
 
 	// same pointer
-	if stringWithError == another {
+	if it == another {
 		return true
 	}
 
-	if stringWithError.IsNullOrEmpty() == another.IsNullOrEmpty() {
+	if it.IsNullOrEmpty() == another.IsNullOrEmpty() {
 		return true
 	}
 
-	if stringWithError.BytesLength() != another.BytesLength() {
+	if it.BytesLength() != another.BytesLength() {
 		return false
 	}
 
-	return isstrinternal.EqualsCasePtr(
-		stringWithError.StringPtr(),
-		another.StringPtr(),
-		isCaseSensitive)
+	return isstrinternal.EqualsCase(
+		isCaseSensitive,
+		it.String(),
+		another.String(),
+	)
 }
 
-func (stringWithError *StringWithError) IsStringEquals(another *string) bool {
-	return stringWithError.IsStringCaseEquals(another, true)
+func (it *StringWithError) IsStringEquals(another string) bool {
+	return it.IsStringCaseEquals(true, another)
 }
 
-func (stringWithError *StringWithError) IsStringCaseEquals(another *string, isCaseSensitive bool) bool {
-	if stringWithError.IsNull() && another == nil {
-		return true
-	}
-
-	if stringWithError.IsNull() || another == nil {
-		return false
-	}
-
-	// same pointer
-	if stringWithError.content == another {
-		return true
-	}
-
-	if stringWithError.BytesLength() != len(*another) {
-		return false
-	}
-
-	return isstrinternal.EqualsCasePtr(
-		stringWithError.StringPtr(),
+func (it *StringWithError) IsStringCaseEquals(isCaseSensitive bool, another string) bool {
+	return isstrinternal.EqualsCase(
+		isCaseSensitive,
+		it.String(),
 		another,
-		isCaseSensitive)
+	)
 }

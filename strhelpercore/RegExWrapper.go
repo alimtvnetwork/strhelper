@@ -3,79 +3,98 @@ package strhelpercore
 import (
 	"regexp"
 
+	"gitlab.com/evatix-go/core/codestack"
+	"gitlab.com/evatix-go/core/regexnew"
 	"gitlab.com/evatix-go/errorwrapper"
 	"gitlab.com/evatix-go/errorwrapper/errnew"
-
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+	"gitlab.com/evatix-go/errorwrapper/errtype"
 )
 
 type RegExWrapper struct {
 	index              int
-	request            *string
+	request            string
 	regex              *regexp.Regexp
 	errorWrapper       *errorwrapper.Wrapper
 	regExResultWrapper *RegExResultWrapper
 }
 
-func NewRegExWrapper(index int, request *string) *RegExWrapper {
+func NewRegExWrapper(index int, request string) *RegExWrapper {
 	return &RegExWrapper{
 		index:   index,
 		request: request,
 	}
 }
 
-// Requires to compile regex
-func (regExWrapper *RegExWrapper) RegExResultWrapper(content *string) *RegExResultWrapper {
-	if regExWrapper.regExResultWrapper == nil && regExWrapper.ErrorWrapper().IsEmpty() {
-		regExWrapper.regExResultWrapper = NewRegExResultWrapper(regExWrapper.index, content, regExWrapper.regex)
+// RegExResultWrapper Requires to compile regex
+func (it *RegExWrapper) RegExResultWrapper(content string) *RegExResultWrapper {
+	if it.regExResultWrapper == nil && it.ErrorWrapper().IsEmpty() {
+		it.regExResultWrapper = NewRegExResultWrapper(it.index, content, it.regex)
 	}
 
-	return regExWrapper.regExResultWrapper
+	return it.regExResultWrapper
 }
 
-func (regExWrapper *RegExWrapper) Request() string {
-	return *regExWrapper.request
+func (it *RegExWrapper) Request() string {
+	return it.request
 }
 
-func (regExWrapper *RegExWrapper) IsEquals(another *RegExWrapper) bool {
+func (it *RegExWrapper) IsEquals(another *RegExWrapper) bool {
+	if another == nil && it == nil {
+		return true
+	}
+
+	if another == nil || it == nil {
+		return false
+	}
+
+	if another == it {
+		return true
+	}
+
 	if another == nil {
 		return false
 	}
 
-	if another == regExWrapper {
+	if another == it {
 		return true
 	}
 
-	return isstrinternal.EqualsPtr(regExWrapper.request, another.request)
+	return it.request == another.request
 }
 
-func (regExWrapper *RegExWrapper) IsEqualsString(str *string) bool {
-	return isstrinternal.EqualsPtr(regExWrapper.request, str)
+func (it *RegExWrapper) IsEqualsString(str string) bool {
+	return it.request == str
 }
 
+// ErrorWrapper
+//
 // Requires to compile regex to get the currentError
-func (regExWrapper *RegExWrapper) ErrorWrapper() *errorwrapper.Wrapper {
-	regExWrapper.initializeRegex()
+func (it *RegExWrapper) ErrorWrapper() *errorwrapper.Wrapper {
+	it.initializeRegex()
 
-	return regExWrapper.errorWrapper
+	return it.errorWrapper
 }
 
+// RegEx
+//
 // Compile request and return the regExWrapper.regex and cache currentError and regex to return next time.
-func (regExWrapper *RegExWrapper) RegEx() *regexp.Regexp {
-	regExWrapper.initializeRegex()
+func (it *RegExWrapper) RegEx() *regexp.Regexp {
+	it.initializeRegex()
 
-	return regExWrapper.regex
+	return it.regex
 }
 
-func (regExWrapper *RegExWrapper) initializeRegex() {
-	if regExWrapper.regex == nil && regExWrapper.errorWrapper == nil {
-		r, er := regexp.Compile(*regExWrapper.request)
-		regExWrapper.regex = r
-		errorWrapper := errnew.Err(er)
-		regExWrapper.errorWrapper = &errorWrapper
+func (it *RegExWrapper) initializeRegex() {
+	if it.regex == nil && it.errorWrapper == nil {
+		regexCompiled, err := regexnew.NewLock(it.request)
+		it.regex = regexCompiled
+		it.errorWrapper = errnew.NewPtrUsingStackSkip(
+			codestack.Skip1,
+			errtype.RegexCompiledFailed,
+			err)
 	}
 }
 
-func (regExWrapper *RegExWrapper) Value() *regexp.Regexp {
-	return regExWrapper.RegEx()
+func (it *RegExWrapper) Value() *regexp.Regexp {
+	return it.RegEx()
 }

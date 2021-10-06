@@ -33,8 +33,8 @@ func (lastByRunesWrapper *LastByRunesWrapper) Expected() interface{} {
 	return lastByRunesWrapper.expected
 }
 
-func (lastByRunesWrapper *LastByRunesWrapper) ExpectedAsStringsArray() *[]string {
-	intArray, isOkay := lastByRunesWrapper.expected.(*[]string)
+func (lastByRunesWrapper *LastByRunesWrapper) ExpectedAsStringsArray() []string {
+	intArray, isOkay := lastByRunesWrapper.expected.([]string)
 
 	if isOkay {
 		return intArray

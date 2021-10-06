@@ -3,6 +3,7 @@ package strhelpercore
 import (
 	"sync"
 
+	"gitlab.com/evatix-go/core/defaulterr"
 	"gitlab.com/evatix-go/strhelper/anyto"
 	"gitlab.com/evatix-go/strhelper/internal/isanyinternal"
 )
@@ -16,54 +17,58 @@ type AnyItems struct {
 	//  - Returns cached value from a field. Expects no modification in data.
 	//  - Pointer returns can be abused by modifying the bytes outside and then this object will not behave as expected.
 	//  - Reviewer should check the mutation of the pointers.
-	Items *[]*interface{}
+	Items []interface{}
 	mutex sync.Mutex
 }
 
-func NewAnyItems(items *[]*interface{}) *AnyItems {
+func NewAnyItems(items ...interface{}) *AnyItems {
 	return &AnyItems{Items: items}
 }
 
 func NewAnyItemsEmpty(capacity int) *AnyItems {
-	items := make([]*interface{}, 0, capacity)
+	items := make([]interface{}, 0, capacity)
 
-	return &AnyItems{Items: &items}
+	return &AnyItems{Items: items}
 }
 
-func (anyItems *AnyItems) IsNull() bool {
-	return anyItems.Items == nil || *anyItems.Items == nil
+func (it *AnyItems) IsNull() bool {
+	return it == nil || it.Items == nil
 }
 
-func (anyItems *AnyItems) Lock() {
-	anyItems.mutex.Lock()
+func (it *AnyItems) Lock() {
+	it.mutex.Lock()
 }
 
-func (anyItems *AnyItems) Unlock() {
-	anyItems.mutex.Unlock()
+func (it *AnyItems) Unlock() {
+	it.mutex.Unlock()
 }
 
-func (anyItems *AnyItems) Length() int {
-	return len(*anyItems.Items)
+func (it *AnyItems) Length() int {
+	if it == nil {
+		return 0
+	}
+
+	return len(it.Items)
 }
 
-func (anyItems *AnyItems) LengthLock() int {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) LengthLock() int {
+	it.Lock()
+	defer it.Unlock()
 
-	return len(*anyItems.Items)
+	return it.Length()
 }
 
 // Add returns true upon add item.
-func (anyItems *AnyItems) Add(any interface{}, isSkipOnNil bool) bool {
-	// *anyItems.Items using this is correct as it is set on New or creation time.
+func (it *AnyItems) Add(any interface{}, isSkipOnNil bool) bool {
+	// *it.Items using this is correct as it is set on New or creation time.
 	if any != nil {
-		*anyItems.Items = append(*anyItems.Items, &any)
+		it.Items = append(it.Items, &any)
 
 		return true
 	}
 
 	if !isSkipOnNil {
-		*anyItems.Items = append(*anyItems.Items, nil)
+		it.Items = append(it.Items, nil)
 
 		return true
 	}
@@ -72,15 +77,15 @@ func (anyItems *AnyItems) Add(any interface{}, isSkipOnNil bool) bool {
 }
 
 // AddPtr Add returns true upon add item.
-func (anyItems *AnyItems) AddPtr(anyPtr *interface{}, isSkipOnNil bool) bool {
+func (it *AnyItems) AddPtr(anyPtr *interface{}, isSkipOnNil bool) bool {
 	if anyPtr != nil && *anyPtr != nil {
-		*anyItems.Items = append(*anyItems.Items, anyPtr)
+		it.Items = append(it.Items, anyPtr)
 
 		return true
 	}
 
 	if !isSkipOnNil {
-		*anyItems.Items = append(*anyItems.Items, anyPtr)
+		it.Items = append(it.Items, anyPtr)
 
 		return true
 	}
@@ -89,45 +94,45 @@ func (anyItems *AnyItems) AddPtr(anyPtr *interface{}, isSkipOnNil bool) bool {
 }
 
 // AddPtrLock Add returns true upon add item.
-func (anyItems *AnyItems) AddPtrLock(anyPtr *interface{}, isSkipOnNil bool) bool {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) AddPtrLock(anyPtr *interface{}, isSkipOnNil bool) bool {
+	it.Lock()
+	defer it.Unlock()
 
-	return anyItems.AddPtr(anyPtr, isSkipOnNil)
+	return it.AddPtr(anyPtr, isSkipOnNil)
 }
 
-func (anyItems *AnyItems) IsNullOrEmpty() bool {
-	return anyItems.Items == nil || len(*anyItems.Items) == 0
+func (it *AnyItems) IsNullOrEmpty() bool {
+	return it.Length() == 0
 }
 
-func (anyItems *AnyItems) IsNullOrEmptyLock() bool {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) IsNullOrEmptyLock() bool {
+	it.Lock()
+	defer it.Unlock()
 
-	return anyItems.Items == nil || len(*anyItems.Items) == 0
+	return it.Length() == 0
 }
 
-func (anyItems *AnyItems) IsEquals(another *AnyItems) bool {
+func (it *AnyItems) IsEquals(another *AnyItems) bool {
 	if another == nil {
 		return false
 	}
 
-	if anyItems.IsNull() == another.IsNull() {
+	if it.IsNull() == another.IsNull() {
 		return true
 	}
 
-	return isanyinternal.PointersOfPointersAnyItemsEquals(
-		anyItems.Items,
+	return isanyinternal.Equals(
+		it.Items,
 		another.Items,
 		0,
 		false)
 }
 
-func (anyItems *AnyItems) IsEqualsLock(another *AnyItems) bool {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) IsEqualsLock(another *AnyItems) bool {
+	it.Lock()
+	defer it.Unlock()
 
-	return anyItems.IsEquals(another)
+	return it.IsEquals(another)
 }
 
 // IsAnyItemsEquals returns true if both items byte level is same.
@@ -136,9 +141,12 @@ func (anyItems *AnyItems) IsEqualsLock(another *AnyItems) bool {
 //  - if true then if at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
-func (anyItems *AnyItems) IsAnyItemsEquals(anyItemsPtr *[]*interface{}, isContinueOnBothItemParseError bool) bool {
-	return isanyinternal.PointersOfPointersAnyItemsEquals(
-		anyItems.Items,
+func (it *AnyItems) IsAnyItemsEquals(
+	anyItemsPtr []interface{},
+	isContinueOnBothItemParseError bool,
+) bool {
+	return isanyinternal.Equals(
+		it.Items,
 		anyItemsPtr,
 		0,
 		isContinueOnBothItemParseError,
@@ -151,93 +159,44 @@ func (anyItems *AnyItems) IsAnyItemsEquals(anyItemsPtr *[]*interface{}, isContin
 //  - if true then if at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
 //  - if false then if at the same index any parse error from binary then returns false no panic.
-func (anyItems *AnyItems) IsAnyItemsEqualsLock(anyItemsPtr *[]*interface{}, isContinueOnBothItemParseError bool) bool {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) IsAnyItemsEqualsLock(
+	anyItemsPtr []interface{},
+	isContinueOnBothItemParseError bool,
+) bool {
+	it.Lock()
+	defer it.Unlock()
 
-	return isanyinternal.PointersOfPointersAnyItemsEquals(
-		anyItems.Items,
+	return isanyinternal.Equals(
+		it.Items,
 		anyItemsPtr,
 		0,
 		isContinueOnBothItemParseError)
 }
 
-// IsAnyItemsWithoutPointersEquals returns true if both items byte level is same.
-//
-// @isContinueOnBothItemParseError
-//  - if true then if at the same index both item has parse error then continue that means
-//      assuming both are same based on error.
-//  - if false then if at the same index any parse error from binary then returns false no panic.
-func (anyItems *AnyItems) IsAnyItemsWithoutPointersEquals(
-	anyItemsValues *[]interface{},
-	isContinueOnBothItemParseError bool,
-) bool {
-	return isanyinternal.ItemsEqualsWhereOnePointersOfPointersAnyItems(
-		anyItems.Items,
-		anyItemsValues,
-		0,
-		isContinueOnBothItemParseError)
-}
-
-// IsAnyItemsWithoutPointersEqualsLock returns true if both items byte level is same.
-//
-// @isContinueOnBothItemParseError
-//  - if true then if at the same index both item has parse error then continue that means
-//      assuming both are same based on error.
-//  - if false then if at the same index any parse error from binary then returns false no panic.
-func (anyItems *AnyItems) IsAnyItemsWithoutPointersEqualsLock(
-	anyItemsValues *[]interface{},
-	isContinueOnBothItemParseError bool,
-) bool {
-	anyItems.Lock()
-	defer anyItems.Unlock()
-
-	return isanyinternal.ItemsEqualsWhereOnePointersOfPointersAnyItems(
-		anyItems.Items,
-		anyItemsValues,
-		0,
-		isContinueOnBothItemParseError)
-}
-
 // ToBytesWithError creates BytesWithError pointer using *AnyItems.Items (no panic if nil)
-func (anyItems *AnyItems) ToBytesWithError() *BytesWithError {
-	if anyItems.IsNull() {
-		return NewBytesWithErrorOnlyError(nil)
+func (it *AnyItems) ToBytesWithError() *BytesWithError {
+	if it.IsNull() {
+		return NewBytesWithErrorUsingAny(nil)
 	}
 
-	return NewBytesWithErrorUsingAny(*anyItems.Items)
+	return NewBytesWithErrorUsingAny(it.Items)
 }
 
-// ToBytesPtr creates []byte pointer using *AnyItems.Items
-func (anyItems *AnyItems) ToBytesPtr() *[]byte {
-	if anyItems.Items == nil || *anyItems.Items == nil {
-		return nil
+// ToBytes creates []byte pointer using *AnyItems.Items
+func (it *AnyItems) ToBytes() ([]byte, error) {
+	if it.IsNullOrEmpty() {
+		return []byte{}, defaulterr.CannotProcessNilOrEmpty
 	}
 
-	bytes, err := anyto.Bytes(*anyItems.Items)
+	rawBytes, err := anyto.Bytes(it.Items)
 
-	if err != nil {
-		panic(err)
-	}
-
-	return bytes
-}
-
-// ToBytes ToBytesWithError creates []byte pointer using *AnyItems.Items
-func (anyItems *AnyItems) ToBytes() []byte {
-	bytes := anyItems.ToBytesPtr()
-
-	if bytes != nil {
-		return *bytes
-	}
-
-	return nil
+	return rawBytes, err
 }
 
 // ToBytesWithErrorLock ToBytesWithError creates BytesWithError pointer using *AnyItems.Items
-func (anyItems *AnyItems) ToBytesWithErrorLock() *BytesWithError {
-	anyItems.Lock()
-	defer anyItems.Unlock()
+func (it *AnyItems) ToBytesWithErrorLock() *BytesWithError {
+	it.Lock()
+	defer it.Unlock()
 
-	return NewBytesWithErrorUsingAny(*anyItems.Items)
+	return it.ToBytesWithError()
 }

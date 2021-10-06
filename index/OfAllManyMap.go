@@ -11,8 +11,8 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 //  - How many indexes should we search for and then stop looking further.
 //  - `-1` means find all, 0 => nil
 func OfAllManyMap(
-	content *string,
-	searchMap *map[string]int,
+	content string,
+	searchMap map[string]int,
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.IndexesResultSet {

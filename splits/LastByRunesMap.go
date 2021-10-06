@@ -1,29 +1,28 @@
 package splits
 
 import (
-	"gitlab.com/evatix-go/core"
 	"gitlab.com/evatix-go/core/constants"
 	"gitlab.com/evatix-go/core/defaultcapacity"
 )
 
 func LastByRunesMap(
-	s *string,
-	separatorRunesMap *map[rune]bool,
+	s string,
+	separatorRunesMap map[rune]bool,
 	limits int,
-) *[]string {
-	if s == nil || *s == "" {
+) []string {
+	if s == "" {
 		return defaultResult()
 	}
 
 	if limits == 0 {
-		return core.EmptyStringsPtr()
+		return []string{}
 	}
 
-	if separatorRunesMap == nil || len(*separatorRunesMap) == 0 {
+	if len(separatorRunesMap) == 0 {
 		return defaultResultWithStr(s)
 	}
 
-	runes := []rune(*s)
+	runes := []rune(s)
 	runesLength := len(runes)
 	defaultCapacity := defaultcapacity.OfSplits(runesLength, limits)
 	list := make(
@@ -36,7 +35,7 @@ func LastByRunesMap(
 	for ; runesIndex >= constants.Zero; runesIndex-- {
 		curRune := runes[runesIndex]
 
-		if (*separatorRunesMap)[curRune] == true {
+		if separatorRunesMap[curRune] == true {
 			selectedRunes := runes[runesIndex+1 : runesLength]
 			list = append(
 				list,
@@ -59,5 +58,5 @@ func LastByRunesMap(
 			selected)
 	}
 
-	return &list
+	return list
 }

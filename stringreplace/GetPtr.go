@@ -6,7 +6,7 @@ import (
 
 func GetPtr(
 	text, search,
-	replaceWith *string,
+	replaceWith string,
 	startsAt,
 	howManyReplace int,
 	isCaseSensitive bool,
@@ -14,8 +14,8 @@ func GetPtr(
 	request := strhelpercore.ReplaceRequest{
 		Text: text,
 		ReplaceIndividualRequest: &strhelpercore.ReplaceIndividualRequest{
-			Search:          *search,
-			ReplaceWith:     *replaceWith,
+			Search:          search,
+			ReplaceWith:     replaceWith,
 			StartsAt:        startsAt,
 			HowManyReplace:  howManyReplace,
 			IsCaseSensitive: isCaseSensitive,

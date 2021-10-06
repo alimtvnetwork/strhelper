@@ -13,6 +13,6 @@ func GetContainsLineResult(
 	}
 
 	return GetContainsLineResultPtr(
-		&contentsLines,
+		contentsLines,
 		substrSearchLine)
 }

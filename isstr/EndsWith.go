@@ -20,8 +20,8 @@ func EndsWith(
 	isCaseSensitive bool,
 ) bool {
 	return EndsWithPtr(
-		&wholeText,
-		&endsWithSearch,
+		wholeText,
+		endsWithSearch,
 		startsAtLastIndex,
 		isCaseSensitive)
 }

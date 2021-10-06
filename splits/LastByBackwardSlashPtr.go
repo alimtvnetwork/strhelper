@@ -3,9 +3,9 @@ package splits
 import "gitlab.com/evatix-go/core/constants"
 
 func LastByBackwardSlashPtr(
-	s *string,
+	s string,
 	limits int,
-) *[]string {
+) []string {
 	return LastByRunePtr(
 		s,
 		constants.BackwardRune,

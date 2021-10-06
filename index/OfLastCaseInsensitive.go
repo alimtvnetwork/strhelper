@@ -6,18 +6,13 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
-	"gitlab.com/evatix-go/strhelper/internal/messages"
 )
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy int) int {
-	if s == nil || findingString == nil {
-		panic(messages.SearchNullPanicMessage)
-	}
-
-	wholeTextLength := len(*s)
-	searchTextLength := len(*findingString)
+func OfLastCaseInsensitive(s, findingString string, contentLengthDecreasedBy int) int {
+	wholeTextLength := len(s)
+	searchTextLength := len(findingString)
 
 	if searchTextLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
@@ -27,12 +22,12 @@ func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy in
 		return constants.Zero
 	}
 
-	if *s == *findingString && contentLengthDecreasedBy == 0 {
+	if s == findingString && contentLengthDecreasedBy == 0 {
 		return constants.Zero
 	}
 
-	wholeTextLower := strings.ToLower(*s)
-	wordLower := strings.ToLower(*findingString)
+	wholeTextLower := strings.ToLower(s)
+	wordLower := strings.ToLower(findingString)
 
 	// it will normally go as OfIndex, 0.1.2.3...N
 	for newStartIndex := contentLengthDecreasedBy; newStartIndex < wholeTextLength; newStartIndex++ {
@@ -44,8 +39,8 @@ func OfLastCaseInsensitive(s, findingString *string, contentLengthDecreasedBy in
 
 		// here having newStartIndex = 1 will compare from last index - newStartIndex
 		if isstrinternal.EndsWithUsingLength(
-			&wholeTextLower,
-			&wordLower,
+			wholeTextLower,
+			wordLower,
 			newStartIndex,
 			wholeTextLength,
 			searchTextLength) {

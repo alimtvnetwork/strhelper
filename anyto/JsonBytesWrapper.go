@@ -1,22 +1,19 @@
 package anyto
 
 import (
-	"encoding/json"
-
+	"gitlab.com/evatix-go/core/coredata/corejson"
+	"gitlab.com/evatix-go/errorwrapper/errdata/errjson"
 	"gitlab.com/evatix-go/strhelper/byteserror"
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
-func JsonBytesWrapper(any interface{}) byteserror.Wrapper {
+func JsonBytesWrapper(any interface{}) *byteserror.Wrapper {
 	if any == nil {
-		return byteserror.Empty(encodingbytetype.JsonParsing)
+		return byteserror.EmptyPtr(encodingbytetype.JsonParsing)
 	}
 
-	jsonBytes, err := json.Marshal(any)
+	jsonResult := corejson.NewFromAny(any)
+	errJson := errjson.New(jsonResult.Bytes, jsonResult.Error)
 
-	if jsonBytes != nil {
-		return byteserror.New(&jsonBytes, err, encodingbytetype.JsonParsing)
-	}
-
-	return byteserror.New(nil, err, encodingbytetype.JsonParsing)
+	return byteserror.NewPtr(encodingbytetype.JsonParsing, jsonResult.Bytes, errJson.ErrorWrapper)
 }

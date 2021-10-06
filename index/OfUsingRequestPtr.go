@@ -20,9 +20,7 @@ import (
 //  - startsAt cannot be negative or greater than the length of text(s)
 //goland:noinspection ALL
 func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRequest) int {
-	if searchIndividualRequest == nil ||
-		searchIndividualRequest.Text == nil ||
-		searchIndividualRequest.SearchRequest == nil {
+	if searchIndividualRequest == nil {
 		panichelper.NullReferences(
 			"searchIndividualRequest",
 			"searchIndividualRequest.Text",
@@ -40,14 +38,14 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 
 	if searchRequest.IsCaseSensitive && searchRequest.StartsAt == 0 {
 		return strings.Index(
-			*searchIndividualRequest.Text,
+			searchIndividualRequest.Text,
 			searchRequest.Search)
 	}
 
-	if (*searchRequest).IsCaseSensitive {
+	if searchRequest.IsCaseSensitive {
 		return ofCaseSensitiveUsingLengthPtr(
 			searchIndividualRequest.Text,
-			&searchRequest.Search,
+			searchRequest.Search,
 			searchRequest.StartsAt,
 			wholeTextLength,
 			len(searchRequest.Search))
@@ -55,6 +53,6 @@ func OfUsingRequestPtr(searchIndividualRequest *strhelpercore.SearchIndividualRe
 
 	return OfCaseInsensitive(
 		searchIndividualRequest.Text,
-		&searchRequest.Search,
+		searchRequest.Search,
 		searchRequest.StartsAt)
 }

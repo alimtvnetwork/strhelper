@@ -1,44 +1,38 @@
 package strhelpercore
 
-import "gitlab.com/evatix-go/strhelper/internal/isstrinternal"
-
 type SplitResult struct {
-	SplitPrev *string
+	SplitPrev string
 	// or the splitter
-	Separator *string
+	Separator string
 	Index     int
 	IsEmpty   bool
 }
 
-func (splitResult *SplitResult) IsEquals(another *SplitResult) bool {
-	if another == nil {
+func (it *SplitResult) IsEquals(another *SplitResult) bool {
+	if another == nil && it == nil {
+		return true
+	}
+
+	if another == nil || it == nil {
 		return false
 	}
 
-	isIndexSame := another.Index == splitResult.Index
-	isEmptySame := another.IsEmpty == splitResult.IsEmpty
+	if another == it {
+		return true
+	}
+
+	isIndexSame := another.Index == it.Index
+	isEmptySame := another.IsEmpty == it.IsEmpty
 	if !isEmptySame || !isIndexSame {
 		return false
 	}
 
-	if splitResult.IsEmpty {
+	if it.IsEmpty {
 		return true
 	}
 
-	isSplitPrevNull := isstrinternal.PointerEqualBasedOnAddressDeduction(splitResult.SplitPrev, another.SplitPrev)
-
-	if isSplitPrevNull.IsApplicableWithFalse() {
-		return false
-	}
-
-	isSeparatorNull := isstrinternal.PointerEqualBasedOnAddressDeduction(splitResult.Separator, another.Separator)
-
-	if isSeparatorNull.IsApplicableWithFalse() {
-		return false
-	}
-
-	isSeparatorSame := isstrinternal.EqualsPtr(splitResult.Separator, another.Separator)
-	isSplitPrevSame := isstrinternal.EqualsPtr(splitResult.SplitPrev, another.SplitPrev)
+	isSeparatorSame := it.Separator == another.Separator
+	isSplitPrevSame := it.SplitPrev == another.SplitPrev
 
 	return isSeparatorSame && isSplitPrevSame
 }

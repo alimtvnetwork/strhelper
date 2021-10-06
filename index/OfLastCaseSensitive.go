@@ -8,9 +8,9 @@ import (
 
 // returns -1 on non found case
 // panics if any is nil
-func OfLastCaseSensitive(s, findingString *string, contentLengthDecreasedBy int) int {
-	wholeTextLength := len(*s)
-	searchTextLength := len(*findingString)
+func OfLastCaseSensitive(s, findingString string, contentLengthDecreasedBy int) int {
+	wholeTextLength := len(s)
+	searchTextLength := len(findingString)
 
 	if searchTextLength > wholeTextLength {
 		return constants.InvalidNotFoundCase
@@ -20,7 +20,7 @@ func OfLastCaseSensitive(s, findingString *string, contentLengthDecreasedBy int)
 		return constants.Zero
 	}
 
-	if *s == *findingString && contentLengthDecreasedBy == 0 {
+	if s == findingString && contentLengthDecreasedBy == 0 {
 		return constants.Zero
 	}
 

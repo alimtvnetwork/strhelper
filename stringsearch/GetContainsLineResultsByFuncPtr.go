@@ -7,7 +7,7 @@ import (
 )
 
 func GetContainsLineResultsByFuncPtr(
-	contentsLines *[]string,
+	contentsLines []string,
 	isLineContainsFunc IsLineContainsFunc,
 ) *strhelpercore.StringResultsMap {
 	length := corestr.LengthOfStrings(contentsLines)
@@ -19,7 +19,7 @@ func GetContainsLineResultsByFuncPtr(
 	capacity := defaultcapacity.OfSearch(length)
 	currentMap := strhelpercore.NewStringResultsMap(capacity)
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if isLineContainsFunc(index, currentLine) {
 			result := &strhelpercore.StringResult{
 				FoundIndex: index,

@@ -6,7 +6,7 @@ func getAllIndexesFromLastAndIndexGiven(
 	length int,
 	rightStartsAtIndex,
 	limits int,
-) *[]int {
+) []int {
 	newArrayLength := length - rightStartsAtIndex
 
 	if newArrayLength <= constants.Zero || limits == 0 {
@@ -22,7 +22,7 @@ func getAllIndexesFromLastAndIndexGiven(
 		newArrayLength)
 
 	if newArrayLength == constants.Zero {
-		return &finalIndexes
+		return finalIndexes
 	}
 
 	newStartAt := newArrayLength - 1
@@ -32,5 +32,5 @@ func getAllIndexesFromLastAndIndexGiven(
 		index++
 	}
 
-	return &finalIndexes
+	return finalIndexes
 }

@@ -4,22 +4,17 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
-	"gitlab.com/evatix-go/strhelper/internal/messages"
 )
 
 // OfCaseSensitive returns -1 on non found case
 // panics if any is nil
 func OfCaseSensitive(
 	s,
-	findingString *string,
+	findingString string,
 	startsAt int,
 ) int {
-	if s == nil || findingString == nil {
-		panic(messages.SearchNullPanicMessage)
-	}
-
-	wholeTextLength := len(*s)
-	searchingLength := len(*findingString)
+	wholeTextLength := len(s)
+	searchingLength := len(findingString)
 
 	if searchingLength > wholeTextLength {
 		return constants.InvalidNotFoundCase

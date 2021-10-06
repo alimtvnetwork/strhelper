@@ -7,7 +7,7 @@ import (
 
 func GetContainsLineResultsMapByCompareMethod(
 	compareAs stringcompareas.Variant,
-	contentsLines *[]string,
+	contentsLines []string,
 	line string,
 	isCaseSensitive bool,
 ) *strhelpercore.StringResultsMap {

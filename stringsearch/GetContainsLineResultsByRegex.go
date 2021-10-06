@@ -9,7 +9,7 @@ import (
 )
 
 func GetContainsLineResultsByRegex(
-	contentsLines *[]string,
+	contentsLines []string,
 	regexp *regexp.Regexp,
 ) *strhelpercore.StringResultsMap {
 	length := corestr.LengthOfStrings(contentsLines)
@@ -21,7 +21,7 @@ func GetContainsLineResultsByRegex(
 	capacity := defaultcapacity.OfSearch(length)
 	currentMap := strhelpercore.NewStringResultsMap(capacity)
 
-	for index, currentLine := range *contentsLines {
+	for index, currentLine := range contentsLines {
 		if regexp.MatchString(currentLine) {
 			result := &strhelpercore.StringResult{
 				FoundIndex: index,

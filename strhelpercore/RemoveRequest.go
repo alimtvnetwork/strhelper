@@ -5,7 +5,7 @@ import (
 )
 
 type RemoveRequest struct {
-	Text *string
+	Text string
 	*ReplaceIndividualRequest
 }
 

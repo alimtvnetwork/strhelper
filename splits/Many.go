@@ -20,8 +20,8 @@ func Many(
 	splitsBy ...string,
 ) *strhelpercore.SplitResultOverview {
 	return ManyPtr(
-		&str,
-		&splitsBy,
+		str,
+		splitsBy,
 		splitStartsAt,
 		limits,
 		isCaseSensitive)

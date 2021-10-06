@@ -15,8 +15,8 @@ func OfLast(s, findingString string, startsAt int, isCaseSensitive bool) int {
 	}
 
 	return OfLastPtr(
-		&s,
-		&findingString,
+		s,
+		findingString,
 		startsAt,
 		isCaseSensitive)
 }

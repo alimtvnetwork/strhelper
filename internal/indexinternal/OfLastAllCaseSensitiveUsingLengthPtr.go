@@ -8,11 +8,11 @@ import (
 )
 
 func OfLastAllCaseSensitiveUsingLengthPtr(
-	s, findingString *string,
+	s, findingString string,
 	contentLengthDecreasedBy int,
 	limits int,
 	wholeTextLength, searchLength int,
-) *[]int {
+) []int {
 	if wholeTextLength-contentLengthDecreasedBy < searchLength {
 		// exceeded word wholeTextLength and not found case
 		return nil
@@ -47,5 +47,5 @@ func OfLastAllCaseSensitiveUsingLengthPtr(
 		return nil
 	}
 
-	return &indexes
+	return indexes
 }

@@ -4,7 +4,6 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 
 	"gitlab.com/evatix-go/strhelper/index"
-	"gitlab.com/evatix-go/strhelper/isstr"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
@@ -20,19 +19,19 @@ import (
 // splitStartsAt:
 //  - where split searching will start from.
 func ManyPtr(
-	str *string,
-	splitsBy *[]string,
+	str string,
+	splitsBy []string,
 	splitStartsAt,
 	limits int,
 	isCaseSensitive bool,
 ) *strhelpercore.SplitResultOverview {
-	if isstr.EmptyPtr(str) || splitsBy == nil || len(*splitsBy) == 0 {
+	if str == "" || len(splitsBy) == 0 {
 		return strhelpercore.NewEmptySplitResultOverview(str)
 	}
 
 	allIndexes := index.OfAllMany(
 		str,
-		splitsBy,
+		&splitsBy,
 		splitStartsAt,
 		limits,
 		isCaseSensitive)
@@ -42,9 +41,9 @@ func ManyPtr(
 	}
 
 	indexesAsKeyMap := allIndexes.GetIndexesMapWhereIndexAsKey()
-	possibleCapacity := len(*indexesAsKeyMap) + constants.ArbitraryCapacity5
-	results := make([]*string, 0, possibleCapacity)
-	nonResults := make([]*string, 0, possibleCapacity)
+	possibleCapacity := len(indexesAsKeyMap) + constants.ArbitraryCapacity5
+	results := make([]string, 0, possibleCapacity)
+	nonResults := make([]string, 0, possibleCapacity)
 	splitResults := make([]*strhelpercore.SplitResult, 0, possibleCapacity)
 	nonEmptySplitResults := make([]*strhelpercore.SplitResult, 0, possibleCapacity)
 	lastIndexOfSplit := 0
@@ -56,24 +55,24 @@ func ManyPtr(
 			break
 		}
 
-		searchStr, isIndexExist := (*indexesAsKeyMap)[splitStartsAt]
+		searchStr, isIndexExist := indexesAsKeyMap[splitStartsAt]
 		isIndexExist = isIndexExist && lastIndexOfSplit <= splitStartsAt
 		if isIndexExist {
-			word := (*str)[lastIndexOfSplit:splitStartsAt]
+			word := str[lastIndexOfSplit:splitStartsAt]
 			isEmptyWord = word == "" || whitespace.IsAsciiWhitespaces(word)
 
 			splitResult := strhelpercore.SplitResult{
-				SplitPrev: &word,
-				Separator: &searchStr,
+				SplitPrev: word,
+				Separator: searchStr,
 				Index:     splitStartsAt,
 				IsEmpty:   isEmptyWord,
 			}
 
-			results = append(results, &word)
+			results = append(results, word)
 			splitResults = append(splitResults, &splitResult)
 
 			if !isEmptyWord {
-				nonResults = append(nonResults, &word)
+				nonResults = append(nonResults, word)
 				nonEmptySplitResults = append(nonEmptySplitResults, &splitResult)
 			}
 
@@ -86,10 +85,10 @@ func ManyPtr(
 	}
 
 	resultsOverview := strhelpercore.SplitResultOverview{
-		Results:              &results,
-		NonEmptyResults:      &nonResults,
-		NonEmptySplitResults: &nonEmptySplitResults,
-		SplitResults:         &splitResults,
+		Results:              results,
+		NonEmptyResults:      nonResults,
+		NonEmptySplitResults: nonEmptySplitResults,
+		SplitResults:         splitResults,
 		IsEmptyResult:        !allIndexes.HasResult(),
 	}
 

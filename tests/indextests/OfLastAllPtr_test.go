@@ -26,8 +26,8 @@ func Test_OfLastAllPtr(t *testing.T) {
 
 		// Act
 		actual := index.OfLastAllPtr(
-			&testCase.Content,
-			&testCase.SearchingContent,
+			testCase.Content,
+			testCase.SearchingContent,
 			testCase.InitializedPosition,
 			testCase.Limits,
 			testCase.IsCaseSensitive,
