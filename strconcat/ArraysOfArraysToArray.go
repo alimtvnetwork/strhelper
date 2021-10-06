@@ -6,6 +6,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
+// ArraysOfArraysToArray
+//
 // Concatenates the arrays of array items to a single array.
 //
 // @Expression:

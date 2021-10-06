@@ -6,6 +6,8 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// AnyVar
+//
 // Returns variableName + constants.SpaceColonSpace + value
 func AnyVar(variableName string, value interface{}) string {
 	return variableName + constants.SpaceColonSpace + fmt.Sprintf(constants.SprintValueFormat, value)
