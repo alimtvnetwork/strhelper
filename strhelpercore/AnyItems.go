@@ -135,12 +135,12 @@ func (it *AnyItems) IsEqualsLock(another *AnyItems) bool {
 	return it.IsEquals(another)
 }
 
-// IsAnyItemsEquals returns true if both items byte level is same.
+// IsAnyItemsEquals returns true if both items' byte level is same.
 //
 // @isContinueOnBothItemParseError
-//  - if true then if at the same index both item has parse error then continue that means
+//  - if true then at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
-//  - if false then if at the same index any parse error from binary then returns false no panic.
+//  - if false then at the same index any parse error from binary then returns false no panic.
 func (it *AnyItems) IsAnyItemsEquals(
 	anyItemsPtr []interface{},
 	isContinueOnBothItemParseError bool,
@@ -153,12 +153,12 @@ func (it *AnyItems) IsAnyItemsEquals(
 	)
 }
 
-// IsAnyItemsEqualsLock returns true if both items byte level is same.
+// IsAnyItemsEqualsLock returns true if both items' byte level is same.
 //
 // @isContinueOnBothItemParseError
-//  - if true then if at the same index both item has parse error then continue that means
+//  - if true then at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
-//  - if false then if at the same index any parse error from binary then returns false no panic.
+//  - if false then at the same index any parse error from binary then returns false no panic.
 func (it *AnyItems) IsAnyItemsEqualsLock(
 	anyItemsPtr []interface{},
 	isContinueOnBothItemParseError bool,

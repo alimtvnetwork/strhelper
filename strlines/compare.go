@@ -25,8 +25,8 @@ import (
 //           the ultimate compare value will be 0 that doesn't mean both lines are same.
 //
 // Returns:
-//  - leftLines nil or empty or has less lines than rightLines returns -1
-//  - rightLines nil or empty or has less lines than leftLines returns +1
+//  - leftLines nil or empty or rightLines has fewer lines than rightLines returns -1
+//  - rightLines nil or empty or rightLines has less lines than leftLines returns +1
 //  - if both lines nil or empty returns 0
 //  - Cumulated Values == 0 return 0, doesn't confirm lines are equal.
 //  - Cumulated Values > 0  return +1

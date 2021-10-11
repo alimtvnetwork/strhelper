@@ -2,9 +2,11 @@ package converters
 
 import "unsafe"
 
-// Returns string arrays from unsafe bytes pointer
+// UnsafeBytesToStrings
 //
-// May panic on conversion if the bytes were not in unsafe pointer.
+// Returns string arrays from unsafe bytes' pointer
+//
+// May panics on conversion if the bytes were not in unsafe pointer.
 //
 // Expressions:
 // - return (*[] string)(unsafe.Pointer(allBytes))

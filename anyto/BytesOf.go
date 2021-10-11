@@ -2,7 +2,7 @@ package anyto
 
 import (
 	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/msgtype"
+	"gitlab.com/evatix-go/core/errcore"
 	"gitlab.com/evatix-go/strhelper/encodingbytetype"
 )
 
@@ -25,7 +25,7 @@ func BytesOf(parsingType encodingbytetype.Variant, any interface{}) ([]byte, err
 
 		return jsonResult.Bytes, jsonResult.MeaningfulError()
 	default:
-		return nil, msgtype.NotSupported.Error(
+		return nil, errcore.NotSupported.Error(
 			parsingBytesNotSupportMessage(parsingType), any)
 	}
 }
