@@ -112,7 +112,6 @@ func (it *BytesWithError) StringLength() int {
 	return *it.stringLength
 }
 
-// Error must be initialize have it or not. Then check Error().IsExpressionEmpty()
 func (it *BytesWithError) Error() *errorwrapper.Wrapper {
 	return it.errorWrapper
 }
@@ -148,12 +147,16 @@ func (it *BytesWithError) IsNullOrEmptyOrWhitespaces() bool {
 	return it.isWhitespace.IsTrue()
 }
 
-// IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
+// IsDefined
+//
+// returns true if no currentError and has at least one character other than whitespace (Ascii only)
 func (it *BytesWithError) IsDefined() bool {
 	return it.errorWrapper.IsEmpty() && !it.IsNullOrEmptyOrWhitespaces()
 }
 
-// HasValidCharacters returns true meaning has at least one characters other than whitespace (Ascii only)
+// HasValidCharacters
+//
+// returns true meaning has at least one character other than whitespace (Ascii only)
 func (it *BytesWithError) HasValidCharacters() bool {
 	return !it.IsNullOrEmptyOrWhitespaces()
 }

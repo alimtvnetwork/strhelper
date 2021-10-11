@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/coreindexes"
-	"gitlab.com/evatix-go/core/msgtype"
+	"gitlab.com/evatix-go/core/errcore"
 )
 
 func IntoTwoLeftRight(s, separator string) corestr.LeftRight {
@@ -30,7 +30,7 @@ func IntoTwoLeftRight(s, separator string) corestr.LeftRight {
 		Left:    first,
 		Right:   constants.EmptyString,
 		IsValid: false,
-		Message: msgtype.Expecting(
+		Message: errcore.Expecting(
 			"Expecting length",
 			ExpectingLengthOfIntoTwoSplits,
 			length),

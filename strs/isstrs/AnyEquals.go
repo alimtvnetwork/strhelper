@@ -12,9 +12,9 @@ import (
 //  - If all the items are equals based on encoder encoding to bytes then returns true.
 //
 // @isContinueOnBothItemParseError
-//  - if true then if at the same index both item has parse error then continue that means
+//  - if true then at the same index both item has parse error then continue that means
 //      assuming both are same based on error.
-//  - if false then if at the same index any parse error from binary then returns false no panic.
+//  - if false then at the same index any parse error from binary then returns false no panic.
 func AnyEquals(
 	leftItems *[]interface{},
 	rightItems *[]interface{},
