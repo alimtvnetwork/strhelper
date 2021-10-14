@@ -6,6 +6,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/index"
 )
 
+// Contains
+//
 // Results true if the search text contains anywhere in the text.
 //
 // Returns true

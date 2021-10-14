@@ -66,6 +66,8 @@ func AnyFullNameValues(
 		&contents)
 }
 
+// AnyItems
+//
 // Concat any objects to single string using it's sprintf format given
 //
 // @isSkipEmptyOrNil
@@ -73,7 +75,7 @@ func AnyFullNameValues(
 //
 // @separator:
 //  - it is used to strconcat each contents to string to single one.
-func Anys(
+func AnyItems(
 	separator string,
 	isSkipEmptyOrNil bool,
 	contentPrintFormat string,
@@ -87,6 +89,8 @@ func Anys(
 		&contents)
 }
 
+// AnyArrayOfInterfaces
+//
 // Concat any objects to single string using it's sprintf format given
 //
 // @isSkipEmptyOrNil

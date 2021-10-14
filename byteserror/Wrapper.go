@@ -249,6 +249,10 @@ func (it *Wrapper) JsonParseSelfInject(
 	return err
 }
 
+func (it *Wrapper) AsJsonContractsBinder() corejson.JsonContractsBinder {
+	return it
+}
+
 func (it *Wrapper) AsJsoner() corejson.Jsoner {
 	return it
 }

@@ -10,11 +10,11 @@ package chars
 //  - represents all ASCII characters in a simple array format,
 //          only existing ones which are passed will be marked with 1.
 func CountAsciiCharsSensitivePtr(
-	str *string,
-	chars *[256]uint8,
+	str string,
+	chars [256]uint8,
 	at int,
 ) int {
-	length := len(*str)
+	length := len(str)
 
 	if length == 0 {
 		return 0
@@ -23,7 +23,7 @@ func CountAsciiCharsSensitivePtr(
 	found := 0
 
 	for ; at < length; at++ {
-		char := (*str)[at]
+		char := str[at]
 		if chars[char] == 1 {
 			found++
 		}

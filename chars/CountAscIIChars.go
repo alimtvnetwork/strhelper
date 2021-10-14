@@ -4,12 +4,12 @@ package chars
 // Returns 0 if str is nil or empty string.
 func CountAscIIChars(
 	str string,
-	chars *[256]uint8,
+	chars [256]uint8,
 	startsAt int,
 	isCaseSensitive bool,
 ) int {
 	return CountAscIICharsPtr(
-		&str,
+		str,
 		chars,
 		startsAt,
 		isCaseSensitive)

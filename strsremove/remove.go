@@ -142,26 +142,26 @@ func NewLinesPtr(str *string, startsAt int) string {
 // Returns empty string if str is nil or empty.
 // remove only those comma from the string.
 func CommaPtr(
-	str *string,
+	str string,
 	startsAt int,
 ) string {
 	return CharactersPtr(
 		str,
 		startsAt,
-		&commaRemoveAscIIArray,
+		commaRemoveAscIIArray,
 		true)
 }
 
 // Returns empty string if str is nil or empty.
 // remove only those comma from the string.
 func HyphenPtr(
-	str *string,
+	str string,
 	startsAt int,
 ) string {
 	return CharactersPtr(
 		str,
 		startsAt,
-		&hyphenRemoveAscIIArray,
+		hyphenRemoveAscIIArray,
 		true)
 }
 
@@ -170,16 +170,16 @@ func HyphenPtr(
 //
 // Limited to ASCII only
 func CharactersPtr(
-	str *string,
+	str string,
 	startsAt int,
-	removingCharacters *[256]uint8,
+	removingCharacters [256]uint8,
 	isCaseSensitive bool,
 ) string {
-	if str == nil || len(*str) == 0 {
+	if str == "" {
 		return constants.EmptyString
 	}
 
-	length := len(*str)
+	length := len(str)
 
 	if startsAt < 0 || length-1 < startsAt {
 		panichelper.StartAtIndexFailed(startsAt, length)
@@ -192,21 +192,21 @@ func CharactersPtr(
 		isCaseSensitive)
 
 	if removingCharactersCount == 0 {
-		return *str
+		return str
 	}
 
 	newChars := make([]byte, length-removingCharactersCount)
 
 	for i := 0; i < startsAt; i++ {
 		// copy as is
-		newChars[i] = (*str)[i]
+		newChars[i] = str[i]
 	}
 
 	wordIndex := startsAt
 	for ; startsAt < length; startsAt++ {
-		char := (*str)[startsAt]
+		char := str[startsAt]
 		if !(removingCharacters[char] == 1) {
-			newChars[wordIndex] = (*str)[startsAt]
+			newChars[wordIndex] = str[startsAt]
 			wordIndex++
 		}
 	}

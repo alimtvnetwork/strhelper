@@ -25,7 +25,7 @@ func BytesOf(parsingType encodingbytetype.Variant, any interface{}) ([]byte, err
 
 		return jsonResult.Bytes, jsonResult.MeaningfulError()
 	default:
-		return nil, errcore.NotSupported.Error(
+		return nil, errcore.NotSupportedType.Error(
 			parsingBytesNotSupportMessage(parsingType), any)
 	}
 }

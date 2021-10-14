@@ -9,12 +9,12 @@ import (
 // @chars *[256]uint8:
 //  - represents all ASCII characters in a simple array format,
 //      only existing ones which are passed will be marked with 1.
-func ToAsciiCharsLower(chars *[256]uint8) *[256]uint8 {
-	length := len(*chars)
+func ToAsciiCharsLower(chars [256]uint8) [256]uint8 {
+	length := len(chars)
 	newChars := [256]uint8{}
 
 	for i := 0; i < length; i++ {
-		if (*chars)[i] == 1 {
+		if chars[i] == 1 {
 			char := uint8(i)
 
 			if char >= constants.UpperCaseA &&
@@ -26,5 +26,5 @@ func ToAsciiCharsLower(chars *[256]uint8) *[256]uint8 {
 		}
 	}
 
-	return &newChars
+	return newChars
 }
