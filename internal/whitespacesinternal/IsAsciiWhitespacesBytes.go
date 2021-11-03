@@ -2,6 +2,8 @@ package whitespacesinternal
 
 import "gitlab.com/evatix-go/core/constants"
 
+// IsAsciiWhitespacesBytes
+//
 // Returns true for ASCII spaces only. Returns false for unicode whitespaces.
 //
 // If there is any unicode space it will count as character and return false.
@@ -28,7 +30,7 @@ func IsAsciiWhitespacesBytes(bytes []byte) bool {
 			break
 		}
 
-		lastIndex = lastIndex - i
+		lastIndex -= i
 		char = bytes[lastIndex]
 
 		if !(constants.AsciiSpace[char] == 1) {

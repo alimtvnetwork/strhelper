@@ -3,8 +3,8 @@ package splits
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringindex"
 	"gitlab.com/evatix-go/strhelper/whitespace"
 )
 
@@ -13,7 +13,7 @@ import (
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
 // limits :
-//  - number of times split will performed for all
+//  - number of times split will be performed for all
 //  - if -1 then all split will occur
 //
 // splitStartsAt:
@@ -29,7 +29,7 @@ func ManyPtr(
 		return strhelpercore.NewEmptySplitResultOverview(str)
 	}
 
-	allIndexes := index.OfAllMany(
+	allIndexes := stringindex.OfAllMany(
 		str,
 		&splitsBy,
 		splitStartsAt,

@@ -2,6 +2,8 @@ package whitespace
 
 import "gitlab.com/evatix-go/core/constants"
 
+// IsAsciiWhitespaces
+//
 // Returns true for ASCII spaces only. Returns false for unicode whitespaces.
 //
 // If there is any unicode space it will count as character and return false.
@@ -34,7 +36,7 @@ func IsAsciiWhitespaces(s string) bool {
 			break
 		}
 
-		lastIndex = lastIndex - i
+		lastIndex -= i
 		char = s[lastIndex]
 
 		if !(asciiSpaces[char] == constants.One) {

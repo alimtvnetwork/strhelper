@@ -9,7 +9,7 @@ import "strings"
 //
 // Returns
 //
-//  - count number of characters how much matches as suffix from (a,b).
+//  - count number of characters how many matches as suffix from (a,b).
 //  - if no suffix found or both are empty string then returns 0 count value
 //
 // Conditions (Panic):

@@ -94,12 +94,12 @@ func (it *Wrapper) IsNullOrEmptyOrWhitespaces() bool {
 	return it.isWhitespace.IsTrue()
 }
 
-// IsDefined returns true if no currentError and has at least one characters other than whitespace (Ascii only)
+// IsDefined returns true if no currentError and has at least one character other than whitespace (Ascii only)
 func (it *Wrapper) IsDefined() bool {
 	return it.BytesLength() > 0 && it.errorWrapper.IsEmpty() && !it.IsNullOrEmptyOrWhitespaces()
 }
 
-// HasValidCharacters returns true meaning has at least one characters other than whitespace (Ascii only)
+// HasValidCharacters returns true meaning has at least one character other than whitespace (Ascii only)
 func (it *Wrapper) HasValidCharacters() bool {
 	return !it.IsNullOrEmptyOrWhitespaces()
 }

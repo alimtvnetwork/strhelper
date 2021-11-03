@@ -6,6 +6,8 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// IsWhitespaces
+//
 // Returns true for ASCII spaces and also all unicode spaces.
 //
 // Checks from start and end if any valid char found returns immediately.
@@ -17,9 +19,15 @@ import (
 //
 // References:
 //  - https://play.golang.org/p/78uFF8s-Dw1
-func IsWhitespaces(s *string) bool {
-	runes := []rune(*s)
-	// len(s) represents length in bytes so if there any unicode char it will not match with len(runes)
+func IsWhitespaces(s string) bool {
+	if s == "" {
+		return true
+	}
+
+	runes := []rune(s)
+	// len(s) represents length in bytes so
+	// if there is any unicode char
+	// it will not match with len(runes)
 	length := len(runes)
 
 	if length == 0 {
@@ -41,7 +49,7 @@ func IsWhitespaces(s *string) bool {
 			break
 		}
 
-		lastIndex = lastIndex - i
+		lastIndex -= i
 		r = runes[lastIndex]
 		if !((r <= constants.MaxUnit8Rune && constants.AsciiSpace[r] == 1) ||
 			(r > constants.MaxUnit8Rune && unicode.IsSpace(r))) {

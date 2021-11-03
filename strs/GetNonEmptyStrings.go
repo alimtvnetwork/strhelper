@@ -9,14 +9,14 @@ import (
 )
 
 // GetNonEmptyStrings returns new array without empty strings, skip whitespaces if isTrimSpace true
-func GetNonEmptyStrings(lines *[]string, isTrimSpace bool) *[]string {
-	newLines := make([]string, 0, len(*lines))
+func GetNonEmptyStrings(lines []string, isTrimSpace bool) []string {
+	newLines := make([]string, 0, len(lines))
 
-	if isstrsinternal.EmptyPtr(lines) {
-		return &newLines
+	if isstrsinternal.Empty(lines) {
+		return newLines
 	}
 
-	for _, line := range *lines {
+	for _, line := range lines {
 		line2 := line
 
 		if isTrimSpace {
@@ -30,5 +30,5 @@ func GetNonEmptyStrings(lines *[]string, isTrimSpace bool) *[]string {
 		newLines = append(newLines, line2)
 	}
 
-	return &newLines
+	return newLines
 }

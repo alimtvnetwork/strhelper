@@ -6,8 +6,10 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// IsRunesWhitespaces
+//
 // Returns true for if the contents are all whitespaces
-//  (including unicode whitespaces for only checking ascii use the ascii version a lot more faster)
+//  (including unicode whitespaces for only checking ascii use the ascii version a lot faster)
 //
 // Checks from start and end if any valid char found returns immediately.
 //
@@ -35,7 +37,7 @@ func IsRunesWhitespaces(runes []rune) bool {
 			break
 		}
 
-		lastIndex = lastIndex - i
+		lastIndex -= i
 		r = runes[lastIndex]
 
 		if !((r <= constants.MaxUnit8Rune && constants.AsciiSpace[r] == 1) ||

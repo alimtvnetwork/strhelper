@@ -1,7 +1,6 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
@@ -9,7 +8,7 @@ func GetEqualLineResult(
 	contentsLines []string,
 	line string,
 ) *strhelpercore.StringResult {
-	if corestr.LengthOfStrings(contentsLines) == 0 {
+	if len(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 

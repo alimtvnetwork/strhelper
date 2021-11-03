@@ -1,7 +1,7 @@
 package chars
 
 // CountAsciiCharsSensitivePtr Returns the count number based on chars
-// ([256]uint8 represents all ASCII characters  ASCII which index has flag 1)
+// ([256]uint8 represents all ASCII characters  ASCII which index has a flag 1)
 // present in the str. (Case : Sensitive)
 // Invalid Cases (return 0):
 //  - length == 0

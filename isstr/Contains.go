@@ -3,7 +3,7 @@ package isstr
 import (
 	"gitlab.com/evatix-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/stringindex"
 )
 
 // Contains
@@ -12,7 +12,7 @@ import (
 //
 // Returns true
 //
-//  - if wholeText contains any where the search text from the index mentioned at startsAt.
+//  - if wholeText contains anywhere the search text from the index mentioned at startsAt.
 //
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
@@ -24,7 +24,7 @@ func Contains(
 	startsAt int,
 	isCaseSensitive bool,
 ) bool {
-	return index.Of(
+	return stringindex.Of(
 		wholeText,
 		containsSearch,
 		startsAt,

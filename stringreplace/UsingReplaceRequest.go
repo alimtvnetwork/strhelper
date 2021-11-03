@@ -3,8 +3,8 @@ package stringreplace
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringindex"
 )
 
 func UsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
@@ -20,7 +20,7 @@ func UsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {
 			request.HowManyReplace)
 	}
 
-	foundIndexesMap := index.OfAllAsKeyMap(
+	foundIndexesMap := stringindex.OfAllAsKeyMap(
 		request.Text,
 		request.Search,
 		request.StartsAt,

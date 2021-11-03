@@ -2,8 +2,8 @@ package stringreplace
 
 import (
 	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/strhelper/index"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/evatix-go/strhelper/stringindex"
 )
 
 func replaceMultipleInternalPtr(request *strhelpercore.ReplaceRequestMultiple) string {
@@ -21,7 +21,7 @@ func replaceMultipleInternalPtr(request *strhelpercore.ReplaceRequestMultiple) s
 
 	searchMap := convertSearchReplaceMapToSearchMap(request.SearchReplaceMap)
 
-	indexesResultSet := index.OfAllManyMapPtr(
+	indexesResultSet := stringindex.OfAllManyMapPtr(
 		request.Text,
 		searchMap)
 

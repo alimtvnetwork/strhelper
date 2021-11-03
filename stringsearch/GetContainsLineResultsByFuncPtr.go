@@ -1,7 +1,6 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/defaultcapacity"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
@@ -10,7 +9,7 @@ func GetContainsLineResultsByFuncPtr(
 	contentsLines []string,
 	isLineContainsFunc IsLineContainsFunc,
 ) *strhelpercore.StringResultsMap {
-	length := corestr.LengthOfStrings(contentsLines)
+	length := len(contentsLines)
 
 	if length == 0 {
 		return strhelpercore.EmptyStringResultsMap()

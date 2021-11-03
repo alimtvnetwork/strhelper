@@ -1,6 +1,8 @@
 package panichelper
 
-import "gitlab.com/evatix-go/strhelper/panicmsg"
+import (
+	"gitlab.com/evatix-go/strhelper/internal/panicmsg"
+)
 
 func NullReference(nullReferenceName string) {
 	message := panicmsg.SimpleValMsgsWithType(

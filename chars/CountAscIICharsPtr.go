@@ -7,7 +7,7 @@ import (
 // CountAscIICharsPtr
 //
 // Returns the count number based on chars ([256]uint8 represents
-// all ASCII characters  ASCII which index has flag 1) present in the str.
+// all ASCII characters  ASCII which index has a flag 1), present in the str.
 // Invalid Cases (return 0):
 //  - str == nil or str == "" or length == 0
 //

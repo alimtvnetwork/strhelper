@@ -2,7 +2,9 @@ package hasstr
 
 import "gitlab.com/evatix-go/core/constants"
 
-// AnyCharPtr Has at least one character any, returns true even if a whitespace
-func AnyCharPtr(s *string) bool {
-	return !(s == nil || *s == constants.EmptyString)
+// Char
+//
+// Has at least one character any, returns true even if a whitespace
+func Char(s string) bool {
+	return s != constants.EmptyString
 }

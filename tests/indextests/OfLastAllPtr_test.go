@@ -6,7 +6,7 @@ import (
 	"github.com/smartystreets/goconvey/convey"
 	"gitlab.com/evatix-go/core/coretests"
 
-	"gitlab.com/evatix-go/strhelper/index"
+	"gitlab.com/evatix-go/strhelper/stringindex"
 	"gitlab.com/evatix-go/strhelper/tests/testwrappers/indextestwrappers"
 )
 
@@ -25,7 +25,7 @@ func Test_OfLastAllPtr(t *testing.T) {
 		expected := testCase.ExpectedAsIntArray()
 
 		// Act
-		actual := index.OfLastAllPtr(
+		actual := stringindex.OfLastAllPtr(
 			testCase.Content,
 			testCase.SearchingContent,
 			testCase.InitializedPosition,

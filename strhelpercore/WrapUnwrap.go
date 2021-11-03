@@ -17,13 +17,13 @@ type WrapUnWrap struct {
 }
 
 // WrapStatus @IsLeftFound:
-//  - Indicates whether WrapUnWrap.Start is present in the left side as a start word
+//  - Indicates whether WrapUnWrap.Start is present in the left-side as a start word
 // @IsRightFound:
-//  - Indicates whether WrapUnWrap.End is present in the right side as an ending word
+//  - Indicates whether WrapUnWrap.End is present in the right-side as an ending word
 type WrapStatus struct {
-	// Indicates whether WrapUnWrap.Start is present in the left side as a start word
+	// Indicates whether WrapUnWrap.Start is present in the left-side as a start word
 	IsLeftFound bool
-	// Indicates whether WrapUnWrap.End is present in the right side as an ending word
+	// Indicates whether WrapUnWrap.End is present in the right-side as an ending word
 	IsRightFound bool
 }
 

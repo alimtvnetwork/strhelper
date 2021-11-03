@@ -27,7 +27,7 @@ func Test_Last(t *testing.T) {
 		expected := testCase.ExpectedAsStringsArray()
 
 		// Act
-		actual := splits.LastByLimitPtr(
+		actual := splits.LastByLimit(
 			testCase.Content,
 			testCase.SearchingContent,
 			testCase.IsCaseSensitive,

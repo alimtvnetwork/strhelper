@@ -1,5 +1,13 @@
 package isstr
 
+import (
+	"gitlab.com/evatix-go/core/constants"
+
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+)
+
+// StartsWith
+//
 // Results true for starts with.
 //
 // Returns true
@@ -9,16 +17,42 @@ package isstr
 // Conditions (Not Handled and Assumptions):
 //  - wholeText, search should NOT be nil.
 //  - startsAt cannot be negative
-//
-// For better performance use `...Ptr` version of the method.
 func StartsWith(
 	wholeText, startsWith string,
 	startsAt int,
 	isCaseSensitive bool,
 ) bool {
-	return StartsWithPtr(
-		&wholeText,
-		&startsWith,
+	searchLength := len(startsWith)
+	wholeTextLength := len(wholeText)
+
+	if searchLength == constants.Zero {
+		return wholeTextLength == constants.Zero && startsAt == constants.Zero || wholeTextLength-1 >= startsAt
+	}
+
+	if wholeTextLength == constants.Zero {
+		return searchLength == constants.Zero && startsAt == constants.Zero
+	}
+
+	textLength := wholeTextLength - startsAt
+
+	if searchLength > textLength {
+		return false
+	}
+
+	if isCaseSensitive {
+		return isstrinternal.StartsWith(
+			wholeText,
+			startsWith,
+			startsAt,
+			wholeTextLength,
+			searchLength)
+	}
+
+	// insensitive
+	return isStartsWithInsensitiveInternal(
+		wholeText,
+		startsWith,
 		startsAt,
-		isCaseSensitive)
+		wholeTextLength,
+		searchLength)
 }

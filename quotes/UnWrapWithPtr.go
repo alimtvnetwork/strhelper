@@ -1,6 +1,9 @@
 package quotes
 
-// Note : It doesn't care about in quotes exist in middle of (str), it just unwrap from both sides if quotes are there.
+// UnWrapWithPtr
+//
+// Note : It doesn't care about in quotes exist in middle of (str),
+// it just unwrap from both sides if quotes are there.
 func UnWrapWithPtr(str *string, quote Quote) string {
 	if isEmptyStringPtr(str) {
 		return *str

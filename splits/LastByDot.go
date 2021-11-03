@@ -9,7 +9,7 @@ func LastByDot(s string) []string {
 		return defaultResult()
 	}
 
-	return LastByLimitPtr(
+	return LastByLimit(
 		s,
 		constants.Dot,
 		true,

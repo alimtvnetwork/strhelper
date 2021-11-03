@@ -14,17 +14,13 @@ package isstrinternal
 // - This doesn't do the quick exit, based on if search length > whole text length.
 // (Assumptions are it is already made before the call)
 func StartsWith(
-	wholeText, search *string,
+	wholeText, search string,
 	startsAt int,
 	wholeTextLength, searchTextLength int,
 ) bool {
 	incrementing := 0
-	// accessing direct without pointer increases performance
-	wholeTextCopy := *wholeText
-	searchTextCopy := *search
-
 	for ; startsAt < wholeTextLength && incrementing < searchTextLength; startsAt++ {
-		if wholeTextCopy[startsAt] != searchTextCopy[incrementing] {
+		if wholeText[startsAt] != search[incrementing] {
 			break
 		}
 

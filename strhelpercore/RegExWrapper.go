@@ -88,7 +88,7 @@ func (it *RegExWrapper) initializeRegex() {
 	if it.regex == nil && it.errorWrapper == nil {
 		regexCompiled, err := regexnew.NewLock(it.request)
 		it.regex = regexCompiled
-		it.errorWrapper = errnew.NewPtrUsingStackSkip(
+		it.errorWrapper = errnew.UsingStackSkip(
 			codestack.Skip1,
 			errtype.RegexCompiledFailed,
 			err)

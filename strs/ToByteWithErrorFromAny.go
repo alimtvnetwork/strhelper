@@ -8,6 +8,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
+// ToByteWithErrorFromAny
+//
 // Returns:
 //  - nil : if @anything is nil.
 //  - strhelpercore.BytesWithError : if anything exist and conversion

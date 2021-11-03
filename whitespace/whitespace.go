@@ -4,68 +4,94 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// IsNullOrWhitespace
+//
 // IsEmpty(s) || IsWhitespaces(&s)
 func IsNullOrWhitespace(s string) bool {
 	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(s)
 }
 
+// HasCharacter
+//
 // Has at least one character any, returns true even if a whitespace
 func HasCharacter(s string) bool {
 	return !(s == constants.EmptyString || len(s) == 0)
 }
 
+// HasCharacterPtr
+//
 // Has at least one character any, returns true even if a whitespace
 func HasCharacterPtr(s *string) bool {
 	return !(s == nil || *s == constants.EmptyString || len(*s) == 0)
 }
 
+// HasCharacterWithoutWhitespaces
+//
 // Has at least one character other than space or whitespace
 func HasCharacterWithoutWhitespaces(s string) bool {
 	return !(s == constants.EmptyString || len(s) == 0 || IsNullOrWhitespacePtr(&s))
 }
 
+// IsDefinedWithCharsWithoutWhitespaces
+//
 // Has at least one character other than space or whitespace
 func IsDefinedWithCharsWithoutWhitespaces(s string) bool {
 	return !(s == constants.EmptyString || len(s) == 0 || IsNullOrWhitespacePtr(&s))
 }
 
+// HasCharacterWithoutWhitespacesPtr
+//
 // Has at least one character other than space or whitespace
 func HasCharacterWithoutWhitespacesPtr(s *string) bool {
 	return !(s == nil || *s == constants.EmptyString || len(*s) == 0 || IsNullOrWhitespacePtr(s))
 }
 
+// IsDefinedWithCharsWithoutWhitespacesPtr
+//
 // Has at least one character other than space or whitespace
 func IsDefinedWithCharsWithoutWhitespacesPtr(s *string) bool {
 	return !(s == nil || *s == constants.EmptyString || len(*s) == 0 || IsNullOrWhitespacePtr(s))
 }
 
+// IsNullOrWhitespacePtr
+//
 // s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsNullOrWhitespacePtr(s *string) bool {
 	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(*s)
 }
 
+// IsBlank
+//
 // returns true if IsNullOrWhitespace(s)
 func IsBlank(s string) bool {
 	return s == constants.EmptyString || len(s) == 0 || IsWhitespaces(s)
 }
 
+// IsBlankPtr
+//
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(s)
 func IsBlankPtr(s *string) bool {
 	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsWhitespaces(*s)
 }
 
+// IsBlankAscii
+//
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankAscii(s string) bool {
 	return s == constants.EmptyString || len(s) == 0 || IsAsciiWhitespaces(s)
 }
 
+// IsBlankAsciiPtr
+//
 // returns s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(s)
 // Checks only asc whitespaces, return false for any unicode whitespace
 func IsBlankAsciiPtr(s *string) bool {
 	return s == nil || *s == constants.EmptyString || len(*s) == 0 || IsAsciiWhitespaces(*s)
 }
 
+// HasAnyBlank
+//
 // returns true if Any of the strings is blanks thus empty or whitespace or nil
 func HasAnyBlank(strings ...*string) bool {
 	for _, str := range strings {
@@ -77,6 +103,8 @@ func HasAnyBlank(strings ...*string) bool {
 	return false
 }
 
+// HasAllBlanks
+//
 // returns true if All of the strings are blank thus empty or whitespaces or null/nil.
 func HasAllBlanks(strings ...*string) bool {
 	for _, str := range strings {
@@ -88,6 +116,8 @@ func HasAllBlanks(strings ...*string) bool {
 	return true
 }
 
+// HasAnyDefined
+//
 // returns true if Any strings are defined thus has character other than whitespace/empty/nil
 func HasAnyDefined(strings ...*string) bool {
 	for _, str := range strings {
@@ -99,6 +129,8 @@ func HasAnyDefined(strings ...*string) bool {
 	return false
 }
 
+// HasAllDefined
+//
 // returns true if All strings are defined thus has character other than whitespace/empty/nil
 func HasAllDefined(strings ...*string) bool {
 	for _, str := range strings {

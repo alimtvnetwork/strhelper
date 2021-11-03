@@ -29,13 +29,13 @@ type BytesWithError struct {
 
 func NewBytesWithErrorOnlyError(err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: errorwrapper.NewErrorPtr(codestack.Skip1, err),
+		errorWrapper: errorwrapper.NewError(codestack.Skip1, err),
 	}
 }
 
 func NewBytesWithError(errType errtype.Variation, err error) *BytesWithError {
 	return &BytesWithError{
-		errorWrapper: errorwrapper.NewUsingErrorPtr(
+		errorWrapper: errorwrapper.NewUsingError(
 			codestack.Skip1,
 			errType,
 			err),
@@ -60,7 +60,7 @@ func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 	}
 
 	rawBytes, err := anyto.Bytes(any)
-	errWp := errnew.ErrorWithMessagesPtrUsingStackSkip(
+	errWp := errnew.ErrorWithMessagesUsingStackSkip(
 		codestack.Skip1,
 		errtype.ConversionFailed,
 		err,
