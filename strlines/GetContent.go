@@ -6,7 +6,10 @@ import (
 	"gitlab.com/evatix-go/strhelper/strconcat"
 )
 
-// String join using Unix New Line operating system newline (For windows it is \r\n and for unix it is \n)
+// GetContent
+//
+// String join using Unix New Line operating system newline
+// (For windows it is \r\n and for unix it is \n)
 func GetContent(lines []string) string {
 	return strconcat.JoinPtr(&lines, constants.NewLine)
 }

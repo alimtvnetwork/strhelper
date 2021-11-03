@@ -13,32 +13,32 @@ import (
 //  - If both pointers are same returns true.
 //  - If all the lines are equals as per the case sensitivity then returns true or else false.
 func Equals(
-	leftLines *[]string,
-	rightLines *[]string,
+	leftLines []string,
+	rightLines []string,
 	startsAt int,
 	isCaseSensitive bool,
 ) bool {
 	isLeftEmpty := Empty(leftLines)
 	isRightEmpty := Empty(rightLines)
 
-	if isLeftEmpty == isRightEmpty && isLeftEmpty == true {
+	if isLeftEmpty == isRightEmpty && true == isLeftEmpty {
 		return true
 	}
 
-	isLeftEmptyAndRightNot := isLeftEmpty == true && isRightEmpty == false
+	isLeftEmptyAndRightNot := isLeftEmpty && isRightEmpty == false
 
 	if isLeftEmptyAndRightNot {
 		return false
 	}
 
-	isRightEmptyAndLeftNot := isLeftEmpty == false && isRightEmpty == true
+	isRightEmptyAndLeftNot := !isLeftEmpty && isRightEmpty == true
 
 	if isRightEmptyAndLeftNot {
 		return false
 	}
 
-	leftLength := len(*leftLines)
-	rightLength := len(*rightLines)
+	leftLength := len(leftLines)
+	rightLength := len(rightLines)
 
 	if leftLength != rightLength {
 		return false
@@ -64,15 +64,15 @@ func Equals(
 }
 
 func caseSensitiveEqual(
-	leftLines *[]string,
-	rightLines *[]string,
+	leftLines []string,
+	rightLines []string,
 	startsAt int,
 ) bool {
-	leftLength := len(*leftLines)
+	leftLength := len(leftLines)
 
 	for ; startsAt < leftLength; startsAt++ {
-		left := (*leftLines)[startsAt]
-		right := (*rightLines)[startsAt]
+		left := leftLines[startsAt]
+		right := rightLines[startsAt]
 
 		if left != right {
 			return false
@@ -83,15 +83,15 @@ func caseSensitiveEqual(
 }
 
 func caseInsensitiveEqual(
-	leftLines *[]string,
-	rightLines *[]string,
+	leftLines []string,
+	rightLines []string,
 	startsAt int,
 ) bool {
-	leftLength := len(*leftLines)
+	leftLength := len(leftLines)
 
 	for ; startsAt < leftLength; startsAt++ {
-		left := strings.ToLower((*leftLines)[startsAt])
-		right := strings.ToLower((*rightLines)[startsAt])
+		left := strings.ToLower(leftLines[startsAt])
+		right := strings.ToLower(rightLines[startsAt])
 
 		if left != right {
 			return false

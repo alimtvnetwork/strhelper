@@ -9,7 +9,7 @@ import "strings"
 //
 // Returns
 //
-//  - count number of characters how much matches as prefix from (a,b).
+//  - count number of characters how many matches as prefix from (a,b).
 //  - if no prefix found or both are empty string then returns 0 count value
 //
 // bothStartsAtIndex:

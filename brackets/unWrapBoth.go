@@ -4,7 +4,7 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
-// Assumption here, both brackets exists and s it not empty
+// Assumption here, both brackets exists and s it is not empty
 func unWrapBoth(s *string) string {
 	length := len(*s)
 

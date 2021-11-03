@@ -2,6 +2,8 @@ package strlines
 
 import "unsafe"
 
+// ToUnsafeBytesPtr
+//
 // Returns:
 //  - nil : if @strlines are nil.
 //  - []bytes : if anything exist. Usages unsafe pointer casting to get the bytes.

@@ -1,5 +1,7 @@
 package longestcommon
 
+// PrefixCount
+//
 // Assumptions here are a,b are not nil, at least empty string.
 //
 // Results count of prefix character matches. Where a, b can be at different lengths,
@@ -7,7 +9,7 @@ package longestcommon
 //
 // Returns
 //
-//  - count number of characters how much matches as prefix from (a,b).
+//  - count number of characters how many matches as prefix from (a,b).
 //  - if no prefix found or both are empty string then returns 0 count value
 //
 // Conditions (Panic):

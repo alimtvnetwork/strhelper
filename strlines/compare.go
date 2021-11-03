@@ -10,7 +10,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/strs/isstrs"
 )
 
-// Compare returns similar to strings.Compare(...), all cumulated sum values of strings.Compare
+// Compare
+//
+// returns similar to strings.Compare(...), all cumulated sum values of strings.Compare
 // Here it returns for multiple lines.
 //
 //  Having 0 doesn't confirm lines are equal. It can be only useful for sorting only ([][]str).
@@ -26,7 +28,7 @@ import (
 //
 // Returns:
 //  - leftLines nil or empty or rightLines has fewer lines than rightLines returns -1
-//  - rightLines nil or empty or rightLines has less lines than leftLines returns +1
+//  - rightLines nil or empty or rightLines has fewer lines than leftLines returns +1
 //  - if both lines nil or empty returns 0
 //  - Cumulated Values == 0 return 0, doesn't confirm lines are equal.
 //  - Cumulated Values > 0  return +1
@@ -38,20 +40,20 @@ func Compare(
 	isPanicOnLengthDifferent bool,
 	isCaseSensitive bool,
 ) int {
-	isLeftEmpty := isstrs.Empty(leftLines)
-	isRightEmpty := isstrs.Empty(rightLines)
+	isLeftEmpty := isstrs.EmptyPtr(leftLines)
+	isRightEmpty := isstrs.EmptyPtr(rightLines)
 
-	if isLeftEmpty == isRightEmpty && isLeftEmpty == true {
+	if isRightEmpty == isLeftEmpty && isLeftEmpty == true {
 		return 0
 	}
 
-	isLeftEmptyAndRightNot := isLeftEmpty == true && isRightEmpty == false
+	isLeftEmptyAndRightNot := isLeftEmpty && isRightEmpty == false
 
 	if isLeftEmptyAndRightNot {
 		return constants.InvalidNotFoundCase
 	}
 
-	isRightEmptyAndLeftNot := isLeftEmpty == false && isRightEmpty == true
+	isRightEmptyAndLeftNot := !isLeftEmpty && isRightEmpty == true
 
 	if isRightEmptyAndLeftNot {
 		return 1

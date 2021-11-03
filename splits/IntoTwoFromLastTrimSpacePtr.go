@@ -8,7 +8,7 @@ import (
 )
 
 func IntoTwoFromLastTrimSpacePtr(s, separator string, isCaseSensitive bool) (left, right string) {
-	splits := LastByLimitPtr(
+	splits := LastByLimit(
 		s,
 		separator,
 		isCaseSensitive,

@@ -6,7 +6,7 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
-// Assumptions are lines, findingString are check already not null or empty
+// Assumptions are lines, findingString are checked already not null or empty
 // Kept for internal use only.
 func indexOfPtrStrForCaseInsensitiveInternal(
 	lines *[]*string,

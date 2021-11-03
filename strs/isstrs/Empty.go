@@ -1,5 +1,5 @@
 package isstrs
 
-func Empty(lines *[]string) bool {
-	return lines == nil || *lines == nil || len(*lines) == 0
+func Empty(lines []string) bool {
+	return len(lines) == 0
 }

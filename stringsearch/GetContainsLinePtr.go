@@ -4,7 +4,6 @@ import (
 	"strings"
 
 	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/corestr"
 )
 
 // GetContainsLinePtr returns the line from the search
@@ -14,7 +13,7 @@ func GetContainsLinePtr(
 	contentsLines []string,
 	searchSubStringLine string,
 ) (foundLine string) {
-	if corestr.LengthOfStrings(contentsLines) == 0 {
+	if len(contentsLines) == 0 {
 		return constants.EmptyString
 	}
 

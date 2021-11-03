@@ -6,7 +6,7 @@ import (
 )
 
 func IntoTwoFromLastCaseSensitive(s, separator string) (left, right string) {
-	splits := LastByLimitPtr(
+	splits := LastByLimit(
 		s,
 		separator,
 		true,

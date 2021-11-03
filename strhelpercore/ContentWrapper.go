@@ -10,7 +10,9 @@ import (
 	"gitlab.com/evatix-go/strhelper/internal/misc"
 )
 
-// Changing data outside makes it non stable.
+// ContentWrapper
+//
+// Changing data outside makes it non-stable.
 //
 // Kindly use pointers respectfully.
 //

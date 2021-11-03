@@ -71,7 +71,7 @@ func copyingArraysOfArrayToArrayNoFilter(
 	// nothing to filter for
 	finalLines := make([]string, 0, capacity)
 	for _, lines := range *linesArray {
-		if isSkipEmptyOrNil && isstrs.Empty(lines) {
+		if isSkipEmptyOrNil && isstrs.EmptyPtr(lines) {
 			continue
 		}
 
@@ -95,7 +95,7 @@ func copyingArraysOfArrayToArrayWithFilter(
 ) *[]string {
 	finalLines := make([]string, 0, capacity)
 	for _, lines := range *linesArray {
-		if isSkipEmptyOrNil && isstrs.Empty(lines) {
+		if isSkipEmptyOrNil && isstrs.EmptyPtr(lines) {
 			continue
 		}
 

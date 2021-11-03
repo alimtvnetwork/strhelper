@@ -1,7 +1,7 @@
 package strhashset
 
 import (
-	"gitlab.com/evatix-go/strhelper/converters"
+	"gitlab.com/evatix-go/core/converters"
 )
 
 func NewEmpty() *Hashset {

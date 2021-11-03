@@ -9,7 +9,7 @@ func Last(s, separator string) []string {
 		return []string{""}
 	}
 
-	return LastByLimitPtr(
+	return LastByLimit(
 		s,
 		separator,
 		true,

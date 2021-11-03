@@ -68,13 +68,13 @@ func AnyFullNameValues(
 
 // AnyItems
 //
-// Concat any objects to single string using it's sprintf format given
+// Concat any objects to single string using its sprintf format given
 //
 // @isSkipEmptyOrNil
 //  - enabled : Skips singleContent or any contents in content if nil.
 //
 // @separator:
-//  - it is used to strconcat each contents to string to single one.
+//  - it is used to string concat each contents to string to single one.
 func AnyItems(
 	separator string,
 	isSkipEmptyOrNil bool,
@@ -91,13 +91,13 @@ func AnyItems(
 
 // AnyArrayOfInterfaces
 //
-// Concat any objects to single string using it's sprintf format given
+// Concat any objects to single string using its sprintf format given
 //
 // @isSkipEmptyOrNil
 //  - enabled : Skips singleContent or any contents in content if nil.
 //
 // @separator:
-//  - it is used to strconcat each contents to string to single one.
+//  - it is used to string concat each contents to string to single one.
 func AnyArrayOfInterfaces(
 	separator string,
 	isSkipEmptyOrNil bool,

@@ -3,7 +3,6 @@ package stringsearch
 import (
 	"regexp"
 
-	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
@@ -11,7 +10,7 @@ func GetContainsLineResultByRegex(
 	contentsLines []string,
 	regexp *regexp.Regexp,
 ) *strhelpercore.StringResult {
-	if corestr.LengthOfStrings(contentsLines) == 0 {
+	if len(contentsLines) == 0 {
 		return strhelpercore.InvalidStringResult()
 	}
 

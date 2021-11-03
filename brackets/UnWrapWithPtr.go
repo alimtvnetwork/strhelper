@@ -1,5 +1,7 @@
 package brackets
 
+// UnWrapWithPtr
+//
 // Note : It doesn't care about in brackets exist in middle of (str),
 // it just unwrap from both sides if brackets are there.
 func UnWrapWithPtr(str *string, category Category) string {

@@ -8,8 +8,8 @@ type GenericIndexOfWrapper struct {
 	Content             string
 	SearchingContent    string
 	InitializedPosition int
-	IsCaseSensitive     bool
 	Limits              int
+	IsCaseSensitive     bool
 	HasPanic            bool
 	funcName            coretests.TestFuncName
 	expected            interface{}

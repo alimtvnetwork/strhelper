@@ -1,5 +1,7 @@
 package strconcat
 
+// ManyArraysUsingSeparator
+//
 // Concatenates the (@preContents to a string using separator) with
 // (@postContents to a string using separator) using separator to a string.
 //

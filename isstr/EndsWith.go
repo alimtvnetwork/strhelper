@@ -1,5 +1,13 @@
 package isstr
 
+import (
+	"gitlab.com/evatix-go/core/constants"
+
+	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+)
+
+// EndsWith
+//
 // Results true for ends with search text.
 //
 // Returns true
@@ -15,13 +23,41 @@ package isstr
 //  - `2` represents len(wholeText)-2
 //  - `0` represents start comparison from the end for both of the text.
 func EndsWith(
-	wholeText, endsWithSearch string,
-	startsAtLastIndex int,
+	wholeText, search string,
+	contentLengthDecreasedBy int,
 	isCaseSensitive bool,
 ) bool {
-	return EndsWithPtr(
+	searchLength := len(search)
+	wholeTextLength := len(wholeText)
+
+	if searchLength == constants.Zero {
+		return (wholeTextLength == constants.Zero && contentLengthDecreasedBy == constants.Zero) ||
+			wholeTextLength-1 >= contentLengthDecreasedBy
+	}
+
+	if wholeTextLength == constants.Zero {
+		return searchLength == constants.Zero && contentLengthDecreasedBy == constants.Zero
+	}
+
+	textLength := wholeTextLength - contentLengthDecreasedBy
+	if searchLength > textLength {
+		return false
+	}
+
+	if isCaseSensitive {
+		return isstrinternal.EndsWithUsingLength(
+			wholeText,
+			search,
+			contentLengthDecreasedBy,
+			wholeTextLength,
+			searchLength)
+	}
+
+	// insensitive
+	return isEndsWithInsensitiveInternal(
 		wholeText,
-		endsWithSearch,
-		startsAtLastIndex,
-		isCaseSensitive)
+		search,
+		contentLengthDecreasedBy,
+		wholeTextLength,
+		searchLength)
 }

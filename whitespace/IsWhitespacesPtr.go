@@ -14,5 +14,5 @@ func IsWhitespacesPtr(s *string) bool {
 
 	runes := []rune(sC)
 
-	return IsRunesWhitespaces(&runes)
+	return IsRunesWhitespaces(runes)
 }

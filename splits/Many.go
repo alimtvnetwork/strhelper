@@ -7,7 +7,7 @@ import "gitlab.com/evatix-go/strhelper/strhelpercore"
 // Basics of split("Hello World", " ") -> ["Hello", "World"] splitter will not be available in the result.
 //
 // limits :
-//  - number of times split will performed for all
+//  - number of times split will be performed for all
 //  - if -1 then all split will occur
 //
 // splitStartsAt:

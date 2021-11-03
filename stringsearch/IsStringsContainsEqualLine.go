@@ -1,11 +1,7 @@
 package stringsearch
 
-import (
-	"gitlab.com/evatix-go/core/coredata/corestr"
-)
-
 func IsStringsContainsEqualLine(slice []string, line string) bool {
-	if corestr.LengthOfStrings(slice) == 0 {
+	if len(slice) == 0 {
 		return false
 	}
 

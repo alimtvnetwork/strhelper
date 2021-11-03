@@ -1,7 +1,6 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/coredata/corestr"
 	"gitlab.com/evatix-go/core/defaultcapacity"
 	"gitlab.com/evatix-go/core/enums/stringcompareas"
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
@@ -13,8 +12,8 @@ func getContainsLineResultsMapUsingCompareFunc(
 	line string,
 	isCaseSensitive bool,
 ) *strhelpercore.StringResultsMap {
-	length := corestr.LengthOfStrings(contentsLines)
-	if corestr.LengthOfStrings(contentsLines) == 0 {
+	length := len(contentsLines)
+	if len(contentsLines) == 0 {
 		return strhelpercore.EmptyStringResultsMap()
 	}
 
