@@ -64,7 +64,6 @@ func (it *unicodeNumber) Unsigned(input string) bool {
 		processingPointer = input[1:]
 	}
 
-
 	isSingleDotFound := false
 	for _, r := range processingPointer {
 		if !isSingleDotFound && r == '.' {

@@ -2,7 +2,6 @@ package stringnum
 
 type ascInteger struct{}
 
-
 func (it *ascInteger) Positive(input string) bool {
 	return it.Unsigned(input)
 }
