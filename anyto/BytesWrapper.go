@@ -11,7 +11,7 @@ import (
 func BytesWrapper(anything interface{}) *byteserror.Wrapper {
 	allBytes, err := Bytes(anything)
 
-	errWp := errnew.UsingStackSkip(
+	errWp := errnew.Error.UsingStackSkip(
 		codestack.Skip1,
 		errtype.ConversionFailed,
 		err)

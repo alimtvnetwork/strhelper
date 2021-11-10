@@ -53,14 +53,14 @@ func NewBytesWithErrorWrapper(errWrapper *errorwrapper.Wrapper) *BytesWithError 
 func NewBytesWithErrorUsingAny(any interface{}) *BytesWithError {
 	if any == nil {
 		return NewBytesWithErrorWrapper(
-			errnew.NullUsingStackSkip(
+			errnew.Null.UsingStackSkip(
 				codestack.Skip1,
 				"has issues with BytesWithError",
 				any))
 	}
 
 	rawBytes, err := anyto.Bytes(any)
-	errWp := errnew.ErrorWithMessagesUsingStackSkip(
+	errWp := errnew.Error.TypeMsgUsingStackSkip(
 		codestack.Skip1,
 		errtype.ConversionFailed,
 		err,

@@ -2,6 +2,8 @@ package chars
 
 import "strings"
 
+// CountCharInsensitive
+//
 // Counts and returns the count number based on chars present in the str (case: Insensitive)
 // Returns 0 if str is nil or empty string.
 func CountCharInsensitive(str *string, char1 uint8, startsAt int) int {

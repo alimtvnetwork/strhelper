@@ -15,7 +15,7 @@ func NewErrorPtr(
 	err error,
 ) *Wrapper {
 	return &Wrapper{
-		errorWrapper: errnew.UsingStackSkip(
+		errorWrapper: errnew.Error.UsingStackSkip(
 			codestack.Skip1,
 			errType,
 			err),

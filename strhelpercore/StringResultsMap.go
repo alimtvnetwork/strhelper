@@ -24,80 +24,80 @@ func NewStringResultsMap(capacity int) *StringResultsMap {
 	}
 }
 
-func (receiver *StringResultsMap) Length() int {
-	if receiver.items == nil {
+func (it *StringResultsMap) Length() int {
+	if it.items == nil {
 		return constants.Zero
 	}
 
-	return len(*receiver.items)
+	return len(*it.items)
 }
 
-func (receiver *StringResultsMap) Count() int {
-	return receiver.Length()
+func (it *StringResultsMap) Count() int {
+	return it.Length()
 }
 
-func (receiver *StringResultsMap) IsEmpty() bool {
-	return receiver.Length() == 0
+func (it *StringResultsMap) IsEmpty() bool {
+	return it.Length() == 0
 }
 
-func (receiver *StringResultsMap) HasAnyItem() bool {
-	return receiver.Length() > 0
+func (it *StringResultsMap) HasAnyItem() bool {
+	return it.Length() > 0
 }
 
 // LastIndex Could be misleading, it refers to the length - 1
-func (receiver *StringResultsMap) LastIndex() int {
-	return receiver.Length() - 1
+func (it *StringResultsMap) LastIndex() int {
+	return it.Length() - 1
 }
 
-func (receiver *StringResultsMap) AddFoundOnly(result *StringResult) *StringResultsMap {
+func (it *StringResultsMap) AddFoundOnly(result *StringResult) *StringResultsMap {
 	if result == nil || result.FoundIndex > constants.InvalidNotFoundCase {
-		return receiver
+		return it
 	}
 
-	(*receiver.items)[result.FoundIndex] = result
+	(*it.items)[result.FoundIndex] = result
 
-	return receiver
+	return it
 }
 
-func (receiver *StringResultsMap) HasIndex(index int) bool {
-	_, has := (*receiver.items)[index]
+func (it *StringResultsMap) HasIndex(index int) bool {
+	_, has := (*it.items)[index]
 
 	return has
 }
 
 // Strings found strings
-func (receiver *StringResultsMap) Strings() []string {
-	collection := corestr.NewCollection(receiver.Length())
+func (it *StringResultsMap) Strings() []string {
+	collection := corestr.New.Collection.Cap(it.Length())
 
-	for _, result := range *receiver.items {
+	for _, result := range *it.items {
 		collection.Add(result.Line)
 	}
 
 	return collection.ListStrings()
 }
 
-func (receiver *StringResultsMap) ListStrings() []string {
-	return receiver.Strings()
+func (it *StringResultsMap) ListStrings() []string {
+	return it.Strings()
 }
 
-func (receiver *StringResultsMap) ListStringResults() []StringResult {
-	slice := make([]StringResult, receiver.Length())
+func (it *StringResultsMap) ListStringResults() []StringResult {
+	slice := make([]StringResult, it.Length())
 
-	for _, result := range *receiver.items {
+	for _, result := range *it.items {
 		slice = append(slice, *result)
 	}
 
 	return slice
 }
 
-func (receiver *StringResultsMap) Items() *map[int]*StringResult {
-	return receiver.items
+func (it *StringResultsMap) Items() *map[int]*StringResult {
+	return it.items
 }
 
-func (receiver *StringResultsMap) String() string {
-	return strings.Join(receiver.Strings(), constants.NewLineUnix)
+func (it *StringResultsMap) String() string {
+	return strings.Join(it.Strings(), constants.NewLineUnix)
 }
 
-func (receiver *StringResultsMap) AsBasicSlicer() coreinterface.BasicSlicer {
-	return receiver
+func (it *StringResultsMap) AsBasicSlicer() coreinterface.BasicSlicer {
+	return it
 }

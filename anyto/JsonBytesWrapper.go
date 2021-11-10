@@ -8,11 +8,8 @@ import (
 )
 
 func JsonBytesWrapper(any interface{}) *byteserror.Wrapper {
-	jsonResult := corejson.NewFromAny(any)
-	errJson := errjson.New(
-		jsonResult.Bytes,
-		jsonResult.Error,
-		jsonResult.TypeName)
+	jsonResult := corejson.NewFromAnyPtr(any)
+	errJson := errjson.New.Result.Item(jsonResult)
 
 	return byteserror.NewPtr(
 		encodingbytetype.JsonParsing,

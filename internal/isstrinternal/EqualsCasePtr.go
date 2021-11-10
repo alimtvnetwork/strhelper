@@ -2,6 +2,8 @@ package isstrinternal
 
 import "strings"
 
+// EqualsCasePtr
+//
 // Returns :
 //  - true : if both nil.
 //  - false : if one nil and other not.

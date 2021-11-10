@@ -6,6 +6,8 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// AnyValues
+//
 // Concat any objects to single string using sprintf format given constants.SprintValueFormat
 //
 // @isSkipEmptyOrNil
@@ -26,6 +28,8 @@ func AnyValues(
 		&contents)
 }
 
+// AnyNameValues
+//
 // Concat any objects to single string using sprintf format given constants.SprintPropertyNameValueFormat
 //
 // @isSkipEmptyOrNil

@@ -1,5 +1,7 @@
 package isstrinternal
 
+// EndsWith
+//
 // Results true for ends with search text. (case : Sensitive).
 //
 // Returns true
