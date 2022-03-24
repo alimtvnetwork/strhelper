@@ -12,7 +12,7 @@ func IsSliceAsHashsetContains(
 		return false
 	}
 
-	hashset := *converters.StringsToMap(&sliceAsHashset)
+	hashset := converters.StringsTo.Hashset(sliceAsHashset)
 	_, has := hashset[containsLine]
 
 	return has

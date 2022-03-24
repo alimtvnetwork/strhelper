@@ -16,7 +16,7 @@ func GetMissingElements(slice, findElements []string) []string {
 		constants.Zero,
 		len(findElements))
 
-	hashset := *converters.StringsToMap(&slice)
+	hashset := converters.StringsTo.Hashset(slice)
 
 	for _, element := range findElements {
 		_, has := hashset[element]

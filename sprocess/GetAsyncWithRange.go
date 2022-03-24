@@ -13,14 +13,14 @@ import (
 //
 // Sometimes it is faster for large collection in async, memory is cheap than idle cpu.
 func GetAsyncWithRange(
-	processedItems *[]*interface{},
-	content *interface{},
-	allRawItems *[]interface{},
-	genericProcessor *strhelpercore.GenericProcessor,
+	processedItems []interface{},
+	content interface{},
+	allRawItems []interface{},
+	genericProcessor strhelpercore.GenericProcessor,
 	startAtIndex int,
 	endAtIndex int,
 	parentWg *sync.WaitGroup,
-) *[]*interface{} {
+) []interface{} {
 	length := endAtIndex - startAtIndex
 	defer parentWg.Done()
 
@@ -28,7 +28,7 @@ func GetAsyncWithRange(
 		panichelper.StartAtIndexFailed(startAtIndex, length)
 	}
 
-	totalLength := len(*allRawItems)
+	totalLength := len(allRawItems)
 
 	if endAtIndex > totalLength-1 {
 		endAtIndex = totalLength - 1
@@ -38,7 +38,7 @@ func GetAsyncWithRange(
 	wg.Add(length)
 
 	for ; startAtIndex <= endAtIndex; startAtIndex++ {
-		copiedContentAtIndex := (*allRawItems)[startAtIndex]
+		copiedContentAtIndex := allRawItems[startAtIndex]
 		args := strhelpercore.GenericProcessorArgs{
 			Content:              content,
 			RawSplitContents:     allRawItems,
@@ -49,7 +49,7 @@ func GetAsyncWithRange(
 		go parallelProcessFunc(
 			processedItems,
 			genericProcessor,
-			&args,
+			args,
 			&wg)
 	}
 

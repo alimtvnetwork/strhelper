@@ -2,9 +2,13 @@ package tostr
 
 import (
 	"fmt"
+	"reflect"
+	"strings"
 
 	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/converters"
 	"gitlab.com/evatix-go/core/coredata/corejson"
+	"gitlab.com/evatix-go/core/errcore"
 
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
@@ -41,7 +45,9 @@ func UInt8(number uint8) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-// if nil then empty string.
+// AnyPtr
+//
+//  if nil then empty string.
 func AnyPtr(any *interface{}) string {
 	if any == nil || *any == nil {
 		return constants.EmptyString
@@ -61,7 +67,7 @@ func Any(any interface{}) string {
 }
 
 func AnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
-	jsonResult := corejson.NewFromAny(any)
+	jsonResult := corejson.New(any)
 
 	if jsonResult.HasError() {
 		return strhelpercore.NewStringWithErrorOnlyError(jsonResult.MeaningfulError())
@@ -73,10 +79,91 @@ func AnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
 // Json
 //
 // if nil then empty string.
+//
+// On error returns error as string.
 func Json(any interface{}) string {
 	jsonResult := AnyToJsonStrWithErrorPtr(&any)
 
+	if jsonResult.HasError() {
+		return jsonResult.Error().Error()
+	}
+
+	return jsonResult.Value()
+}
+
+// JsonMust
+//
+// if nil then empty string.
+func JsonMust(any interface{}) string {
+	jsonResult := AnyToJsonStrWithErrorPtr(&any)
 	jsonResult.HandleError()
 
 	return jsonResult.Value()
+}
+
+func AnyItemOption(
+	isFields bool,
+	anyItem interface{},
+) string {
+	return converters.AnyToString(
+		isFields,
+		anyItem)
+}
+
+func Bytes(
+	rawBytes []byte,
+) string {
+	if len(rawBytes) == 0 {
+		return ""
+	}
+
+	return string(rawBytes)
+}
+
+func AnyItemWithFields(
+	anyItem interface{},
+) string {
+	return converters.AnyToString(
+		true,
+		anyItem)
+}
+
+func TypeNameOption(
+	isSafeChecking bool,
+	anyItem interface{},
+) string {
+	if isSafeChecking {
+		return SafeTypeName(anyItem)
+	}
+
+	return reflect.TypeOf(anyItem).String()
+}
+
+func SafeTypeName(
+	anyItem interface{},
+) string {
+	rf := reflect.TypeOf(anyItem)
+
+	if rf == nil {
+		return ""
+	}
+
+	return rf.String()
+}
+
+func Error(
+	err error,
+) string {
+	return errcore.ToString(err)
+}
+
+// FromLines
+//
+//  join using constants.DefaultLine
+func FromLines(
+	lines ...string,
+) string {
+	return strings.Join(
+		lines,
+		constants.DefaultLine)
 }

@@ -9,6 +9,7 @@ import (
 // UnixGet
 //
 // Gets new line by \n
-func UnixGet(content *string) []string {
-	return strings.Split(*content, constants.NewLineUnix)
+func UnixGet(content string) []string {
+	return strings.Split(
+		content, constants.NewLineUnix)
 }

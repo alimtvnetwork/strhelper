@@ -21,7 +21,7 @@ func BytesOf(parsingType encodingbytetype.Variant, any interface{}) ([]byte, err
 	case encodingbytetype.AnyToFullStringBytes:
 		return FullValueBytes(any), nil
 	case encodingbytetype.JsonParsing:
-		jsonResult := corejson.NewFromAny(any)
+		jsonResult := corejson.New(any)
 
 		return jsonResult.Bytes, jsonResult.MeaningfulError()
 	default:

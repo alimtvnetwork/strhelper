@@ -31,7 +31,7 @@ func numberAssertion(
 		isValid := isValidNumber == wrapper.isValidNumber
 
 		convey.Convey(header, t, func() {
-			errcore.FailedPrint(!isValid, header)
+			// errcore.FailedPrint(isValid, header)
 
 			convey.So(isValid, convey.ShouldBeTrue)
 		})

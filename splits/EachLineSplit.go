@@ -11,10 +11,14 @@ import (
 // Issue : https://gitlab.com/evatix-go/strhelper/-/issues/118
 // Split whole text by new line first and then each line split by the given eachLineSplitBy
 // Left is the key and right is the value
-func EachLineSplit(wholeText, eachLineSplitBy string) []corestr.KeyValuePair {
+func EachLineSplit(
+	wholeText, eachLineSplitBy string,
+) *corestr.KeyValueCollection {
 	lines := strings.Split(wholeText, eachLineSplitBy)
-
-	slice := make([]corestr.KeyValuePair, constants.Zero, len(lines))
+	slice := make(
+		[]corestr.KeyValuePair,
+		constants.Zero,
+		len(lines))
 
 	for _, line := range lines {
 		key, value := IntoTwo(line, eachLineSplitBy)
@@ -26,5 +30,5 @@ func EachLineSplit(wholeText, eachLineSplitBy string) []corestr.KeyValuePair {
 		slice = append(slice, keyVal)
 	}
 
-	return slice
+	return corestr.New.KeyValues.UsingKeyValuePairs(slice...)
 }

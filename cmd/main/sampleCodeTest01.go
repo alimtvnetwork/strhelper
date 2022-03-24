@@ -61,7 +61,7 @@ func sampleCodeTest01() {
 
 	leftBytes := strlines.ToUnsafeBytesPtr(&leftUpto3)
 	rightBytes := strlines.ToUnsafeBytesPtr(&rightLines)
-	comparedResult5 := isstrs.BytesEquals(leftBytes, rightBytes, 0)
+	comparedResult5 := isstrs.BytesEquals(*leftBytes, *rightBytes, 0)
 
 	fmt.Println(comparedResult5)
 
