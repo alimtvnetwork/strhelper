@@ -17,13 +17,13 @@ import (
 // @pages:
 //  - Indicates how many item to be process in single page parallel.
 func GetAsyncAsPaged(
-	content *interface{},
-	allRawItems *[]interface{},
-	genericProcessor *strhelpercore.GenericProcessor,
+	content interface{},
+	allRawItems []interface{},
+	genericProcessor strhelpercore.GenericProcessor,
 	pages float64,
-) *[]*interface{} {
-	length := len(*allRawItems)
-	processedItems := make([]*interface{}, length)
+) []interface{} {
+	length := len(allRawItems)
+	processedItems := make([]interface{}, length)
 	var wg sync.WaitGroup
 	pagesInInt := int(pages)
 	wg.Add(pagesInInt)
@@ -38,7 +38,7 @@ func GetAsyncAsPaged(
 		endAt := startsAt + eachPageItems
 
 		go GetAsyncWithRange(
-			&processedItems,
+			processedItems,
 			content,
 			allRawItems,
 			genericProcessor,
@@ -49,5 +49,5 @@ func GetAsyncAsPaged(
 
 	wg.Wait()
 
-	return &processedItems
+	return processedItems
 }

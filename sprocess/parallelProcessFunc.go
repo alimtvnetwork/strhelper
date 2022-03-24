@@ -7,12 +7,12 @@ import (
 )
 
 func parallelProcessFunc(
-	processedItems *[]*interface{},
-	genericProcessor *strhelpercore.GenericProcessor,
-	args *strhelpercore.GenericProcessorArgs,
+	processedItems []interface{},
+	genericProcessor strhelpercore.GenericProcessor,
+	args strhelpercore.GenericProcessorArgs,
 	wg *sync.WaitGroup,
 ) {
 	// example : https://bit.ly/3lLndEF
 	defer wg.Done()
-	(*processedItems)[(*args).Index] = (*genericProcessor)(args)
+	processedItems[args.Index] = genericProcessor(&args)
 }

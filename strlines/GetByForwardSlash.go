@@ -9,8 +9,9 @@ import (
 // GetByForwardSlash
 //
 // split by `/`
-func GetByForwardSlash(content *string) *[]string {
-	allLines := strings.Split(*content, constants.ForwardSlash)
+func GetByForwardSlash(content string) []string {
+	allLines := strings.Split(
+		content, constants.ForwardSlash)
 
-	return &allLines
+	return allLines
 }

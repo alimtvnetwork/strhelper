@@ -1,3 +1,3 @@
 package strhelpercore
 
-type GenericProcessor func(args *GenericProcessorArgs) *interface{}
+type GenericProcessor func(args *GenericProcessorArgs) interface{}

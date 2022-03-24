@@ -17,7 +17,7 @@ func GetFirstMissingElements(
 		return corestr.InvalidValueStatus(messages.SliceOrFindingElementsAreNilOrEmpty)
 	}
 
-	hashset := *converters.StringsToMap(&slice)
+	hashset := converters.StringsTo.Hashset(slice)
 
 	for i, element := range findElements {
 		_, has := hashset[element]

@@ -1,5 +1,7 @@
 package isstr
 
+import "strings"
+
 // Results true for ends with search text. (case : Insensitive).
 //
 // Returns true
@@ -25,10 +27,12 @@ func isEndsWithInsensitiveInternal(
 	incrementing := 0
 	lastIndexWholeText := wholeTextLength - 1
 	lastIndexSearchText := searchTextLength - 1
+	wholeLower := strings.ToLower(wholeText)
+	searchLower := strings.ToLower(search)
 
 	for ; contentLengthDecreasedBy < wholeTextLength && incrementing < searchTextLength; contentLengthDecreasedBy++ {
-		if wholeText[lastIndexWholeText-contentLengthDecreasedBy] !=
-			search[lastIndexSearchText-incrementing] {
+		if wholeLower[lastIndexWholeText-contentLengthDecreasedBy] !=
+			searchLower[lastIndexSearchText-incrementing] {
 			break
 		}
 

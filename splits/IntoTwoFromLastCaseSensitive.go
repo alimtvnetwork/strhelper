@@ -5,7 +5,9 @@ import (
 	"gitlab.com/evatix-go/core/coreindexes"
 )
 
-func IntoTwoFromLastCaseSensitive(s, separator string) (left, right string) {
+func IntoTwoFromLastCaseSensitive(
+	s, separator string,
+) (left, right string) {
 	splits := LastByLimit(
 		s,
 		separator,

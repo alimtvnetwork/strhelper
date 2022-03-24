@@ -10,7 +10,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 12, 16},
+		expected:            []int{0, 12, 16},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -37,7 +37,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 12, 16},
+		expected:            []int{0, 12, 16},
 	},
 	{
 		Content:             "[ab]found me[ab][ab]notfound",
@@ -46,7 +46,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{12, 16},
+		expected:            []int{12, 16},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[ab]",
@@ -55,7 +55,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 4, 16, 20, 32},
+		expected:            []int{0, 4, 16, 20, 32},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[ab]",
@@ -64,7 +64,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              3,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 4, 16},
+		expected:            []int{0, 4, 16},
 	},
 	{
 		Content:             "[ab][ab]found me[ab][ab]notfound[Ab]",
@@ -73,7 +73,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{4, 16, 20, 32},
+		expected:            []int{4, 16, 20, 32},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -82,7 +82,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{4, 16, 20, 32},
+		expected:            []int{4, 16, 20, 32},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -109,7 +109,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0},
+		expected:            []int{0},
 	},
 	{
 		Content:             "[ab][ab]found me[Ab][ab]notfound[ab]",
@@ -118,7 +118,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0},
+		expected:            []int{0},
 	},
 	{
 		Content:             "abcdef",
@@ -127,7 +127,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 1, 2, 3, 4, 5},
+		expected:            []int{0, 1, 2, 3, 4, 5},
 	},
 	{
 		Content:             "abcdef",
@@ -136,7 +136,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     false,
 		Limits:              4,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 1, 2, 3},
+		expected:            []int{0, 1, 2, 3},
 	},
 	{
 		Content:             "abcdef",
@@ -145,7 +145,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0, 1, 2, 3, 4, 5},
+		expected:            []int{0, 1, 2, 3, 4, 5},
 	},
 	{
 		Content:             constants.EmptyString,
@@ -154,7 +154,7 @@ var OfAllPtrCasesPtr = []GenericIndexOfWrapper{
 		IsCaseSensitive:     true,
 		Limits:              constants.MinusOne,
 		funcName:            ofAllPtr,
-		expected:            &[]int{0},
+		expected:            []int{0},
 	},
 	{
 		Content:             constants.EmptyString,

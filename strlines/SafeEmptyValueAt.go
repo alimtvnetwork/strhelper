@@ -3,7 +3,7 @@ package strlines
 // lastIndex = len - 1
 // return "" if index is out of range or strlines are nil.
 func SafeEmptyValueAt(
-	lines *[]string,
+	lines []string,
 	lastIndex,
 	index int,
 ) string {
@@ -11,5 +11,5 @@ func SafeEmptyValueAt(
 		return ""
 	}
 
-	return (*lines)[index]
+	return lines[index]
 }

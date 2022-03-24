@@ -6,10 +6,10 @@ import (
 
 func Get(
 	content *interface{},
-	allRawItems *[]interface{},
-	genericProcessor *strhelpercore.GenericProcessor,
-) *[]*interface{} {
-	processedItems := make([]*interface{}, len(*allRawItems))
+	allRawItems []interface{},
+	genericProcessor strhelpercore.GenericProcessor,
+) []interface{} {
+	processedItems := make([]interface{}, len(allRawItems))
 
 	args := strhelpercore.GenericProcessorArgs{
 		Content:              content,
@@ -18,9 +18,9 @@ func Get(
 		SingleContentAtIndex: nil,
 	}
 
-	for args.Index, args.SingleContentAtIndex = range *allRawItems {
-		processedItems[args.Index] = (*genericProcessor)(&args)
+	for args.Index, args.SingleContentAtIndex = range allRawItems {
+		processedItems[args.Index] = genericProcessor(&args)
 	}
 
-	return &processedItems
+	return processedItems
 }

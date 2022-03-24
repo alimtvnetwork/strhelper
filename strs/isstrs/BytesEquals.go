@@ -11,8 +11,8 @@ import (
 //  - If both pointers are same returns true.
 //  - If all the lines are equals as per the case sensitivity then returns true or else false.
 func BytesEquals(
-	leftBytes *[]byte,
-	rightBytes *[]byte,
+	leftBytes []byte,
+	rightBytes []byte,
 	startsAt int,
 ) bool {
 	isLeftEmpty := EmptyBytes(leftBytes)
@@ -35,12 +35,8 @@ func BytesEquals(
 	}
 
 	// if both pointers are same
-	if leftBytes == rightBytes {
-		return true
-	}
-
-	leftLength := len(*leftBytes)
-	rightLength := len(*rightBytes)
+	leftLength := len(leftBytes)
+	rightLength := len(rightBytes)
 
 	if leftLength != rightLength {
 		return false
@@ -58,15 +54,15 @@ func BytesEquals(
 }
 
 func bytesEqual(
-	leftBytes *[]byte,
-	rightBytes *[]byte,
+	leftBytes []byte,
+	rightBytes []byte,
 	startsAt int,
 ) bool {
-	leftLength := len(*leftBytes)
+	leftLength := len(leftBytes)
 
 	for ; startsAt < leftLength; startsAt++ {
-		left := (*leftBytes)[startsAt]
-		right := (*rightBytes)[startsAt]
+		left := leftBytes[startsAt]
+		right := rightBytes[startsAt]
 
 		if left != right {
 			return false

@@ -2,15 +2,15 @@ package isstrs
 
 import "gitlab.com/evatix-go/strhelper/isstr"
 
-// AllBlank Returns:
+// AllBlanks Returns:
 //  - true : if @lines are nil.
 //  - true : if all lines are blank (whitespace or empty or nil)
-func AllBlank(lines *[]string) bool {
+func AllBlanks(lines ...string) bool {
 	if lines == nil {
 		return true
 	}
 
-	for _, line := range *lines {
+	for _, line := range lines {
 		if isstr.DefinedPtr(&line) {
 			return false
 		}

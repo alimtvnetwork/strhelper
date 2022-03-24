@@ -1,6 +1,10 @@
 package strto
 
-import "gitlab.com/evatix-go/strhelper/chars"
+import (
+	"strings"
+
+	"gitlab.com/evatix-go/strhelper/chars"
+)
 
 // Returns
 //  - lower string as pointer of string
@@ -17,4 +21,12 @@ func LowerStrPtr(s *string) *string {
 	toLowerString := string(*chars.ToLowerRunesInPlace(&runes))
 
 	return &toLowerString
+}
+
+func Lower(s string) string {
+	if s == "" {
+		return ""
+	}
+
+	return strings.ToLower(s)
 }

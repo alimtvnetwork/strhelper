@@ -10,7 +10,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.MinusOne,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"...found3",
 			"...found...2",
 			"found....1",
@@ -25,7 +25,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.MinusOne,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"",
 			"...found3",
 			"...found...2",
@@ -40,7 +40,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.MinusOne,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected:         &[]string{"[ab]found....1[ab]...found...2[ab]...found3"},
+		expected:         []string{"[ab]found....1[ab]...found...2[ab]...found3"},
 	},
 	{
 		Content:          "[ab]found....1[ab]...found...2[ab]...found3[ab]",
@@ -49,7 +49,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.MinusOne,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected:         &[]string{"[ab]found....1[ab]...found...2[ab]...found3[ab]"},
+		expected:         []string{"[ab]found....1[ab]...found...2[ab]...found3[ab]"},
 	},
 	{
 		Content:          "/found....1/...found...2/...found3/",
@@ -57,7 +57,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		IsCaseSensitive:  true,
 		Limits:           2,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"",
 			"/found....1/...found...2/...found3",
 		},
@@ -68,7 +68,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		IsCaseSensitive:  true,
 		Limits:           2,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"found4",
 			"/found....1/...found...2/...found3",
 		},
@@ -80,7 +80,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.MinusOne,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"found4",
 			"...found3",
 			"...found...2",
@@ -95,7 +95,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.Three,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"found4",
 			"...found3",
 			"found 0/found....1/...found...2",
@@ -108,7 +108,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.Two,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"found4",
 			"found 0/found....1/...found...2/...found3",
 		},
@@ -120,7 +120,7 @@ var LastByRuneTestCases = []LastByRuneWrapper{
 		Limits:           constants.Three,
 		HasPanic:         false,
 		funcName:         lastByRune,
-		expected: &[]string{
+		expected: []string{
 			"বাংলাদেশ4",
 			"বাংলাদেশ3",
 			"বাংলাদেশ1/বাংলাদেশ2",

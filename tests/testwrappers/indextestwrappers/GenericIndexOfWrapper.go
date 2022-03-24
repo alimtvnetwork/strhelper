@@ -36,8 +36,8 @@ func (compareTestWrapper *GenericIndexOfWrapper) Expected() interface{} {
 	return compareTestWrapper.expected
 }
 
-func (compareTestWrapper *GenericIndexOfWrapper) ExpectedAsIntArray() *[]int {
-	intArray, isOkay := compareTestWrapper.expected.(*[]int)
+func (compareTestWrapper *GenericIndexOfWrapper) ExpectedAsIntArray() []int {
+	intArray, isOkay := compareTestWrapper.expected.([]int)
 
 	if isOkay {
 		return intArray

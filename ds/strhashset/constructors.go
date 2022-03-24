@@ -28,14 +28,18 @@ func NewUsingStringPointersArray(inputArray []*string) *Hashset {
 	return NewUsingMap(*maps)
 }
 
-func NewUsingArray(inputArray ...string) *Hashset {
+func NewUsingArray(
+	inputArray ...string,
+) *Hashset {
 	if len(inputArray) == 0 {
 		return New(defaultItems)
 	}
 
-	maps := converters.StringsToMap(&inputArray)
+	maps := converters.
+		StringsTo.
+		Hashset(inputArray)
 
-	return NewUsingMap(*maps)
+	return NewUsingMap(maps)
 }
 
 func NewUsingMap(mapString map[string]bool) *Hashset {

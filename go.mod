@@ -1,9 +1,10 @@
 module gitlab.com/evatix-go/strhelper
 
-go 1.15
+go 1.16
 
 require (
-	github.com/smartystreets/goconvey v1.6.4
-	gitlab.com/evatix-go/core v1.0.7
-	gitlab.com/evatix-go/errorwrapper v0.9.5
+	github.com/smartystreets/goconvey v1.7.2
+	gitlab.com/evatix-go/core v1.3.23
+	gitlab.com/evatix-go/enum v0.1.9
+	gitlab.com/evatix-go/errorwrapper v1.0.1
 )

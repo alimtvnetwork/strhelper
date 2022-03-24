@@ -12,16 +12,16 @@ import (
 //
 // Sometimes it is faster for large collection in async, memory is cheap than idle cpu.
 func GetAsync(
-	content *interface{},
-	allRawItems *[]interface{},
-	genericProcessor *strhelpercore.GenericProcessor,
-) *[]*interface{} {
-	length := len(*allRawItems)
-	processedItems := make([]*interface{}, length)
+	content interface{},
+	allRawItems []interface{},
+	genericProcessor strhelpercore.GenericProcessor,
+) []interface{} {
+	length := len(allRawItems)
+	processedItems := make([]interface{}, length)
 	var wg sync.WaitGroup
 	wg.Add(length)
 
-	for index, contentAtIndex := range *allRawItems {
+	for index, contentAtIndex := range allRawItems {
 		copiedContentAtIndex := contentAtIndex
 		args := strhelpercore.GenericProcessorArgs{
 			Content:              content,
@@ -31,13 +31,13 @@ func GetAsync(
 		}
 
 		go parallelProcessFunc(
-			&processedItems,
+			processedItems,
 			genericProcessor,
-			&args,
+			args,
 			&wg)
 	}
 
 	wg.Wait()
 
-	return &processedItems
+	return processedItems
 }

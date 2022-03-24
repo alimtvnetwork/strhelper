@@ -9,6 +9,6 @@ import (
 // UnixGetContent
 //
 // String join using Unix New Line "\n"
-func UnixGetContent(lines []string) string {
+func UnixGetContent(lines ...string) string {
 	return strconcat.JoinPtr(&lines, constants.NewLineUnix)
 }

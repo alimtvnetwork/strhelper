@@ -1,7 +1,22 @@
 package splits
 
+import (
+	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/evatix-go/core/coreindexes"
+)
+
 func IntoTwoFromLastUsingRune(s string, splitRune rune) (left, right string) {
-	return IntoTwoFromLastUsingRunePtr(
+	splits := LastByRunePtr(
 		s,
-		splitRune)
+		splitRune,
+		ExpectingLengthOfIntoTwoSplits)
+
+	length := len(splits)
+	first := splits[coreindexes.First]
+
+	if length == ExpectingLengthOfIntoTwoSplits {
+		return splits[coreindexes.Second], first
+	}
+
+	return constants.EmptyString, first
 }
