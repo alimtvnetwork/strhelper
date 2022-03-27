@@ -13,6 +13,7 @@ import (
 	"gitlab.com/evatix-go/core/errcore"
 	"gitlab.com/evatix-go/enum/logtype"
 	"gitlab.com/evatix-go/errorwrapper"
+	"gitlab.com/evatix-go/errorwrapper/errtype"
 	"gitlab.com/evatix-go/errorwrapper/errwrappers"
 )
 
@@ -1027,6 +1028,27 @@ func (it *nopAttr) CompileString(message string) string {
 	json := it.CompileJson(message)
 
 	return json.JsonString()
+}
+
+func (it *nopAttr) CompiledAsBasicErr(
+	basicErrTyper errcoreinf.BasicErrorTyper,
+) errcoreinf.BasicErrWrapper {
+	return nil
+}
+
+func (it *nopAttr) CompiledAsErrorWrapper(
+	variant errtype.Variation,
+	finalMessage string,
+) *errorwrapper.Wrapper {
+	return nil
+}
+
+func (it *nopAttr) CompiledInjectToErrorCollection(
+	errCollection *errwrappers.Collection,
+	variant errtype.Variation,
+	finalMessage string,
+) *errwrappers.Collection {
+	return errCollection
 }
 
 func (it nopAttr) AsMetaAttributesStacker() loggerinf.MetaAttributesStacker {

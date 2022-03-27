@@ -20,6 +20,7 @@ import (
 	"gitlab.com/evatix-go/errorwrapper/errnew"
 	"gitlab.com/evatix-go/errorwrapper/errtype"
 	"gitlab.com/evatix-go/errorwrapper/errwrappers"
+	"gitlab.com/evatix-go/errorwrapper/refs"
 	"gitlab.com/evatix-go/strhelper/strs"
 )
 
@@ -71,7 +72,10 @@ func (it *Collection) LogWithTraces() {
 		return
 	}
 
-	fmt.Println(it.Compile() + constants.DefaultLine + codestack.StacksStringDefault())
+	fmt.Println(
+		it.Compile() +
+			constants.DefaultLine +
+			codestack.StacksStringDefault())
 }
 
 func (it *Collection) LogFatal() {
@@ -99,6 +103,10 @@ func (it *Collection) LogIf(isLog bool) {
 }
 
 func (it *Collection) IsSilent() bool {
+	if it == nil {
+		return true
+	}
+
 	return it.logType.IsSilent()
 }
 
@@ -131,10 +139,6 @@ func (it *Collection) GetVal(keyName string) (val interface{}) {
 	return it.items[keyName]
 }
 
-func (it *Collection) RemoveAt(index int) (isSuccess bool) {
-	panic(errcore.NotSupportedType.ErrorNoRefs("not supported for map type"))
-}
-
 func (it *Collection) ListStrings() []string {
 	return it.GetAsStrings()
 }
@@ -150,11 +154,11 @@ func (it *Collection) JsonStringMust() string {
 	return jsonResult.JsonString()
 }
 
-func (it Collection) Json() corejson.Result {
+func (it *Collection) Json() corejson.Result {
 	return corejson.New(it.items)
 }
 
-func (it Collection) JsonPtr() *corejson.Result {
+func (it *Collection) JsonPtr() *corejson.Result {
 	return corejson.NewPtr(it.items)
 }
 
@@ -181,22 +185,6 @@ func (it *Collection) On(
 	return &nopAttr{
 		another: it,
 	}
-}
-
-// OnTitle
-//
-//  not supported yet todo
-func (it *Collection) OnTitle(
-	isLog bool,
-	title string,
-) loggerinf.MetaAttributesWithoutTileStacker {
-	// TODO implement
-	// needs to create another ds
-	errnew.NotImplPanic(
-		"",
-		"later implement")
-
-	return nil
 }
 
 func (it *Collection) Msg(
@@ -1909,6 +1897,56 @@ func (it *Collection) CompileString(message string) string {
 	json := it.CompileJson(message)
 
 	return json.JsonString()
+}
+
+func (it *Collection) CompiledAsBasicErr(
+	basicErrTyper errcoreinf.BasicErrorTyper,
+) errcoreinf.BasicErrWrapper {
+	if it.IsEmpty() || it.IsSilent() {
+		return nil
+	}
+
+	refsCollection := refs.New(it.Length())
+	refsCollection.AddMap(it.Items())
+	it.Clear()
+
+	return errorwrapper.NewMsgDisplayError(
+		codestack.Skip1,
+		errtype.NewUsingTyper(basicErrTyper),
+		"",
+		refsCollection)
+}
+
+func (it *Collection) CompiledAsErrorWrapper(
+	variant errtype.Variation,
+	finalMessage string,
+) *errorwrapper.Wrapper {
+	if it.IsEmpty() || it.IsSilent() {
+		return nil
+	}
+
+	refsCollection := refs.New(it.Length())
+	refsCollection.AddMap(it.Items())
+	it.Clear()
+
+	return errorwrapper.NewMsgDisplayError(
+		codestack.Skip1,
+		variant,
+		finalMessage,
+		refsCollection)
+}
+
+func (it *Collection) CompiledInjectToErrorCollection(
+	errCollection *errwrappers.Collection,
+	variant errtype.Variation,
+	finalMessage string,
+) *errwrappers.Collection {
+	errWrap := it.CompiledAsErrorWrapper(
+		variant,
+		finalMessage)
+
+	return errCollection.AddWrapperPtr(
+		errWrap)
 }
 
 func (it Collection) AsMetaAttributesStacker() loggerinf.MetaAttributesStacker {
