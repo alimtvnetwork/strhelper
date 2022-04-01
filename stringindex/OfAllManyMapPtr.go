@@ -7,6 +7,8 @@ import (
 	"gitlab.com/evatix-go/strhelper/strto"
 )
 
+// OfAllManyMapPtr
+//
 // Find all the indexes for all the finding strings given.
 //
 // Limit :

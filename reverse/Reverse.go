@@ -4,12 +4,15 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// Get
+//
 // Returns empty string if str is nil or empty.
 // Returns new string which is reversed.
 func Get(str string) string {
 	return Ptr(&str)
 }
 
+// Ptr
 // Returns empty string if str is nil or empty.
 // Returns new string which is reversed.
 func Ptr(str *string) string {

@@ -4,6 +4,8 @@ import (
 	"gitlab.com/evatix-go/core/constants"
 )
 
+// CountChar
+//
 // Counts and returns the count number based on char present in the str
 // Returns 0 if str is nil or empty string.
 func CountChar(str *string, char uint8, startsAt int, isCaseSensitive bool) int {

@@ -2,6 +2,8 @@ package chars
 
 import "strings"
 
+// CountAscIICharsInsensitivePtr
+//
 // Counts and returns the count number based on chars present in the str
 // Returns 0 if str is nil or empty string.
 func CountAscIICharsInsensitivePtr(

@@ -50,6 +50,8 @@ func AnyNameValues(
 		&contents)
 }
 
+// AnyFullNameValues
+//
 // Concat any objects to single string using sprintf format given constants.SprintFullPropertyNameValueFormat
 //
 // @isSkipEmptyOrNil

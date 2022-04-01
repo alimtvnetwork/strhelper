@@ -42,3 +42,23 @@ func KeyValBy(s string, splitter string) (key, val string) {
 func KeyValTrimBy(s string, splitter string) (key, val string) {
 	return IntoTwoTrimSpace(s, splitter)
 }
+
+func KeyValTrimByColon(s string) (key, val string) {
+	return IntoTwoTrimSpace(s, constants.Colon)
+}
+
+func KeyValTrimByHyphen(s string) (key, val string) {
+	return IntoTwoTrimSpace(s, constants.Hyphen)
+}
+
+func KeyValTrimByComma(s string) (key, val string) {
+	return IntoTwoTrimSpace(s, constants.Comma)
+}
+
+func KeyValTrimBySpace(s string) (key, val string) {
+	return IntoTwoTrimSpace(s, constants.Space)
+}
+
+func KeyValTrimByLine(s string) (key, val string) {
+	return IntoTwoTrimSpace(s, constants.DefaultLine)
+}

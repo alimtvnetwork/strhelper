@@ -1,5 +1,7 @@
 package strhelpercore
 
+// BoolResultWrapper
+//
 // Some functions usages two return values, one is the result, another if the function condition satisfied.
 // Data size example : https://play.golang.org/p/gbVsdr3DB6I
 type BoolResultWrapper struct {

@@ -12,8 +12,50 @@ func Apply(joiner string, lines ...string) string {
 	return strings.Join(lines, joiner)
 }
 
+func JoinerSuffixMust(suffixJoiner string, lines ...string) string {
+	joined := strings.Join(lines, suffixJoiner)
+
+	if strings.HasSuffix(joined, suffixJoiner) {
+		return joined
+	}
+
+	return joined + suffixJoiner
+}
+
+func JoinerPrefixMust(prefixJoiner string, lines ...string) string {
+	joined := strings.Join(lines, prefixJoiner)
+
+	if strings.HasPrefix(joined, prefixJoiner) {
+		return joined
+	}
+
+	return prefixJoiner + joined
+}
+
 func Space(lines ...string) string {
 	return strings.Join(lines, constants.Space)
+}
+
+// Line
+//
+// joined using constants.DefaultLine
+func Line(lines ...string) string {
+	return strings.Join(lines, constants.DefaultLine)
+}
+
+// LineEof
+//
+//  make sure that end of the line contains new line
+func LineEof(lines ...string) string {
+	joined := strings.Join(
+		lines,
+		constants.DefaultLine)
+
+	if strings.HasSuffix(joined, constants.DefaultLine) {
+		return joined
+	}
+
+	return joined + constants.DefaultLine
 }
 
 func Comma(lines ...string) string {

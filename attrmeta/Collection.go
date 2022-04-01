@@ -14,6 +14,7 @@ import (
 	"gitlab.com/evatix-go/core/coreinterface/errcoreinf"
 	"gitlab.com/evatix-go/core/coreinterface/loggerinf"
 	"gitlab.com/evatix-go/core/coreinterface/serializerinf"
+	"gitlab.com/evatix-go/core/coretaskinfo"
 	"gitlab.com/evatix-go/core/errcore"
 	"gitlab.com/evatix-go/enum/logtype"
 	"gitlab.com/evatix-go/errorwrapper"
@@ -207,6 +208,40 @@ func (it *Collection) TitleAttr(
 	title, attr string,
 ) loggerinf.MetaAttributesStacker {
 	it.items[title] = attr
+
+	return it
+}
+
+func (it *Collection) Info(
+	info *coretaskinfo.Info,
+) loggerinf.MetaAttributesStacker {
+	it.items[info.Name()] = info.
+		PrettyJsonString()
+
+	return it
+}
+
+func (it *Collection) InfoWithPayload(
+	info *coretaskinfo.Info,
+	payloads []byte,
+) loggerinf.MetaAttributesStacker {
+	it.items[info.Name()] = info.
+		PrettyJsonStringWithPayloads(payloads)
+
+	return it
+}
+
+func (it *Collection) FriendlyErr(
+	name string,
+	frdErrWrap *errorwrapper.FriendlyError,
+	isIncludeTraces bool,
+) loggerinf.MetaAttributesStacker {
+	if frdErrWrap.IsEmpty() {
+		return it
+	}
+
+	it.items[name+".FriendlyMessage"] = frdErrWrap.FriendlyMsg()
+	it.items[name] = frdErrWrap.FullStringWithTracesIf(isIncludeTraces)
 
 	return it
 }

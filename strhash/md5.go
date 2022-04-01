@@ -34,6 +34,8 @@ func Md5HashString(text string) string {
 	return hex.EncodeToString(hash[:])
 }
 
+// Md5HashAnyToString
+//
 // Returns EmptyMd5HashString on nil any or.
 //
 // Any parsing error then panic.

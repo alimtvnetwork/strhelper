@@ -25,6 +25,8 @@ func IsTypeSame(type1 reflect.Type, type2 reflect.Type) bool {
 	return type1 == type2
 }
 
+// GetElementType
+//
 // Calls GetElementTypeMaxTry with maxTry 4
 //
 //
@@ -374,6 +376,8 @@ func IsFloat64sOrFloat64sPointer(any interface{}) (isFloat64 bool, floats *[]flo
 	return false, nil
 }
 
+// IsString
+//
 // Examples : https://play.golang.org/p/9XUt9Jf11WG | https://play.golang.org/p/oMAxxSzAP7F
 func IsString(any interface{}) (isStrings bool, str string) {
 	isStr, strPtr := IsStringOrStringPointer(any)

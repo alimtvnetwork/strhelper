@@ -13,42 +13,42 @@ import (
 	"gitlab.com/evatix-go/strhelper/strhelpercore"
 )
 
-func Int(number int) string {
+func FromInt(number int) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func Float32(number float32) string {
+func FromFloat32(number float32) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func Float64(number float64) string {
+func FromFloat64(number float64) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func Int64(number int64) string {
+func FromInt64(number int64) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func UInt64(number uint64) string {
+func FromUInt64(number uint64) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func Int16(number int16) string {
+func FromInt16(number int16) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func Int8(number int8) string {
+func FromInt8(number int8) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-func UInt8(number uint8) string {
+func FromUInt8(number uint8) string {
 	return fmt.Sprintf(constants.SprintValueFormat, number)
 }
 
-// AnyPtr
+// FromAnyPtr
 //
 //  if nil then empty string.
-func AnyPtr(any *interface{}) string {
+func FromAnyPtr(any *interface{}) string {
 	if any == nil || *any == nil {
 		return constants.EmptyString
 	}
@@ -58,7 +58,7 @@ func AnyPtr(any *interface{}) string {
 
 // if nil then empty string.
 // usages constants.SprintValueFormat to print the value of the object.
-func Any(any interface{}) string {
+func FromAny(any interface{}) string {
 	if any == nil {
 		return constants.EmptyString
 	}
@@ -66,7 +66,7 @@ func Any(any interface{}) string {
 	return fmt.Sprintf(constants.SprintValueFormat, any)
 }
 
-func AnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
+func FromAnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
 	jsonResult := corejson.New(any)
 
 	if jsonResult.HasError() {
@@ -82,30 +82,39 @@ func AnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
 //
 // On error returns error as string.
 func Json(any interface{}) string {
-	jsonResult := AnyToJsonStrWithErrorPtr(&any)
+	jsonResult := corejson.New(any)
 
 	if jsonResult.HasError() {
-		return jsonResult.Error().Error()
+		return jsonResult.MeaningfulErrorMessage()
 	}
 
-	return jsonResult.Value()
+	return jsonResult.JsonString()
+}
+
+// SafePrettyJson
+//
+// if nil then empty string.
+func SafePrettyJson(any interface{}) string {
+	jsonResult := corejson.New(any)
+
+	return jsonResult.PrettyJsonString()
 }
 
 // JsonMust
 //
 // if nil then empty string.
 func JsonMust(any interface{}) string {
-	jsonResult := AnyToJsonStrWithErrorPtr(&any)
+	jsonResult := corejson.New(any)
 	jsonResult.HandleError()
 
-	return jsonResult.Value()
+	return jsonResult.JsonString()
 }
 
 func AnyItemOption(
 	isFields bool,
 	anyItem interface{},
 ) string {
-	return converters.AnyToString(
+	return converters.Any.ToString(
 		isFields,
 		anyItem)
 }
@@ -123,7 +132,7 @@ func Bytes(
 func AnyItemWithFields(
 	anyItem interface{},
 ) string {
-	return converters.AnyToString(
+	return converters.Any.ToString(
 		true,
 		anyItem)
 }
@@ -166,4 +175,25 @@ func FromLines(
 	return strings.Join(
 		lines,
 		constants.DefaultLine)
+}
+
+func FromPointer(
+	pointerString *string,
+) string {
+	if pointerString == nil {
+		return constants.EmptyString
+	}
+
+	return *pointerString
+}
+
+func FromPointerUsingDefault(
+	defaultVal string,
+	pointerString *string,
+) (output string, isDefault bool) {
+	if pointerString == nil {
+		return defaultVal, true
+	}
+
+	return *pointerString, false
 }
