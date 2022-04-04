@@ -48,26 +48,28 @@ func FromUInt8(number uint8) string {
 // FromAnyPtr
 //
 //  if nil then empty string.
-func FromAnyPtr(any *interface{}) string {
-	if any == nil || *any == nil {
+func FromAnyPtr(anyItem *interface{}) string {
+	if anyItem == nil || *anyItem == nil {
 		return constants.EmptyString
 	}
 
-	return fmt.Sprintf(constants.SprintValueFormat, *any)
+	return fmt.Sprintf(constants.SprintValueFormat, *anyItem)
 }
 
+// FromAny
+//
 // if nil then empty string.
 // usages constants.SprintValueFormat to print the value of the object.
-func FromAny(any interface{}) string {
-	if any == nil {
+func FromAny(anyItem interface{}) string {
+	if anyItem == nil {
 		return constants.EmptyString
 	}
 
-	return fmt.Sprintf(constants.SprintValueFormat, any)
+	return fmt.Sprintf(constants.SprintValueFormat, anyItem)
 }
 
-func FromAnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithError {
-	jsonResult := corejson.New(any)
+func FromAnyToJsonStrWithErrorPtr(anyItem interface{}) *strhelpercore.StringWithError {
+	jsonResult := corejson.New(anyItem)
 
 	if jsonResult.HasError() {
 		return strhelpercore.NewStringWithErrorOnlyError(jsonResult.MeaningfulError())
@@ -81,8 +83,8 @@ func FromAnyToJsonStrWithErrorPtr(any interface{}) *strhelpercore.StringWithErro
 // if nil then empty string.
 //
 // On error returns error as string.
-func Json(any interface{}) string {
-	jsonResult := corejson.New(any)
+func Json(anyItem interface{}) string {
+	jsonResult := corejson.New(anyItem)
 
 	if jsonResult.HasError() {
 		return jsonResult.MeaningfulErrorMessage()
@@ -91,11 +93,36 @@ func Json(any interface{}) string {
 	return jsonResult.JsonString()
 }
 
+// CastingJson
+//
+// Applies casting
+func CastingJson(anyItem interface{}) string {
+	jsonResult := corejson.
+		AnyTo.
+		SerializedJsonResult(anyItem)
+
+	if jsonResult.HasError() {
+		return jsonResult.MeaningfulErrorMessage()
+	}
+
+	return jsonResult.JsonString()
+}
+
+func PrettyJsonStringOrErrString(anyItem interface{}) string {
+	jsonResult := corejson.
+		AnyTo.
+		SerializedJsonResult(anyItem)
+
+	return jsonResult.PrettyJsonStringOrErrString()
+}
+
 // SafePrettyJson
 //
 // if nil then empty string.
-func SafePrettyJson(any interface{}) string {
-	jsonResult := corejson.New(any)
+func SafePrettyJson(
+	anyItem interface{},
+) string {
+	jsonResult := corejson.New(anyItem)
 
 	return jsonResult.PrettyJsonString()
 }
@@ -103,19 +130,55 @@ func SafePrettyJson(any interface{}) string {
 // JsonMust
 //
 // if nil then empty string.
-func JsonMust(any interface{}) string {
-	jsonResult := corejson.New(any)
+func JsonMust(anyItem interface{}) string {
+	jsonResult := corejson.New(anyItem)
 	jsonResult.HandleError()
 
 	return jsonResult.JsonString()
 }
 
+// AnyItemOption
+//
+//  Full Fields : %#v
+//  Value       : %v
 func AnyItemOption(
 	isFields bool,
 	anyItem interface{},
 ) string {
 	return converters.Any.ToString(
 		isFields,
+		anyItem)
+}
+
+// AnyItemFullString
+//
+//  %#v
+func AnyItemFullString(
+	anyItem interface{},
+) string {
+	return converters.Any.ToString(
+		true,
+		anyItem)
+}
+
+// AnyItemHashFullString
+//
+//  %#v
+func AnyItemHashFullString(
+	anyItem interface{},
+) string {
+	return converters.Any.ToString(
+		true,
+		anyItem)
+}
+
+// AnyItemFullStringValue
+//
+//  %+v
+func AnyItemFullStringValue(
+	anyItem interface{},
+) string {
+	return converters.Any.FullString(
 		anyItem)
 }
 
@@ -127,6 +190,16 @@ func Bytes(
 	}
 
 	return string(rawBytes)
+}
+
+func BytesPtr(
+	rawBytes *[]byte,
+) string {
+	if rawBytes == nil || len(*rawBytes) == 0 {
+		return ""
+	}
+
+	return string(*rawBytes)
 }
 
 func AnyItemWithFields(
