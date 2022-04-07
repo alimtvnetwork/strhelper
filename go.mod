@@ -4,9 +4,9 @@ go 1.17
 
 require (
 	github.com/smartystreets/goconvey v1.7.2
-	gitlab.com/evatix-go/core v1.3.38
-	gitlab.com/evatix-go/enum v0.3.1
-	gitlab.com/evatix-go/errorwrapper v1.1.2
+	gitlab.com/evatix-go/core v1.3.55
+	gitlab.com/evatix-go/enum v0.4.2
+	gitlab.com/evatix-go/errorwrapper v1.1.5
 )
 
 require (
