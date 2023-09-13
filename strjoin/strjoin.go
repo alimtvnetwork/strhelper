@@ -3,9 +3,9 @@ package strjoin
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/corecsv"
-	"gitlab.com/evatix-go/core/simplewrap"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/corecsv"
+	"gitlab.com/auk-go/core/simplewrap"
 )
 
 func Apply(joiner string, lines ...string) string {

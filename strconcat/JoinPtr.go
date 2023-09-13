@@ -3,7 +3,7 @@ package strconcat
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Join concatenates the strings / elements of its first argument to a single string.

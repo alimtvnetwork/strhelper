@@ -3,11 +3,11 @@ package strhelpercore
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/content"
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
+	"gitlab.com/auk-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/content"
+	"gitlab.com/auk-go/strhelper/internal/isstrinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/internal/misc"
 )
 
 // ContentWrapper

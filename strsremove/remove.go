@@ -3,13 +3,13 @@ package strsremove
 import (
 	"unicode"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/chars"
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringreplace"
-	"gitlab.com/evatix-go/strhelper/whitespace"
+	"gitlab.com/auk-go/strhelper/chars"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/stringreplace"
+	"gitlab.com/auk-go/strhelper/whitespace"
 )
 
 var (

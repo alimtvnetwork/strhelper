@@ -3,10 +3,10 @@ package strsindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
 )
 
 // OfLastPtr returns the last index where the string first found, doesn't care about the rest of the items once found.

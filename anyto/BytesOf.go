@@ -1,9 +1,9 @@
 package anyto
 
 import (
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/errcore"
-	"gitlab.com/evatix-go/strhelper/encodingbytetype"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/errcore"
+	"gitlab.com/auk-go/strhelper/encodingbytetype"
 )
 
 func BytesOf(parsingType encodingbytetype.Variant, any interface{}) ([]byte, error) {

@@ -1,9 +1,9 @@
 package hasstr
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/whitespace"
+	"gitlab.com/auk-go/strhelper/whitespace"
 )
 
 // CharacterExceptWhitespaces Has at least one character other than space or whitespace

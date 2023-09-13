@@ -3,7 +3,7 @@ package isstrs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
 )
 
 // Equals compares leftLines and rightLines and returns bool

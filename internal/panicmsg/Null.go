@@ -1,7 +1,7 @@
 package panicmsg
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Null returns "Cannot be nil or null. Reference ( " + Var(variableName, "nil") + " )"

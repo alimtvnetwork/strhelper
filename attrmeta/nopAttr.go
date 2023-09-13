@@ -3,18 +3,18 @@ package attrmeta
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/coreinterface"
-	"gitlab.com/evatix-go/core/coreinterface/entityinf"
-	"gitlab.com/evatix-go/core/coreinterface/enuminf"
-	"gitlab.com/evatix-go/core/coreinterface/errcoreinf"
-	"gitlab.com/evatix-go/core/coreinterface/loggerinf"
-	"gitlab.com/evatix-go/core/coreinterface/serializerinf"
-	"gitlab.com/evatix-go/core/errcore"
-	"gitlab.com/evatix-go/enum/logtype"
-	"gitlab.com/evatix-go/errorwrapper"
-	"gitlab.com/evatix-go/errorwrapper/errtype"
-	"gitlab.com/evatix-go/errorwrapper/errwrappers"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/coreinterface"
+	"gitlab.com/auk-go/core/coreinterface/entityinf"
+	"gitlab.com/auk-go/core/coreinterface/enuminf"
+	"gitlab.com/auk-go/core/coreinterface/errcoreinf"
+	"gitlab.com/auk-go/core/coreinterface/loggerinf"
+	"gitlab.com/auk-go/core/coreinterface/serializerinf"
+	"gitlab.com/auk-go/core/errcore"
+	"gitlab.com/auk-go/enum/logtype"
+	"gitlab.com/auk-go/errorwrapper"
+	"gitlab.com/auk-go/errorwrapper/errtype"
+	"gitlab.com/auk-go/errorwrapper/errwrappers"
 )
 
 type nopAttr struct {

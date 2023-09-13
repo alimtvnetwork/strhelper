@@ -3,9 +3,9 @@ package stringindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
 )
 
 // Returns all indexes where findingString is found.

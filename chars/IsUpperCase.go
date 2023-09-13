@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 func IsUpperCase(c uint8) bool {

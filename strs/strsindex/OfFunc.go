@@ -1,9 +1,9 @@
 package strsindex
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
 )
 
 // Returns the index where the string first found, rest don't care

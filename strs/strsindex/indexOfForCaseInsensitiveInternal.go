@@ -3,7 +3,7 @@ package strsindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Assumptions are lines, findingString are checked already not null or empty

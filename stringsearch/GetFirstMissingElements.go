@@ -1,10 +1,10 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/converters"
-	"gitlab.com/evatix-go/core/coredata/corestr"
-	"gitlab.com/evatix-go/strhelper/internal/messages"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/converters"
+	"gitlab.com/auk-go/core/coredata/corestr"
+	"gitlab.com/auk-go/strhelper/internal/messages"
 )
 
 // GetFirstMissingElements returns the first element from

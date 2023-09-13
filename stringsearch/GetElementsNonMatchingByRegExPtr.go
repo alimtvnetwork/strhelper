@@ -3,7 +3,7 @@ package stringsearch
 import (
 	"regexp"
 
-	"gitlab.com/evatix-go/core/coredata/stringslice"
+	"gitlab.com/auk-go/core/coredata/stringslice"
 )
 
 // GetElementsNonMatchingByRegExPtr returns the lines which doesn't meet with regex requirements

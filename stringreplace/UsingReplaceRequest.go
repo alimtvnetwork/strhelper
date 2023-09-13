@@ -3,8 +3,8 @@ package stringreplace
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringindex"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/stringindex"
 )
 
 func UsingReplaceRequest(request *strhelpercore.ReplaceRequest) string {

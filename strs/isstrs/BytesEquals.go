@@ -1,7 +1,7 @@
 package isstrs
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
 )
 
 // BytesEquals compares leftLines and rightLines and returns bool

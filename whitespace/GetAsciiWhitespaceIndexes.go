@@ -1,6 +1,6 @@
 package whitespace
 
-import "gitlab.com/evatix-go/strhelper/internal/panichelper"
+import "gitlab.com/auk-go/strhelper/internal/panichelper"
 
 // Returns the whitespace (excluding unicode whitespaces) indexes
 //

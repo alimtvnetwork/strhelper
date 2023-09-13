@@ -1,7 +1,7 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/converters"
+	"gitlab.com/auk-go/core/converters"
 )
 
 func IsSliceAsHashsetContains(

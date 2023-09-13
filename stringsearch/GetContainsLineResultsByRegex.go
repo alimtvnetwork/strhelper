@@ -3,8 +3,8 @@ package stringsearch
 import (
 	"regexp"
 
-	"gitlab.com/evatix-go/core/defaultcapacity"
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/core/defaultcapacity"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
 )
 
 func GetContainsLineResultsByRegex(

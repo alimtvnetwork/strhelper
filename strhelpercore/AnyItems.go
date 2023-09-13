@@ -3,9 +3,9 @@ package strhelpercore
 import (
 	"sync"
 
-	"gitlab.com/evatix-go/core/defaulterr"
-	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/internal/isanyinternal"
+	"gitlab.com/auk-go/core/defaulterr"
+	"gitlab.com/auk-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/internal/isanyinternal"
 )
 
 type AnyItems struct {

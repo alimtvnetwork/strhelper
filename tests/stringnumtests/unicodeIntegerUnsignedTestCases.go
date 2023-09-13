@@ -1,6 +1,6 @@
 package stringnumtests
 
-import "gitlab.com/evatix-go/strhelper/stringnum"
+import "gitlab.com/auk-go/strhelper/stringnum"
 
 var unicodeIntegerUnsignedTestCases = &numberVerifyGroupWrapper{
 	methodName:   "IsUnicode.Integer.Unsigned",

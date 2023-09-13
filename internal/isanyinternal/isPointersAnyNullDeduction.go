@@ -1,6 +1,6 @@
 package isanyinternal
 
-import "gitlab.com/evatix-go/strhelper/internal/coreinternal"
+import "gitlab.com/auk-go/strhelper/internal/coreinternal"
 
 // isPointersAnyNullDeduction compares leftItems and rightItems and
 // returns coreinternal.BoolResultWrapper

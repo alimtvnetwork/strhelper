@@ -1,7 +1,7 @@
 package strsremove
 
 import (
-	"gitlab.com/evatix-go/strhelper/ds/strhashset"
+	"gitlab.com/auk-go/strhelper/ds/strhashset"
 )
 
 // Lines

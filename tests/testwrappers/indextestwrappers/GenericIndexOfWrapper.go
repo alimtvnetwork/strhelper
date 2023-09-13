@@ -1,7 +1,7 @@
 package indextestwrappers
 
 import (
-	"gitlab.com/evatix-go/core/coretests"
+	"gitlab.com/auk-go/core/coretests"
 )
 
 type GenericIndexOfWrapper struct {

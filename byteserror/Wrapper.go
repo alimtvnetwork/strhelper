@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/coredata/corestr"
-	"gitlab.com/evatix-go/core/issetter"
-	"gitlab.com/evatix-go/errorwrapper"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/coredata/corestr"
+	"gitlab.com/auk-go/core/issetter"
+	"gitlab.com/auk-go/errorwrapper"
 
-	"gitlab.com/evatix-go/strhelper/encodingbytetype"
-	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
+	"gitlab.com/auk-go/strhelper/encodingbytetype"
+	"gitlab.com/auk-go/strhelper/internal/whitespacesinternal"
 )
 
 type Wrapper struct {

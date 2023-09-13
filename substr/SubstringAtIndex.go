@@ -1,7 +1,7 @@
 package substr
 
 import (
-	"gitlab.com/evatix-go/strhelper/tostr"
+	"gitlab.com/auk-go/strhelper/tostr"
 )
 
 // AtIndex

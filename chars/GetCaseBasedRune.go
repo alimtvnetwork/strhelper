@@ -3,7 +3,7 @@ package chars
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 func GetCaseBasedRune(str string, r rune, isCaseSensitive bool) *CaseBasedRunes {

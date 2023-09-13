@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
-	"gitlab.com/evatix-go/core/coretests"
+	"gitlab.com/auk-go/core/coretests"
 
-	"gitlab.com/evatix-go/strhelper/stringindex"
-	"gitlab.com/evatix-go/strhelper/tests/testwrappers/indextestwrappers"
+	"gitlab.com/auk-go/strhelper/stringindex"
+	"gitlab.com/auk-go/strhelper/tests/testwrappers/indextestwrappers"
 )
 
 func Test_OfLastAllPtr(t *testing.T) {

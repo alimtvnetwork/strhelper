@@ -1,11 +1,11 @@
 package strsindex
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/strs"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/strs"
 )
 
 // Returns all indexes by searching all @findingMap items.

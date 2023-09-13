@@ -5,12 +5,12 @@ import (
 	"reflect"
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/converters"
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/errcore"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/converters"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/errcore"
 
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
 )
 
 func FromInt(number int) string {

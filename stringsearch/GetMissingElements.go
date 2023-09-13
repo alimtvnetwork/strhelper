@@ -1,8 +1,8 @@
 package stringsearch
 
 import (
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/converters"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/converters"
 )
 
 // GetMissingElements returns elements from findingElements which doesn't contain in slice.

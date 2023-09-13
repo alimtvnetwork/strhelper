@@ -3,9 +3,9 @@ package strs
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
 )
 
 // GetNonEmptyPointerStrings returns new array without empty strings, skip whitespaces if isTrimSpace true

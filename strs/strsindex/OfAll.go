@@ -3,11 +3,11 @@ package strsindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strs"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/strs"
 )
 
 // Returns all indexes where findingString is found.

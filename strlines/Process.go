@@ -3,9 +3,9 @@ package strlines
 import (
 	"sync"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
 )
 
 func Process(

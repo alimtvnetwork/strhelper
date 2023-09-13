@@ -3,7 +3,7 @@ package whitespace
 import (
 	"unicode"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 func AllWhitespacesRuneIndexesMap(input *string) *map[rune]*[]int {

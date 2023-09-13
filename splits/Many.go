@@ -1,6 +1,6 @@
 package splits
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import "gitlab.com/auk-go/strhelper/strhelpercore"
 
 // Many Multiple split occur from the given array of splits.
 //

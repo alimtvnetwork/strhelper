@@ -3,11 +3,11 @@ package attrmeta
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/corecsv"
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/coreinterface/serializerinf"
-	"gitlab.com/evatix-go/core/errcore"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/corecsv"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/coreinterface/serializerinf"
+	"gitlab.com/auk-go/core/errcore"
 )
 
 func jsonResultsDisplayString(jsonResults ...*corejson.Result) string {

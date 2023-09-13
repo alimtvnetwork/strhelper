@@ -1,11 +1,11 @@
 package strsremove
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/ds/strhashset"
-	"gitlab.com/evatix-go/strhelper/internal/misc"
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/ds/strhashset"
+	"gitlab.com/auk-go/strhelper/internal/misc"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
 )
 
 // ManyLines

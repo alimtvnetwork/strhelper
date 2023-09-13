@@ -1,9 +1,9 @@
 package strconcat
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/whitespace"
+	"gitlab.com/auk-go/strhelper/whitespace"
 )
 
 // Concatenates the contents and @currentStr to a single string using @separator.

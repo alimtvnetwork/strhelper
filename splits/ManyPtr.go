@@ -1,11 +1,11 @@
 package splits
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/stringindex"
-	"gitlab.com/evatix-go/strhelper/whitespace"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/stringindex"
+	"gitlab.com/auk-go/strhelper/whitespace"
 )
 
 // ManyPtr Multiple split occur from the given array of splits.

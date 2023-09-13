@@ -3,7 +3,7 @@ package strto
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/chars"
+	"gitlab.com/auk-go/strhelper/chars"
 )
 
 // Returns

@@ -1,7 +1,7 @@
 package strs
 
 import (
-	"gitlab.com/evatix-go/core/defaultcapacity"
+	"gitlab.com/auk-go/core/defaultcapacity"
 )
 
 // OfAllFunc

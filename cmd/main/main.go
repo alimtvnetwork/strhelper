@@ -3,8 +3,8 @@ package main
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/strhelper/attrmeta"
-	"gitlab.com/evatix-go/strhelper/splits"
+	"gitlab.com/auk-go/strhelper/attrmeta"
+	"gitlab.com/auk-go/strhelper/splits"
 )
 
 func main() {
@@ -23,8 +23,9 @@ func collectionTest01() {
 		"soime val2",
 	)
 
-	collection.StackTracesDefault()
+	// fmt.Println(collection.StackTracesDefault())
 	collection.LogWithTraces()
+	// collection.LogWithTraces()
 }
 
 func splitsTest01() {
