@@ -3,7 +3,7 @@ package anyto
 import (
 	"unsafe"
 
-	"gitlab.com/evatix-go/strhelper/internal/reflectinternal"
+	"gitlab.com/auk-go/strhelper/internal/reflectinternal"
 )
 
 func UnSafeBytesPtr(any interface{}) *[]byte {

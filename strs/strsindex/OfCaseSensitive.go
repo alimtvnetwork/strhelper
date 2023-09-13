@@ -1,6 +1,6 @@
 package strsindex
 
-import "gitlab.com/evatix-go/core/constants"
+import "gitlab.com/auk-go/core/constants"
 
 // OfCaseSensitive Returns the index where the string first found, rest don't care
 func OfCaseSensitive(

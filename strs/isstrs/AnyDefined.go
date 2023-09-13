@@ -1,7 +1,7 @@
 package isstrs
 
 import (
-	"gitlab.com/evatix-go/strhelper/isstr"
+	"gitlab.com/auk-go/strhelper/isstr"
 )
 
 // AnyDefined Returns:

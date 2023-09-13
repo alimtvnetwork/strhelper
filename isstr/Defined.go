@@ -1,6 +1,6 @@
 package isstr
 
-import "gitlab.com/evatix-go/core/constants"
+import "gitlab.com/auk-go/core/constants"
 
 // Defined not empty string but something
 func Defined(s string) bool {

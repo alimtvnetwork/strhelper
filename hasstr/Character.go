@@ -1,7 +1,7 @@
 package hasstr
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Character Has at least one character any, returns true even if a whitespace

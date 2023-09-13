@@ -1,9 +1,9 @@
 package isstr
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrinternal"
 )
 
 // EndsWith

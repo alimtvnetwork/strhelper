@@ -4,7 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 
-	"gitlab.com/evatix-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/anyto"
 )
 
 var (

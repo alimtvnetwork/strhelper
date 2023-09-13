@@ -4,25 +4,25 @@ import (
 	"fmt"
 	"log"
 
-	"gitlab.com/evatix-go/core/codestack"
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/coredynamic"
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/core/coreinterface"
-	"gitlab.com/evatix-go/core/coreinterface/entityinf"
-	"gitlab.com/evatix-go/core/coreinterface/enuminf"
-	"gitlab.com/evatix-go/core/coreinterface/errcoreinf"
-	"gitlab.com/evatix-go/core/coreinterface/loggerinf"
-	"gitlab.com/evatix-go/core/coreinterface/serializerinf"
-	"gitlab.com/evatix-go/core/coretaskinfo"
-	"gitlab.com/evatix-go/core/errcore"
-	"gitlab.com/evatix-go/enum/logtype"
-	"gitlab.com/evatix-go/errorwrapper"
-	"gitlab.com/evatix-go/errorwrapper/errnew"
-	"gitlab.com/evatix-go/errorwrapper/errtype"
-	"gitlab.com/evatix-go/errorwrapper/errwrappers"
-	"gitlab.com/evatix-go/errorwrapper/refs"
-	"gitlab.com/evatix-go/strhelper/strs"
+	"gitlab.com/auk-go/core/codestack"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/coredata/coredynamic"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/core/coreinterface"
+	"gitlab.com/auk-go/core/coreinterface/entityinf"
+	"gitlab.com/auk-go/core/coreinterface/enuminf"
+	"gitlab.com/auk-go/core/coreinterface/errcoreinf"
+	"gitlab.com/auk-go/core/coreinterface/loggerinf"
+	"gitlab.com/auk-go/core/coreinterface/serializerinf"
+	"gitlab.com/auk-go/core/coretaskinfo"
+	"gitlab.com/auk-go/core/errcore"
+	"gitlab.com/auk-go/enum/logtype"
+	"gitlab.com/auk-go/errorwrapper"
+	"gitlab.com/auk-go/errorwrapper/errnew"
+	"gitlab.com/auk-go/errorwrapper/errtype"
+	"gitlab.com/auk-go/errorwrapper/errwrappers"
+	"gitlab.com/auk-go/errorwrapper/refs"
+	"gitlab.com/auk-go/strhelper/strs"
 )
 
 type Collection struct {
@@ -73,10 +73,12 @@ func (it *Collection) LogWithTraces() {
 		return
 	}
 
+	codeStackString := codestack.StacksStringDefault()
+
 	fmt.Println(
 		it.Compile() +
 			constants.DefaultLine +
-			codestack.StacksStringDefault())
+			codeStackString)
 }
 
 func (it *Collection) LogFatal() {
@@ -312,7 +314,7 @@ func (it *Collection) RawJson(
 
 // Error
 //
-//  skip on error
+//	skip on error
 func (it *Collection) Error(
 	title string,
 	err error,
@@ -1378,12 +1380,13 @@ func (it *Collection) CompileToJsonResult() *corejson.Result {
 	return corejson.NewPtr(it.CompileMap())
 }
 
+// Compile compiles the whole items to json string and clears the list.
 func (it *Collection) Compile() string {
 	result := corejson.New(
 		it.items)
 	it.Clear()
 
-	return result.JsonString()
+	return result.PrettyJsonString()
 }
 
 func (it *Collection) CompileFmt(
@@ -1900,6 +1903,8 @@ func (it *Collection) CompileStringNoMessage() string {
 	return json
 }
 
+// String calls CompileStringNoMessage and clears the list.
+// Thus println(Collection) will yield to clear list.
 func (it *Collection) String() string {
 	return it.CompileStringNoMessage()
 }

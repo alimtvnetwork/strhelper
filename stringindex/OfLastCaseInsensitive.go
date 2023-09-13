@@ -3,9 +3,9 @@ package stringindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrinternal"
 )
 
 // returns -1 on non found case

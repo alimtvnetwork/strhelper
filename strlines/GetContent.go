@@ -1,9 +1,9 @@
 package strlines
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/strconcat"
+	"gitlab.com/auk-go/strhelper/strconcat"
 )
 
 // GetContent

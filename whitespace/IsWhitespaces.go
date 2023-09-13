@@ -1,6 +1,6 @@
 package whitespace
 
-import "gitlab.com/evatix-go/core/constants"
+import "gitlab.com/auk-go/core/constants"
 
 // IsWhitespaces Returns true for if the contents are all whitespaces
 //  (including unicode whitespaces for only checking ascii use the ascii version a lot faster)

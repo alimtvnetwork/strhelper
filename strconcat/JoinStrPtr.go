@@ -3,7 +3,7 @@ package strconcat
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Concatenates the strings / elements to a single string using @sep (separator).

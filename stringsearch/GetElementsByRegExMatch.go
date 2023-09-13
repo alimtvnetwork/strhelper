@@ -3,8 +3,8 @@ package stringsearch
 import (
 	"regexp"
 
-	"gitlab.com/evatix-go/core/coredata/stringslice"
-	"gitlab.com/evatix-go/core/defaultcapacity"
+	"gitlab.com/auk-go/core/coredata/stringslice"
+	"gitlab.com/auk-go/core/defaultcapacity"
 )
 
 // GetElementsByRegExMatch returns the lines which matches with the regex given

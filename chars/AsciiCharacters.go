@@ -3,7 +3,7 @@ package chars
 import (
 	"unicode"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // AsciiCharacters *[256]uint8:

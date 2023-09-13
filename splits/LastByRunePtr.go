@@ -1,8 +1,8 @@
 package splits
 
 import (
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/defaultcapacity"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/defaultcapacity"
 )
 
 func LastByRunePtr(

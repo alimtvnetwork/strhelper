@@ -1,9 +1,9 @@
 package strsremove
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/ds/strhashset"
+	"gitlab.com/auk-go/strhelper/ds/strhashset"
 )
 
 func finalRemoveResultsCaseSensitive(

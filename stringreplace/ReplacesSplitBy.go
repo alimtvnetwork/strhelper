@@ -3,7 +3,7 @@ package stringreplace
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/coredata/corestr"
+	"gitlab.com/auk-go/core/coredata/corestr"
 )
 
 func ReplacesSplitBy(

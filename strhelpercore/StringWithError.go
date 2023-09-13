@@ -5,11 +5,11 @@ import (
 	"errors"
 	"fmt"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/issetter"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/issetter"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrinternal"
-	"gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
+	"gitlab.com/auk-go/strhelper/internal/isstrinternal"
+	"gitlab.com/auk-go/strhelper/internal/whitespacesinternal"
 )
 
 type StringWithError struct {

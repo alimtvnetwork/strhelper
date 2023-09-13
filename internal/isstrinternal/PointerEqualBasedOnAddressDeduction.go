@@ -1,6 +1,6 @@
 package isstrinternal
 
-import "gitlab.com/evatix-go/strhelper/internal/coreinternal"
+import "gitlab.com/auk-go/strhelper/internal/coreinternal"
 
 // PointerEqualBasedOnAddressDeduction compares leftItems and rightItems and returns coreinternal.BoolResultWrapper
 //  - If both nil returns true.

@@ -3,7 +3,7 @@ package anyto
 import (
 	"fmt"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 func ValueBytesPtr(anything interface{}) *[]byte {

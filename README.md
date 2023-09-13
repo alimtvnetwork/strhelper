@@ -1,4 +1,4 @@
-![CIMUX golang strhelper logo](https://gitlab.com/evatix-go/strhelper/uploads/12f1449174f417be0570627cf6e749ea/go-string-250.png)
+![CIMUX golang strhelper logo](https://gitlab.com/auk-go/strhelper/uploads/12f1449174f417be0570627cf6e749ea/go-string-250.png)
 
 # Strings Extension Introduction (`strhelper`)
 
@@ -6,11 +6,11 @@ Go Strings library additional methods, simplification of string modification and
 
 ## Git Clone
 
-`git clone https://gitlab.com/evatix-go/strhelper.git`
+`git clone https://gitlab.com/auk-go/strhelper.git`
 
 ### 2FA enabled, for linux
 
-`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/evatix-go/strhelper.git`
+`git clone https://[YourGitLabUserName]:[YourGitlabAcessTokenGenerateFromGitlabsTokens]@gitlab.com/auk-go/strhelper.git`
 
 ### Prerequisites
 
@@ -21,30 +21,16 @@ Go Strings library additional methods, simplification of string modification and
 
 ## Installation
 
-`go get gitlab.com/evatix-go/strhelper`
-
-### Go get issue for private package
-
-- Update git to 2.29
-- Enable go modules. (Windows : `go env -w GO111MODULE=on`, Unix : `export GO111MODULE=on`)
-- Add `gitlab.com/evatix-go` to go env private
-
-To set for Windows:
-
-`go env -w GOPRIVATE=[AddExistingOnes;]gitlab.com/evatix-go`
-
-To set for Unix:
-
-`expoort GOPRIVATE=[AddExistingOnes;]gitlab.com/evatix-go`
+`go get gitlab.com/auk-go/strhelper`
 
 ## Build Fix
 
 ```cmd
-go get gitlab.com/evatix-go/core
-go get gitlab.com/evatix-go/errorwrapper
+go get gitlab.com/auk-go/core
+go get gitlab.com/auk-go/errorwrapper
 
-go mod download gitlab.com/evatix-go/core
-go mod download gitlab.com/evatix-go/errorwrapper
+go mod download gitlab.com/auk-go/core
+go mod download gitlab.com/auk-go/errorwrapper
 ```
 
 ## Why `strhelper?`
@@ -72,12 +58,14 @@ Any other packages used
 
 ## Issues
 
-- [Create your issues](https://gitlab.com/evatix-go/strhelper/-/issues)
+- [Create your issues](https://gitlab.com/auk-go/strhelper/-/issues)
 
 ## Notes
 
 ## Contributors
 
+- [Alim Ul Karim](https://www.google.com/search?q=Alim+Ul+Karim)
+
 ## License
 
-[Evatix MIT License](/LICENSE)
+[MIT License](/LICENSE)

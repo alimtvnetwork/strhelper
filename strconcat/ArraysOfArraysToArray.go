@@ -1,9 +1,9 @@
 package strconcat
 
 import (
-	"gitlab.com/evatix-go/strhelper/ds/strhashset"
-	"gitlab.com/evatix-go/strhelper/internal/panichelper"
-	"gitlab.com/evatix-go/strhelper/strs/isstrs"
+	"gitlab.com/auk-go/strhelper/ds/strhashset"
+	"gitlab.com/auk-go/strhelper/internal/panichelper"
+	"gitlab.com/auk-go/strhelper/strs/isstrs"
 )
 
 // ArraysOfArraysToArray

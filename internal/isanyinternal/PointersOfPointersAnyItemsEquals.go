@@ -3,7 +3,7 @@ package isanyinternal
 import (
 	"bytes"
 
-	"gitlab.com/evatix-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/anyto"
 )
 
 // Equals compares leftItems and rightItems and returns bool

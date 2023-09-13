@@ -3,10 +3,10 @@ package splits
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/corestr"
-	"gitlab.com/evatix-go/core/coreindexes"
-	"gitlab.com/evatix-go/core/errcore"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/coredata/corestr"
+	"gitlab.com/auk-go/core/coreindexes"
+	"gitlab.com/auk-go/core/errcore"
 )
 
 func IntoTwoLeftRight(s, separator string) corestr.LeftRight {

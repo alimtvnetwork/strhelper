@@ -1,6 +1,6 @@
 package stringreplace
 
-import "gitlab.com/evatix-go/core/constants"
+import "gitlab.com/auk-go/core/constants"
 
 func ManyDefault(
 	text string,

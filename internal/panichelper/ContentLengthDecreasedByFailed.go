@@ -1,7 +1,7 @@
 package panichelper
 
 import (
-	"gitlab.com/evatix-go/strhelper/internal/panicmsg"
+	"gitlab.com/auk-go/strhelper/internal/panicmsg"
 )
 
 func ContentLengthDecreasedByFailed(contentLengthDecreasedBy, wholeTextLength int) {

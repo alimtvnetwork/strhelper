@@ -1,6 +1,6 @@
 package isstrs
 
-import "gitlab.com/evatix-go/strhelper/internal/whitespacesinternal"
+import "gitlab.com/auk-go/strhelper/internal/whitespacesinternal"
 
 func EmptyOrFirstWhitespace(lines *[]string) bool {
 	isEmpty := lines == nil || *lines == nil || len(*lines) == 0

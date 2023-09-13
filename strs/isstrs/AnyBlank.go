@@ -1,6 +1,6 @@
 package isstrs
 
-import "gitlab.com/evatix-go/strhelper/isstr"
+import "gitlab.com/auk-go/strhelper/isstr"
 
 // AnyBlank Returns:
 //  - true : if @lines are nil.

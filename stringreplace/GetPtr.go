@@ -1,7 +1,7 @@
 package stringreplace
 
 import (
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
 )
 
 func GetPtr(

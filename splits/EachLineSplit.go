@@ -3,12 +3,12 @@ package splits
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/corestr"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/coredata/corestr"
 )
 
 // EachLineSplit
-// Issue : https://gitlab.com/evatix-go/strhelper/-/issues/118
+// Issue : https://gitlab.com/auk-go/strhelper/-/issues/118
 // Split whole text by new line first and then each line split by the given eachLineSplitBy
 // Left is the key and right is the value
 func EachLineSplit(

@@ -1,6 +1,6 @@
 package splits
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import "gitlab.com/auk-go/strhelper/strhelpercore"
 
 // ManyDefaults
 //

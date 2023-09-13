@@ -1,10 +1,10 @@
 package byteserror
 
 import (
-	"gitlab.com/evatix-go/core/issetter"
-	"gitlab.com/evatix-go/errorwrapper"
+	"gitlab.com/auk-go/core/issetter"
+	"gitlab.com/auk-go/errorwrapper"
 
-	"gitlab.com/evatix-go/strhelper/encodingbytetype"
+	"gitlab.com/auk-go/strhelper/encodingbytetype"
 )
 
 type WrapperDataModel struct {

@@ -1,7 +1,7 @@
 package stringindex
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Returns the last index of the findingString in s,

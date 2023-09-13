@@ -1,6 +1,6 @@
 package splitstestwrapper
 
-import "gitlab.com/evatix-go/core/coretests"
+import "gitlab.com/auk-go/core/coretests"
 
 type LastByRunesWrapper struct {
 	Content           string

@@ -5,11 +5,11 @@ import (
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
-	"gitlab.com/evatix-go/core/coretests"
+	"gitlab.com/auk-go/core/coretests"
 
-	"gitlab.com/evatix-go/strhelper/internal/isstrsinternal"
-	"gitlab.com/evatix-go/strhelper/splits"
-	"gitlab.com/evatix-go/strhelper/tests/testwrappers/splitstestwrapper"
+	"gitlab.com/auk-go/strhelper/internal/isstrsinternal"
+	"gitlab.com/auk-go/strhelper/splits"
+	"gitlab.com/auk-go/strhelper/tests/testwrappers/splitstestwrapper"
 )
 
 func Test_Last(t *testing.T) {

@@ -1,6 +1,6 @@
 package whitespace
 
-import "gitlab.com/evatix-go/core/constants"
+import "gitlab.com/auk-go/core/constants"
 
 // s == constants.EmptyString || len(s) == 0
 func IsEmpty(s string) bool {

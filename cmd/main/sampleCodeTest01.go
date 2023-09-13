@@ -5,11 +5,11 @@ import (
 	"fmt"
 	"strings"
 
-	"gitlab.com/evatix-go/core/coredata/stringslice"
-	"gitlab.com/evatix-go/strhelper/anyto"
-	"gitlab.com/evatix-go/strhelper/strlines"
-	"gitlab.com/evatix-go/strhelper/strs/isstrs"
-	"gitlab.com/evatix-go/strhelper/whitespace"
+	"gitlab.com/auk-go/core/coredata/stringslice"
+	"gitlab.com/auk-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/strlines"
+	"gitlab.com/auk-go/strhelper/strs/isstrs"
+	"gitlab.com/auk-go/strhelper/whitespace"
 )
 
 func sampleCodeTest01() {

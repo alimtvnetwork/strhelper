@@ -1,7 +1,7 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Returns Upper case runes by modifying runes in place.

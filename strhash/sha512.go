@@ -4,7 +4,7 @@ import (
 	"crypto/sha512"
 	"encoding/hex"
 
-	"gitlab.com/evatix-go/strhelper/anyto"
+	"gitlab.com/auk-go/strhelper/anyto"
 )
 
 var (

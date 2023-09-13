@@ -1,17 +1,17 @@
-module gitlab.com/evatix-go/strhelper
+module gitlab.com/auk-go/strhelper
 
-go 1.17
+go 1.17.8
 
 require (
-	github.com/smartystreets/goconvey v1.7.2
-	gitlab.com/evatix-go/core v1.3.55
-	gitlab.com/evatix-go/enum v0.4.2
-	gitlab.com/evatix-go/errorwrapper v1.1.5
+	github.com/smartystreets/goconvey v1.8.1
+	gitlab.com/auk-go/core v1.4.3
+	gitlab.com/auk-go/enum v0.5.3
+	gitlab.com/auk-go/errorwrapper v1.2.0
 )
 
 require (
-	github.com/gopherjs/gopherjs v0.0.0-20181017120253-0766667cb4d1 // indirect
+	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
-	github.com/smartystreets/assertions v1.2.0 // indirect
-	golang.org/x/sys v0.0.0-20190215142949-d0b11bdaac8a // indirect
+	github.com/smarty/assertions v1.15.0 // indirect
+	golang.org/x/sys v0.12.0 // indirect
 )

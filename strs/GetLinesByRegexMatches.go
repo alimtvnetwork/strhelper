@@ -3,7 +3,7 @@ package strs
 import (
 	"regexp"
 
-	"gitlab.com/evatix-go/core/defaultcapacity"
+	"gitlab.com/auk-go/core/defaultcapacity"
 )
 
 func GetLinesByRegexMatches(

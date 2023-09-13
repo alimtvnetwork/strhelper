@@ -1,18 +1,18 @@
 package chars
 
 func CountRuneSensitive(
-	str *string,
+	str string,
 	r rune,
 	at int,
 ) int {
-	length := len(*str)
+	length := len(str)
 	found := 0
 
 	if length == 0 {
 		return found
 	}
 
-	runes := []rune(*str)
+	runes := []rune(str)
 	length = len(runes)
 
 	for ; at < length; at++ {

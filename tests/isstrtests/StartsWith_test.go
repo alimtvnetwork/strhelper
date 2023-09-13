@@ -4,10 +4,10 @@ import (
 	"testing"
 
 	. "github.com/smartystreets/goconvey/convey"
-	"gitlab.com/evatix-go/core/coretests"
+	"gitlab.com/auk-go/core/coretests"
 
-	"gitlab.com/evatix-go/strhelper/isstr"
-	"gitlab.com/evatix-go/strhelper/tests/testwrappers"
+	"gitlab.com/auk-go/strhelper/isstr"
+	"gitlab.com/auk-go/strhelper/tests/testwrappers"
 )
 
 func TestStartsWith(t *testing.T) {

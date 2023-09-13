@@ -1,6 +1,6 @@
 package strto
 
-import "gitlab.com/evatix-go/strhelper/chars"
+import "gitlab.com/auk-go/strhelper/chars"
 
 // Returns
 //  - Upper case string as pointer of string

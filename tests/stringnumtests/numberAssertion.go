@@ -4,8 +4,8 @@ import (
 	"testing"
 
 	"github.com/smartystreets/goconvey/convey"
-	"gitlab.com/evatix-go/core/conditional"
-	"gitlab.com/evatix-go/core/errcore"
+	"gitlab.com/auk-go/core/conditional"
+	"gitlab.com/auk-go/core/errcore"
 )
 
 func numberAssertion(

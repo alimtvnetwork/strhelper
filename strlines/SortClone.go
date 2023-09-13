@@ -3,7 +3,7 @@ package strlines
 import (
 	"sort"
 
-	"gitlab.com/evatix-go/core/coredata/stringslice"
+	"gitlab.com/auk-go/core/coredata/stringslice"
 )
 
 func SortClone(lines ...string) []string {

@@ -3,8 +3,8 @@ package stringindex
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/strhelper/strhelpercore"
-	"gitlab.com/evatix-go/strhelper/strto"
+	"gitlab.com/auk-go/strhelper/strhelpercore"
+	"gitlab.com/auk-go/strhelper/strto"
 )
 
 // OfAllManyMapPtr

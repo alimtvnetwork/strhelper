@@ -1,7 +1,7 @@
 package longestcommon
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // Results count of suffix character matches. Where a, b can be at different lengths,

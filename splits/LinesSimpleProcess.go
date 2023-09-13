@@ -3,8 +3,8 @@ package splits
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
-	"gitlab.com/evatix-go/core/coredata/stringslice"
+	"gitlab.com/auk-go/core/constants"
+	"gitlab.com/auk-go/core/coredata/stringslice"
 )
 
 // LinesSimpleProcess split text using constants.NewLineUnix

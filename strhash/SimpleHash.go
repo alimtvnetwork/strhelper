@@ -1,6 +1,6 @@
 package strhash
 
-import "gitlab.com/evatix-go/strhelper/anyto"
+import "gitlab.com/auk-go/strhelper/anyto"
 
 func SimpleHash(str string) int64 {
 	allBytes := []byte(str)

@@ -1,7 +1,7 @@
 package strhelpercore
 
 import (
-	"gitlab.com/evatix-go/core/issetter"
+	"gitlab.com/auk-go/core/issetter"
 )
 
 type RegExWrappersCollection struct {

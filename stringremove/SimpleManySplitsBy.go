@@ -3,7 +3,7 @@ package strremove
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
 // SimpleManySplitsBy Remove as per removes then splits by the given separator

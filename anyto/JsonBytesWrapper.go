@@ -1,10 +1,10 @@
 package anyto
 
 import (
-	"gitlab.com/evatix-go/core/coredata/corejson"
-	"gitlab.com/evatix-go/errorwrapper/errdata/errjson"
-	"gitlab.com/evatix-go/strhelper/byteserror"
-	"gitlab.com/evatix-go/strhelper/encodingbytetype"
+	"gitlab.com/auk-go/core/coredata/corejson"
+	"gitlab.com/auk-go/errorwrapper/errdata/errjson"
+	"gitlab.com/auk-go/strhelper/byteserror"
+	"gitlab.com/auk-go/strhelper/encodingbytetype"
 )
 
 func JsonBytesWrapper(any interface{}) *byteserror.Wrapper {

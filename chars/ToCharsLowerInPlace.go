@@ -1,17 +1,17 @@
 package chars
 
 import (
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 )
 
-// Makes ascii to chars to upper case, modify existing chars.
+// ToCharsLowerInPlace Makes ascii to chars to upper case, modify existing chars.
 //
-// In terms of good practice, work with return value rather then existing one.
-func ToCharsLowerInPlace(chars *[]uint8) *[]uint8 {
-	for i, char := range *chars {
+// In terms of good practice, work with return value rather than existing one.
+func ToCharsLowerInPlace(chars []uint8) []uint8 {
+	for i, char := range chars {
 		if char >= constants.UpperCaseA &&
 			char <= constants.UpperCaseZ {
-			(*chars)[i] = char + constants.LowerCase
+			chars[i] = char + constants.LowerCase
 		}
 	}
 

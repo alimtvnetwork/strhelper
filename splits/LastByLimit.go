@@ -3,9 +3,9 @@ package splits
 import (
 	"strings"
 
-	"gitlab.com/evatix-go/core/constants"
+	"gitlab.com/auk-go/core/constants"
 
-	"gitlab.com/evatix-go/strhelper/internal/indexinternal"
+	"gitlab.com/auk-go/strhelper/internal/indexinternal"
 )
 
 func LastByLimit(

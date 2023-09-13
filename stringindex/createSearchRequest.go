@@ -1,6 +1,6 @@
 package stringindex
 
-import "gitlab.com/evatix-go/strhelper/strhelpercore"
+import "gitlab.com/auk-go/strhelper/strhelpercore"
 
 // @limits:
 //  - How many indexes should we search for and then stop looking further.
