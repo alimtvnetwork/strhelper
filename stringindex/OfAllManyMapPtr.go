@@ -12,8 +12,8 @@ import (
 // Find all the indexes for all the finding strings given.
 //
 // Limit :
-//  - When -1 returns all
-//  - When 0 returns nil
+//   - When -1 returns all
+//   - When 0 returns nil
 func OfAllManyMapPtr(
 	content string,
 	searchRequestsMap map[string]strhelpercore.SearchRequest,
@@ -42,7 +42,7 @@ func OfAllManyMapPtr(
 		if searchRequest.IsCaseSensitive == false {
 			// insensitive
 			sendingContent = lowerCaseContent
-			searchRequest.Search = *strto.LowerStrPtr(&searchRequest.Search)
+			searchRequest.Search = *strto.LowerStringPtr(&searchRequest.Search)
 			searchRequest.IsCaseSensitive = true
 		}
 
