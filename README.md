@@ -1,4 +1,4 @@
-![CIMUX golang strhelper logo](https://gitlab.com/auk-go/strhelper/uploads/12f1449174f417be0570627cf6e749ea/go-string-250.png)
+![auk-go strhelper logo](https://gitlab.com/auk-go/strhelper/uploads/12f1449174f417be0570627cf6e749ea/go-string-250.png)
 
 # Strings Extension Introduction (`strhelper`)
 
