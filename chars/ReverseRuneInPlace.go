@@ -2,8 +2,8 @@ package chars
 
 // Modifies existing runesIn array to reverse order.
 // if nil or empty then returns nil
-func ReverseRuneInPlacePtr(runesIn *[]rune) *[]rune {
-	length := len(*runesIn)
+func ReverseRuneInPlace(runesIn []rune) []rune {
+	length := len(runesIn)
 
 	if length == 0 {
 		return nil
@@ -13,7 +13,7 @@ func ReverseRuneInPlacePtr(runesIn *[]rune) *[]rune {
 	lastIndex := length - 1
 
 	for i := 0; i < mid; i++ {
-		(*runesIn)[i], (*runesIn)[lastIndex-i] = (*runesIn)[lastIndex-i], (*runesIn)[i]
+		runesIn[i], runesIn[lastIndex-i] = runesIn[lastIndex-i], runesIn[i]
 	}
 
 	return runesIn

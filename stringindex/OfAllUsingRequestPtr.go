@@ -13,12 +13,12 @@ import (
 // Returns all indexes where findingString is found.
 //
 // @limits:
-//  - How many indexes should we search for and then stop looking further.
-//  - `-1` means find all, 0 => nil
+//   - How many indexes should we search for and then stop looking further.
+//   - `-1` means find all, 0 => nil
 //
 // Results:
-//  - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
-//  - If no indexes found returns nil.
+//   - Invalid result can be nil if any (content == nil || findingString == nil) results nil.
+//   - If no indexes found returns nil.
 func OfAllUsingRequestPtr(
 	content string,
 	request *strhelpercore.SearchRequest,
@@ -52,7 +52,7 @@ func OfAllUsingRequestPtr(
 	if request.IsCaseSensitive == false {
 		// insensitive
 		sendingContent = strings.ToLower(sendingContent)
-		sendingSearchTerm = strto.LowerStrPtr(sendingSearchTerm)
+		sendingSearchTerm = strto.LowerStringPtr(sendingSearchTerm)
 	}
 
 	// keep the default as best so that doesn't resize.
