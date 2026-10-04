@@ -26,5 +26,10 @@ bin/**/*.*
 **/.idea/**/*.*
 **/**/.idea/*.*
 **/**/.idea/**/*.*
-.idea/*.*
-.idea/**/*.*
+
+# GitMap & Task Persistence
+.gitmap/backup/
+antigravity-resume_task.json
+.antigravity_resume_task.json
+antigravity_resume_task.json
+.antigravity-resume_task.json
